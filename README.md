@@ -26,7 +26,7 @@ An advanced usage might be:
 
 The provided dat files have the following content, to let you customize your romset as you wish with combinations of "add" and "remove" operations.
 
-All lists remove the non-working games, except the "complete" and "nonworking".  
+All list remove the non-arcade games (casino, mahjong, mature...). All lists remove the non-working games, except the "complete" and "nonworking".  
 For the purpose of these lists, "working" games are either perfectly emulated, or fully playable with a few graphical or audio problems. If a game has serious graphical issues (small or flipped screen, missing important elements...) or no audio, it is not considered "working".
 
 **Initial copy** - start with one of the following lists, depending on the type of set you want.
@@ -34,9 +34,10 @@ For the purpose of these lists, "working" games are either perfectly emulated, o
 * `set-complete`: the complete romset; should be useless to you, but just in case...
 * `set-working`: all the working games
 * `set-noclones`: no clones, only parent roms
-* `set-noclones-noconsoles`: no clones, no NeoGeo (you should use FBA), no Nintendo VS/Playchoice (they're copy of the NES games but with a timer)
-* `set-lite-stick`: no consoles, only arcade games, only games playable with an arcade stick
-* `set-lite-pad`: no consoles, only arcade games, only games playable with an analog gamepad (Xbox, Playstation...)
+* `set-noclones-noconsoles`: no clones, no NeoGeo, no Nintendo VS, no Playchoice 10
+* `set-lite-stick`: no consoles, no analog controls
+* `set-lite-pad`: no consoles, includes analog controls
+* `set-goodgames`: manually curated list of games
 
 **Control schemes** - depending on how you play your games (pad, stick, bartop, cabinet...), you might want to add or remove some control schemes.
 
@@ -45,19 +46,14 @@ For the purpose of these lists, "working" games are either perfectly emulated, o
 * `controls-pad`: only games playable with an analog pad, no "alternative" controls
 * `controls-stickonly`: only games playable with an arcade stick, no analog or "alternative" controls
 
-**Game types** - you will probably want to only use "regular arcade" games, so these filters allow you to add just them or remove unwanted ones.
-
-* `games-arcade`: "regular arcade" games (excludes the "alternatives" below)
-* `games-alternative`: "alternative" games that often require a special setup (casino, quiz, mahjong, rhythm, multiplayer-only...), as well as "mature" games.
-
 **Filters** - fine-control filters if you have started with a large set and applied many filters.
 
 * `filter-clones`: all the clones
 * `filter-nonworking`: all the non-working games
 * `filter-workingclones-noparent`: all the clones that have a non-working parent
 * `filter-consoles`: all the "console" games (NegoGeo, Nintendo VS/Playchoice).
-* `filter-slow-pi`: all the games that are too slow on a Raspberry Pi 3
 
 ## Resources and references
 
 * [ArcadeItalia](http://adb.arcadeitalia.net/)
+* [ProgettoSnaps](http://progettosnaps.net/)
