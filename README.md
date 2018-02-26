@@ -33,15 +33,15 @@ For the purpose of these lists, "working" games are either perfectly emulated, o
 
 * `set-complete`: the complete romset; should be useless to you, but just in case...
 * `set-working`: all the working games
-* `set-noclones`: no clones, only parent roms
-* `set-noclones-noconsoles`: no clones, no NeoGeo, no Nintendo VS, no Playchoice 10
+* `set-noclones`: no clone roms
+* `set-noconsoles`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
 * `set-lite-stick`: no consoles, no analog controls
 * `set-lite-pad`: no consoles, includes analog controls
-* `set-goodgames`: manually curated list of games
+* `set-goodgames`: manually curated list of games, playable on a Pi3 with a gamepad out of the box.
 
 **Control schemes** - depending on how you play your games (pad, stick, bartop, cabinet...), you might want to add or remove some control schemes.
 
-* `controls-analog`: only analog-controlled games (trackball, dial, wheel...), often playable with an analog pad, but not with an arcade stick
+* `controls-analog`: only analog-controlled games (trackball, dial, wheel...), sometimes playable with an analog pad, but not with an arcade stick
 * `controls-alternative`: only "alternative" control schemes (rotary stick, keyboard, lightgun...) that are just not possible to use without dedicated controls
 * `controls-pad`: only games playable with an analog pad, no "alternative" controls
 * `controls-stickonly`: only games playable with an arcade stick, no analog or "alternative" controls
