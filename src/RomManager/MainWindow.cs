@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Gtk;
 
 public partial class MainWindow : Gtk.Window
@@ -7,7 +8,7 @@ public partial class MainWindow : Gtk.Window
     {
         Build();
 
-        // disable secondary file picker
+        // TODO: enable/disable secondary file picker on radio selection change
         //this.filechooserSecondary.Sensitive = false;
     }
 
@@ -19,8 +20,14 @@ public partial class MainWindow : Gtk.Window
 
     protected void ButtonProcess_Clicked(object sender, EventArgs e)
     {
-        using (var mainReader = new CsvReader.MameCsvReader(this.filechooserMain.Filename)) {
-            
+        if (!File.Exists(this.filechooserMain.Filename))
+        {
+            return;
+        }
+
+        using (var mainReader = new CsvReader.MameCsvReader(this.filechooserMain.Filename))
+        {
+            var roms = mainReader.GetRoms();
         }
     }
 }
