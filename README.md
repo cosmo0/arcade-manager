@@ -31,10 +31,10 @@ For the purpose of these lists, "working" games are either perfectly emulated, o
 
 **Initial copy** - start with one of the following lists, depending on the type of set you want.
 
-* `set-complete`: the complete romset; should be useless to you, but just in case...
+* `set-complete`: the complete romset, including non-working games, but excluding casino games, mature games, etc.
 * `set-working`: all the working games
-* `set-noclones`: no clone roms
-* `set-noconsoles`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
+* `set-noclone`: no clone roms
+* `set-noconsole`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
 * `set-lite-stick`: no consoles, no analog controls
 * `set-lite-pad`: no consoles, includes analog controls
 * `set-goodgames`: manually curated list of games, playable on a Pi3 with a gamepad out of the box.
