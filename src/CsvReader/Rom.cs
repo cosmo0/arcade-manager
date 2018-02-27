@@ -2,7 +2,7 @@
 
 namespace CsvReader
 {
-    public class MameCsv
+    public class Rom
     {
         public string name { get; set; }
         public string description { get; set; }
@@ -83,7 +83,5 @@ namespace CsvReader
         public string bestgame { get; set; }
         public string alltime { get; set; }
         public string cabinets { get; set; }
-
-
     }
 }

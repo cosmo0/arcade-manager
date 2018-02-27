@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using CsvHelper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CsvReader
 {
@@ -17,6 +18,15 @@ namespace CsvReader
         {
             this.fileReader = File.OpenText(filePath);
             this.csvReader = new CsvHelper.CsvReader(this.fileReader);
+        }
+
+        /// <summary>
+        /// Gets the roms listed in the file
+        /// </summary>
+        /// <returns>The roms.</returns>
+        public List<Rom> GetRoms()
+        {
+            return this.csvReader.GetRecords<Rom>().ToList();
         }
 
         /// <summary>
