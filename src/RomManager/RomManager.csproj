@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{E216DA42-23A9-4AA7-A004-C577F8628EB4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <RootNamespace>RomManager</RootNamespace>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <DependsOnSystemRuntime>true</DependsOnSystemRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -30,6 +31,7 @@
     <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -48,6 +50,9 @@
       <Project>{AB077A2F-B4C4-4913-93F8-13A9D525B797}</Project>
       <Name>CsvReader</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+	  <PackageReference Include="CsvHelper" Version="7.0.1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
