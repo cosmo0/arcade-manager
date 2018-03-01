@@ -1,6 +1,3 @@
 .DS_Store
 tmp/
-bin/
-obj/
-*.userprefs
-src/packages/
+node_modules/

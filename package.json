@@ -1,0 +1,29 @@
+{
+  "name": "retropie-arcade-dats",
+  "version": "1.0.0",
+  "description": "Retropie arcade rom management",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "electron src/index.html",
+    "test": "mocha tests/",
+    "lint": "jshint src/**.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cosmo0/retropie-arcade-dats.git"
+  },
+  "author": "cosmo0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cosmo0/retropie-arcade-dats/issues"
+  },
+  "homepage": "https://github.com/cosmo0/retropie-arcade-dats#readme",
+  "dependencies": {
+    "fast-csv": "^2.4.1"
+  },
+  "devDependencies": {
+    "electron": "^1.8.2",
+    "jshint": "^2.9.5",
+    "mocha": "^5.0.1"
+  }
+}
