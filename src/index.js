@@ -14,7 +14,8 @@ let mainWindow;
 function createWindow () {
     mainWindow = new BrowserWindow({
         width: 1024,
-        height: 768
+        height: 768,
+        title: "Retropie arcade romset manager"
     });
 
     mainWindow.loadURL(url.format({
