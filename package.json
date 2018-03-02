@@ -4,7 +4,7 @@
   "description": "Retropie arcade rom management",
   "main": "src/index.html",
   "scripts": {
-    "start": "electron src/index.html",
+    "start": "electron src/index.js",
     "test": "mocha tests/",
     "lint": "jshint src/**.js"
   },
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/cosmo0/retropie-arcade-dats#readme",
   "dependencies": {
-    "fast-csv": "^2.4.1"
+    "fast-csv": "^2.4.1",
+    "npm": "^5.7.1"
   },
   "devDependencies": {
     "electron": "^1.8.2",
