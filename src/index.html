@@ -12,7 +12,7 @@
   </head>
   <body>
 
-    <div class="container">
+    <div class="container mt-3">
         <h1><i class="icon-game-controller"></i> Retropie romset arcade manager</h1>
         
         <div class="alert alert-danger" role="alert">
@@ -168,20 +168,22 @@
 
                 if (!filename.endsWith('.csv')) { filename += '.csv'; }
 
-                $('#fileTarget').val(path.basename(filename));
+                $('#fileTarget')
+                    .val(path.basename(filename))
+                    .data('path', filename);
             });
         });
 
         // Action button clicked
         btn.on('click', () => {
             // get paths from file inputs
-            let main = $('#fileMainCsv').val(),
-                secondary = $('#fileSecondaryCsv').val(),
-                target = $('fileTarget').val(),
-                romset = $('fileRomset').val(),
-                selection = $('fileRomSelection').val();
+            let main = $('#fileMainCsv')[0].files.length > 0 ? $('#fileMainCsv')[0].files[0].path : '',
+                secondary = $('#fileSecondaryCsv')[0].files.length > 0 ? $('#fileSecondaryCsv')[0].files[0].path : '',
+                target = $('#fileTarget').data('path'),
+                romset = $('#fileRomset')[0].files.length > 0 ? $('#fileRomset')[0].files[0].path : '',
+                selection = $('#fileRomSelection')[0].files.length > 0 ? $('#fileRomSelection')[0].files[0].path : '',
+                action = $('input[name=action]:checked');
 
-            let action = $('input[name=action]:checked');
             switch (action.val()) {
                 case 'fileadd':
                     // check every path is filled

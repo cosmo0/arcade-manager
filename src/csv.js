@@ -13,11 +13,13 @@ module.exports = {
      */
     add: function add (main, secondary, target) {
         let merge = [];
-        let mainCsv = csvparse(main, {
-            auto_parse: false,
-            auto_parse_date: false,
-            delimiter: ";"
-        });
+        let mainCsv = csvparse(
+            fs.readFileSync(main), {
+                columns: true,
+                auto_parse: false,
+                auto_parse_date: false,
+                delimiter: ";"
+            });
         console.log(mainCsv);
     },
 
