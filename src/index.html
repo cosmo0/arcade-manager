@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/iconmoon.css">
+    <link rel="stylesheet" href="css/custom.css">
 
     <title>Retropie arcade romset manager</title>
   </head>
@@ -18,9 +19,10 @@
             This tool <strong>does not</strong> rebuild a romset or change its version.
         </div>
         
-        <p>It is intended to quickly filter a romset in an already "good" version.</p>
-
-        <p>Select a file, an action, and a target.</p>
+        <p>
+            It is intended to quickly filter a romset in an already "good" version.<br>
+            Select a file, an action, and a target.
+        </p>
 
         <form>
 
@@ -83,9 +85,9 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Target file</span>
                 </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="fileTarget">
-                    <label class="custom-file-label" for="fileTarget"></label>
+                <input type="text" class="form-control" id="fileTarget">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="fileTargetBrowse">Browse</button>
                 </div>
             </div>
             <p class="mt-0 mb-3 optional d-none merge">
@@ -139,6 +141,7 @@
         const {dialog} = require('electron').remote;
         const csv = require('./csv.js');
         const roms = require('./roms.js');
+        const path = require('path');
 
         let btn = $('#buttonOk');
 
@@ -149,12 +152,23 @@
             btn.removeAttr('disabled');
         });
 
+        // change of file/folder selection displays it
+        $('input[type=file]').on('change', (e) => {
+            let input = $(e.target);
+            input.next('label').text(path.basename(input[0].files[0].path));
+        });
+
         // target file is new so default file browse cannot be used
-        $('#fileTarget').on('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        $('#fileTargetBrowse').on('click', (e) => {
             dialog.showSaveDialog((filename) => {
-                target = filename;
+                if (typeof filename === 'undefined') {
+                    $('#fileTarget').val('');
+                    return;
+                }
+
+                if (!filename.endsWith('.csv')) { filename += '.csv'; }
+
+                $('#fileTarget').val(path.basename(filename));
             });
         });
 
