@@ -27,7 +27,10 @@ An advanced usage might be:
 The provided dat files have the following content, to let you customize your romset as you wish with combinations of "add" and "remove" operations.
 
 All list remove the non-arcade games (casino, mahjong, mature...). All lists remove the non-working games, except the "complete" and "nonworking".  
-For the purpose of these lists, "working" games are either perfectly emulated, or fully playable with a few graphical or audio problems. If a game has serious graphical issues (small or flipped screen, missing important elements...) or no audio, it is not considered "working".
+For the purpose of these lists, "working" games are either perfectly emulated, or fully playable with a few graphical or audio problems.  
+Warning: since MAME "working with issues" databases do not distinguish between a few bugs (clipping, flicker, wrong colors...) and more serious issues (flipped screen, wrong ratio, unresizable screen...), "working" games are sometimes not really playable.
+
+To build your own filter, check out [the filters file](FILTERS.md).
 
 **Initial copy** - start with one of the following lists, depending on the type of set you want.
 
