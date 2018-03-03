@@ -171,24 +171,37 @@
             switch (action.val()) {
                 case 'fileadd':
                     // check every path is filled
+                    if (main === '') { window.alert('Please choose a main CSV file'); return; }
+                    if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
+                    if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
                     // execute action
                     roms.add(main, romset, selection);
                 break;
                 case 'fileremove':
                     // check every path is filled
+                    if (main === '') { window.alert('Please choose a main CSV file'); return; }
+                    if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
                     // execute action
                     roms.remove(main, selection);
                 break;
                 case 'csvadd':
                     // check every path is filled
+                    if (main === '') { window.alert('Please choose a main CSV file'); return; }
+                    if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
+                    if (target === '') { window.alert('Please choose the target CSV file'); return; }
+                    if (target === main || target === secondary) { window.alert('The target CSV file cannot be the main or secondary one'); return; }
 
                     // execute action
                     csv.add(main, secondary, target);
                 break;
                 case 'csvremove':
                     // check every path is filled
+                    if (main === '') { window.alert('Please choose a main CSV file'); return; }
+                    if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
+                    if (target === '') { window.alert('Please choose the target CSV file'); return; }
+                    if (target === main || target === secondary) { window.alert('The target CSV file cannot be the main or secondary one'); return; }
 
                     // execute action
                     csv.add(main, secondary, target);
