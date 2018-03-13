@@ -5,8 +5,7 @@
   "main": "src/index.html",
   "scripts": {
     "start": "electron src/index.js",
-    "test": "mocha tests/",
-    "lint": "jshint src/**.js"
+    "build": "gulp ."
   },
   "repository": {
     "type": "git",
@@ -19,12 +18,10 @@
   },
   "homepage": "https://github.com/cosmo0/retropie-arcade-dats#readme",
   "dependencies": {
-    "csv": "^2.0.0",
-    "npm": "^5.7.1"
+    "csv": "^2.0.0"
   },
   "devDependencies": {
     "electron": "^1.8.2",
-    "jshint": "^2.9.5",
-    "mocha": "^5.0.1"
+    "gulp": "^3.9.1"
   }
 }
