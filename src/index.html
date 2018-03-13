@@ -220,7 +220,7 @@
                     if (target === main || target === secondary) { window.alert('The target CSV file cannot be the main or secondary one'); return; }
 
                     // execute action
-                    csv.add(main, secondary, target);
+                    csv.remove(main, secondary, target);
                 break;
             }
         });

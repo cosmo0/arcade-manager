@@ -76,7 +76,7 @@ module.exports = {
                     header: true,
                     delimiter: defaultDelimiter
                 })
-        );
+            );
 
         console.log('OK');
     },
@@ -90,6 +90,50 @@ module.exports = {
      * @param {string} target The path to the combined file to save
      */
     remove: function remove (main, secondary, target) {
+        // load up csv files
+        let mainCsv = csvparse(
+            fs.readFileSync(main),
+            {
+                columns: true,
+                auto_parse: false,
+                auto_parse_date: false,
+                delimiter: defaultDelimiter
+            });
+        let secondaryCsv = csvparse(
+            fs.readFileSync(secondary),
+            {
+                columns: true,
+                auto_parse: false,
+                auto_parse_date: false,
+                delimiter: defaultDelimiter
+            });
 
+        console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+
+        let merged = [];
+
+        // read the main csv and add entries to merge that do not exist in secondary
+        for (let i = 0; i < mainCsv.length; i++) {
+            let secondaryItem = secondaryCsv.find((item) => item.name === mainCsv[i].name);
+            // if no matching main CSV entry is found: add to merge
+            if (typeof secondaryItem === 'undefined') {
+                merged.push(mainCsv[i]);
+            }
+        }
+
+        console.log('Result has %i lines; saving it', merged.length);
+
+        // save the result
+        fs.writeFileSync(
+            target,
+            stringify(
+                merged,
+                {
+                    header: true,
+                    delimiter: defaultDelimiter
+                })
+            );
+
+        console.log('OK');
     }
 };
