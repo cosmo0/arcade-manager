@@ -20,7 +20,7 @@ An advanced usage might be:
 * Add `filter-workingclones-noparent` to add the clones that have a non-working parent
 * Remove `games-alternative` to remove "alternative" games
 * Remove `controls-alternative` to remove "alternative" controls
-* Remove `slow-pi` to remove the games that are too slow to play on a Raspberry Pi 3
+* Remove `filter-slow` to remove the games that are too slow to play on a Raspberry Pi 3
 
 ## Contents
 
@@ -54,7 +54,8 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `filter-clones`: all the clones
 * `filter-nonworking`: all the non-working games
 * `filter-workingclones-noparent`: all the clones that have a non-working parent
-* `filter-consoles`: all the "console" games (NegoGeo, Nintendo VS/Playchoice).
+* `filter-consoles`: all the "console" games (NegoGeo, Nintendo VS/Playchoice...)
+* `filter-slow`: all games that are too slow on a Raspberry Pi 3 (mostly 3D games)
 
 ## Resources and references
 
