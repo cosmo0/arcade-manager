@@ -1,7 +1,7 @@
 
 http://adb.arcadeitalia.net/lista_mame.php?lang=en
 
-After exporting from ArcadeItalia, add a column (lang2 for instance) in the header between `on_arcaworld` and `ranking`.
+After exporting from ArcadeItalia, sometimes add a column (lang2 for instance) in the header between `on_arcaworld` and `ranking`. Sometimes not. Good luck.
 
 # GLOBAL FILTER
 
