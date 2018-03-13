@@ -36,4 +36,5 @@ SCRIPT: filter after export: when a game has wheel + shift stick, it has dial an
 * `filter-nonworking`: No filter + emulation: not working
 * `filter-clones`: Complete + clones only
 * `filter-workingclones-noparent`: SCRIPT: create specific script, based on "complete", to remove the clones except when the parent is not working and the clone is working.
-* `filter-consoles`: Complete + driver source file: neogeo.cpp;playch10.cpp;vsnes.cpp;snesb.cpp;nss.cpp;megaplay.cpp
+* `filter-consoles`: Complete + driver source file: neogeo.cpp;playch10.cpp;vsnes.cpp;snesb.cpp;nss.cpp;megaplay.cpp;megatech.cpp
+* `filter-slow`: TODO: driver source file : find 3D games (N64, Namco, etc)
