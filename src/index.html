@@ -155,6 +155,11 @@
         // change of file/folder selection displays it
         $('input[type=file]').on('change', (e) => {
             let input = $(e.target);
+
+            if (input[0].files === null || input[0].files.length === 0) {
+                return;
+            }
+
             input.next('label').text(path.basename(input[0].files[0].path));
         });
 
