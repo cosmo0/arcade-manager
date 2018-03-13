@@ -207,7 +207,6 @@
                     if (main === '') { window.alert('Please choose a main CSV file'); return; }
                     if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
                     if (target === '') { window.alert('Please choose the target CSV file'); return; }
-                    if (target === main || target === secondary) { window.alert('The target CSV file cannot be the main or secondary one'); return; }
 
                     // execute action
                     csv.add(main, secondary, target);
@@ -217,12 +216,13 @@
                     if (main === '') { window.alert('Please choose a main CSV file'); return; }
                     if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
                     if (target === '') { window.alert('Please choose the target CSV file'); return; }
-                    if (target === main || target === secondary) { window.alert('The target CSV file cannot be the main or secondary one'); return; }
 
                     // execute action
                     csv.remove(main, secondary, target);
                 break;
             }
+
+            window.alert('Done.');
         });
     </script>
 </body>
