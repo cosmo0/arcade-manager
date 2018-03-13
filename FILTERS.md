@@ -1,6 +1,8 @@
 
 http://adb.arcadeitalia.net/lista_mame.php?lang=en
 
+After exporting from ArcadeItalia, add a column (lang2 for instance) in the header between `on_arcaworld` and `ranking`.
+
 # GLOBAL FILTER
 
 * MAME versions ("version to"):
@@ -18,9 +20,9 @@ http://adb.arcadeitalia.net/lista_mame.php?lang=en
 
 * `set-noclone`: ADD: only parents
 * `set-noclone-noconsole`: SCRIPT: main "noclone", remove "consoles"
-* `set-lite-stick`: ADD: input: buttons only, joystick ; TODO: script with removing noconsoles and analog
-* `set-lite-pad`: ADD: input: pedal, trackball, dial, paddle, stick ; TODO: script with removing noconsoles and alternative
-* `set-goodgames`: manual filter from lite-pad
+* `set-lite-stick`: ADD: input: buttons only, joystick ; SCRIPT: remove "analog", "alternative", "slow"
+* `set-lite-pad`: ADD: input: pedal, trackball, dial, paddle, stick ; SCRIPT: remove "alternative", "slow"
+* `set-goodgames`: SCRIPT: only games that are good enough based on Antopisa databases.
 
 # CONTROLS
 
@@ -36,9 +38,5 @@ SCRIPT: filter after export: when a game has wheel + shift stick, it has dial an
 * `filter-nonworking`: No filter + emulation: not working
 * `filter-clones`: Complete + clones only
 * `filter-workingclones-noparent`: SCRIPT: create specific script, based on "complete", to remove the clones except when the parent is not working and the clone is working.
-* `filter-consoles`: Complete + driver source file: neogeo.cpp;playch10.cpp;vsnes.cpp;snesb.cpp;nss.cpp;megaplay.cpp;megatech.cpp
+* `filter-consoles`: Complete + driver source file: neogeo.c;neogeo.cpp;playch10.c;playch10.cpp;vsnes.c;vsnes.cpp;snesb.c;snesb.cpp;nss.c;nss.cpp;megaplay.c;megaplay.cpp;megatech.c;megatech.cpp
 * `filter-slow`: Complete + driver source file: namcos11.c;namcos11.cpp;namcos12.c;namcos12.cpp;seattle.c;seattle.cpp;kinst.c;kinst.cpp;naomi.c;naomi.cpp;namcos22.c;namcos22.cpp;midvunit.c;midvunit.cpp;stv.c;stv.cpp;model2.c;model2.cpp;model3.c;model3.cpp;zn.c;zn.cpp
-
-# Manual operations
-
-After exporting, add a column (lang2 for instance) in the header between `on_arcaworld` and `ranking`.
