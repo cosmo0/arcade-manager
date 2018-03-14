@@ -7,20 +7,27 @@ If you ever need to change your romset version use a tool like [CLRMAMEPRO](http
 
 ## Usage
 
-The tool provides the following filtering abilities:
+The tool provides the ability to copy or remove roms based on predefined lists.
 
-* Copy games from one location to another from a list
-* Remove games from one location based on a list
+You will probably just want to use one of these files:
 
-You will probably just want to use the `set-lite-stick` or `set-lite-pad`, depending on your control scheme of choice. They provide a complete, ready-to-use list of games working on a Raspberry Pi 3 with either an arcade stick or a "modern" pad (with analog sticks, like Xbox or Playstation controllers).
+* `set-lite`: you want all the games, and you want to discover many things, both good and bad.
+* `set-classics`: you want only good games, but you still want to be surprised, and you don't mind keeping multiple episodes of the same game series
+* `set-classics-lite`: you only want the very best games
 
-An advanced usage might be:
+Pick the `pad` version if you have an modern controller with analog sticks (Playstation or Xbox).  
+Pick the `stick` version if you have an arcade stick, or a pad without analog sticks.
 
-* Add `set-noclones-noconsoles` to copy all non-consoles working roms of MAME2003 from your romset
-* Add `filter-workingclones-noparent` to add the clones that have a non-working parent
-* Remove `games-alternative` to remove "alternative" games
+## Advanced usage
+
+You can combine the various provided filters for more fine control over the result of your rom selection.
+
+For instance:
+
+* Add `set-noconsoles` to copy all non-clones, non-consoles working roms
 * Remove `controls-alternative` to remove "alternative" controls
 * Remove `filter-slow` to remove the games that are too slow to play on a Raspberry Pi 3
+* Remove `quality-10` to `quality-50` to remove below-average games
 
 ## Contents
 
@@ -40,8 +47,10 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `set-noconsole`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
 * `set-lite-stick`: no consoles, no analog controls
 * `set-lite-pad`: no consoles, includes analog controls
-* `set-classics-pad`: manually curated list of about 200 games. Use this if you want both classics and little-known great games, as well as a choice in series episodes.
-* `set-classics-lite-pad`: manually curated list of about 50 games. Use this if you want only the very best and most popular games.
+* `set-classics-pad`: manually curated list of about 200 games
+* `set-classics-stick`: manually curated list of about 200 games without analog controls
+* `set-classics-lite-pad`: manually curated list of about 50 games
+* `set-classics-lite-stick`: manually curated list of about 50 games without analog controls
 
 **Control schemes** - depending on how you play your games (pad, stick, bartop, cabinet...), you might want to add or remove some control schemes.
 
@@ -56,7 +65,7 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `filter-nonworking`: all the non-working games
 * `filter-workingclones-noparent`: all the clones that have a non-working parent
 * `filter-consoles`: all the "console" games (NegoGeo, Nintendo VS/Playchoice...)
-* `filter-slow`: all games that are too slow on a Raspberry Pi 3 (mostly 3D games)
+* `filter-slow`: all games that are too slow on a Raspberry Pi 3 (basically all 3D games)
 
 **Quality** - list of games based on their quality, as per ProgettoSnaps databases
 
