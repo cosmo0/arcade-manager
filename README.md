@@ -40,8 +40,8 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `set-noconsole`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
 * `set-lite-stick`: no consoles, no analog controls
 * `set-lite-pad`: no consoles, includes analog controls
-* `set-classics-pad`: manually curated list of about 200 games. Use this if you want both classics and little-known great games.
-* `set-classics-lite-pad`: manually curated list of about 50 games. Use this if you want only the best and most popular games.
+* `set-classics-pad`: manually curated list of about 200 games. Use this if you want both classics and little-known great games, as well as a choice in series episodes.
+* `set-classics-lite-pad`: manually curated list of about 50 games. Use this if you want only the very best and most popular games.
 
 **Control schemes** - depending on how you play your games (pad, stick, bartop, cabinet...), you might want to add or remove some control schemes.
 
