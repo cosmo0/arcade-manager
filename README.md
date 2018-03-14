@@ -40,9 +40,8 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `set-noconsole`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
 * `set-lite-stick`: no consoles, no analog controls
 * `set-lite-pad`: no consoles, includes analog controls
-* `set-classics-80s-pad`: manually curated list of games from the 80's that are considered "classics", and are playable on a Pi3 with a gamepad.
-* `set-classics-90s-pad`: manually curated list of games from the 80's and 90's that are considered "classics", and are playable on a Pi3 with a gamepad. May include NeoGeo games.
-* `set-goodgames-pad`: manually curated list of games, playable on a Pi3 with a gamepad.
+* `set-classics-pad`: manually curated list of about 200 games. Use this if you want both classics and little-known great games.
+* `set-classics-lite-pad`: manually curated list of about 50 games. Use this if you want only the best and most popular games.
 
 **Control schemes** - depending on how you play your games (pad, stick, bartop, cabinet...), you might want to add or remove some control schemes.
 
@@ -58,8 +57,3 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `filter-workingclones-noparent`: all the clones that have a non-working parent
 * `filter-consoles`: all the "console" games (NegoGeo, Nintendo VS/Playchoice...)
 * `filter-slow`: all games that are too slow on a Raspberry Pi 3 (mostly 3D games)
-
-## Resources and references
-
-* [ArcadeItalia](http://adb.arcadeitalia.net/)
-* [ProgettoSnaps](http://progettosnaps.net/)
