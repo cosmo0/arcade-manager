@@ -102,23 +102,20 @@ module.exports = {
                 delimiter: defaultDelimiter
             });
 
-        
+        // list files in selection folder
+        var files = fs.readdirSync(selection);
+        for (let i = 0; i < files.length; i++) {
+            let zip = files[i];
 
-        // for (let i = 0; i < fileCsv.length; i++) {
-        //     let zip = fileCsv[i].name + '.zip';
-        //     let rom = path.join(selection, zip);
+            // skip non-zip files
+            if (!zip.endsWith('.zip')) { continue; }
 
-        //     try {
-        //         // test if rom exists
-        //         fs.accessSync(rom, fs.constants.W_OK);
-                
-        //         // delete rom
-        //         fs.unlinkSync(rom);
-
-        //         console.log('%s deleted', rom);
-        //     } catch (errRom) {
-        //         console.log('Unable to delete %s', rom);
-        //     }
-        // }
+            // file not found in csv -> remove it
+            let csvItem = fileCsv.find((item) => item.name === zip.replace('.zip', ''));
+            if (typeof secondaryItem === 'undefined') {
+                console.log('remove %s', zip);
+                fs.unlinkSync(path.join(selection, zip));
+            }
+        }
     }
 };
