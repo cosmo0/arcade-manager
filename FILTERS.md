@@ -42,6 +42,10 @@ SCRIPT: filter after export: when a game has wheel + shift stick, it has dial an
 * `filter-consoles`: Complete + driver source file: neogeo.c;neogeo.cpp;playch10.c;playch10.cpp;vsnes.c;vsnes.cpp;snesb.c;snesb.cpp;nss.c;nss.cpp;megaplay.c;megaplay.cpp;megatech.c;megatech.cpp
 * `filter-slow`: Complete + driver source file: namcos11.c;namcos11.cpp;namcos12.c;namcos12.cpp;seattle.c;seattle.cpp;kinst.c;kinst.cpp;naomi.c;naomi.cpp;namcos22.c;namcos22.cpp;midvunit.c;midvunit.cpp;stv.c;stv.cpp;model2.c;model2.cpp;model3.c;model3.cpp;zn.c;zn.cpp
 
+# QUALITY
+
+* Complete + categories: best games: export one file per value.
+
 # SOURCES
 
 Base CSV:

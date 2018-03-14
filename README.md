@@ -57,3 +57,7 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `filter-workingclones-noparent`: all the clones that have a non-working parent
 * `filter-consoles`: all the "console" games (NegoGeo, Nintendo VS/Playchoice...)
 * `filter-slow`: all games that are too slow on a Raspberry Pi 3 (mostly 3D games)
+
+**Quality** - list of games based on their quality, as per ProgettoSnaps databases
+
+* `quality-xxx`: from 100 (best games) to 10 (worst games).
