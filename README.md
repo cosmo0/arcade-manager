@@ -40,7 +40,9 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `set-noconsole`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
 * `set-lite-stick`: no consoles, no analog controls
 * `set-lite-pad`: no consoles, includes analog controls
-* `set-goodgames`: manually curated list of games, playable on a Pi3 with a gamepad out of the box.
+* `set-classics-80s-pad`: manually curated list of games from the 80's that are considered "classics", and are playable on a Pi3 with a gamepad.
+* `set-classics-90s-pad`: manually curated list of games from the 80's and 90's that are considered "classics", and are playable on a Pi3 with a gamepad. May include NeoGeo games.
+* `set-goodgames-pad`: manually curated list of games, playable on a Pi3 with a gamepad.
 
 **Control schemes** - depending on how you play your games (pad, stick, bartop, cabinet...), you might want to add or remove some control schemes.
 

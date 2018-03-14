@@ -22,7 +22,9 @@ After exporting from ArcadeItalia, sometimes add a column (lang2 for instance) i
 * `set-noclone-noconsole`: SCRIPT: main "noclone", remove "consoles"
 * `set-lite-stick`: ADD: input: buttons only, joystick ; SCRIPT: remove "analog", "alternative", "slow"
 * `set-lite-pad`: ADD: input: pedal, trackball, dial, paddle, stick ; SCRIPT: remove "alternative", "slow"
-* `set-goodgames`: SCRIPT: only games that are good enough based on Antopisa databases.
+* `set-classics-80s-pad`: MANUAL: games from the 80's that are considered "classics", and are playable on a Pi3 with a gamepad.
+* `set-classics-90s-pad`: MANUAL: games from the 80's and 90's that are considered "classics", and are playable on a Pi3 with a gamepad. May include NeoGeo games.
+* `set-goodgames-pad`: MANUAL: good games, according to me.
 
 # CONTROLS
 
