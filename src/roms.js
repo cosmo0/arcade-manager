@@ -82,5 +82,43 @@ module.exports = {
                 console.log('Unable to delete %s', rom);
             }
         }
+    },
+
+
+    /**
+     * Removes roms not listed from a selection,
+     * based on a CSV file
+     * 
+     * @param {string} file The path to the file
+     * @param {string} selection The path to the selection folder
+     */
+    filter: function filter (file, selection) {
+        let fileCsv = csvparse(
+            fs.readFileSync(file),
+            {
+                columns: true,
+                auto_parse: false,
+                auto_parse_date: false,
+                delimiter: defaultDelimiter
+            });
+
+        
+
+        // for (let i = 0; i < fileCsv.length; i++) {
+        //     let zip = fileCsv[i].name + '.zip';
+        //     let rom = path.join(selection, zip);
+
+        //     try {
+        //         // test if rom exists
+        //         fs.accessSync(rom, fs.constants.W_OK);
+                
+        //         // delete rom
+        //         fs.unlinkSync(rom);
+
+        //         console.log('%s deleted', rom);
+        //     } catch (errRom) {
+        //         console.log('Unable to delete %s', rom);
+        //     }
+        // }
     }
 };

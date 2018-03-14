@@ -13,7 +13,7 @@
   <body>
 
     <div class="container mt-3">
-        <h1><i class="icon-game-controller"></i> Retropie romset arcade manager</h1>
+        <h1><i class="icon-pacman"></i> Retropie romset arcade manager</h1>
         
         <div class="alert alert-danger" role="alert">
             This tool <strong>does not</strong> rebuild a romset or change its version.
@@ -47,11 +47,15 @@
                 </p>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="action" value="fileadd" id="fileadd" data-display=".addfiles">
-                    <label class="form-check-label" for="fileadd"><i class="icon-box-add"></i> Add listed files</label>
+                    <label class="form-check-label" for="fileadd"><i class="icon-folder-down"></i> Add listed files</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="action" value="fileremove" id="fileremove" data-display=".removefiles">
-                    <label class="form-check-label" for="fileremove"><i class="icon-box-remove"></i> Remove listed files</label>
+                    <label class="form-check-label" for="fileremove"><i class="icon-folder-up"></i> Remove listed files</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="action" value="filefilter" id="fileremove" data-display=".removefiles">
+                    <label class="form-check-label" for="fileremove"><i class="icon-folder-minus"></i> Remove files not listed</label>
                 </div>
                 <p class="mt-2 mb-0">
                     Combine two CSV files to have a final.
@@ -63,6 +67,10 @@
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="action" value="csvremove" id="csvremove" data-display=".merge">
                     <label class="form-check-label" for="csvremove"><i class="icon-split"></i> Remove rows from another file</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="action" value="csvfilter" id="csvremove" data-display=".merge">
+                    <label class="form-check-label" for="csvremove"><i class="icon-shuffle"></i> Remove rows not listed in another file</label>
                 </div>
             </div>
 
@@ -207,6 +215,15 @@
                     // execute action
                     roms.remove(main, selection);
                 break;
+                case 'filefilter':
+                    // check every path is filled
+                    if (main === '') { window.alert('Please choose a main CSV file'); return; }
+                    if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
+
+                    // execute action
+                    roms.filter(main, selection);
+                break;
+
                 case 'csvadd':
                     // check every path is filled
                     if (main === '') { window.alert('Please choose a main CSV file'); return; }
@@ -224,6 +241,15 @@
 
                     // execute action
                     csv.remove(main, secondary, target);
+                break;
+                case 'csvfilter':
+                    // check every path is filled
+                    if (main === '') { window.alert('Please choose a main CSV file'); return; }
+                    if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
+                    if (target === '') { window.alert('Please choose the target CSV file'); return; }
+
+                    // execute action
+                    csv.filter(main, secondary, target);
                 break;
             }
 

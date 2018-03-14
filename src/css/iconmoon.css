@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?okjg5d');
-  src:  url('../fonts/icomoon.eot?okjg5d#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?okjg5d') format('truetype'),
-    url('../fonts/icomoon.woff?okjg5d') format('woff'),
-    url('../fonts/icomoon.svg?okjg5d#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?qqu3ra');
+  src:  url('../fonts/icomoon.eot?qqu3ra#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?qqu3ra') format('truetype'),
+    url('../fonts/icomoon.woff?qqu3ra') format('woff'),
+    url('../fonts/icomoon.svg?qqu3ra#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -27,6 +27,9 @@
 .icon-game-controller:before {
   content: "\f43b";
 }
+.icon-shuffle:before {
+  content: "\f4a8";
+}
 .icon-pacman:before {
   content: "\e916";
 }
@@ -36,11 +39,17 @@
 .icon-file-zip:before {
   content: "\e92b";
 }
-.icon-box-add:before {
-  content: "\e95e";
+.icon-folder-minus:before {
+  content: "\e932";
 }
-.icon-box-remove:before {
-  content: "\e95f";
+.icon-folder-down:before {
+  content: "\e933";
+}
+.icon-folder-up:before {
+  content: "\e934";
+}
+.icon-filter:before {
+  content: "\ea5b";
 }
 .icon-merge:before {
   content: "\e252";
