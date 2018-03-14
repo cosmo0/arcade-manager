@@ -47,8 +47,8 @@ To build your own filter, check out [the filters file](FILTERS.md).
 * `set-noconsole`: no clones, no NeoGeo/Nintendo VS/Playchoice 10/Nintendo Super System/MegaPlay...
 * `set-lite-stick`: no consoles, no analog controls
 * `set-lite-pad`: no consoles, includes analog controls
-* `set-classics-pad`: manually curated list of about 200 games
-* `set-classics-stick`: manually curated list of about 200 games without analog controls
+* `set-classics-pad`: manually curated list of about 200-250 games
+* `set-classics-stick`: manually curated list of about 200-250 games without analog controls
 * `set-classics-lite-pad`: manually curated list of about 50 games
 * `set-classics-lite-stick`: manually curated list of about 50 games without analog controls
 
