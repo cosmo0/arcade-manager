@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/cosmo0/retropie-arcade-dats#readme",
   "dependencies": {
-    "csv": "^2.0.0"
+    "csv": "^2.0.0",
+    "fs-extra": "^5.0.0"
   },
   "devDependencies": {
     "electron": "^1.8.2",

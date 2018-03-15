@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const csvparse = require('csv-parse/lib/sync');
 
@@ -34,16 +34,17 @@ module.exports = {
                 fs.accessSync(destRom, fs.constants.F_OK);
                 console.log('Rom %s already exists', destRom);
             } catch (errDest) {
+                // destination rom does not exist (accessSync has thrown)
                 try {
                     // test if source rom exists
                     fs.accessSync(sourceRom, fs.constants.R_OK);
                     
                     // copy rom
-                    fs.copyFileSync(sourceRom, destRom);
+                    fs.copySync(sourceRom, destRom);
 
                     console.log('%s copied', sourceRom);
                 } catch (errSource) {
-                    console.log('Unable to access %s', sourceRom);
+                    console.log('Unable to access %s - %o', sourceRom, errSource);
                 }
             }
         }
@@ -79,7 +80,7 @@ module.exports = {
 
                 console.log('%s deleted', rom);
             } catch (errRom) {
-                console.log('Unable to delete %s', rom);
+                console.log('Unable to delete %s - %o', rom, errRom);
             }
         }
     },
