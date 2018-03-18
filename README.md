@@ -1,6 +1,6 @@
-# MAME DAT tools for Retropie
+# Arcade manager for Retropie
 
-This repository provides DAT management tools to manage your romset, specifically designed for use with Retropie installed on a Raspberry Pi.
+This repository provides a rom management tool, specifically designed for use with Retropie.
 
 **THIS TOOL DOES NOT REBUILD ROMSETS !!!** It assumes you have a working romset corresponding to the MAME version you're using.  
 If you ever need to change your romset version use a tool like [CLRMAMEPRO](https://mamedev.emulab.it/clrmamepro/).
