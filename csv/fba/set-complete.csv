@@ -828,7 +828,7 @@ crospang;"Cross Pang";1998;"F2 System";YES;-;NO;-;-;
 crsword;"Crossed Swords (ALM-002)(ALH-002)";1991;"Alpha Denshi Co.";YES;neogeo;NO;-;-;
 crswd2bl;"Crossed Swords 2 (bootleg CD to cartridge conversion)";1991;"bootleg (Razoola)";YES;neogeo;NO;-;-;
 cphd;"Crouching Poney Hidden Dragon (DEMO) [Homebrew]";2013;"Le Cortex";YES;neogeo;NO;-;-;
-cthd2003;"Crouching Tiger Hidden Dragon 2003 (set 1) [Bootleg, Hack of "The King of Fighters 2001"]";2003;"Phenixsoft";NO;kof2001;YES;kof2001;-;
+cthd2003;"Crouching Tiger Hidden Dragon 2003 (set 1) [Bootleg, Hack of KoF 2001]";2003;"Phenixsoft";NO;kof2001;YES;kof2001;-;
 cthd2k3a;"Crouching Tiger Hidden Dragon 2003 (set 2) [Bootleg]";2003;"bootleg";NO;kof2001;YES;kof2001;-;
 ct2k3sp;"Crouching Tiger Hidden Dragon 2003 Super Plus [Bootleg]";2003;"bootleg";NO;kof2001;YES;kof2001;-;
 ct2k3sa;"Crouching Tiger Hidden Dragon 2003 Super Plus alternate [Bootleg]";2003;"bootleg";NO;kof2001;YES;kof2001;-;
@@ -4895,4 +4895,3 @@ nmk004;"NMK004 Internal ROM [internal rom]";1990;"N M K Corporation";YES;-;NO;-;
 pgm;"PGM (Polygame Master) System BIOS [BIOS only]";1997;"IGS";YES;-;NO;-;-;
 skns;"Super Kaneko Nova System BIOS [BIOS only]";1996;"Kaneko";YES;-;NO;-;-;
 ym2608;"YM2608 Internal ROM [Internal ROM only]";1989;"Yamaha";YES;-;NO;-;-;
-
