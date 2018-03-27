@@ -20,8 +20,8 @@ After exporting from ArcadeItalia, sometimes add a column (lang2 for instance) i
 
 * `set-noclone`: ADD: only parents
 * `set-noclone-noconsole`: MERGE: noclone - consoles
-* `set-lite-stick`: ADD: input: buttons only, joystick ; MERGE: - analog - alternative - slow
-* `set-lite-pad`: ADD: input: pedal, trackball, dial, paddle, stick ; MERGE: - alternative - slow
+* `set-lite-stick`: ADD: input: buttons only, joystick ; MERGE: noconsoles - analog - alternative - slow
+* `set-lite-pad`: ADD: input: pedal, trackball, dial, paddle, stick ; MERGE: noconsoles - alternative - slow
 * `set-classics-pad`: MANUAL: about 200 games that are considered "classics" (well-known or niche), and are playable on a Pi3 with a gamepad (includes NeoGeo games)
 * `set-classics-lite-pad`: MANUAL: about 50 games that are considered "classics"
 
