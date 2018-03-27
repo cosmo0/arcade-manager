@@ -24,10 +24,9 @@ You can combine the various provided filters for more fine control over the resu
 
 For instance:
 
-* Add `set-noconsoles` to copy all non-clones, non-consoles working roms
+* Add `quality-100` and `quality-90` to copy only the best games
 * Remove `controls-alternative` to remove "alternative" controls
 * Remove `filter-slow` to remove the games that are too slow to play on a Raspberry Pi 3
-* Remove `quality-10` to `quality-50` to remove below-average games
 
 ## Contents
 
