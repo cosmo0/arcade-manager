@@ -1,0 +1,52 @@
+{
+    "csv": [
+        {
+            "name": "FBA",
+            "description": "Roms list for Final Burn Alpha",
+            "image": "",
+            "repository": "cosmo0/retropie-arcade-manager",
+            "path": "csv/fba"
+        },
+        {
+            "name": "MAME 2003",
+            "description": "Roms list for MAME 2003 (0.78)",
+            "image": "",
+            "repository": "retropie-arcade-manager",
+            "path": "csv/mame2003"
+        },
+        {
+            "name": "MAME 2010",
+            "description": "Roms list for MAME 2010 (0.139)",
+            "image": "",
+            "repository": "retropie-arcade-manager",
+            "path": "csv/mame2010"
+        },
+        {
+            "name": "MAME 2010 only",
+            "description": "Roms list for games that work in MAME 2010 but not in MAME 2003",
+            "image": "",
+            "repository": "retropie-arcade-manager",
+            "path": "csv/mame2010-only"
+        }
+    ],
+    "overlays": [
+        {
+            "name": "Realistic",
+            "description": "Realistic-looking overlays, with scratches, reflections, and CRT filter",
+            "image": "",
+            "repository": "cosmo0/retropie-overlays-arcade-realistic",
+            "roms": "overlays/roms",
+            "overlays": { "src": "overlays/configs/all/retroarch/overlay/arcade", "dest": "all/retroarch/overlay/arcade" },
+            "common": { "src": "overlays/configs/all/retroarch/overlay_cfg", "dest": "all/retroarch/overlay_cfg" },
+            "shaders": { "src": "overlays/configs/all/retroarch/shaders", "dest": "all/retroarch/shaders" }
+        },
+        {
+            "name": "Artworks",
+            "description": "Artwork-style overlays, as clean as possible",
+            "image": "",
+            "repository": "cosmo0/retropie-overlays-arcade-artwork",
+            "roms": "overlays/roms",
+            "overlays": { "src": "overlays/configs/all/retroarch/overlay/arcade", "dest": "all/retroarch/overlay/arcade" }
+        }
+    ]
+}
