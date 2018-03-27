@@ -22,7 +22,7 @@ gci "*.dat" | % {
 
     $dat.datafile.game | % {
         $file += "$($_.name);"
-        $file += "`"$($_.description)`";"
+        $file += "`"$($_.description.Replace(';', '-'))`";"
         $file += $_.year + ";"
         $file += "`"$($_.manufacturer)`";"
         $file += $(If ($_.cloneof -eq $null) { "YES" } Else { "NO" }) + ";" #is_parent
