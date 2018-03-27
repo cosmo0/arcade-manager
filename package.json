@@ -2,7 +2,7 @@
   "name": "retropie-arcade-dats",
   "version": "1.0.0",
   "description": "Retropie arcade rom management",
-  "main": "src/index.html",
+  "main": "src/index.js",
   "scripts": {
     "start": "electron src/index.js",
     "build": "gulp ."
