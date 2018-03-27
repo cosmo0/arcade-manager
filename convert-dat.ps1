@@ -1,6 +1,7 @@
 
 ###############################################
-# Converts a DAT file (from CLRMamePro) into a CSV
+# Converts a DAT (XML) file (from CLRMamePro)
+# into a CSV
 ###############################################
 
 gci "*.dat" | % {
