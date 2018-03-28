@@ -25,7 +25,6 @@ gtmra;1000 Miglia: Great 1000 Miles Rally (94/06/13);1994;Kaneko;NO;gtmr;YES;gtm
 1944d;1944 - the loop master (000620 USA Phoenix Edition) [Bootleg];2000;bootleg;NO;1944;YES;1944;-
 1944ad;1944 - the loop master (000620 USA Phoenix Edition, alt) [Bootleg];2000;bootleg;NO;1944;YES;1944;-
 bgareggabl;1945 Part 2 (Chinese hack of Battle Garegga) [Hack];1996;hack;NO;bgaregga;YES;bgaregga;-
-1945kiiin;1945k III (newer, OPCX1 PCB);2000;Oriental Soft;NO;1945kiii;YES;1945kiii;-
 1945kiiio;1945k III (older, OPCX1 PCB);1999;Oriental Soft;NO;1945kiii;YES;1945kiii;-
 19xxar1;19XX - the war against destiny (951207 Asia);1995;Capcom;NO;19xx;YES;19xx;-
 19xxjr2;19XX - the war against destiny (951207 Japan);1995;Capcom;NO;19xx;YES;19xx;-
@@ -48,7 +47,6 @@ abcopj;A.B. Cop (Japan, FD1094 317-0169b);1990;Sega;NO;abcop;YES;abcop;-
 abcopd;A.B. Cop (World, FD1094 317-0169b decrypted) [Bootleg];1990;Sega;NO;abcop;YES;abcop;-
 abscam;Abscam;1981;GL (US Billiards License);NO;puckman;YES;puckman;-
 aceattaca;Ace Attacker (Japan, System 16A, FD1094 317-0060);1986;Sega;NO;aceattac;YES;aceattac;-
-dogfgtu;Acrobatic Dog-Fight (USA);1985;Technos Japan (Data East USA, Inc. license);NO;dogfgt;YES;dogfgt;-
 actfancrj;Act-Fancer Cybernetick Hyper Weapon (Japan revision 1);1989;Data East Corporation;NO;actfancr;YES;actfancr;-
 actfancr1;Act-Fancer Cybernetick Hyper Weapon (World revision 1);1989;Data East Corporation;NO;actfancr;YES;actfancr;-
 cworld2ja;Adventure Quiz Capcom World 2 (Japan 920611, B-Board 90629B-3, no battery);1992;Capcom;NO;cworld2j;YES;cworld2j;-
@@ -58,10 +56,6 @@ aerofgtc;Aero Fighters (Turbo Force hardware set 2);1992;Video System Co.;NO;aer
 aeroboto;Aeroboto;1984;Jaleco (Williams license);NO;formatz;YES;formatz;-
 aburner;After Burner;1987;Sega;NO;aburner2;YES;aburner2;-
 aburner2g;After Burner II (German);1987;Sega;NO;aburner2;YES;aburner2;-
-agentx1;Agent X (prototype, rev 1);1983;Atari;NO;cloak;YES;cloak;-
-agentx2;Agent X (prototype, rev 2);1983;Atari;NO;cloak;YES;cloak;-
-agentx3;Agent X (prototype, rev 3);1983;Atari;NO;cloak;YES;cloak;-
-agentx4;Agent X (prototype, rev 4);1983;Atari;NO;cloak;YES;cloak;-
 agressb;Agress (English bootleg);2003;Palco;NO;agress;YES;agress;-
 airattcka;Air Attack (set 2);1996;Comad;NO;airattck;YES;airattck;-
 airbustrb;Air Buster: Trouble Specialty Raid Unit (bootleg) [Bootleg];1990;bootleg;NO;airbustr;YES;airbustr;-
@@ -78,7 +72,6 @@ agallett;Air Gallet (Taiwan);1996;BanPresto / Gazelle;NO;agallet;YES;agallet;-
 agalletu;Air Gallet (USA);1996;BanPresto / Gazelle;NO;agallet;YES;agallet;-
 airwolfa;Airwolf (US);1987;Kyugo (United Amusements license);NO;airwolf;YES;airwolf;-
 ajaxj;Ajax (Japan);1987;Konami;NO;ajax;YES;ajax;-
-akkanvdr;Akkanbeder (Ver 2.5J 1995/06/14);1995;Taito Corporation;NO;spcinv95;YES;spcinv95;-
 akumajoun;Akuma-Jou Dracula (Japan ver. N);1988;Konami;NO;hcastle;YES;hcastle;-
 akumajou;Akuma-Jou Dracula (Japan ver. P);1988;Konami;NO;hcastle;YES;hcastle;-
 agalletj;Akuu Gallet (Japan);1996;BanPresto / Gazelle;NO;agallet;YES;agallet;-
@@ -132,8 +125,6 @@ aquajackj;Aquajack (Japan);1990;Taito Corporation;NO;aquajack;YES;aquajack;-
 aquajacku;Aquajack (US);1990;Taito Corporation;NO;aquajack;YES;aquajack;-
 aquariumj;Aquarium (Japan);1996;Excellent System;NO;aquarium;YES;aquarium;-
 arabiana;Arabian (Atari);1983;[Sun Electronics] (Atari license);NO;arabian;YES;arabian;-
-arabianmu;Arabian Magic (Ver 1.0A 1992/07/06);1992;Taito America Corporation;NO;arabianm;YES;arabianm;-
-arabianmj;Arabian Magic (Ver 1.0J 1992/07/06);1992;Taito Corporation;NO;arabianm;YES;arabianm;-
 aracnis;Aracnis (bootleg of Scorpion on Moon Cresta hardware) [Bootleg];19??;bootleg;NO;scorpion;YES;scorpion;-
 area88r;Area 88 (Japan Resale ver.);1989;Daipro / Capcom;NO;unsquad;YES;unsquad;-
 area88;Area 88 (Japan);1989;Daipro / Capcom;NO;unsquad;YES;unsquad;-
@@ -158,8 +149,6 @@ arkanoiduo;Arkanoid (US, oldest rev);1986;Taito America Corporation (Romstar lic
 arknoid2b;Arkanoid - Revenge of DOH (Japan bootleg);1987;bootleg;NO;arknoid2;YES;arknoid2;-
 arknoid2j;Arkanoid - Revenge of DOH (Japan);1987;Taito Corporation;NO;arknoid2;YES;arknoid2;-
 arknoid2u;Arkanoid - Revenge of DOH (US);1987;Taito America Corporation (Romstar license);NO;arknoid2;YES;arknoid2;-
-arkretrnu;Arkanoid Returns (Ver 2.02A 1997/02/10);1997;Taito Corporation;NO;arkretrn;YES;arkretrn;-
-arkretrnj;Arkanoid Returns (Ver 2.02J 1997/02/10);1997;Taito Corporation;NO;arkretrn;YES;arkretrn;-
 armedff;Armed Formation (Fillmore license);1988;Nichibutsu (Fillmore license);NO;armedf;YES;armedf;-
 batriderc;Armed Police Batrider (China) (Fri Feb 13 1998);1998;Raizing / 8ing;NO;batrider;YES;batrider;-
 batriderk;Armed Police Batrider (Korea) (Fri Feb 13 1998);1998;Raizing / 8ing;NO;batrider;YES;batrider;-
@@ -180,8 +169,6 @@ aof3k;Art of Fighting 3 - The Path of the Warrior (Korean release);1996;SNK;NO;a
 ashnojoe;Ashita no Joe (Japan) [Incomplete sound];1990;Taito Corporation / Wave;NO;scessjoe;YES;scessjoe;-
 ashuraj;Ashura Blaster (Japan);1990;Taito Corporation;NO;ashura;YES;ashura;-
 ashurau;Ashura Blaster (US);1990;Taito America Corporation;NO;ashura;YES;ashura;-
-assaultj;Assault (Japan);1988;Namco;NO;assault;YES;assault;-
-assaultp;Assault Plus (Japan);1988;Namco;NO;assault;YES;assault;-
 asterixaad;Asterix (ver AAD);1992;Konami;NO;asterix;YES;asterix;-
 asterixeaa;Asterix (ver EAA);1992;Konami;NO;asterix;YES;asterix;-
 asterixeac;Asterix (ver EAC);1992;Konami;NO;asterix;YES;asterix;-
@@ -206,8 +193,6 @@ avefenix;Ave Fenix (Electrogame, Spanish bootleg of Phoenix);1980;bootleg (Video
 avefenixl;Ave Fenix (Laguna, Spanish bootleg of Phoenix);1980;bootleg;NO;phoenix;YES;phoenix;-
 avefenixrf;Ave Fenix (Recreativos Franco, Spanish bootleg of Phoenix);1981;bootleg (Recreativos Franco S.A.);NO;phoenix;YES;phoenix;-
 avengers2;Avengers (US set 2);1987;Capcom;NO;avengers;YES;avengers;-
-bwingsa;B-Wings (Alt Ver.?);1984;Data East Corporation;NO;bwings;YES;bwings;-
-bwingso;B-Wings (Japan old Ver.);1984;Data East Corporation;NO;bwings;YES;bwings;-
 bcstrya;B.C. Story (set 2);1997;SemiCom;NO;bcstry;YES;bcstry;-
 brapboysj;B.Rap Boys Special (Japan);1992;Kaneko;NO;brapboys;YES;brapboys;-
 brapboysu;B.Rap Boys Special (US);1992;Kaneko;NO;brapboys;YES;brapboys;-
@@ -216,7 +201,6 @@ bakubrkr;Bakuretsu Breaker;1992;Kaneko;NO;explbrkr;YES;explbrkr;-
 ballboy;Ball Boy [Bootleg];2003;bootleg;NO;snowbro3;YES;snowbro3;-
 bangbedp;Bang Bead (Prototype?) [Prototype];2000;Visco;NO;bangbead;YES;bangbead;-
 baraduke;Baraduke;1985;Namco;NO;aliensec;YES;aliensec;-
-baryona;Baryon - Future Assault (set 2);1997;SemiCom;NO;baryon;YES;baryon;-
 bstarsh;Baseball Stars Professional (NGH-002);1990;SNK;NO;bstars;YES;bstars;-
 batman2;Batman Part 2 [Bootleg];1981;bootleg;NO;phoenix;YES;phoenix;-
 batsugunb;Batsugun (Korean PCB);1993;Toaplan;NO;batsugun;YES;batsugun;-
@@ -227,12 +211,9 @@ battlntsa;Battlantis (program code F);1987;Konami;NO;battlnts;YES;battlnts;-
 bbakraidja;Battle Bakraid (Japan) (Wed Apr 7 1999);1999;Eighting;NO;bbakraid;YES;bbakraid;-
 bbakraidc;Battle Bakraid - Unlimited Version (China) (Tue Jun 8 1999);1999;Eighting;NO;bbakraid;YES;bbakraid;-
 bbakraidj;Battle Bakraid - Unlimited Version (Japan) (Tue Jun 8 1999);1999;Eighting;NO;bbakraid;YES;bbakraid;-
-batlbubl;Battle Bubble (v2.00);1999;Banpresto (Limenko license?);NO;bangball;YES;bangball;-
 batcira;Battle Circuit (970319 Asia);1997;Capcom;NO;batcir;YES;batcir;-
 batcird;Battle Circuit (970319 Euro Phoenix Edition) [Bootleg];1997;bootleg;NO;batcir;YES;batcir;-
 batcirj;Battle Circuit (970319 Japan);1997;Capcom;NO;batcir;YES;batcir;-
-btlfieldb;Battle Field (bootleg) [Bootleg, no-rotation joystick ver];1987;bootleg;NO;timesold;YES;timesold;-
-btlfield;Battle Field (Japan);1987;Alpha Denshi Co. (SNK license);NO;timesold;YES;timesold;-
 bgareggahk;Battle Garegga (Austria / Hong Kong) (Sat Feb 3 1996);1996;Raizing / 8ing;NO;bgaregga;YES;bgaregga;-
 bgareggatw;Battle Garegga (Taiwan / Germany) (Thu Feb 1 1996);1996;Raizing / 8ing;NO;bgaregga;YES;bgaregga;-
 bgaregganv;Battle Garegga - New Version (Austria / Hong Kong) (Sat Mar 2 1996);1996;Raizing / 8ing;NO;bgaregga;YES;bgaregga;-
@@ -273,20 +254,14 @@ ddp2j;Bee Storm - DoDonPachi II (V102, Japan);2001;IGS;NO;ddp2;YES;ddp2;-
 ddp2k;Bee Storm - DoDonPachi II (V102, Korea);2001;IGS;NO;ddp2;YES;ddp2;-
 ddp2t;Bee Storm - DoDonPachi II (V102, Taiwan);2001;IGS;NO;ddp2;YES;ddp2;-
 blswhstla;Bells & Whistles (Asia, version M);1991;Konami;NO;blswhstl;YES;blswhstl;-
-berabohmb;Beraboh Man (Japan, Rev B);1988;Namco;NO;berabohm;YES;berabohm;-
 bermudatj;Bermuda Triangle (Japan);1987;SNK;NO;bermudat;YES;bermudat;-
 bermudata;Bermuda Triangle (World Wars) (US);1987;SNK;NO;worldwar;YES;worldwar;-
-bestleag;Best League (bootleg of Big Striker, Italian Serie A) [Bootleg];1993;bootleg;NO;bigstrik;YES;bigstrik;-
-bestleaw;Best League (bootleg of Big Striker, World Cup) [Bootleg];1993;bootleg;NO;bigstrik;YES;bigstrik;-
 punisherbz;Biaofeng Zhanjing (Chinese bootleg) [Bootleg];2002;bootleg;NO;punisher;YES;punisher;-
 bigbang;Big Bang (9th Nov. 1993);1993;NMK;NO;tdragon2;YES;tdragon2;-
-bigstrkba;Big Striker (bootleg w/Italian teams) [Bootleg];1992;bootleg;NO;bigstrik;YES;bigstrik;-
-bigstrkb;Big Striker (bootleg) [Bootleg];1992;bootleg;NO;bigstrik;YES;bigstrik;-
 biomtoya;Biomechanical Toy (Ver. 1.0.1884);1995;Gaelco;NO;biomtoy;YES;biomtoy;-
 bionicc1;Bionic Commando (US set 1);1987;Capcom;NO;bionicc;YES;bionicc;-
 bionicc2;Bionic Commando (US set 2);1987;Capcom;NO;bionicc;YES;bionicc;-
 bioniccbl;Bionic Commandos (bootleg, set 1) [Bootleg];1987;bootleg;NO;bionicc;YES;bionicc;-
-bioniccbl2;Bionic Commandos (bootleg, set 2);1987;bootleg;NO;bionicc;YES;bionicc;-
 blkdrgonb;Black Dragon (bootleg);1987;bootleg;NO;blktiger;YES;blktiger;-
 blkdrgon;Black Dragon (Japan);1987;Capcom;NO;blktiger;YES;blktiger;-
 blkheartj;Black Heart (Japan);1991;UPL;NO;blkheart;YES;blkheart;-
@@ -343,23 +318,15 @@ bublbobl1;Bubble Bobble (Japan, Ver 0.0);1986;Taito Corporation;NO;bublbobl;YES;
 bublboblu;Bubble Bobble (Ultra Version, Hack);2011;Hack (Penta Penguin);NO;bublbobl;YES;bublbobl;-
 bublboblr1;Bubble Bobble (US, Ver 1.0);1986;Taito America Corporation (Romstar license);NO;bublbobl;YES;bublbobl;-
 bublboblr;Bubble Bobble (US, Ver 5.1);1986;Taito America Corporation (Romstar license);NO;bublbobl;YES;bublbobl;-
-bublbob2p;Bubble Bobble II (Ver 0.0J 1993/12/13, prototype) [Prototype];1994;Taito Corporation Japan;NO;bublbob2;YES;bublbob2;-
-bublbob2o;Bubble Bobble II (Ver 2.5O 1994/10/05);1994;Taito Corporation Japan;NO;bublbob2;YES;bublbob2;-
 bublcave10;Bubble Bobble: Lost Cave V1.0 [Homebrew];2013;hack (Bisboch and Aladar);NO;bublbobl;YES;bublbobl;-
 bublcave11;Bubble Bobble: Lost Cave V1.1 [Homebrew];2013;hack (Bisboch and Aladar);NO;bublbobl;YES;bublbobl;-
 bublcave;Bubble Bobble: Lost Cave V1.2 [Homebrew];2013;hack (Bisboch and Aladar);NO;bublbobl;YES;bublbobl;-
 boblcave;Bubble Bobble: Lost Cave V1.2 (for Bobble Bobble PCB) [Bootleg];2013;hack (Bisboch and Aladar);NO;bublbobl;YES;bublbobl;-
-bubblemj;Bubble Memories: The Story Of Bubble Bobble III (Ver 2.3J 1996/02/07);1995;Taito Corporation;NO;bubblem;YES;bubblem;-
-bubsymphu;Bubble Symphony (Ver 2.5A 1994/10/05);1994;Taito America Corporation;NO;bublbob2;YES;bublbob2;-
-bubsymphj;Bubble Symphony (Ver 2.5J 1994/10/05);1994;Taito Corporation;NO;bublbob2;YES;bublbob2;-
-bubsymphe;Bubble Symphony (Ver 2.5O 1994/10/05);1994;Taito Corporation Japan;NO;bublbob2;YES;bublbob2;-
-bubbletrj;Bubble Trouble (Japan, Rev C);1992;Namco;NO;bubbletr;YES;bubbletr;-
 bucaner;Buccaneer;19??;hack;NO;puckman;YES;puckman;-
 buccanrsa;Buccaneers (set 2);1989;Duintronic;NO;buccanrs;YES;buccanrs;-
 buccanrsb;Buccaneers (set 3, harder);1989;Duintronic;NO;buccanrs;YES;buccanrs;-
 buckyaab;Bucky O'Hare (ver AAB);1992;Konami;NO;bucky;YES;bucky;-
 buckyea;Bucky O'Hare (ver EA);1992;Konami;NO;bucky;YES;bucky;-
-buckyjaa;Bucky O'Hare (ver JAA);1992;Konami;NO;bucky;YES;bucky;-
 buckyuab;Bucky O'Hare (ver UAB);1992;Konami;NO;bucky;YES;bucky;-
 bulletd;Bullet (FD1094 317-0041 decrypted) [Bootleg];1987;Sega;NO;bullet;YES;bullet;-
 bnj;Bump 'n' Jump;1982;Data East USA;NO;brubber;YES;brubber;-
@@ -368,9 +335,6 @@ btime3;Burger Time (Data East USA) [graphics issues, use parent romset!];1982;Da
 btimem;Burger Time (Midway);1982;Data East (Bally Midway license);NO;btime;YES;btime;-
 burningfh;Burning Fight (NGH-018)(US);1991;SNK;NO;burningf;YES;burningf;-
 burningfp;Burning Fight (prototype, older) [Prototype];1991;SNK;NO;burningf;YES;burningf;-
-burningfpa;Burning Fight (prototype, ver 23.3, 910326) [Prototype];1991;SNK;NO;burningf;YES;burningf;-
-burnforco;Burning Force (Japan, old version);1989;Namco;NO;burnforc;YES;burnforc;-
-pbobble2u;Bust-A-Move Again (Ver 2.3A 1995/07/31);1995;Taito America Corporation;NO;pbobble2;YES;pbobble2;-
 bbros;Buster Bros. (USA);1989;Mitchell (Capcom license);NO;pang;YES;pang;-
 buzzard;Buzzard;1984;Crux;NO;gyrodine;YES;gyrodine;-
 cabala;Cabal (korea?, Joystick);1988;TAD Corporation (Alpha Trading license);NO;cabal;YES;cabal;-
@@ -387,7 +351,6 @@ cadashj;Cadash (Japan, version 2);1989;Taito Corporation;NO;cadash;YES;cadash;-
 cadashu;Cadash (US, version 2);1989;Taito America Corporation;NO;cadash;YES;cadash;-
 cadashp;Cadash (World, prototype);1989;Taito Corporation Japan;NO;cadash;YES;cadash;-
 dinou;Cadillacs & Dinosaurs (930201 USA);1993;Capcom;NO;dino;YES;dino;-
-dinoa;Cadillacs & Dinosaurs (930223 Asia TW);1993;Capcom;NO;dino;YES;dino;-
 dinopic;Cadillacs and Dinosaurs (bootleg set 1 (with PIC16c57), 930201 etc) [Bootleg, No sound];1993;Capcom;NO;dino;YES;dino;-
 dinopic2;Cadillacs and Dinosaurs (bootleg set 2 (with PIC16c57), 930201 etc) [Bootleg, No sound];1993;Capcom;NO;dino;YES;dino;-
 dinopic3;Cadillacs and Dinosaurs (bootleg set 3 (with PIC16c57), 930201 etc) [Bootleg, No sound];1993;Capcom;NO;dino;YES;dino;-
@@ -403,9 +366,7 @@ cameltryj;Cameltry (Japan, YM2610);1989;Taito Corporation;NO;cameltry;YES;camelt
 cameltrya;Cameltry (US, YM2203 + M6295);1989;Taito America Corporation;NO;cameltry;YES;cameltry;-
 cameltryau;Cameltry (World, YM2203 + M6295);1989;Taito America Corporation;NO;cameltry;YES;cameltry;-
 candory;Candory (Bootleg) [Bootleg];1982;Bootleg;NO;ponpoko;YES;ponpoko;-
-cannballv;Cannon Ball (Yun Sung, vertical);1995;Yun Sung / J&K Production;NO;cannball;YES;cannball;-
 candance;Cannon Dancer (Japan);1996;Mitchell (Atlus license);NO;osman;YES;osman;-
-canyonp;Canyon Bomber (prototype) [No sound];1977;Atari;NO;canyon;YES;canyon;-
 capbowl2;Capcom Bowling (set 2);1988;Incredible Technologies / Capcom;NO;capbowl;YES;capbowl;-
 capbowl3;Capcom Bowling (set 3);1988;Incredible Technologies / Capcom;NO;capbowl;YES;capbowl;-
 capbowl4;Capcom Bowling (set 4);1988;Incredible Technologies / Capcom;NO;capbowl;YES;capbowl;-
@@ -422,7 +383,6 @@ captcommr1;Captain Commando (911014 other country);1991;Capcom;NO;captcomm;YES;c
 captcommj;Captain Commando (911202 Japan);1991;Capcom;NO;captcomm;YES;captcomm;-
 captcommb;Captain Commando (bootleg set 1, 911014 other country) [Bootleg];1991;bootleg;NO;captcomm;YES;captcomm;-
 captcommb2;Captain Commando (bootleg set 2 (with YM2151 + 2xMSM5205), 911014 other country) [Bootleg];1991;bootleg;NO;captcomm;YES;captcomm;-
-csilverja;Captain Silver (Japan revision 1) [imperfect sound];1987;Data East Corporation;NO;csilver;YES;csilver;-
 csilverj;Captain Silver (Japan revision 3) [imperfect sound];1987;Data East Corporation;NO;csilver;YES;csilver;-
 cawingbl;Carrier Air Wing (bootleg set 1 (with 2xYM2203 + 2xMSM5205), U.S. navy 901012 etc) [Bootleg];1990;bootleg;NO;cawing;YES;cawing;-
 cawingb2;Carrier Air Wing (bootleg set 2 (with 2xYM2203 + 2xMSM5205), U.S. navy 901012 etc) [Bootleg];1990;bootleg;NO;cawing;YES;cawing;-
@@ -435,8 +395,6 @@ cninjau;Caveman Ninja (US ver 4);1991;Data East Corporation;NO;cninja;YES;cninja
 cninja1;Caveman Ninja (World ver 1);1991;Data East Corporation;NO;cninja;YES;cninja;-
 cencourt;Center Court (World, 4 Players, prototype, MC-8123B);1988;Sega;NO;passsht;YES;passsht;-
 centiped3;Centipede (revision 3);1980;Atari;NO;centiped;YES;centiped;-
-champwrj;Champion Wrestler (Japan);1989;Taito Corporation;NO;champwr;YES;champwr;-
-champwru;Champion Wrestler (US);1989;Taito America Corporation;NO;champwr;YES;champwr;-
 changesa;Changes (EME license);1982;Orca (Eastern Micro Electronics, Inc. license);NO;changes;YES;changes;-
 chasehqju;Chase H.Q. (Japan UP);1988;Taito Corporation;NO;chasehq;YES;chasehq;-
 chasehqj;Chase H.Q. (Japan);1988;Taito Corporation;NO;chasehq;YES;chasehq;-
@@ -466,9 +424,6 @@ circusc3;Circus Charlie (level select, set 3);1984;Konami;NO;circusc;YES;circusc
 circusc4;Circus Charlie (no level select);1984;Konami;NO;circusc;YES;circusc;-
 citybombj;City Bomber (Japan);1987;Konami;NO;citybomb;YES;citybomb;-
 citycona;City Connection (set 2);1985;Jaleco;NO;citycon;YES;citycon;-
-cloakfr;Cloak & Dagger (French);1983;Atari;NO;cloak;YES;cloak;-
-cloakgr;Cloak & Dagger (German);1983;Atari;NO;cloak;YES;cloak;-
-cloaksp;Cloak & Dagger (Spanish);1983;Atari;NO;cloak;YES;cloak;-
 cltchitrjd;Clutch Hitter (set 1, Japan, FD1094 317-0175 decrypted) [Bootleg];1991;Sega;NO;cltchitr;YES;cltchitr;-
 cltchitrj;Clutch Hitter (set 1, Japan, FD1094 317-0175);1991;Sega;NO;cltchitr;YES;cltchitr;-
 cltchitrd;Clutch Hitter (set 2, US, FD1094 317-0176 decrypted) [Bootleg];1991;Sega;NO;cltchitr;YES;cltchitr;-
@@ -476,8 +431,6 @@ cobracomb;Cobra-Command (Italian bootleg);1988;bootleg;NO;cobracom;YES;cobracom;
 cobracomj;Cobra-Command (Japan);1988;Data East Corporation;NO;cobracom;YES;cobracom;-
 cobracomjb;Cobra-Command (Japan, bootleg);1988;bootleg;NO;cobracom;YES;cobracom;-
 cobracomja;Cobra-Command (Japan?, set 2);1988;Data East Corporation;NO;cobracom;YES;cobracom;-
-cobracoma;Cobra-Command (World/US revision 4);1988;Data East Corporation;NO;cobracom;YES;cobracom;-
-ladybugb2;Coccinelle (bootleg of Lady Bug, set 2);1981;bootleg (Model Racing);NO;ladybug;YES;ladybug;-
 pacmanpe;Come Come (Petaco SA bootleg of Puck Man) [Bootleg];1980;bootleg (Petaco SA);NO;puckman;YES;puckman;-
 mspacmanbhe;Come-Cocos (Ms. Pac-Man) ('Made in Greece' Herle SA bootleg) [Bootleg];1981;bootleg (Herle SA);NO;mspacman;YES;mspacman;-
 mspacmanbcc;Come-Cocos (Ms. Pac-Man) ('Made in Greece' Tecnausa bootleg) [Bootleg];1981;bootleg (Tecnausa);NO;mspacman;YES;mspacman;-
@@ -500,8 +453,6 @@ contra1;Contra (US / Asia, set 2);1987;Konami;NO;contra;YES;contra;-
 contrae;Contra (US / Asia, set 3);1987;Konami;NO;contra;YES;contra;-
 cookbiba;Cookie & Bibi (set 2);1995;SemiCom;NO;cookbib;YES;cookbib;-
 clbowl;Coors Light Bowling;1989;Incredible Technologies / Capcom;NO;capbowl;YES;capbowl;-
-galivan3;Cosmo Police Galivan (12/11/1985);1985;Nichibutsu;NO;galivan;YES;galivan;-
-galivan2;Cosmo Police Galivan (12/16/1985);1985;Nichibutsu;NO;galivan;YES;galivan;-
 cottong;Cotocoto Cottong;1982;bootleg;NO;locomotn;YES;locomotn;-
 cottonjad;Cotton (set 1, Japan, Rev A, FD1094 317-0179a decrypted)) [Bootleg];1991;Success / Sega;NO;cotton;YES;cotton;-
 cottonja;Cotton (set 1, Japan, Rev A, FD1094 317-0179a));1991;Success / Sega;NO;cotton;YES;cotton;-
@@ -567,17 +518,13 @@ daiohc;Daioh (93111A PCB conversion);1993;Athena;NO;daioh;YES;daioh;-
 daioha;Daioh (earlier);1993;Athena;NO;daioh;YES;daioh;-
 daiohp;Daioh (prototype) [Prototype];1993;Athena;NO;daioh;YES;daioh;-
 daisenpu;Daisenpu (Japan);1989;Taito Corporation;NO;twinhawk;YES;twinhawk;-
-daitorida;Daitoride (YMF278B version);1996;Metro;NO;daitorid;YES;daitorid;-
 dambustruk;Dambusters (UK);1981;South West Research;NO;dambustr;YES;dambustr;-
 dambustra;Dambusters (US, set 2);1981;South West Research;NO;dambustr;YES;dambustr;-
-dngrtrck;Danger Track (Rally X bootleg);1980;bootleg;NO;rallyx;YES;rallyx;rallyx
 dfeveron;Dangun Feveron (Japan, ver. 98/09/17);1998;Cave / Nihon System inc.;NO;feversos;YES;feversos;-
 dariuse;Darius (Extra) (Japan);1986;Taito Corporation;NO;darius;YES;darius;-
 dariuso;Darius (Japan old version);1986;Taito Corporation;NO;darius;YES;darius;-
 dariusj;Darius (Japan);1986;Taito Corporation;NO;darius;YES;darius;-
 dariusu;Darius (US);1986;Taito America Corporation;NO;darius;YES;darius;-
-dariusgu;Darius Gaiden - Silver Hawk (Ver 2.5A 1994/09/19);1994;Taito America Corporation;NO;dariusg;YES;dariusg;-
-dariusgj;Darius Gaiden - Silver Hawk (Ver 2.5J 1994/09/19);1994;Taito Corporation;NO;dariusg;YES;dariusg;-
 darius2do;Darius II (dual screen) (Japan old version);1989;Taito Corporation;NO;darius2;YES;darius2;-
 darius2d;Darius II (dual screen) (Japan);1989;Taito Corporation;NO;darius2;YES;darius2;-
 darkadv;Dark Adventure;1987;Konami;NO;devilw;YES;devilw;-
@@ -610,7 +557,6 @@ demonwld1;Demon's World / Horror Story (set 2);1989;Toaplan;NO;demonwld;YES;demo
 demonwld2;Demon's World / Horror Story (set 3);1989;Toaplan;NO;demonwld;YES;demonwld;-
 demonwld3;Demon's World / Horror Story (set 4);1989;Toaplan;NO;demonwld;YES;demonwld;-
 demonwld4;Demon's World / Horror Story (set 5);1989;Toaplan;NO;demonwld;YES;demonwld;-
-deroona;Deroon DeroDero (alt set) [No sound];1995;Tecmo;NO;deroon;YES;deroon;-
 dassault4;Desert Assault (US 4 Players);1991;Data East Corporation;NO;thndzone;YES;thndzone;-
 dassault;Desert Assault (US);1991;Data East Corporation;NO;thndzone;YES;thndzone;-
 desertbrjd;Desert Breaker (Japan, FD1094 317-0194 decrypted) [Bootleg];1992;Sega;NO;desertbr;YES;desertbr;-
@@ -620,12 +566,9 @@ detatwin;Detana!! Twin Bee (Japan ver. J);1991;Konami;NO;blswhstl;YES;blswhstl;-
 devstors3;Devastators (ver. V) [Minor Video glitches in level 2.];1988;Konami;NO;devstors;YES;devstors;-
 devstors2;Devastators (ver. X) [Minor Video glitches in level 2.];1988;Konami;NO;devstors;YES;devstors;-
 devilfsg;Devil Fish (Galaxian hardware, bootleg?) [Bootleg];1984;Vision / Artic;NO;devilfsh;YES;devilfsh;-
-dharmaj;Dharma Doujou (Japan);1994;Metro;NO;dharma;YES;dharma;-
-dharmak;Dharma Doujou (Korea);1994;Metro;NO;dharma;YES;dharma;-
 dietgoe;Diet Go Go (Euro v1.1 1992.08.04);1992;Data East Corporation;NO;dietgo;YES;dietgo;-
 dietgoj;Diet Go Go (Japan v1.1 1992.09.26);1992;Data East Corporation;NO;dietgo;YES;dietgo;-
 dietgou;Diet Go Go (USA v1.1 1992.09.26);1992;Data East Corporation;NO;dietgo;YES;dietgo;-
-digdug2o;Dig Dug II (Old Ver.);1985;Namco;NO;digdug2;YES;digdug2;-
 dimahoud;Dimahoo (000121 USA Phoenix Edition) [Bootleg];2000;bootleg;NO;dimahoo;YES;dimahoo;-
 dimahoou;Dimahoo (000121 USA);2000;8ing / Raizing / Capcom;NO;dimahoo;YES;dimahoo;-
 dinorexj;Dino Rex (Japan);1992;Taito Corporation;NO;dinorex;YES;dinorex;-
@@ -641,7 +584,6 @@ ddpdoja;DoDonPachi Dai-Ou-Jou (V100 (second version), Japan);2002;Cave / AMI;NO;
 ddpdojblkbl;DoDonPachi Dai-Ou-Jou Black Label (2002.10.07 Black Ver., bootleg Knights of Valour Super Heroes conversion) [Bootleg];2002;bootleg;NO;ddpdoj;YES;ddpdoj;-
 ddpdojblka;DoDonPachi Dai-Ou-Jou Black Label (V100 (2002.10.07 Black Ver), Japan);2002;Cave / AMI;NO;ddpdoj;YES;ddpdoj;-
 ddpdojblk;DoDonPachi Dai-Ou-Jou Black Label (V100, (2002.10.07.Black Ver), Japan);2002;Cave / AMI;NO;ddpdoj;YES;ddpdoj;-
-dogfgtj;Dog-Fight (Japan);1984;Technos Japan;NO;dogfgt;YES;dogfgt;-
 dogosoke;Dogou Souken;1986;SNK;NO;victroad;YES;victroad;-
 dogosokb;Dogou Souken (Joystick hack bootleg) [Bootleg];1986;bootleg;NO;victroad;YES;victroad;-
 dogyuuna;Dogyuun (Licensed to Unite Trading For Korea);1992;Toaplan;NO;dogyuun;YES;dogyuun;-
@@ -670,7 +612,6 @@ donpachij;DonPachi (Japan, ver. 1.01, 95/05/11);1995;Atlus / Cave;NO;donpachi;YE
 donpachikr;DonPachi (Korea, ver. 1.12, 95/05/2x);1995;Atlus / Cave;NO;donpachi;YES;donpachi;donpachi
 dorodon2;Dorodon (set 2);1982;Falcon;NO;dorodon;YES;dorodon;-
 dotrikun2;Dottori Kun (old version);1990;Sega;NO;dotrikun;YES;dotrikun;-
-dotriman;Dottori-Man Jr.;2016;hack (Chris Covell);NO;dotrikun;YES;dotrikun;-
 dblaxleu;Double Axle (US earlier);1991;Taito America Corporation;NO;dblaxle;YES;dblaxle;-
 ddragonb;Double Dragon (bootleg with HD6309) [Bootleg];1987;bootleg;NO;ddragon;YES;ddragon;-
 ddragonba;Double Dragon (bootleg with M6803) [Bootleg];1987;bootleg;NO;ddragon;YES;ddragon;-
@@ -688,17 +629,11 @@ ddragon2b2;Double Dragon II - The Revenge (US bootleg, set 2) [Bootleg];1988;boo
 ddragon2u;Double Dragon II - The Revenge (US);1988;Technos;NO;ddragon2;YES;ddragon2;-
 dblpointd;Double Point (Dong Bang Electron, bootleg?);1995;Dong Bang Electron;NO;dblpoint;YES;dblpoint;-
 downtownj;DownTown / Mokugeki (Joystick Hack);1989;Seta;NO;downtown;YES;downtown;-
-downtownp;DownTown / Mokugeki (prototype);1989;Seta;NO;downtown;YES;downtown;-
-downtown2;DownTown / Mokugeki (Set 2);1989;Seta;NO;downtown;YES;downtown;-
 drtoppelu;Dr. Toppel's Adventure (US);1987;Taito America Corporation;NO;drtoppel;YES;drtoppel;-
 drtoppela;Dr. Toppel's Adventure (World, alt?);1987;Taito Corporation Japan;NO;drtoppel;YES;drtoppel;-
 drtoppelj;Dr. Toppel's Tankentai (Japan);1987;Taito Corporation;NO;drtoppel;YES;drtoppel;-
 drgnbowla;Dragon Bowl (set 2, unencrypted program);1992;Nics;NO;drgnbowl;YES;drgnbowl;-
 dbreedm72;Dragon Breed (M72 PCB version);1989;Irem;NO;dbreed;YES;dbreed;-
-dsaberj;Dragon Saber (Japan, Rev B);1990;Namco;NO;dsaber;YES;dsaber;-
-dsabera;Dragon Saber (World, older?);1990;Namco;NO;dsaber;YES;dsaber;-
-dspirit2;Dragon Spirit (DS2);1987;Namco;NO;dspirit;YES;dspirit;-
-dspirit1;Dragon Spirit (old version (DS1));1987;Namco;NO;dspirit;YES;dspirit;-
 drgw2hk;Dragon World II (V100H, Hong Kong);1997;IGS;NO;drgw2;YES;drgw2;-
 dw2v100x;Dragon World II (V100X, World);1997;IGS;NO;drgw2;YES;drgw2;-
 dbza;Dragonball Z (rev A);1993;Banpresto;NO;dbz;YES;dbz;-
@@ -714,8 +649,6 @@ driveout;Drive Out [Bootleg];1991;bootleg;NO;driftout;YES;driftout;-
 drivfrcb;Driving Force (Galaxian conversion bootleg) [Bootleg];1985;bootleg (Elsys Software);NO;drivfrcp;YES;drivfrcp;-
 drivfrcg;Driving Force (Galaxian conversion);1984;Shinkai Inc. (Magic Eletronics USA licence);NO;drivfrcp;YES;drivfrcp;-
 dumpmtmt;Dump Matsumoto (Japan, 8751 317-unknown);1986;Sega;NO;bodyslam;YES;bodyslam;-
-dungeonmu;Dungeon Magic (Ver 2.1A 1994/02/18);1993;Taito America Corporation;NO;lightbr;YES;lightbr;-
-dungeonm;Dungeon Magic (Ver 2.1O 1994/02/18);1993;Taito Corporation Japan;NO;lightbr;YES;lightbr;-
 ddsomjr1;Dungeons & Dragons - shadow over mystara (960206 Japan);1996;Capcom;NO;ddsom;YES;ddsom;-
 ddsomar1;Dungeons & Dragons - shadow over mystara (960208 Asia);1996;Capcom;NO;ddsom;YES;ddsom;-
 ddsomr3;Dungeons & Dragons - shadow over mystara (960208 Euro);1996;Capcom;NO;ddsom;YES;ddsom;-
@@ -724,7 +657,6 @@ ddsomur1;Dungeons & Dragons - shadow over mystara (960209 USA);1996;Capcom;NO;dd
 ddsomb;Dungeons & Dragons - shadow over mystara (960223 Brazil);1996;Capcom;NO;ddsom;YES;ddsom;-
 ddsomr1;Dungeons & Dragons - shadow over mystara (960223 Euro);1996;Capcom;NO;ddsom;YES;ddsom;-
 ddsomh;Dungeons & Dragons - shadow over mystara (960223 Hispanic);1996;Capcom;NO;ddsom;YES;ddsom;-
-ddsomjr2;Dungeons & Dragons - shadow over mystara (960223 Japan);1996;Capcom;NO;ddsom;YES;ddsom;-
 ddsoma;Dungeons & Dragons - shadow over mystara (960619 Asia);1996;Capcom;NO;ddsom;YES;ddsom;-
 ddsomj;Dungeons & Dragons - shadow over mystara (960619 Japan);1996;Capcom;NO;ddsom;YES;ddsom;-
 ddsomud;Dungeons & Dragons - shadow over mystara (960619 USA Phoenix Edition) [Bootleg];1996;bootleg;NO;ddsom;YES;ddsom;-
@@ -746,7 +678,6 @@ dunkshota;Dunk Shot (Rev A, FD1089 317-0022);1987;Sega;NO;dunkshot;YES;dunkshot;
 dygera;Dyger (Korea set 2);1989;Philko;NO;dyger;YES;dyger;-
 dyndukea;Dynamite Duke (Europe, 25JUL89);1989;Seibu Kaihatsu;NO;dynduke;YES;dynduke;-
 dyndukej;Dynamite Duke (Japan, 03SEP89);1989;Seibu Kaihatsu;NO;dynduke;YES;dynduke;-
-dyndukeja;Dynamite Duke (Japan, 25JUL89);1989;Seibu Kaihatsu;NO;dynduke;YES;dynduke;-
 dyndukeu;Dynamite Duke (US, 25JUL89);1989;Seibu Kaihatsu (Fabtek license);NO;dynduke;YES;dynduke;-
 dduxbl;Dynamite Dux (bootleg) [Bootleg];1989;bootleg;NO;ddux;YES;ddux;-
 ddux1;Dynamite Dux (set 1, 8751 317-0095);1989;Sega;NO;ddux;YES;ddux;-
@@ -776,8 +707,6 @@ ecofghtrd;Eco Fighters (931203 World Phoenix Edition) [Bootleg];1993;bootleg;NO;
 ecofghtru;Eco Fighters (940215 USA);1993;Capcom;NO;ecofghtr;YES;ecofghtr;-
 eggs;Eggs;1983;[Technos] Universal USA;NO;scregg;YES;scregg;-
 8bpm;Eight Ball Action (Pac-Man conversion) [imperfect graphics];1985;Seatongrove Ltd (Magic Eletronics USA license);NO;8ballact;YES;8ballact;-
-elvact2u;Elevator Action II (Ver 2.2A 1995/02/20);1994;Taito America Corporation;NO;elvactr;YES;elvactr;-
-elvactrj;Elevator Action Returns (Ver 2.2J 1995/02/20);1994;Taito Corporation;NO;elvactr;YES;elvactr;-
 endurobl;Enduro Racer (bootleg set 1) [Bootleg];1986;bootleg;NO;enduror;YES;enduror;-
 enduror1;Enduro Racer (YM2203, FD1089B 317-0013A);1986;Sega;NO;enduror;YES;enduror;-
 enforcej;Enforce (Japan);1988;Taito Corporation;NO;enforce;YES;enforce;-
@@ -813,7 +742,6 @@ fantasian;Fantasia (940803 PCB);1994;Comad / New Japan System;NO;fantasia;YES;fa
 fantsia2n;Fantasia II (1998);1998;Comad;NO;fantsia2;YES;fantsia2;-
 fantsia2a;Fantasia II (Less Explicit);1997;Comad;NO;fantsia2;YES;fantsia2;-
 fantsy95;Fantasy '95;1995;Hi-max Technology Inc.;NO;newfant;YES;newfant;-
-fantlanda;Fantasy Land (set 2);19??;Electronic Devices Italy;NO;fantland;YES;fantland;-
 fantzonep;Fantasy Zone (317-5000);1986;Sega;NO;fantzone;YES;fantzone;-
 fantzoneta;Fantasy Zone (Time Attack, bootleg);2008;Sega;NO;fantzone;YES;fantzone;-
 fantzone1;Fantasy Zone (unprotected);1986;Sega;NO;fantzone;YES;fantzone;-
@@ -831,11 +759,9 @@ fightfeva;Fight Fever (set 2);1994;Viccom;NO;fightfev;YES;fightfev;-
 fswords;Fighters Swords (Korean release of Samurai Shodown III);1995;SNK;NO;samsho3;YES;samsho3;-
 ffantasyj;Fighting Fantasy (Japan revision 2);1989;Data East Corpotation;NO;hippodrm;YES;hippodrm;-
 ffantasy;Fighting Fantasy (Japan revision 3);1989;Data East Corpotation;NO;hippodrm;YES;hippodrm;-
-ffantasyb;Fighting Fantasy (Japan revision ?);1989;Data East Corpotation;NO;hippodrm;YES;hippodrm;-
 ffantasya;Fighting Fantasy (Japan);1989;Data East Corpotation;NO;hippodrm;YES;hippodrm;-
 fitegolfu;Fighting Golf (US);1988;SNK;NO;fitegolf;YES;fitegolf;-
 fitegolf2;Fighting Golf (US, Ver 2);1988;SNK;NO;fitegolf;YES;fitegolf;-
-fhawkj;Fighting Hawk (Japan);1988;Taito Corporation;NO;fhawk;YES;fhawk;-
 fsoccerj;Fighting Soccer (Japan);1988;SNK;NO;fsoccer;YES;fsoccer;-
 fsoccerb;Fighting Soccer (Joystick hack bootleg);1988;bootleg;NO;fsoccer;YES;fsoccer;-
 fsoccerba;Fighting Soccer (Joystick hack bootleg, alt);1988;bootleg;NO;fsoccer;YES;fsoccer;-
@@ -862,9 +788,6 @@ firehawk;Fire Hawk (horizontal);2001;ESD;NO;spec2k;YES;spec2k;-
 fireshrka;Fire Shark (Earlier);1989;Toaplan;NO;fireshrk;YES;fireshrk;-
 fireshrkd;Fire Shark (Korea, set 1, easier);1990;Toaplan (Dooyong license);NO;fireshrk;YES;fireshrk;-
 fireshrkdh;Fire Shark (Korea, set 2, harder);1990;Toaplan (Dooyong license);NO;fireshrk;YES;fireshrk;-
-firetrapbl;Fire Trap (Japan bootleg) [Bootleg];1986;bootleg;NO;firetrap;YES;firetrap;-
-firetrapj;Fire Trap (Japan);1986;Wood Place Inc.;NO;firetrap;YES;firetrap;-
-firetrapa;Fire Trap (US, set 2);1986;Wood Place Inc. (Data East USA license);NO;firetrap;YES;firetrap;-
 fixeightt;FixEight (Europe, Taito license);1992;Toaplan;NO;fixeight;YES;fixeight;-
 fixeighth;FixEight (Hong Kong);1992;Toaplan;NO;fixeight;YES;fixeight;-
 fixeightht;FixEight (Hong Kong, Taito license);1992;Toaplan;NO;fixeight;YES;fixeight;-
@@ -883,24 +806,17 @@ fpoint1d;Flash Point (set 1, Japan, FD1094 317-0127A decrypted) [Bootleg];1989;S
 fpoint1;Flash Point (set 1, Japan, FD1094 317-0127A);1989;Sega;NO;fpoint;YES;fpoint;-
 fpointd;Flash Point (set 2, Japan, FD1094 317-0127A decrypted) [Bootleg];1989;Sega;NO;fpoint;YES;fpoint;-
 fpointbl;Flash Point (World, bootleg) [Bootleg];1989;bootleg;NO;fpoint;YES;fpoint;-
-flashgalk;Flashgal (set 1, Kyugo logo);1985;Sega;NO;flashgal;YES;flashgal;-
 flashgala;Flashgal (set 2);1985;Sega;NO;flashgal;YES;flashgal;-
-flickya;Flicky (128k Version, 315-5051, larger roms));1984;Sega;NO;flicky;YES;flicky;-
 flickys2;Flicky (128k Version, not encrypted);1984;Sega;NO;flicky;YES;flicky;-
 flickyg;Flicky (128k Version, System 2, 315-5051, alt graphics);1984;Sega;NO;flicky;YES;flicky;-
 flickys2g;Flicky (128k Version, System 2, not encrypted, alt graphics);1984;Sega;NO;flicky;YES;flicky;-
 flickyo;Flicky (64k Version, 315-5051, set 1);1984;Sega;NO;flicky;YES;flicky;-
 flickys1;Flicky (64k Version, 315-5051, set 2);1984;Sega;NO;flicky;YES;flicky;-
-flipull;Flipull (Japan);1989;Taito Corporation;NO;plotting;YES;plotting;-
 flyboyb;Fly-Boy (bootleg);1982;bootleg;NO;flyboy;YES;flyboy;-
-fnshark;Flyin' Shark (bootleg of Hishou Zame) [Bootleg];1987;bootleg;NO;fshark;YES;fshark;-
-fsharkbt;Flying Shark (bootleg with 8741) [Bootleg];1987;bootleg;NO;fshark;YES;fshark;-
 flytigera;Flying Tiger (set 2);1992;Dooyong;NO;flytiger;YES;flytiger;-
 forcebrk;Force Break (bootleg) [Bootleg];1986;bootleg;NO;brkthru;YES;brkthru;-
 forgottnua;Forgotten Worlds (US, B-Board 88618B-2, rev A);1988;Capcom;NO;forgottn;YES;forgottn;-
 forgottnuaa;Forgotten Worlds (US, B-Board 88618B-2, rev AA);1988;Capcom;NO;forgottn;YES;forgottn;-
-forgottnuc;Forgotten Worlds (US, B-Board 88618B-2, Rev C);1988;Capcom;NO;forgottn;YES;forgottn;-
-forgottnue;Forgotten Worlds (US, B-Board 88618B-2, Rev E);1988;Capcom;NO;forgottn;YES;forgottn;-
 forgottnu;Forgotten Worlds (US, B-Board 88621B-2, rev C);1988;Capcom;NO;forgottn;YES;forgottn;-
 forgottna;Forgotten Worlds (World);1988;Capcom;NO;forgottn;YES;forgottn;-
 freekickb1;Free Kick (bootleg set 1);1987;bootleg;NO;freekick;YES;freekick;-
@@ -929,17 +845,10 @@ gijoeu;G.I. Joe (US, UAB);1992;Konami;NO;gijoe;YES;gijoe;-
 gijoea;G.I. Joe (World, EB8, prototype?);1992;Konami;NO;gijoe;YES;gijoe;-
 gaiapolsj;Gaiapolis (ver JAF);1993;Konami;NO;gaiapols;YES;gaiapols;-
 gaiapolsu;Gaiapolis (ver UAF);1993;Konami;NO;gaiapols;YES;gaiapols;-
-galaga88a;Galaga '88 (02-03-88);1987;Namco;NO;galaga88;YES;galaga88;-
-galaga88j;Galaga '88 (Japan);1987;Namco;NO;galaga88;YES;galaga88;-
 galagamf;Galaga (Midway set 1 with fast shoot hack);1981;Namco (Midway License);NO;galaga;YES;galaga;galaga
 galagamw;Galaga (Midway set 1);1981;Namco (Midway License);NO;galaga;YES;galaga;galaga
 galagamk;Galaga (Midway set 2);1981;Namco (Midway License);NO;galaga;YES;galaga;galaga
 galagao;Galaga (Namco);1981;Namco;NO;galaga;YES;galaga;galaga
-galaga3a;Galaga 3 (GP3 rev. C);1984;Namco;NO;gaplus;YES;gaplus;gaplus
-galaga3;Galaga 3 (GP3 rev. D);1984;Namco;NO;gaplus;YES;gaplus;gaplus
-galaga3b;Galaga 3 (GP3);1984;Namco;NO;gaplus;YES;gaplus;gaplus
-galaga3c;Galaga 3 (set 4);1984;Namco;NO;gaplus;YES;gaplus;gaplus
-galaga3m;Galaga 3 (set 5);1984;Namco;NO;gaplus;YES;gaplus;gaplus
 neogalaga;Galaga Demo (set 2) [Homebrew];2013;Cristiano Bei/www.iocerom.com;NO;neogalag;YES;neogalag;-
 galaxbsf;Galaxian (bootleg, set 1) [Bootleg];1979;bootleg;NO;galaxian;YES;galaxian;-
 galaxianbl;Galaxian (bootleg, set 2) [Bootleg];1979;bootleg;NO;galaxian;YES;galaxian;-
@@ -962,23 +871,12 @@ gallag;Gallag [Bootleg];1981;bootleg;NO;galaga;YES;galaga;galaga
 gallop;Gallop - Armed police Unit (Japan);1991;Irem;NO;cosmccop;YES;cosmccop;-
 galhustl;Gals Hustler;1997;ACE International;NO;pgalvip;YES;pgalvip;-
 galpani4k;Gals Panic 4 (Korea);1996;Kaneko;NO;galpani4;YES;galpani4;-
-galpanidx;Gals Panic DX (Asia);2001;Kaneko;NO;galpani4;YES;galpani4;-
 galpanisj;Gals Panic S - Extra Edition (Japan);1997;Kaneko;NO;galpanis;YES;galpanis;-
 galpanisk;Gals Panic S - Extra Edition (Korea);1997;Kaneko;NO;galpanis;YES;galpanis;-
 galpans2a;Gals Panic S2 (Asia);1999;Kaneko;NO;galpans2;YES;galpans2;-
-galpans2j;Gals Panic S2 (Japan);1999;Kaneko;NO;galpans2;YES;galpans2;-
 galpansu;Gals Panic SU (Korea);1999;Kaneko;NO;galpans2;YES;galpans2;-
-usg182;Games V18.2;1989;U.S. Games;NO;usgames;YES;usgames;-
-usg185;Games V18.5;1990;U.S. Games;NO;usgames;YES;usgames;-
-usg187c;Games V18.7C;1991;U.S. Games;NO;usgames;YES;usgames;-
 gangonta;Ganbare! Gonta!! 2 / Party Time: Gonta the Diver II (Japan Release);1995;Mitchell;NO;prtytime;YES;prtytime;-
 gbustersa;Gang Busters (set 2);1988;Konami;NO;gbusters;YES;gbusters;-
-gangwarsb;Gang Wars (bootleg) [Bootleg];1989;bootleg;NO;gangwars;YES;gangwars;-
-gangwarsj;Gang Wars (Japan);1989;Alpha Denshi Co.;NO;gangwars;YES;gangwars;-
-gangwarsu;Gang Wars (US);1989;Alpha Denshi Co.;NO;gangwars;YES;gangwars;-
-gaplusd;Gaplus (GP2 rev D, alternate hardware);1984;Namco;NO;gaplus;YES;gaplus;gaplus
-gaplusa;Gaplus (GP2);1984;Namco;NO;gaplus;YES;gaplus;gaplus
-gaplust;Gaplus (Tecfri PCB) [Bootleg];1992;bootleg (Tecfri);NO;gaplus;YES;gaplus;gaplus
 garoubl;Garou - Mark of the Wolves (bootleg) [Bootleg];1999;bootleg;NO;garou;YES;garou;-
 garouh;Garou - Mark of the Wolves (NGM-2530) (NGH-2530);1999;SNK;NO;garou;YES;garou;-
 garoup;Garou - Mark of the Wolves (prototype) [Prototype];1999;SNK;NO;garou;YES;garou;-
@@ -1009,7 +907,6 @@ gaunt22p1;Gauntlet II (2 Players, rev 1);1986;Atari Games;NO;gaunt2;YES;gaunt2;-
 gaunt22p;Gauntlet II (2 Players, rev 2);1986;Atari Games;NO;gaunt2;YES;gaunt2;-
 gaunt2g;Gauntlet II (German);1986;Atari Games;NO;gaunt2;YES;gaunt2;-
 geebeeg;Gee Bee (Gremlin);1978;[Namco] (Gremlin license);NO;geebee;YES;geebee;-
-gekiridnj;Gekirindan (Ver 2.3J 1995/09/21);1995;Taito Corporation;NO;gekiridn;YES;gekiridn;-
 geminib;Gemini Wing (World, bootleg) [Bootleg];1987;Tecmo;NO;gemini;YES;gemini;-
 gensitou;Genshi-Tou 1930's (Japan);1989;SNK;NO;prehisle;YES;prehisle;-
 geostorm;Geostorm (Japan);1994;Irem;NO;gunforc2;YES;gunforc2;-
@@ -1038,12 +935,7 @@ gigandesa;Gigandes (earlier);1989;East Technology;NO;gigandes;YES;gigandes;-
 gigasb;Gigas (bootleg);1986;bootleg;NO;gigas;YES;gigas;-
 ginganina;Ginga NinkyouDen (set 2);1987;Jaleco;NO;ginganin;YES;ginganin;-
 gteikoku;Gingateikoku No Gyakushu;1980;Irem;NO;uniwars;YES;uniwars;-
-gteikokub;Gingateikoku No Gyakushu (bootleg set 1) [Bootleg];1980;bootleg;NO;uniwars;YES;uniwars;-
-gteikokub2;Gingateikoku No Gyakushu (bootleg set 2) [Bootleg];1980;bootleg;NO;uniwars;YES;uniwars;-
-gblchmp;Global Champion (Ver 2.1A 1994/07/29);1994;Taito America Corporation;NO;kaiserkn;YES;kaiserkn;-
 gogold;Go For The Gold (Japan);1988;Taito Corporation;NO;recordbr;YES;recordbr;-
-goldmedlb;Gold Medalist (bootleg) [Bootleg];1988;bootleg;NO;goldmedl;YES;goldmedl;-
-goldmedla;Gold Medalist (set 2);1988;SNK;NO;goldmedl;YES;goldmedl;-
 goldnaxe1d;Golden Axe (set 1, World, FD1094 317-0110 decrypted) [Bootleg];1989;Sega;NO;goldnaxe;YES;goldnaxe;-
 goldnaxe1;Golden Axe (set 1, World, FD1094 317-0110);1989;Sega;NO;goldnaxe;YES;goldnaxe;-
 goldnaxe2;Golden Axe (set 2, US, 8751 317-0112);1989;Sega;NO;goldnaxe;YES;goldnaxe;-
@@ -1075,12 +967,8 @@ gtmre;Great 1000 Miles Rally: Evolution Model!!! (94/09/06);1994;Kaneko;NO;gtmr;
 gtmrusa;Great 1000 Miles Rally: U.S.A Version! (94/09/06);1994;Kaneko;NO;gtmr;YES;gtmr;-
 gmahou;Great Mahou Daisakusen (000121 Japan);2000;8ing / Raizing / Capcom;NO;dimahoo;YES;dimahoo;-
 gberetb;Green Beret (bootleg) [Bootleg];1985;bootleg;NO;gberet;YES;gberet;-
-gseekeru;Grid Seeker: Project Storm Hammer (Ver 1.3A);1992;Taito America Corporation;NO;gseeker;YES;gseeker;-
-gseekerj;Grid Seeker: Project Storm Hammer (Ver 1.3J);1992;Taito Corporation;NO;gseeker;YES;gseeker;-
 griffon;Griffon (bootleg of Phoenix);1980;bootleg (Videotron);NO;phoenix;YES;phoenix;-
 grindstma;Grind Stormer (older set);1992;Toaplan GP9001 based;NO;grindstm;YES;grindstm;-
-grobda2;Grobda (Old Ver. set 1);1984;Namco;NO;grobda;YES;grobda;-
-grobda3;Grobda (Old Ver. set 2);1984;Namco;NO;grobda;YES;grobda;-
 growlu;Growl (US);1990;Taito America Corporation;NO;growl;YES;growl;-
 growla;Growl (World);1990;Taito America Japan;NO;growl;YES;growl;-
 gryzor;Gryzor (Set 1);1987;Konami;NO;contra;YES;contra;-
@@ -1094,7 +982,6 @@ gulfstrmk;Gulf Storm (Korea);1991;Dooyong;NO;gulfstrm;YES;gulfstrm;-
 gulfstrmm;Gulf Storm (Media Shoji);1991;Dooyong (Media Shoji license);NO;gulfstrm;YES;gulfstrm;-
 gulfstrma;Gulf Storm (set 2);1991;Dooyong;NO;gulfstrm;YES;gulfstrm;-
 gulfstrmb;Gulf Storm (set 3);1991;Dooyong;NO;gulfstrm;YES;gulfstrm;-
-gulfwar2a;Gulf War II (set 2);1991;Comad;NO;gulfwar2;YES;gulfwar2;-
 gunball;Gun Ball (Japan);1992;Data East Corporation;NO;nitrobal;YES;nitrobal;-
 gunfrontj;Gun Frontier (Japan);1990;Taito Corporation;NO;gunfront;YES;gunfront;-
 bangj;Gun Gabacho (Japan);1998;Gaelco;NO;bang;YES;bang;-
@@ -1126,16 +1013,10 @@ hangly2;Hangly-Man (set 2);1981;hack;NO;puckman;YES;puckman;-
 hangly3;Hangly-Man (set 3);1981;hack;NO;puckman;YES;puckman;-
 happy6101;Happy 6-in-1 (V101 - V100MK, China) [Incomplete Dump];2004;IGS;NO;happy6;YES;happy6;-
 hpuncher;Hard Puncher (Japan);1988;Konami;NO;fround;YES;fround;-
-hthero93u;Hat Trick Hero '93 (Ver 1.0A 1993/02/28);1993;Taito Corporation;NO;cupfinal;YES;cupfinal;-
-hthero93;Hat Trick Hero '93 (Ver 1.0J 1993/02/28);1993;Taito Corporation;NO;cupfinal;YES;cupfinal;-
-hthero94;Hat Trick Hero '94 (Ver 2.2A 1994/05/26);1994;Taito America Corporation;NO;intcup94;YES;intcup94;-
-hthero95u;Hat Trick Hero '95 (Ver 2.5A 1994/11/03);1994;Taito America Corporation;NO;pwrgoal;YES;pwrgoal;-
-hthero95;Hat Trick Hero '95 (Ver 2.5J 1994/11/03);1994;Taito Corporation;NO;pwrgoal;YES;pwrgoal;-
 hthero;Hat Trick Hero (Japan);1990;Taito Corporation;NO;footchmp;YES;footchmp;-
 hcastlee;Haunted Castle (ver. E);1988;Konami;NO;hcastle;YES;hcastle;-
 hcastlek;Haunted Castle (ver. K);1988;Konami;NO;hcastle;YES;hcastle;-
 hedpanicf;Head Panic (ver. 0315, 15/03/2000) [Story line in Japanese, game instructions in English];2000;ESD / Fuuki;NO;hedpanic;YES;hedpanic;-
-hedpanica;Head Panic (ver. 0702, 02/07/1999) [Story line & game instructions in English];1999;ESD / Fuuki;NO;hedpanic;YES;hedpanic;-
 hbarrelw;Heavy Barrel (World);1987;Data East USA;NO;hbarrel;YES;hbarrel;-
 hvyunitj;Heavy Unit (Japan, Newer);1988;Kaneko / Taito;NO;hvyunit;YES;hvyunit;-
 hvyunitjo;Heavy Unit (Japan, Older);1988;Kaneko / Taito;NO;hvyunit;YES;hvyunit;-
@@ -1152,7 +1033,6 @@ hexpoola;Hex Pool (Senko);1985;Senko;NO;racknrol;YES;racknrol;-
 hexpool;Hex Pool (Shinkai);1986;Shinkai;NO;racknrol;YES;racknrol;-
 hexionb;Hexion (Bootleg, Asia ver. AAA) [Bootleg];1992;Bootleg;NO;hexion;YES;hexion;-
 hipoly;Hipoly (bootleg of Hyper Olympic);1983;bootleg;NO;trackfld;YES;trackfld;-
-hishouza;Hishou Zame (Japan);1987;Toaplan / Taito Corporation;NO;fshark;YES;fshark;-
 buraiken;Hissatsu Buraiken (Japan);1987;Capcom;NO;avengers;YES;avengers;-
 hiticej;Hit the Ice (Japan);1990;Taito Corporation (licensed from Midway);NO;hitice;YES;hitice;-
 hoccer2;Hoccer (set 2);1983;Eastern Micro Electronics, Inc.;NO;hoccer;YES;hoccer;-
@@ -1166,11 +1046,9 @@ hunchbks;Hunchback (Scramble hardware);1983;Century Electronics;NO;hunchbak;YES;
 hncholms;Hunchback Olympic (Scramble hardware) [Imperfect Sound];1984;Century Electronics;NO;huncholy;YES;huncholy;-
 hcrashc;Hyper Crash (version C);1987;Konami;NO;hcrash;YES;hcrash;-
 hyprolym;Hyper Olympic;1983;Konami;NO;trackfld;YES;trackfld;-
-hpolym84;Hyper Olympic '84;1984;Konami;NO;hyperspt;YES;hyperspt;-
 hyprolymb;Hyper Olympic (bootleg, set 1) [Bootleg];1983;bootleg;NO;trackfld;YES;trackfld;-
 hyprolymba;Hyper Olympic (bootleg, set 2) [Bootleg];1983;bootleg;NO;trackfld;YES;trackfld;-
 hyperpacb;Hyper Pacman (bootleg) [Bootleg];1995;SemiCom;NO;hyperpac;YES;hyperpac;-
-hypersptb;Hyper Sports (bootleg) [Bootleg, imcomplete sound];1984;bootleg;NO;hyperspt;YES;hyperspt;-
 hypsptsp;Hyper Sports Special (Japan);1988;Konami;NO;88games;YES;88games;-
 hsf2j1;Hyper Street Fighter II: The Anniversary Edition (031222 Japan);2004;Capcom;NO;hsf2;YES;hsf2;-
 hsf2d;Hyper Street Fighter II: The Anniversary Edition (040202 Asia Phoenix Edition) [Bootleg];2004;bootleg;NO;hsf2;YES;hsf2;-
@@ -1189,13 +1067,11 @@ imgfightj;Image Fight (Japan);1988;Irem;NO;imgfight;YES;imgfight;-
 imagoa;Imago (no cocktail set);1983;Acom;NO;imago;YES;imago;-
 scrambp;Impacto (Billport S.A., Spanish bootleg of Scramble) [Bootleg];1981;bootleg (Billport S.A.);NO;scramble;YES;scramble;-
 inthuntu;In The Hunt (US);1993;Irem America;NO;inthunt;YES;inthunt;-
-insectxj;Insector X (Japan);1989;Taito Corporation;NO;insectx;YES;insectx;-
 jjsquawkb;J. J. Squawkers (bootleg) [Bootleg];1993;bootleg;NO;jjsquawk;YES;jjsquawk;-
 jjsquawkb2;J. J. Squawkers (bootleg, Blandia conversion);1993;bootleg;NO;jjsquawk;YES;jjsquawk;-
 jjsquawko;J. J. Squawkers (older);1993;Athena / Able;NO;jjsquawk;YES;jjsquawk;-
 jack2;Jack the Giantkiller (set 2);1982;Cinematronics;NO;jack;YES;jack;-
 jack3;Jack the Giantkiller (set 3);1982;Cinematronics;NO;jack;YES;jack;-
-jackalbl;Jackal (bootleg, Rotary Joystick);1986;bootleg;NO;jackal;YES;jackal;-
 jackalr;Jackal (World, Rotary Joystick);1986;Konami;NO;jackal;YES;jackal;-
 zaxxonb;Jackson;1982;bootleg;NO;zaxxon;YES;zaxxon;zaxxon
 jailbrekb;Jail Break (bootleg) [Bootleg];1986;bootleg;NO;jailbrek;YES;jailbrek;-
@@ -1231,7 +1107,6 @@ jumpinga;Jumping (set 2) [Bootleg];1988;bootleg (Seyutu);NO;rbisland;YES;rbislan
 jumpingi;Jumping (set 3, Imnoe PCB) [Bootleg];1988;bootleg (Seyutu);NO;rbisland;YES;rbisland;-
 jumppope;Jumping Pop (set 2);2001;Emag Soft;NO;jumppop;YES;jumppop;-
 jrking;Junior King (bootleg of Donkey Kong Jr.);1982;bootleg;NO;dkongjr;YES;dkongjr;dkongjr
-junofrstg;Juno First (Gottlieb);1983;Konami (Gottlieb license);NO;junofrst;YES;junofrst;-
 altbeastj1;Juuouki (set 1, Japan, FD1094 317-0065);1988;Sega;NO;altbeast;YES;altbeast;-
 altbeastj3d;Juuouki (set 3, Japan, FD1094 317-0068 decrypted) [Bootleg];1988;Sega;NO;altbeast;YES;altbeast;-
 altbeastj3;Juuouki (set 3, Japan, FD1094 317-0068);1988;Sega;NO;altbeast;YES;altbeast;-
@@ -1239,7 +1114,6 @@ altbeastj;Juuouki (set 7, Japan, 8751 317-0077);1988;Sega;NO;altbeast;YES;altbea
 kagekih;Kageki (hack);1992;Taito Corporation;NO;kageki;YES;kageki;-
 kagekij;Kageki (Japan);1988;Taito Corporation;NO;kageki;YES;kageki;-
 yanchamr;Kaiketsu Yanchamaru (Japan);1986;Irem;NO;kidniki;YES;kidniki;tr606drumkit
-kaiserknj;Kaiser Knuckle (Ver 2.1J 1994/07/29);1994;Taito Corporation;NO;kaiserkn;YES;kaiserkn;-
 kaiteids;Kaitei Daisensou (Japan);1993;Irem;NO;inthunt;YES;inthunt;-
 kaitein;Kaitei Takara Sagashi (Namco license);1980;K.K. Tokki (Namco license);NO;kaitei;YES;kaitei;-
 kamakazi3;Kamakazi III (superg hack) [Bootleg];1979;bootleg;NO;galaxian;YES;galaxian;-
@@ -1248,9 +1122,6 @@ kangaroob;Kangaroo (bootleg);1982;Bootleg;NO;kangaroo;YES;kangaroo;-
 karatblzj;Karate Blazers (Japan);1991;Video System Co.;NO;karatblz;YES;karatblz;-
 karatblzu;Karate Blazers (US);1991;Video System Co.;NO;karatblz;YES;karatblz;-
 karatblza;Karate Blazers (World, set 2);1991;Video System Co.;NO;karatblz;YES;karatblz;-
-kchampvs;Karate Champ (US VS version, set 1);1984;Data East USA;NO;kchamp;YES;kchamp;-
-kchampvs2;Karate Champ (US VS version, set 2);1984;Data East USA;NO;kchamp;YES;kchamp;-
-karatedo;Karate Dou (Japan);1984;Data East Corporation;NO;kchamp;YES;kchamp;-
 karnovj;Karnov (Japan);1987;Data East Corporation;NO;karnov;YES;karnov;-
 karnova;Karnov (US, rev 5);1987;Data East USA;NO;karnov;YES;karnov;-
 kengo;Ken-Go (set 1);1991;Irem;NO;ltswords;YES;ltswords;-
@@ -1274,7 +1145,6 @@ kingballj;King & Balloon (Japan);1980;Namco;NO;kingball;YES;kingball;-
 kog;King of Gladiator (The King of Fighters '97 bootleg) [Bootleg];1997;bootleg;NO;kof97;YES;kof97;-
 kogplus;King of Gladiator Plus (The King of Fighters '97 bootleg) [Bootleg];1997;bootleg;NO;kof97;YES;kof97;-
 kotmh;King of the Monsters (set 2);1991;SNK;NO;kotm;YES;kotm;-
-kotm2a;King of the Monsters 2 - The Next Thing (older);1992;SNK;NO;kotm2;YES;kotm2;-
 kotm2p;King of the Monsters 2 - The Next Thing (prototype) [Prototype];1992;SNK;NO;kotm2;YES;kotm2;-
 knightsja;Knights of the Round (911127 Japan, B-Board 89625B-1);1991;Capcom;NO;knights;YES;knights;-
 knightsj;Knights of the Round (911127 Japan, B-Board 91634B-2);1991;Capcom;NO;knights;YES;knights;-
@@ -1285,8 +1155,6 @@ knightsb3;Knights of the Round (bootleg set 3, 911127 Japan) [Bootleg];1991;boot
 knightsb4;Knights of the Round (bootleg set 4 (with YM2151 + 2xMSM5205), 911127 etc) [Bootleg];1991;bootleg;NO;knights;YES;knights;-
 knightsh;Knights of the Round (hack set 1) [Hack];1991;hack;NO;knights;YES;knights;-
 knightsh2;Knights of the Round (hack set 2, 911127 etc) [Hack];1991;hack;NO;knights;YES;knights;-
-kov111;Knights of Valour - Sangoku Senki (V111, Japan);1999;IGS (Alta Co., LTD License);NO;kov;YES;kov;-
-kov114;Knights of Valour - Sangoku Senki (V114, Hong Kong);1999;IGS;NO;kov;YES;kov;-
 kov115;Knights of Valour - Sangoku Senki (V115);1999;IGS;NO;kov;YES;kov;-
 kov2100;Knights of Valour 2 (V100, 100, 100, Hong Kong);2000;IGS;NO;kov2;YES;kov2;-
 kov2101;Knights of Valour 2 (V101, 101, 100, Hong Kong);2000;IGS;NO;kov2;YES;kov2;-
@@ -1324,21 +1192,13 @@ kungfub2;Kung-Fu Master (bootleg set 2) [Bootleg];1984;bootleg;NO;kungfum;YES;ku
 kungfub3;Kung-Fu Master (bootleg set 3);1984;bootleg;NO;kungfum;YES;kungfum;-
 kungfumd;Kung-Fu Master (Data East);1984;Irem (Data East License);NO;kungfum;YES;kungfum;-
 kungfuta;Kung-Fu Taikun (alt);1984;Seibu Kaihatsu Inc.;NO;kungfut;YES;kungfut;-
-kurikintj;Kuri Kinton (Japan);1988;Taito Corporation;NO;kurikint;YES;kurikint;-
-kurikintu;Kuri Kinton (US);1988;Taito America Corporation;NO;kurikint;YES;kurikint;-
-kurikinta;Kuri Kinton (World, prototype?);1988;Taito Corporation Japan;NO;kurikint;YES;kurikint;-
 brkthruj;Kyohkoh-Toppa (Japan);1986;Data East Corporation;NO;brkthru;YES;brkthru;-
 kyrosj;Kyros No Yakata (Japan);1986;Alpha Denshi Co.;NO;kyros;YES;kyros;-
 dadandrn;Kyukyoku Sentai Dadandarn (ver JAA);1993;Konami;NO;mmaulers;YES;mmaulers;-
-ktiger;Kyukyoku Tiger (Japan);1987;Toaplan / Taito Corporation;NO;twincobr;YES;twincobr;-
-ktiger2;Kyukyoku Tiger II (Ver 2.1J 1995/11/30);1995;Taito Corporation;NO;tcobra2;YES;tcobra2;-
-kyukaidko;Kyuukai Douchuuki (Japan, old version);1990;Namco;NO;kyukaidk;YES;kyukaidk;-
-lagirl;LA Girl [Bootleg];1992;bootleg;NO;plgirls;YES;plgirls;-
 labyrunr;Labyrinth Runner (Japan) [Graphics issues in the ending credits.];1987;Konami;NO;tricktrp;YES;tricktrp;-
 labyrunrk;Labyrinth Runner (World Ver. K) [Graphics issues in the ending credits.];1987;Konami;NO;tricktrp;YES;tricktrp;-
 ladybugg;Lady Bug (bootleg on Galaxian hardware) [Bootleg];1983;bootleg;NO;ladybug;YES;ladybug;-
 ladybugb;Lady Bug (bootleg set 1);1981;bootleg;NO;ladybug;YES;ladybug;-
-landmakrp;Land Maker (Ver 2.02O 1998/06/02) (Prototype) [Prototype];1998;Taito Corporation;NO;landmakr;YES;landmakr;-
 lans2004;Lansquenet 2004 (Shock Troopers - 2nd Squad bootleg) [Bootleg];1998;bootleg;NO;shocktr2;YES;shocktr2;-
 lghostud;Laser Ghost (set 1, US, 317-0165 decrypted) [Bootleg];1990;Sega;NO;lghost;YES;lghost;-
 lghostu;Laser Ghost (set 1, US, 317-0165);1990;Sega;NO;lghost;YES;lghost;-
@@ -1346,10 +1206,6 @@ lghostd;Laser Ghost (set 2, World, 317-0166 decrypted) [Bootleg];1990;Sega;NO;lg
 lastduelb;Last Duel (bootleg) [Bootleg];1988;bootleg;NO;lastduel;YES;lastduel;-
 lastduelj;Last Duel (Japan);1988;Capcom;NO;lastduel;YES;lastduel;-
 lastduelo;Last Duel (US Old Ver.);1988;Capcom;NO;lastduel;YES;lastduel;-
-lastfortea;Last Fortress - Toride (Erotic, Rev A);1994;Metro;NO;lastfort;YES;lastfort;-
-lastforte;Last Fortress - Toride (Erotic, Rev C);1994;Metro;NO;lastfort;YES;lastfort;-
-lastfortg;Last Fortress - Toride (German);1994;Metro;NO;lastfort;YES;lastfort;-
-lastfortk;Last Fortress - Toride (Korea);1994;Metro;NO;lastfort;YES;lastfort;-
 lastmisnj;Last Mission (Japan);1986;Data East Corporation;NO;lastmisn;YES;lastmisn;-
 lastmisno;Last Mission (US revision 5);1986;Data East USA;NO;lastmisn;YES;lastmisn;-
 lresortp;Last Resort (prototype) [Prototype];1992;SNK;NO;lresort;YES;lresort;-
@@ -1371,7 +1227,6 @@ lethalenub;Lethal Enforcers (ver UAB, 09/01/92 11:12);1992;Konami;NO;lethalen;YE
 lethalenux;Lethal Enforcers (ver unknown, US, 08/06/92 15:11, hacked/proto?);1992;Konami;NO;lethalen;YES;lethalen;-
 lifefrcej;Lifeforce (Japan);1987;Konami;NO;salamand;YES;salamand;-
 lifefrce;Lifeforce (US);1986;Konami;NO;salamand;YES;salamand;-
-lightbrj;Light Bringer (Ver 2.1J 1994/02/18);1993;Taito Corporation;NO;lightbr;YES;lightbr;-
 lgtnfghta;Lightning Fighters (Asia);1990;Konami;NO;lgtnfght;YES;lgtnfght;-
 lgtnfghtu;Lightning Fighters (US);1990;Konami;NO;lgtnfght;YES;lgtnfght;-
 shangonle;Limited Edition Hang-On;1991;Sega;NO;shangon;YES;shangon;-
@@ -1390,11 +1245,8 @@ looper;Looper;1982;Orca;NO;changes;YES;changes;-
 losttombh;Lost Tomb (Hard);1982;Stern;NO;losttomb;YES;losttomb;-
 lostwrldo;Lost Worlds (Japan Old ver.);1988;Capcom;NO;forgottn;YES;forgottn;-
 lostwrld;Lost Worlds (Japan);1988;Capcom;NO;forgottn;YES;forgottn;-
-luckywldj;Lucky & Wild (Japan);1992;Namco;NO;luckywld;YES;luckywld;-
 miaj;M.I.A. - Missing in Action (version R) (Japan);1989;Konami;NO;mia;YES;mia;-
 mia2;M.I.A. - Missing in Action (version S);1989;Konami;NO;mia;YES;mia;-
-mach9;Mach-9 (bootleg of Vulgus);1984;bootleg (ITISA);NO;vulgus;YES;vulgus;-
-macross2k;Macross II (Korea);1993;Banpresto;NO;macross2;YES;macross2;-
 madcrush;Mad Crusher (Japan);1984;SNK;NO;madcrash;YES;madcrash;-
 madgearj;Mad Gear (Japan);1989;Capcom;NO;madgear;YES;madgear;-
 mplanetsuk;Mad Planets (UK);1983;Gottlieb (Taitel license);NO;mplanets;YES;mplanets;-
@@ -1410,7 +1262,6 @@ mgcrystlo;Magical Crystals (World, 91/12/10);1991;Kaneko;NO;mgcrystl;YES;mgcryst
 magdrop;Magical Drop (Japan, Version 1.1, 1995.06.21);1995;Data East;NO;chainrec;YES;chainrec;-
 magdropp;Magical Drop Plus 1 (Japan, Version 2.1, 1995.09.12);1995;Data East;NO;chainrec;YES;chainrec;-
 maglordh;Magician Lord (NGH-005);1990;Alpha Denshi Co.;NO;maglord;YES;maglord;-
-magixb;Magix / Rock (no copyright message);1995;Yun Sung;NO;magix;YES;magix;-
 mjnquestb;Mahjong Quest (No Nudity);1990;Taito Corporation;NO;mjnquest;YES;mjnquest;-
 mahoudai;Mahou Daisakusen (Japan);1993;Raizing;NO;sstriker;YES;sstriker;-
 mstadium;Main Stadium (Japan ver. 4);1989;Konami;NO;bottom9;YES;bottom9;-
@@ -1429,8 +1280,6 @@ maketrax;Make Trax (set 1);1981;[Kural] (Williams license);NO;crush;YES;crush;-
 maketrxb;Make Trax (set 2);1981;[Kural] (Williams license);NO;crush;YES;crush;-
 manhatan;Manhattan 24 Bunsyo (Japan);1986;Konami;NO;jailbrek;YES;jailbrek;-
 maniacsp;Maniac Square (prototype);1996;Gaelco;NO;maniacsq;YES;maniacsq;-
-mappyj;Mappy (Japan);1983;Namco;NO;mappy;YES;mappy;-
-mmaze2;Marchen Maze (Japan, hack?) [Error on first boot is normal];1988;Namco;NO;mmaze;YES;mmaze;-
 marioj;Mario Bros. (Japan) [Imperfect sound];1983;Nintendo;NO;mario;YES;mario;mario
 marioe;Mario Bros. (US, Revision E) [Imperfect sound];1983;Nintendo of America;NO;mario;YES;mario;mario
 marioo;Mario Bros. (US, Unknown Rev) [Imperfect sound];1983;Nintendo of America;NO;mario;YES;mario;mario
@@ -1442,9 +1291,7 @@ mtlchampj;Martial Champion (ver JAA) [Missing Graphics on Intro/Title screens];1
 mtlchampu1;Martial Champion (ver UAD) [Missing Graphics on Intro/Title screens];1993;Konami;NO;mtlchamp;YES;mtlchamp;-
 mtlchampu;Martial Champion (ver UAE) [Missing Graphics on Intro/Title screens];1993;Konami;NO;mtlchamp;YES;mtlchamp;-
 martmastc102;Martial Masters (V102, 101, 101, China);2001;IGS;NO;martmast;YES;martmast;-
-martmastc103;Martial Masters (V103, 102, 101, China);2001;IGS;NO;martmast;YES;martmast;-
 martmastc;Martial Masters (V104, 102, 101, China);2001;IGS;NO;martmast;YES;martmast;-
-marvlandj;Marvel Land (Japan);1989;Namco;NO;marvland;YES;marvland;-
 msha;Marvel Super Heroes (951024 Asia);1995;Capcom;NO;msh;YES;msh;-
 mshjr1;Marvel Super Heroes (951024 Japan);1995;Capcom;NO;msh;YES;msh;-
 mshud;Marvel Super Heroes (951024 USA Phoenix Edition) [Bootleg];1995;bootleg;NO;msh;YES;msh;-
@@ -1501,7 +1348,6 @@ mercenario;Mercenario (Commando bootleg) [Bootleg];1985;bootleg;NO;commando;YES;
 mercsur1;Mercs (900302 USA);1990;Capcom;NO;mercs;YES;mercs;-
 mercsu;Mercs (900608 USA);1990;Capcom;NO;mercs;YES;mercs;-
 metalbj;Metal Black (Japan);1991;Taito Corporation;NO;metalb;YES;metalb;-
-metlhawkj;Metal Hawk (Japan, Rev F);1988;Namco;NO;metlhawk;YES;metlhawk;-
 mslug2t;Metal Slug 2 Turbo (NGM-9410);2015;Hack;NO;mslug2;YES;mslug2;-
 mslug3h;Metal Slug 3 (NGH-2560);2000;SNK;NO;mslug3;YES;mslug3;-
 mslug3v;Metal Slug 3 (NGH-2560) (Enhanced Violence Version hack by EEZEZY);2012;SNK;NO;mslug3;YES;mslug3;-
@@ -1517,11 +1363,6 @@ metamrphj;Metamorphic Force (ver JAA);1993;Konami;NO;metamrph;YES;metamrph;-
 metamrphu;Metamorphic Force (ver UAA);1993;Konami;NO;metamrph;YES;metamrph;-
 metrocrsa;Metro-Cross (set 2);1985;Namco;NO;metrocrs;YES;metrocrs;-
 mwalkbl2;Michael Jackson's Moonwalker (bootleg) [Bootleg];1990;bootleg;NO;mwalk;YES;mwalk;-
-mwalkjd;Michael Jackson's Moonwalker (Japan) (bootleg of FD1094/8751 317-0157 set);1990;Sega;NO;mwalk;YES;mwalk;-
-mwalkj;Michael Jackson's Moonwalker (Japan) (FD1094/8751 317-0157);1990;Sega;NO;mwalk;YES;mwalk;-
-mwalkud;Michael Jackson's Moonwalker (US) (bootleg of FD1094/8751 317-0158);1990;Sega;NO;mwalk;YES;mwalk;-
-mwalku;Michael Jackson's Moonwalker (US) (FD1094/8751 317-0158);1990;Sega;NO;mwalk;YES;mwalk;-
-mwalkd;Michael Jackson's Moonwalker (World) (bootleg of FD1094/8751 317-0159);1990;Sega;NO;mwalk;YES;mwalk;-
 midresj;Midnight Resistance (Japan);1989;Data East Corporation;NO;midres;YES;midres;-
 midresu;Midnight Resistance (US);1989;Data East USA;NO;midres;YES;midres;-
 mimonscr;Mighty Monkey (bootleg on Scramble hardware) [Bootleg];198?;bootleg;NO;mimonkey;YES;mimonkey;-
@@ -1546,9 +1387,6 @@ m660j;Mission 660 (Japan);1986;Wood Place Inc. (Taito Corporation license);NO;m6
 mrvikingj;Mister Viking (315-5041, Japan);1984;Sega;NO;mrviking;YES;mrviking;-
 mizubaku;Mizubaku Daibouken (Japan);1990;Taito Corporation;NO;liquidk;YES;liquidk;-
 msgundam1;Mobile Suit Gundam (Japan);1993;Banpresto;NO;msgundam;YES;msgundam;-
-moegonta;Moeyo Gonta!! (Japan);1993;Yanyaka;NO;ladykill;YES;ladykill;-
-momokob;Momoko 120% (bootleg);1986;bootleg;NO;momoko;YES;momoko;-
-momokoe;Momoko 120% (English text);1986;Jaleco;NO;momoko;YES;momoko;-
 monkelf;Monky Elf (Korean bootleg of Avenging Spirit) [Bootleg, imperfect graphics];1990;bootleg;NO;avspirit;YES;avspirit;-
 moonaln;Moon Alien;1979;Nichibutsu (Karateco license);NO;galaxian;YES;galaxian;-
 moonal2b;Moon Alien Part 2 (older version);1980;Nichibutsu;NO;moonal2;YES;moonal2;-
@@ -1573,8 +1411,6 @@ moonwara;Moonwar (older);1981;Stern;NO;moonwar;YES;moonwar;-
 mk3p40;Mortal Kombat 3 (rev 1 chip label p4.0);1994;Midway;NO;mk3;YES;mk3;-
 mk3r10;Mortal Kombat 3 (rev 1.0);1994;Midway;NO;mk3;YES;mk3;-
 mk3r20;Mortal Kombat 3 (rev 2.0);1994;Midway;NO;mk3;YES;mk3;-
-motorace;MotoRace USA;1983;Irem (Williams license);NO;travrusa;YES;travrusa;-
-mototour;MotoTour / Zippy Race (Tecfri license);1983;Irem (Tecfri license);NO;travrusa;YES;travrusa;-
 mouserc;Mouser (Cosmos);1983;UPL (Cosmos license);NO;mouser;YES;mouser;-
 mrdofix;Mr. Do! (bugfixed);1982;Universal (Taito license);NO;mrdo;YES;mrdo;-
 mrdoy;Mr. Do! (prototype) [Prototype];1982;Universal;NO;mrdo;YES;mrdo;-
@@ -1600,16 +1436,13 @@ multchmpk;Multi Champ (Korea, older);1999;ESD;NO;multchmp;YES;multchmp;-
 multchmpa;Multi Champ (World, older);1999;ESD;NO;multchmp;YES;multchmp;-
 mchampdxa;Multi Champ Deluxe (ver. 1126, 26/11/1999);1999;ESD;NO;mchampdx;YES;mchampdx;-
 multi96;Multi Game '96 (Italy);1996;Barko Corp;NO;twinadv;YES;twinadv;-
-mltiwars;Multi Wars (bootleg of UniWar S);1980;bootleg (Gayton Games);NO;uniwars;YES;uniwars;-
 mnchmobl;Munch Mobile (US);1983;SNK (Centuri license);NO;joyfulr;YES;joyfulr;-
 mbomberj;Muscle Bomber - the body explosion (930713 Japan);1993;Capcom;NO;slammast;YES;slammast;-
 mbombrdj;Muscle Bomber Duo - heat up warriors (931206 Japan);1993;Capcom;NO;mbombrd;YES;mbombrd;-
-mustachei;Mustache Boy (Italy);1987;Seibu Kaihatsu (IG SPA licence);NO;mustache;YES;mustache;-
 alibabab;Mustafa and 40 Thieves (bootleg);1982;bootleg;NO;alibaba;YES;alibaba;-
 mutantf2;Mutant Fighter (World ver EM-2);1992;Data East Corporation;NO;mutantf;YES;mutantf;-
 mutantf3;Mutant Fighter (World ver EM-3);1992;Data East Corporation;NO;mutantf;YES;mutantf;-
 mutantf4;Mutant Fighter (World ver EM-4);1992;Data East Corporation;NO;mutantf;YES;mutantf;-
-mnightj;Mutant Night (Japan);1987;UPL (Kawakus license);NO;mnight;YES;mnight;-
 mvpjd;MVP (set 1, Japan, FD1094 317-0142 decrypted) [Bootleg];1989;Sega;NO;mvp;YES;mvp;-
 mvpj;MVP (set 1, Japan, FD1094 317-0142);1989;Sega;NO;mvp;YES;mvp;-
 mvpd;MVP (set 2, US, FD1094 317-0143 decrypted) [Bootleg];1989;Sega;NO;mvp;YES;mvp;-
@@ -1627,7 +1460,6 @@ naughtyba;Naughty Boy (bootleg);1982;bootleg;NO;naughtyb;YES;naughtyb;-
 naughtybc;Naughty Boy (Cinematronics);1982;Jaleco (Cinematronics license);NO;naughtyb;YES;naughtyb;-
 nmouseb;Naughty Mouse (set 2);1981;Amenip Nova Games Ltd.;NO;nmouse;YES;nmouse;-
 nbamht1;NBA Maximum Hangtime (rev 1.0 11/08/96);1996;Midway;NO;nbamht;YES;nbamht;-
-nebulbee;Nebulous Bee [Bootleg];1981;bootleg;NO;galaga;YES;galaga;galaga
 kuniokunb;Nekketsu Kouha Kunio-kun (Japan bootleg) [Bootleg];1986;bootleg;NO;renegade;YES;renegade;-
 kuniokun;Nekketsu Kouha Kunio-kun (Japan);1986;Technos;NO;renegade;YES;renegade;-
 nemesisuk;Nemesis (World?, ROM version);1985;Konami;NO;nemesis;YES;nemesis;-
@@ -1673,8 +1505,6 @@ nova2001u;Nova 2001 (US);1983;UPL (Universal license);NO;nova2001;YES;nova2001;-
 nunchaku;Nunchackun;1985;Kaneko / Taito;NO;ladymstr;YES;ladymstr;-
 nyanpani;Nyan Nyan Panic (Japan);1988;Konami;NO;kittenk;YES;kittenk;-
 oedfight;Oedo Fight (Japan Bloodshed Ver.);1994;Kaneko;NO;bloodwar;YES;bloodwar;-
-offensiv;Offensive (Spanish bootleg of Scramble) [Bootleg];1981;bootleg (Video Dens);NO;scramble;YES;scramble;-
-omegab;Omega [Bootleg];19??;bootleg?;NO;theend;YES;theend;-
 omegafs;Omega Fighter Special;1989;UPL;NO;omegaf;YES;omegaf;-
 omni;Omni [Bootleg];19??;bootleg;NO;pisces;YES;pisces;-
 onetwoe;One + Two (earlier);1997;Barko;NO;onetwo;YES;onetwo;-
@@ -1682,16 +1512,13 @@ nmaster;Oni - The Ninja Master (Japan);1995;Banpresto / Pandorabox;NO;metmqstr;Y
 onna34roa;Onna Sansirou - Typhoon Gal (bootleg) [Bootleg];1985;Taito;NO;onna34ro;YES;onna34ro;-
 opwolfb;Operation Bear [Bootleg];1987;bootleg;NO;opwolf;YES;opwolf;-
 othunderj;Operation Thunderbolt (Japan);1988;Taito Corporation;NO;othunder;YES;othunder;-
-othunderjsc;Operation Thunderbolt (Japan, SC);1988;Taito Corporation;NO;othunder;YES;othunder;-
 othunderuo;Operation Thunderbolt (US);1988;Taito America Corporation;NO;othunder;YES;othunder;-
 othunderu;Operation Thunderbolt (US, rev 1);1988;Taito America Corporation;NO;othunder;YES;othunder;-
 othundero;Operation Thunderbolt (World);1988;Taito Corporation Japan;NO;othunder;YES;othunder;-
 opwolfj;Operation Wolf (Japan);1987;Taito Corporation;NO;opwolf;YES;opwolf;-
-opwolfjsc;Operation Wolf (Japan, SC);1987;Taito Corporation;NO;opwolf;YES;opwolf;-
 opwolfu;Operation Wolf (US);1987;Taito America Corporation;NO;opwolf;YES;opwolf;-
 opwolfa;Operation Wolf (World, set 2);1987;Taito Corporation Japan;NO;opwolf;YES;opwolf;-
 opwolf3u;Operation Wolf 3 (US);1994;Taito America Corporation;NO;opwolf3;YES;opwolf3;-
-ordynej;Ordyne (Japan);1988;Namco;NO;ordyne;YES;ordyne;-
 orlegend105k;Oriental Legend (V105, Korea);1997;IGS;NO;orlegend;YES;orlegend;-
 orlegend111c;Oriental Legend - Xi Yo Gi Shi Re Zuang (V111, China);1997;IGS;NO;orlegend;YES;orlegend;-
 orlegend111k;Oriental Legend - Xi Yo Gi Shi Re Zuang (V111, Korea);1997;IGS;NO;orlegend;YES;orlegend;-
@@ -1717,13 +1544,11 @@ outzonea;Out Zone (set 2);1990;Toaplan;NO;outzone;YES;outzone;-
 ozmawars2;Ozma Wars (set 2);1979;SNK;NO;ozmawars;YES;ozmawars;invaders
 p47j;P-47 - The Freedom Fighter (Japan);1988;Jaleco;NO;p47;YES;p47;-
 p47je;P-47 - The Freedom Fighter (Japan, Export);1988;Jaleco;NO;p47;YES;p47;-
-pacnpal2;Pac & Pal (older);1983;Namco;NO;pacnpal;YES;pacnpal;-
 pacgal;Pac-Gal;1981;hack;NO;mspacman;YES;mspacman;-
 paclandj;Pac-Land (Japan new);1984;Namco;NO;pacland;YES;pacland;-
 paclandjo;Pac-Land (Japan old);1984;Namco;NO;pacland;YES;pacland;-
 paclandjo2;Pac-Land (Japan older);1984;Namco;NO;pacland;YES;pacland;-
 paclandm;Pac-Land (Midway);1984;Namco (Bally Midway license);NO;pacland;YES;pacland;-
-pacnchmp;Pac-Man & Chomp Chomp;1983;Namco;NO;pacnpal;YES;pacnpal;-
 pacmanbl;Pac-Man (Galaxian hardware, set 1) [Bootleg];1981;bootleg;NO;puckman;YES;puckman;-
 pacmanbla;Pac-Man (Galaxian hardware, set 2) [Bootleg];1981;bootleg;NO;puckman;YES;puckman;-
 pacheart;Pac-Man (Hearts);1981;hack;NO;puckman;YES;puckman;-
@@ -1731,21 +1556,17 @@ pacman;Pac-Man (Midway);1980;Namco (Midway license);NO;puckman;YES;puckman;-
 pacmod;Pac-Man (Midway, harder);1981;[Namco] (Midway license);NO;puckman;YES;puckman;-
 pacmanf;Pac-Man (Midway, with speedup hack);1980;Namco (Midway license);NO;puckman;YES;puckman;-
 pacmanso;Pac-Man (SegaSA / Sonic);1980;Namco (Sonic license);NO;puckman;YES;puckman;-
-pacmaniao;Pac-Mania (111187 sound program);1987;Namco;NO;pacmania;YES;pacmania;-
-pacmaniaj;Pac-Mania (Japan);1987;Namco;NO;pacmania;YES;pacmania;-
 packetman;Packetman (bootleg) [Bootleg];1980;bootleg;NO;puckman;YES;puckman;-
 pacuman;Pacu-Man (Spanish bootleg of Puck Man) [Bootleg];1980;bootleg (Recreativos Franco S.A.);NO;puckman;YES;puckman;-
 paddle2;Paddle 2 (bootleg on Block hardware) [Bootleg];1986;bootleg;NO;arkanoid;YES;arkanoid;-
 samsho4k;Pae Wang Jeon Seol / Legend of a Warrior (Korean censored Samurai Shodown IV);1996;SNK;NO;samsho4;YES;samsho4;-
 paintrlr;Paint Roller;1981;bootleg;NO;crush;YES;crush;-
 pajaroes;Pajaro del Espacio (Spanish bootleg of UniWar S) [Bootleg];1980;bootleg (PSV S.A.);NO;uniwars;YES;uniwars;-
-palamedj;Palamedes (Japan);1990;Taito Corporation;NO;palamed;YES;palamed;-
 pangb;Pang (bootleg, set 1) [Bootleg];1989;bootleg;NO;pang;YES;pang;-
 pangbold;Pang (bootleg, set 2) [Bootleg];1989;bootleg;NO;pang;YES;pang;-
 pangb2;Pang (bootleg, set 4) [Bootleg];1989;bootleg;NO;pang;YES;pang;-
 pangbold2;Pang (bootleg, set 5) [Bootleg];1990;bootleg;NO;pang;YES;pang;-
 pangbold3;Pang (bootleg, set 6) [Bootleg];1989;bootleg;NO;pang;YES;pang;-
-pangpomsm;Pang Pom's (Mitchell);1992;Metro (Mitchell license);NO;pangpoms;YES;pangpoms;-
 pang3r1;Pang! 3 (950511 Euro);1995;Mitchell;NO;pang3;YES;pang3;-
 pang3r1a;Pang! 3 (950511 Euro, alt);1995;Mitchell;NO;pang3;YES;pang3;-
 pang3b;Pang! 3 (bootleg set 1, 950511 Euro);1995;Mitchell;NO;pang3;YES;pang3;-
@@ -1768,7 +1589,6 @@ pengo2u;Pengo (set 2 not encrypted);1982;Sega;NO;pengo;YES;pengo;-
 pengo2;Pengo (set 2);1982;Sega;NO;pengo;YES;pengo;-
 pengo3u;Pengo (set 3 not encrypted);1982;Sega;NO;pengo;YES;pengo;-
 pengo4;Pengo (set 4);1982;Sega;NO;pengo;YES;pengo;-
-pengo5;Pengo (set 5);1982;Sega;NO;pengo;YES;pengo;-
 pkunwarj;Penguin-Kun Wars (Japan);1985;UPL;NO;pkunwar;YES;pkunwar;-
 penta;Penta [Bootleg];1982;Bootleg;NO;pengo;YES;pengo;-
 pbillrdsa;Perfect Billiard (MC-8123, 317-5008);1987;Nihon System;NO;pbillrd;YES;pbillrd;-
@@ -1777,13 +1597,11 @@ perfrmanu;Performan (US);1985;Toaplan / Data East USA;NO;perfrman;YES;perfrman;-
 pestplce;Pest Place;1983;bootleg;NO;mario;YES;mario;-
 ppan;Peter Pan (bootleg of Hook) [Bootleg];1992;bootleg;NO;hook;YES;hook;-
 phantasm;Phantasm (Japan);1990;Jaleco;NO;avspirit;YES;avspirit;-
-pheliosj;Phelios (Japan);1988;Namco;NO;phelios;YES;phelios;-
 phoenix2;Phoenix (Amstar, set 2);1980;Amstar;NO;phoenix;YES;phoenix;-
 phoenixass;Phoenix (Assa, Spanish bootleg);1981;bootleg (Assa);NO;phoenix;YES;phoenix;-
 phoenixa;Phoenix (Centuri, set 1);1980;Amstar (Centuri license);NO;phoenix;YES;phoenix;-
 phoenixb;Phoenix (Centuri, set 2);1980;Amstar (Centuri license);NO;phoenix;YES;phoenix;-
 phoenixdal;Phoenix (D&L bootleg);1980;bootleg (D&L);NO;phoenix;YES;phoenix;-
-phoenixi;Phoenix (IDI bootleg);1981;bootleg (IDI);NO;phoenix;YES;phoenix;-
 phoenixc;Phoenix (Irecsa / G.G.I Corp, set 1);1981;bootleg? (Irecsa / G.G.I Corp);NO;phoenix;YES;phoenix;-
 phoenixc2;Phoenix (Irecsa / G.G.I Corp, set 2);1981;bootleg? (Irecsa / G.G.I Corp);NO;phoenix;YES;phoenix;-
 phoenixc3;Phoenix (Irecsa / G.G.I Corp, set 3);1981;bootleg? (Irecsa / G.G.I Corp);NO;phoenix;YES;phoenix;-
@@ -1795,7 +1613,6 @@ phoenixt;Phoenix (Taito);1980;Amstar (Taito license);NO;phoenix;YES;phoenix;-
 phoenxp2;Phoenix Part 2 [Bootleg];1981;bootleg;NO;phoenix;YES;phoenix;-
 photof;Photo Finish (bootleg?);1991;Jaleco / Casio;NO;wwjgtin;YES;wwjgtin;-
 photoy2k104;Photo Y2K / Real and Fake (V104);1999;IGS;NO;photoy2k;YES;photoy2k;-
-phozons;Phozon (Sidam);1983;Namco (Sidam license);NO;phozon;YES;phozon;-
 pipibibsp;Pipi & Bibis / Whoopee!! (prototype) [Prototype];1991;Toaplan;NO;pipibibs;YES;pipibibs;-
 whoopee;Pipi & Bibis / Whoopee!! (Teki Paki hardware) [No sound (sound MCU not dumped)];1991;Toaplan;NO;pipibibs;YES;pipibibs;-
 pipibibsa;Pipi & Bibis / Whoopee!! (Z80 sound cpu, set 2);1991;Toaplan;NO;pipibibs;YES;pipibibs;-
@@ -1806,16 +1623,12 @@ piratesb;Pirates (set 2);1995;NIX;NO;pirates;YES;pirates;-
 piscesb;Pisces (bootleg) [Bootleg];19??;bootleg;NO;pisces;YES;pisces;-
 pitfall2a;Pitfall II (315-5093, Flicky Conversion);1985;Sega;NO;pitfall2;YES;pitfall2;-
 pitfall2u;Pitfall II (not encrypted);1985;Sega;NO;pitfall2;YES;pitfall2;-
-plgirls2b;Play Girls 2 (bootleg) [Bootleg];1993;bootleg;NO;plgirls2;YES;plgirls2;-
 pleiadbl;Pleiads (bootleg set 1);1981;bootleg;NO;pleiads;YES;pleiads;-
 pleiadsb2;Pleiads (bootleg set 2);1981;bootleg (ESG);NO;pleiads;YES;pleiads;-
 pleiadce;Pleiads (Centuri);1981;Tehkan (Centuri license);NO;pleiads;YES;pleiads;-
 pleiadsi;Pleiads (Irecsa);1981;bootleg? (Irecsa);NO;pleiads;YES;pleiads;-
 pleiadsn;Pleiads (Niemer S.A.);1981;Niemer S.A.;NO;pleiads;YES;pleiads;-
 pleiadss;Pleiads (Spanish bootleg);1981;bootleg;NO;pleiads;YES;pleiads;-
-plottingu;Plotting (US);1989;Taito America Corporation;NO;plotting;YES;plotting;-
-plottinga;Plotting (World set 2, protected);1989;Taito Corporation Japan;NO;plotting;YES;plotting;-
-plottingb;Plotting (World set 3, earliest version);1989;Taito Corporation Japan;NO;plotting;YES;plotting;-
 pfghtj;Pocket Fighter (970904 Japan);1997;Capcom;NO;sgemf;YES;sgemf;-
 pktgaldxj;Pocket Gal Deluxe (Japan v3.00);1993;Nihon System;NO;pktgaldx;YES;pktgaldx;-
 pgalvipa;Pocket Gals V.I.P (set 2);1996;unknown;NO;pgalvip;YES;pgalvip;-
@@ -1831,8 +1644,6 @@ pooyans;Pooyan (Stern);1982;[Konami] (Stern license);NO;pooyan;YES;pooyan;-
 popflamen;Pop Flamer (bootleg on Naughty Boy PCB);1982;Jaleco;NO;popflame;YES;popflame;-
 popflameb;Pop Flamer (hack?);1982;Jaleco;NO;popflame;YES;popflame;-
 popflamea;Pop Flamer (not protected);1982;Jaleco;NO;popflame;YES;popflame;-
-popnpopu;Pop'n Pop (Ver 2.07A 1998/02/09);1997;Taito Corporation;NO;popnpop;YES;popnpop;-
-popnpopj;Pop'n Pop (Ver 2.07J 1998/02/09);1997;Taito Corporation;NO;popnpop;YES;popnpop;-
 popeyeman;Popeye-Man [Hack];1981;hack;NO;puckman;YES;puckman;-
 porter;Port Man (bootleg on Moon Cresta hardware) [Bootleg];19??;Nova Games Ltd;NO;dockman;YES;dockman;-
 pdriftj;Power Drift (Japan) [Select Auto-Center preset in Input Configuration];1988;Sega;NO;pdrift;YES;pdrift;-
@@ -1847,7 +1658,6 @@ pgearr1;Powered Gear - strategic variant armor equipment (940916 Japan);1994;Cap
 pgear;Powered Gear - strategic variant armor equipment (941024 Japan);1994;Capcom;NO;armwar;YES;armwar;-
 prehislek;Prehistoric Isle in 1930 (Korea);1989;SNK (Victor license);NO;prehisle;YES;prehisle;-
 prehisleu;Prehistoric Isle in 1930 (US);1989;SNK of America;NO;prehisle;YES;prehisle;-
-prehisleb;Prehistoric Isle in 1930 (World, bootleg);1989;bootleg;NO;prehisle;YES;prehisle;-
 sailormno;Pretty Soldier Sailor Moon (ver. 95/03/22, Europe);1995;BanPresto / Gazelle;NO;sailormn;YES;sailormn;-
 sailormnoh;Pretty Soldier Sailor Moon (ver. 95/03/22, Hong Kong);1995;BanPresto / Gazelle;NO;sailormn;YES;sailormn;-
 sailormnoj;Pretty Soldier Sailor Moon (ver. 95/03/22, Japan);1995;BanPresto / Gazelle;NO;sailormn;YES;sailormn;-
@@ -1859,8 +1669,6 @@ sailormnj;Pretty Soldier Sailor Moon (ver. 95/03/22B, Japan);1995;BanPresto / Ga
 sailormnk;Pretty Soldier Sailor Moon (ver. 95/03/22B, Korea);1995;BanPresto / Gazelle;NO;sailormn;YES;sailormn;-
 sailormnt;Pretty Soldier Sailor Moon (ver. 95/03/22B, Taiwan);1995;BanPresto / Gazelle;NO;sailormn;YES;sailormn;-
 sailormnu;Pretty Soldier Sailor Moon (ver. 95/03/22B, USA);1995;BanPresto / Gazelle;NO;sailormn;YES;sailormn;-
-prmtmfgt;Prime Time Fighter (Ver 2.1A 1993/05/21) (New Version);1993;Taito America Corporation;NO;trstar;YES;trstar;-
-prmtmfgto;Prime Time Fighter (Ver 2.1A 1993/05/21) (Old Version);1993;Taito America Corporation;NO;trstar;YES;trstar;-
 primella;Primella;1994;Dooyong (NTC license);NO;gundl94;YES;gundl94;-
 progeara;Progear (010117 Asia);2001;Capcom / Cave;NO;progear;YES;progear;-
 progearjd;Progear No Arashi (010117 Japan Phoenix Edition) [Bootleg];2001;bootleg;NO;progear;YES;progear;-
@@ -1872,7 +1680,6 @@ psychosj;Psycho Soldier (Japan);1987;SNK;NO;psychos;YES;psychos;-
 oscarj1;Psycho-Nics Oscar (Japan revision 1);1987;Data East Corporation;NO;oscar;YES;oscar;-
 oscarj2;Psycho-Nics Oscar (Japan revision 2);1987;Data East Corporation;NO;oscar;YES;oscar;-
 oscaru;Psycho-Nics Oscar (US);1987;Data East USA;NO;oscar;YES;oscar;-
-puchicarj;Puchi Carat (Ver 2.02J 1997/10/29);1997;Taito Corporation;NO;puchicar;YES;puchicar;-
 puckmanb;Puck Man (Bootleg set 1);1980;bootleg;NO;puckman;YES;puckman;-
 puckmanh;Puck Man (bootleg set 2);1981;bootleg (Falcom?);NO;puckman;YES;puckman;-
 puckmod;Puck Man (Japan set 2);1981;Namco;NO;puckman;YES;puckman;-
@@ -1894,31 +1701,17 @@ puzzloopu;Puzz Loop (USA);1998;Mitchell;NO;puzzloop;YES;puzzloop;-
 pzloop2jr1;Puzz Loop 2 (010205 Japan);2001;Mitchell, distritued by Capcom;NO;pzloop2;YES;pzloop2;-
 pzloop2j;Puzz Loop 2 (010226 Japan);2001;Mitchell, distritued by Capcom;NO;pzloop2;YES;pzloop2;-
 pbobblenb;Puzzle Bobble / Bust-A-Move (Neo-Geo) (bootleg) [Bootleg];1994;Taito;NO;pbobblen;YES;pbobblen;-
-pbobble2j;Puzzle Bobble 2 (Ver 2.2J 1995/07/20);1995;Taito Corporation;NO;pbobble2;YES;pbobble2;-
-pbobble2o;Puzzle Bobble 2 (Ver 2.2O 1995/07/20);1995;Taito Corporation Japan;NO;pbobble2;YES;pbobble2;-
-pbobble2x;Puzzle Bobble 2X (Ver 2.2J 1995/11/11);1995;Taito Corporation;NO;pbobble2;YES;pbobble2;-
-pbobble3u;Puzzle Bobble 3 (Ver 2.1A 1996/09/27);1996;Taito Corporation;NO;pbobble3;YES;pbobble3;-
-pbobble3j;Puzzle Bobble 3 (Ver 2.1J 1996/09/27);1996;Taito Corporation;NO;pbobble3;YES;pbobble3;-
-pbobble4u;Puzzle Bobble 4 (Ver 2.04A 1997/12/19);1997;Taito Corporation;NO;pbobble4;YES;pbobble4;-
-pbobble4j;Puzzle Bobble 4 (Ver 2.04J 1997/12/19);1997;Taito Corporation;NO;pbobble4;YES;pbobble4;-
 pclubysa;Puzzle Club (Yun Sung, set 2);2000;Yun Sung;NO;pclubys;YES;pclubys;-
 puzzldpr;Puzzle De Pon! R!;1997;Taito (Visco license);NO;puzzledp;YES;puzzledp;-
 uopokoj;Puzzle Uo Poko (Japan, ver. 98/02/06);1999;Cave / Jaleco;NO;uopoko;YES;uopoko;-
 puzzli2s;Puzzli 2 Super (V200) [Incomplete dump];2001;IGS;NO;puzzli2;YES;puzzli2;-
 puzzlovek;PuzzLove (Korea);1994;Para;NO;puzzlove;YES;puzzlove;-
-puzznicb;Puzznic (bootleg, set 1) [Bootleg];1989;bootleg;NO;puzznic;YES;puzznic;-
-puzznicba;Puzznic (bootleg, set 2) [Bootleg];1989;bootleg;NO;puzznic;YES;puzznic;-
-puzznici;Puzznic (Italian bootleg) [Bootleg];1989;bootleg;NO;puzznic;YES;puzznic;-
-puzznicj;Puzznic (Japan);1989;Taito Corporation;NO;puzznic;YES;puzznic;-
-puzznicu;Puzznic (US);1989;Taito America Corporation;NO;puzznic;YES;puzznic;-
-pyros;Pyros (US);1987;Toaplan / Taito America Corporation;NO;wardner;YES;wardner;-
 qbertj;Q*bert (Japan);1982;Gottlieb (Konami license);NO;qbert;YES;qbert;qbert
 qberta;Q*bert (US set 2);1982;Gottlieb;NO;qbert;YES;qbert;qbert
 quarteta;Quartet (8751 315-5194);1986;Sega;NO;quartet;YES;quartet;-
 quartet2;Quartet 2 (8751 317-0010);1986;Sega;NO;quartet;YES;quartet;-
 quartet2a;Quartet 2 (unprotected);1986;Sega;NO;quartet;YES;quartet;-
 quarth;Quarth (Japan);1989;Konami;NO;blockhl;YES;blockhl;-
-questers;Quester Special Edition (Japan);1987;Namco;NO;quester;YES;quester;-
 qadjr;Quiz & Dragons (940921 Japan Resale Ver.);1992;Capcom;NO;qad;YES;qad;-
 quizdaisk;Quiz Daisousa Sen - The Last Count Down (Korean release);1991;SNK;NO;quizdais;YES;quizdais;-
 quizkofk;Quiz King of Fighters (Korean release);1995;Saurus;NO;quizkof;YES;quizkof;-
@@ -1936,10 +1729,8 @@ racingbj;Racing Beat (Japan);1991;Taito Corporation;NO;racingb;YES;racingb;-
 racherod;Racing Hero (FD1094 317-0144 decrypted) [Bootleg];1989;Sega;NO;rachero;YES;rachero;-
 rdaction;Rad Action / NinjaKun Ashura no Shou;1987;UPL (World Games license);NO;ninjakd2;YES;ninjakd2;-
 radarscp1;Radar Scope (TRS01) [No sound / Gfx Issues];1980;Nintendo;NO;radarscp;YES;radarscp;-
-radradj;Radical Radial (Japan);1982;Logitec Corp.;NO;radrad;YES;radrad;-
 rotdh;Rage of the Dragons (NGH-2640);2002;Evoga / Playmore;NO;rotd;YES;rotd;-
 raidenk;Raiden (Korea);1990;Seibu Kaihatsu (IBL Corporation license);NO;raiden;YES;raiden;-
-raidenkb;Raiden (Korea, bootleg);1990;bootleg;NO;raiden;YES;raiden;-
 raidena;Raiden (set 2);1990;Seibu Kaihatsu;NO;raiden;YES;raiden;-
 raidenb;Raiden (set 3, Alternate hardware);1990;Seibu Kaihatsu;NO;raiden;YES;raiden;-
 raident;Raiden (Taiwan);1990;Seibu Kaihatsu (Liang HWA Electronics license);NO;raiden;YES;raiden;-
@@ -1953,7 +1744,6 @@ raidendxa2;Raiden DX (Hong Kong, set 2);1994;Seibu Kaihatsu (Metrotainment licen
 raidendxj;Raiden DX (Japan);1994;Seibu Kaihatsu;NO;raidendx;YES;raidendx;-
 raidendxk;Raiden DX (Korea);1994;Seibu Kaihatsu;NO;raidendx;YES;raidendx;-
 raidendxu;Raiden DX (US);1994;Seibu Kaihatsu (Fabtek license);NO;raidendx;YES;raidendx;-
-raiden2eg;Raiden II (Easy Version, Germany);1993;Seibu Kaihatsu (Tuning license);NO;raiden2;YES;raiden2;-
 raiden2ea;Raiden II (Easy Version, Japan?);1993;Seibu Kaihatsu;NO;raiden2;YES;raiden2;-
 raiden2e;Raiden II (Easy Version, Korea?);1993;Seibu Kaihatsu;NO;raiden2;YES;raiden2;-
 raiden2eua;Raiden II (Easy Version, US set 1);1993;Seibu Kaihatsu (Fabtek license);NO;raiden2;YES;raiden2;-
@@ -1971,8 +1761,6 @@ r2dx_v33_r2;Raiden II New / Raiden DX (newer V33 PCB) (Raiden II EEPROM) [Terrib
 raiders5t;Raiders5 (Japan);1985;UPL (Taito license);NO;raiders5;YES;raiders5;-
 raiga;Raiga - Strato Fighter (Japan);1991;Tecmo;NO;stratof;YES;stratof;-
 rchasej;Rail Chase (Japan);1991;Sega;NO;rchase;YES;rchase;-
-raimaisj;Raimais (Japan);1988;Taito Corporation;NO;raimais;YES;raimais;-
-raimaisjo;Raimais (Japan, first revision);1988;Taito Corporation;NO;raimais;YES;raimais;-
 rbislande;Rainbow Islands (Extra);1988;Taito Corporation;NO;rbisland;YES;rbisland;-
 rbislando;Rainbow Islands (old version);1987;Taito Corporation;NO;rbisland;YES;rbisland;-
 rallyxa;Rally X;1980;Namco;NO;rallyx;YES;rallyx;rallyx
@@ -1987,16 +1775,11 @@ rastanu;Rastan (US Rev 1);1987;Taito America Corporation;NO;rastan;YES;rastan;-
 rastanua;Rastan (US);1987;Taito America Corporation;NO;rastan;YES;rastan;-
 rastanub;Rastan (US, Earlier code base);1987;Taito America Corporation;NO;rastan;YES;rastan;-
 rastana;Rastan (World);1987;Taito Corporation Japan;NO;rastan;YES;rastan;-
-rastanb;Rastan (World, Earlier code base);1987;Taito Corporation Japan;NO;rastan;YES;rastan;-
 rastsaga;Rastan Saga (Japan Rev 1);1987;Taito Corporation;NO;rastan;YES;rastan;-
 rastsagaa;Rastan Saga (Japan Rev 1, Earlier code base);1987;Taito Corporation;NO;rastan;YES;rastan;-
-rastsagab;Rastan Saga (Japan, Earlier code base);1987;Taito Corporation;NO;rastan;YES;rastan;-
 rastsag2;Rastan Saga 2 (Japan);1988;Taito Corporation;NO;nastar;YES;nastar;-
-rayforce;Ray Force (Ver 2.3A 1994/01/20);1993;Taito Corporation;NO;gunlock;YES;gunlock;-
-rayforcej;Ray Force (Ver 2.3J 1994/01/20);1993;Taito Corporation;NO;gunlock;YES;gunlock;-
 photoy2k102;Real and Fake;1999;IGS;NO;photoy2k;YES;photoy2k;-
 rbff1a;Real Bout Fatal Fury / Real Bout Garou Densetsu (bug fix revision);1995;SNK;NO;rbff1;YES;rbff1;-
-rbff1k;Real Bout Fatal Fury / Real Bout Garou Densetsu (Korean release);1995;SNK;NO;rbff1;YES;rbff1;-
 rbff2k;Real Bout Fatal Fury 2 - The Newcomers (Korean release);1998;SNK;NO;rbff2;YES;rbff2;-
 rbff2h;Real Bout Fatal Fury 2 - The Newcomers / Real Bout Garou Densetsu 2 - the newcomers (NGH-2400);1998;SNK;NO;rbff2;YES;rbff2;-
 rbffspeck;Real Bout Fatal Fury Special / Real Bout Garou Densetsu Special (Korean release);1996;SNK;NO;rbffspec;YES;rbffspec;-
@@ -2004,7 +1787,6 @@ redearthr1;Red Earth / War-Zard (Euro 961023);1996;Capcom;NO;redearth;YES;redear
 redfoxwp2;Red Fox War Planes II (China, set 1);1998;Afega;NO;grdnstrm;YES;grdnstrm;-
 redfoxwp2a;Red Fox War Planes II (China, set 2);1998;Afega;NO;grdnstrm;YES;grdnstrm;-
 redhawke;Red Hawk (Excellent Co., Ltd);1997;Afega (Excellent Co. license);NO;stagger1;YES;stagger1;-
-redhawkg;Red Hawk (Greece);1997;Afega (Hea Dong Corp license);NO;stagger1;YES;stagger1;-
 redhawki;Red Hawk (Italy);1997;Afega (Hea Dong Corp license);NO;stagger1;YES;stagger1;-
 redhawkk;Red Hawk (Korea);1997;Afega Co.;NO;stagger1;YES;stagger1;-
 redhawk;Red Hawk (US);1997;Afega (New Vision Ent. license);NO;stagger1;YES;stagger1;-
@@ -2012,22 +1794,14 @@ reguluso;Regulus (315-5033);1983;Sega;NO;regulus;YES;regulus;-
 regulusu;Regulus (not encrypted);1983;Sega;NO;regulus;YES;regulus;-
 retofinv1;Return of the Invaders (bootleg set 1) [Bootleg];1985;bootleg;NO;retofinv;YES;retofinv;-
 retofinv2;Return of the Invaders (bootleg set 2) [Bootleg];1985;bootleg;NO;retofinv;YES;retofinv;-
-revenger;Revenger '84 (set 2) [Bad dump];1984;Epos Corporation;NO;revngr84;YES;revngr84;-
 rezont;Rezon (Taito);1992;Allumer (Taito license);NO;rezon;YES;rezon;-
-ridingfu;Riding Fight (Ver 1.0A);1992;Taito America Corporation;NO;ridingf;YES;ridingf;-
-ridingfj;Riding Fight (Ver 1.0J);1992;Taito Corporation;NO;ridingf;YES;ridingf;-
 ridheroh;Riding Hero (set 2);1990;SNK;NO;ridhero;YES;ridhero;-
 ringfgt;Ring Fighter (set 1);1984;Kaneko (Taito license);NO;vsgongf;YES;vsgongf;-
 ringfgt2;Ring Fighter (set 2);1984;Kaneko (Taito license);NO;vsgongf;YES;vsgongf;-
-ringohja;Ring no Ohja (Japan 2 Players ver. N);1988;Konami;NO;mainevt;YES;mainevt;-
 ringdesta;Ring of Destruction - slammasters II (940831 Asia);1994;Capcom;NO;ringdest;YES;ringdest;-
 ringdstd;Ring of Destruction - slammasters II (940902 Euro Phoenix Edition) [Bootleg];1994;bootleg;NO;ringdest;YES;ringdest;-
 ringdesth;Ring of Destruction - slammasters II (940902 Hispanic);1994;Capcom;NO;ringdest;YES;ringdest;-
-ringrageu;Ring Rage (Ver 2.3A 1992/08/09);1992;Taito America Corporation;NO;ringrage;YES;ringrage;-
-ringragej;Ring Rage (Ver 2.3J 1992/08/09);1992;Taito Corporation;NO;ringrage;YES;ringrage;-
 rpatrolb;River Patrol (bootleg);1981;bootleg;NO;rpatrol;YES;rpatrol;-
-roadf2;Road Fighter (set 2);1984;Konami;NO;roadf;YES;roadf;-
-roadf3;Road Fighter (set 3, conversion hack on Hyper Sports PCB);1984;hack;NO;roadf;YES;roadf;-
 roboarma;Robo Army (set 2);1991;SNK;NO;roboarmy;YES;roboarmy;-
 robocopj;Robocop (Japan);1988;Data East Corporation;NO;robocop;YES;robocop;-
 robocopb2;Robocop (Red Corporation World bootleg) [Bootleg];1989;bootleg;NO;robocop;YES;robocop;-
@@ -2053,19 +1827,15 @@ rohgau;Rohga Armor Force (US v1.0);1991;Data East Corporation;NO;rohga;YES;rohga
 rollace;Roller Aces (set 1);1983;Kaneko (Williams license);NO;fightrol;YES;fightrol;-
 rollace2;Roller Aces (set 2);1983;Kaneko (Williams license);NO;fightrol;YES;fightrol;-
 rollergj;Rollergames (Japan);1991;Konami;NO;rollerg;YES;rollerg;-
-rolcrusha;Rolling Crush (version 1.03.E - 1999/01/29);1999;SemiCom / Exit;NO;rolcrush;YES;rolcrush;-
 rthunder0;Rolling Thunder (oldest);1986;Namco;NO;rthunder;YES;rthunder;-
 rthunder1;Rolling Thunder (rev 1);1986;Namco;NO;rthunder;YES;rthunder;-
 rthunder2;Rolling Thunder (rev 2);1986;Namco;NO;rthunder;YES;rthunder;-
 rthundera;Rolling Thunder (rev 3, hack);1986;bootleg;NO;rthunder;YES;rthunder;-
-rthun2j;Rolling Thunder 2 (Japan);1990;Namco;NO;rthun2;YES;rthun2;-
-romperso;Rompers (Japan, old version);1989;Namco;NO;rompers;YES;rompers;-
 ropeman;Ropeman (bootleg of Roc'n Rope) [Bootleg];1983;bootleg;NO;rocnrope;YES;rocnrope;-
 route16bl;Route 16 (bootleg);1981;bootleg (Leisure and Allied);NO;route16;YES;route16;-
 route16a;Route 16 (set 2);1981;Tehkan/Sun (Centuri license);NO;route16;YES;route16;-
 route16c;Route 16 (set 3, bootleg?);1981;Tehkan/Sun (Centuri license);NO;route16;YES;route16;-
 routex;Route X (bootleg);1981;bootleg;NO;route16;YES;route16;-
-rugrats;Rug Rats;1983;Nichibutsu;NO;wiping;YES;wiping;-
 rundeep;Run Deep [Bootleg];1988;bootleg (Cream);NO;thedeep;YES;thedeep;-
 runark;Runark (Japan);1990;Taito Corporation;NO;growl;YES;growl;-
 rushcrsh;Rush & Crash (Japan);1986;Capcom;NO;srumbler;YES;srumbler;-
@@ -2087,14 +1857,11 @@ stdragona;Saint Dragon (set 2);1989;Jaleco;NO;stdragon;YES;stdragon;-
 salamandj;Salamander (version J);1986;Konami;NO;salamand;YES;salamand;-
 samesame2;Same! Same! Same!;1989;Toaplan;NO;fireshrk;YES;fireshrk;-
 samesame;Same! Same! Same! (2 player alternating ver.);1989;Toaplan;NO;fireshrk;YES;fireshrk;-
-samesamenh;Same! Same! Same! NEW VER! (v1.00, hack by Trap15);1989;Hack / Trap15;NO;fireshrk;YES;fireshrk;-
 tsamuraih;Samurai Nihon-Ichi (bootleg, harder) [Bootleg];1985;bootleg;NO;tsamurai;YES;tsamurai;-
 tsamurai2;Samurai Nihon-Ichi (set 2);1985;Kaneko / Taito;NO;tsamurai;YES;tsamurai;-
 samshoh;Samurai Shodown / Samurai Spirits (NGH-045);1993;SNK;NO;samsho;YES;samsho;-
 samshoa;Samurai Shodown / Samurai Spirits (NGM-045, alternate board);1993;SNK;NO;samsho;YES;samsho;-
-samsho2sp;Samurai Shodown II / Shin Samurai Spirits - Haohmaru jigokuhen (Special 2017, hack) [Hack];2017;hack;NO;samsho2;YES;samsho2;-
 samsho3h;Samurai Shodown III / Samurai Spirits - Zankurou Musouken (NGH-087);1995;SNK;NO;samsho3;YES;samsho3;-
-samsho4sp;Samurai Shodown IV - Amakusa's Revenge / Samurai Spirits - Amakusa Kourin (Special 2017, hack) [Hack];1996;hack;NO;samsho4;YES;samsho4;-
 samsho5b;Samurai Shodown V / Samurai Spirits Zero (bootleg) [Bootleg];2003;bootleg;NO;samsho5;YES;samsho5;-
 samsho5x;Samurai Shodown V / Samurai Spirits Zero (hack of XBOX version) [Hack];2003;hack;NO;samsho5;YES;samsho5;-
 samsho5h;Samurai Shodown V / Samurai Spirits Zero (NGH-2700);2003;Yuki Enterprise / SNK Playmore;NO;samsho5;YES;samsho5;-
@@ -2117,7 +1884,6 @@ sgyxz;Sangokushi II: Sanguo Yingxiong Zhuan (Chinese bootleg set 3, 921005 Asia)
 wofsj;Sangokushi II: Sheng Jian Sanguo (Chinese bootleg set 1, 921005 Asia) [Bootleg, Imperfect Graphics];1992;bootleg;NO;wof;YES;wof;-
 wofsja;Sangokushi II: Sheng Jian Sanguo (Chinese bootleg set 2, 921005 Asia) [Bootleg, Imperfect Graphics];1992;bootleg;NO;wof;YES;wof;-
 wofsjb;Sangokushi II: Sheng Jian Sanguo (Chinese bootleg set 3, 921005 Asia) [Bootleg, No sound];1992;bootleg;NO;wof;YES;wof;-
-wofsjc;Sangokushi II: Sheng Jian Sanguo (Chinese bootleg set 4, 921005 Asia) [Bootleg, Imperfect graphics];1992;bootleg;NO;wof;YES;wof;-
 wofchdx;Sangokushi III Gaiden: Kakou-On's Revenge DX (hack);2010;Capcom;NO;wofch;YES;wofch;-
 ssanchan;Sanrin San Chan (Japan);1984;Sega;NO;spatter;YES;spatter;-
 searcharj;SAR - Search And Rescue (Japan);1989;SNK;NO;searchar;YES;searchar;-
@@ -2126,10 +1892,6 @@ sarukani;Saru-Kani-Hamu-Zou (Japan);1997;Kaneko / Mediaworks;NO;vblokbrk;YES;vbl
 slampic;Saturday Night Slam Masters (bootleg (with PIC16c57), 930713 etc) [Bootleg, No Sound];1993;bootleg;NO;slammast;YES;slammast;-
 slammastu;Saturday Night Slam Masters (slam masters 930713 USA);1993;Capcom;NO;slammast;YES;slammast;-
 samsho2k;Saulabi Spirits / Jin Saulabi Tu Hon (Korean release of Samurai Shodown II);1994;SNK;NO;samsho2;YES;samsho2;-
-samsho2ka;Saulabi Spirits / Jin Saulabi Tu Hon (Korean release of Samurai Shodown II, set 2);1994;SNK;NO;samsho2;YES;samsho2;-
-saurob;Sauro (bootleg) [Bootleg, Missing speech is normal];1987;bootleg;NO;sauro;YES;sauro;-
-saurop;Sauro (Philko license) [Missing speech chip!];1987;Tecfri (Philko license);NO;sauro;YES;sauro;-
-saurorr;Sauro (Recreativos Real S.A. license) [Missing speech chip!];1987;Tecfri (Recreativos Real S.A. license);NO;sauro;YES;sauro;-
 savgbees;Savage Bees;1985;Capcom (Memetron license);NO;exedexes;YES;exedexes;-
 scionc;Scion (Cinematronics);1984;Seibu Denshi (Cinematronics license);NO;scion;YES;scion;stinger
 scorpionmc;Scorpion (Moon Cresta hardware);19??;Dorneer;NO;scorpion;YES;scorpion;-
@@ -2145,11 +1907,6 @@ scrambler;Scramble (Reben S.A. Spanish bootleg) [Bootleg];1981;bootleg (Reben S.
 scramrf;Scramble (Recreativos Franco, Spanish bootleg) [Bootleg];1981;bootleg (Recreativos Franco);NO;scramble;YES;scramble;-
 scrambles;Scramble (Stern);1981;Konami (Stern license);NO;scramble;YES;scramble;-
 sdibl;SDI - Strategic Defense Initiative (bootleg, original hardware);1987;Sega;NO;sdi;YES;sdi;-
-sdibl2;SDI - Strategic Defense Initiative (bootleg, set 1);1987;Sega;NO;sdi;YES;sdi;-
-sdibl3;SDI - Strategic Defense Initiative (bootleg, set 2);1987;Sega;NO;sdi;YES;sdi;-
-sdibl4;SDI - Strategic Defense Initiative (bootleg, set 3);1987;Sega;NO;sdi;YES;sdi;-
-sdibl5;SDI - Strategic Defense Initiative (bootleg, set 4);1987;Sega;NO;sdi;YES;sdi;-
-sdibl6;SDI - Strategic Defense Initiative (bootleg, set 5);1987;Sega;NO;sdi;YES;sdi;-
 sdia;SDI - Strategic Defense Initiative (Japan, old, System 16A, FD1089B 317-0027);1987;Sega;NO;sdi;YES;sdi;-
 sdib;SDI - Strategic Defense Initiative (System 16B, FD1089A 317-0028);1987;Sega;NO;sdi;YES;sdi;-
 searcheya;Search Eye (English / Korean);1999;Yun Sung;NO;searchey;YES;searchey;-
@@ -2190,10 +1947,6 @@ shisen2;Shisensho II;1993;Tamtex;NO;matchit2;YES;matchit2;-
 shocktroa;Shock Troopers (set 2);1997;Saurus;NO;shocktro;YES;shocktro;-
 shogwarrk;Shogun Warriors (Korea?);1992;Kaneko;NO;shogwarr;YES;shogwarr;-
 shogwarru;Shogun Warriors (US);1992;Kaneko;NO;shogwarr;YES;shogwarr;-
-shootoutj;Shoot Out (Japan);1985;Data East Corporation;NO;shootout;YES;shootout;-
-shootoutb;Shoot Out (Korean Bootleg) [Bootleg];1985;bootleg;NO;shootout;YES;shootout;-
-shtriderb;Shot Rider (bootleg) [Bootleg, Graphics issues];1985;bootleg;NO;shtrider;YES;shtrider;-
-shtridera;Shot Rider (Sigma license);1984;Seibu Kaihatsu (Sigma license);NO;shtrider;YES;shtrider;-
 sidearmsj;Side Arms - Hyper Dyne (Japan, 861128);1986;Capcom;NO;sidearms;YES;sidearms;-
 sidearmsur1;Side Arms - Hyper Dyne (US, 861128);1986;Capcom (Romstar license);NO;sidearms;YES;sidearms;-
 sidearmsu;Side Arms - Hyper Dyne (US, 861202);1986;Capcom (Romstar license);NO;sidearms;YES;sidearms;-
@@ -2204,19 +1957,13 @@ silentdj;Silent Dragon (Japan);1992;Taito Corporation;NO;silentd;YES;silentd;-
 silentdu;Silent Dragon (US);1992;Taito America Corporation;NO;silentd;YES;silentd;-
 silkwormb;Silk Worm (bootleg) [Bootleg];1988;Tecmo;NO;silkworm;YES;silkworm;-
 silkwormj;Silk Worm (Japan);1988;Tecmo;NO;silkworm;YES;silkworm;-
-silkwormp;Silk Worm (prototype?);1988;Tecmo;NO;silkworm;YES;silkworm;-
 silvland;Silver Land;1981;Falcon;NO;rpatrol;YES;rpatrol;-
-skyadvntj;Sky Adventure (Japan);1989;Alpha Denshi Co.;NO;skyadvnt;YES;skyadvnt;-
-skyadvntu;Sky Adventure (US);1989;Alpha Denshi Co. (SNK of America license);NO;skyadvnt;YES;skyadvnt;-
 skykidd;Sky Kid (CUS60 version);1985;Namco;NO;skykid;YES;skykid;-
 skykido;Sky Kid (old version);1985;Namco;NO;skykid;YES;skykid;-
 skykids;Sky Kid (Sipem);1985;Namco [Sipem license];NO;skykid;YES;skykid;-
 skykiddxo;Sky Kid Deluxe (set 2);1986;Namco;NO;skykiddx;YES;skykiddx;-
 skylancre;Sky Lancer (Esco Trading Co license);1983;Orca (Esco Trading Co license);NO;skylancr;YES;skylancr;-
 skyraidr;Sky Raiders [Bootleg];1980;bootleg;NO;uniwars;YES;uniwars;-
-skyshark;Sky Shark (US, set 1);1987;Toaplan / Taito America Corporation (Romstar license);NO;fshark;YES;fshark;-
-skysharka;Sky Shark (US, set 2);1987;Toaplan / Taito America Corporation (Romstar license);NO;fshark;YES;fshark;-
-skysoldrbl;Sky Soldiers (bootleg) [Bootleg];1988;bootleg;NO;skysoldr;YES;skysoldr;-
 skywolf;Sky Wolf (set 1) [Bootleg];1987;bootleg;NO;airwolf;YES;airwolf;-
 skywolf2;Sky Wolf (set 2) [Bootleg];1987;bootleg;NO;airwolf;YES;airwolf;-
 skywolf3;Sky Wolf (set 3) [Bootleg];1987;bootleg;NO;airwolf;YES;airwolf;-
@@ -2240,17 +1987,14 @@ snowbrosb;Snow Bros. - Nick & Tom (set 3);1990;Toaplan;NO;snowbros;YES;snowbros;
 snowbrosc;Snow Bros. - Nick & Tom (set 4);1990;Toaplan;NO;snowbros;YES;snowbros;-
 snowbroswb;Snow Bros. - Nick & Tom (The Winter Bobble hardware bootleg) [Bootleg];1990;bootleg;NO;snowbros;YES;snowbros;-
 socbrawlh;Soccer Brawl (NGH-031);1991;SNK;NO;socbrawl;YES;socbrawl;-
-soldividk;Sol Divide - The Sword Of Darkness (Korea);1997;Psikyo;NO;soldivid;YES;soldivid;-
 solrwarr;Solar-Warrior (US);1986;Technos Japan (Taito / Memetron license);NO;xsleena;YES;xsleena;-
 soldamj;Soldam (Japan);1992;Jaleco;NO;soldam;YES;soldam;-
 solomonj;Solomon's Key (Japan);1986;Tecmo;NO;solomon;YES;solomon;-
 sonofphx;Son of Phoenix;1985;Associated Overseas MFR, Inc;NO;repulse;YES;repulse;-
 sonsonj;Son Son (Japan);1984;Capcom;NO;sonson;YES;sonson;-
-sbmj;Sonic Blast Man (Japan);1990;Taito Corporation;NO;sbm;YES;sbm;-
 sonicbomd;Sonic Boom (FD1094 317-0053 decrypted) [Bootleg];1987;Sega;NO;sonicbom;YES;sonicbom;-
 sonicwi;Sonic Wings (Japan);1992;Video System Co.;NO;aerofgt;YES;aerofgt;-
 sstrikera;Sorcer Striker (World, alt);1993;Raizing;NO;sstriker;YES;sstriker;-
-soukobdx;Souko Ban Deluxe (Japan, SB1);1990;Namco;NO;boxyboy;YES;boxyboy;-
 spacbatt;Space Battle (bootleg set 1) [Bootleg];1980;bootleg;NO;uniwars;YES;uniwars;-
 spacbat2;Space Battle (bootleg set 2) [Bootleg];1980;bootleg;NO;uniwars;YES;uniwars;-
 sbsgomo;Space Battle Ship Gomorrah;1990;UPL;NO;bioship;YES;bioship;-
@@ -2263,7 +2007,6 @@ spacempr;Space Empire (bootleg) [Bootleg];1980;bootleg;NO;uniwars;YES;uniwars;-
 spacegunj;Space Gun (Japan);1990;Taito Corporation;NO;spacegun;YES;spacegun;-
 spacegunu;Space Gun (US);1990;Taito America Corporation;NO;spacegun;YES;spacegun;-
 sharrier1;Space Harrier (8751 315-5163);1985;Sega;NO;sharrier;YES;sharrier;-
-spcinv95u;Space Invaders '95: The Attack Of Lunar Loonies (Ver 2.5A 1995/06/14);1995;Taito America Corporation;NO;spcinv95;YES;spcinv95;-
 sisv1;Space Invaders (SV Version rev 1);1978;Taito;NO;invaders;YES;invaders;invaders
 sisv2;Space Invaders (SV Version rev 2);1978;Taito;NO;invaders;YES;invaders;invaders
 sisv3;Space Invaders (SV Version rev 3);1978;Taito;NO;invaders;YES;invaders;invaders
@@ -2272,7 +2015,6 @@ sitv1;Space Invaders (TV Version rev 1);1978;Taito;NO;invaders;YES;invaders;inva
 sitv;Space Invaders (TV Version rev 2);1978;Taito;NO;invaders;YES;invaders;invaders
 spacedxo;Space Invaders DX (Japan, v2.0);1994;Taito Corporation;NO;spacedx;YES;spacedx;-
 spacedxj;Space Invaders DX (Japan, v2.1);1994;Taito Corporation;NO;spacedx;YES;spacedx;-
-spcinvdj;Space Invaders DX (Ver 2.6J 1994/09/14) (F3 Version);1994;Taito Corporation;NO;spacedx;YES;spacedx;-
 galap1;Space Invaders Galactica (galaxiaj hack) [Hack];1979;hack;NO;galaxian;YES;galaxian;-
 sinvasnb;Space Invasion (bootleg) [Bootleg];1985;bootleg;NO;commando;YES;commando;-
 sinvasn;Space Invasion (Europe);1985;Capcom;NO;commando;YES;commando;-
@@ -2288,17 +2030,12 @@ spec2kh;Spectrum 2000 (horizontal, buggy) (Europe);2000;Yona Tech;NO;spec2k;YES;
 spelunkrj;Spelunker (Japan);1985;Irem (licensed from Broderbund);NO;spelunkr;YES;spelunkr;tr606drumkit
 spinlbrkj;Spinal Breakers (Japan);1990;V-System Co.;NO;spinlbrk;YES;spinlbrk;-
 spinlbrku;Spinal Breakers (US);1990;V-System Co.;NO;spinlbrk;YES;spinlbrk;-
-splatterj;Splatter House (Japan, SH1);1988;Namco;NO;splatter;YES;splatter;-
-splatter2;Splatter House (World, old version (SH2));1988;Namco;NO;splatter;YES;splatter;-
 starfght;Star Fighter;1979;Juetel;NO;galaxian;YES;galaxian;-
 starfgmc;Star Fighter (Moon Cresta bootleg) [Bootleg];198?;bootleg (Samyra Engineering);NO;mooncrst;YES;mooncrst;-
 starjacks;Star Jacker (Stern);1983;Sega;NO;starjack;YES;starjack;-
-sgunnerj;Steel Gunner (Japan);1990;Namco;NO;sgunner;YES;sgunner;-
-sgunner2j;Steel Gunner 2 (Japan, Rev A);1991;Namco;NO;sgunner2;YES;sgunner2;-
 stera;Steraranger (Moon Cresta bootleg) [Bootleg];1980;bootleg;NO;mooncrst;YES;mooncrst;-
 stinger2;Stinger (prototype?);1983;Seibu Denshi;NO;stinger;YES;stinger;stinger
 stoneage;Stoneage (bootleg of Caveman Ninja) [Bootleg];1991;bootleg;NO;cninja;YES;cninja;-
-stmbladej;Storm Blade (Japan);1996;Visco;NO;stmblade;YES;stmblade;-
 strfbomb;Strafe Bomb;1981;Omni;NO;scramble;YES;scramble;-
 stratgys;Strategy X (Stern);1981;Konami (Stern License);NO;stratgyx;YES;stratgyx;-
 stratvox;Stratovox;1980;[Sun Electronics] (Taito license);NO;speakres;YES;speakres;-
@@ -2332,7 +2069,6 @@ sf2amf5;Street Fighter II - Champion Edition (Alpha Magic-F bootleg set 5, 92031
 sf2amf6;Street Fighter II - Champion Edition (Alpha Magic-F bootleg set 6, 920313 etc) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
 sf2amf7;Street Fighter II - Champion Edition (Alpha Magic-F bootleg set 7, 920313 etc) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
 sf2amf8;Street Fighter II - Champion Edition (Alpha Magic-F bootleg set 8, 920313 etc) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
-sf2em;Street Fighter II - The World Warrior (910129 etc);1991;Capcom;NO;sf2;YES;sf2;-
 sf2ua;Street Fighter II - The World Warrior (910206 USA);1991;Capcom;NO;sf2;YES;sf2;-
 sf2eb;Street Fighter II - The World Warrior (910214 etc);1991;Capcom;NO;sf2;YES;sf2;-
 sf2ja;Street Fighter II - The World Warrior (910214 Japan);1991;Capcom;NO;sf2;YES;sf2;-
@@ -2350,8 +2086,6 @@ sf2ug;Street Fighter II - The World Warrior (910522 USA, rev G);1991;Capcom;NO;s
 sf2ui;Street Fighter II - The World Warrior (910522 USA, rev I);1991;Capcom;NO;sf2;YES;sf2;-
 sf2uk;Street Fighter II - The World Warrior (911101 USA);1991;Capcom;NO;sf2;YES;sf2;-
 sf2j;Street Fighter II - The World Warrior (911210 Japan, CPS-B-13);1991;Capcom;NO;sf2;YES;sf2;-
-sf2j17;Street Fighter II - The World Warrior (911210 Japan, CPS-B-17);1991;Capcom;NO;sf2;YES;sf2;-
-sf2jla;Street Fighter II - The World Warrior (911210 Japan, rev L);1991;Capcom;NO;sf2;YES;sf2;-
 sf2jl;Street Fighter II - The World Warrior (920312 Japan);1991;Capcom;NO;sf2;YES;sf2;-
 sf2b;Street Fighter II - The World Warrior (bootleg, 910214 etc, set 1  (with YM2151 + 2xMSM5205)) [Bootleg, row scroll issues];1992;bootleg;NO;sf2;YES;sf2;-
 sf2b2;Street Fighter II - The World Warrior (bootleg, 910214 etc, set 2) [Bootleg];1991;Capcom;NO;sf2;YES;sf2;-
@@ -2405,7 +2139,6 @@ sf2ceuc;Street Fighter II' - Champion Edition (street fighter 2' 920803 USA);199
 sf2tlona;Street Fighter II' - Champion Edition (Tu Long bootleg set 1, 811102 001) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
 sf2tlonb;Street Fighter II' - Champion Edition (Tu Long bootleg set 2, 811102 001) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
 sf2tlonc;Street Fighter II' - Champion Edition (Tu Long bootleg set 3, 811102 001) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
-sf2ceupl;Street Fighter II' - Champion Edition (UPL bootleg) [Bootleg];1992;bootleg (UPL);NO;sf2ce;YES;sf2ce;-
 sf2v004;Street Fighter II' - Champion Edition (V004 bootleg set 1, 102092 USA) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
 sf2v0042;Street Fighter II' - Champion Edition (V004 bootleg set 2, 920313 etc) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
 sf2v0043;Street Fighter II' - Champion Edition (V004 bootleg set 3, 920313 etc) [Bootleg];1992;bootleg;NO;sf2ce;YES;sf2ce;-
@@ -2502,7 +2235,6 @@ sboblbobld;Super Bobble Bobble (bootleg, set 4) [Bootleg];1986;bootleg;NO;bublbo
 supbtimej;Super Burger Time (Japan);1990;Data East Corporation;NO;supbtime;YES;supbtime;-
 supbtimea;Super Burger Time (World, set 2);1990;Data East Corporation;NO;supbtime;YES;supbtime;-
 sbbros;Super Buster Bros. (USA 901001);1990;Mitchell (Capcom license);NO;spang;YES;spang;-
-sbasebalj;Super Champion Baseball (Japan);1989;Alpha Denshi Co.;NO;sbasebal;YES;sbasebal;-
 superchsj;Super Chase - Criminal Termination (Japan);1992;Taito Corporation;NO;superchs;YES;superchs;-
 superchsu;Super Chase - Criminal Termination (US);1992;Taito America Corporation;NO;superchs;YES;superchs;-
 scobrab;Super Cobra (bootleg) [Bootleg];1981;bootleg;NO;scobra;YES;scobra;-
@@ -2510,7 +2242,6 @@ scobrase;Super Cobra (Sega);1981;Konami (Sega license);NO;scobra;YES;scobra;-
 scobras;Super Cobra (Stern);1981;Konami (Stern license);NO;scobra;YES;scobra;-
 scobrae;Super Cobra (Stern) (encrypted, KONATEC XC-103SS CPU);1981;Konami (Stern license);NO;scobra;YES;scobra;-
 scontraj;Super Contra (Japan);1988;Konami;NO;scontra;YES;scontra;-
-scfinalso;Super Cup Finals (Ver 2.1O 1993/11/19) [Use service coin! (game has issues)];1993;Taito Corporation Japan;NO;scfinals;YES;scfinals;-
 sformula;Super Formula (Japan);1989;V-System Co.;NO;tail2nos;YES;tail2nos;-
 superg;Super Galaxians (galaxiaj hack) [Hack];1979;hack;NO;galaxian;YES;galaxian;-
 sgemfa;Super Gem Fighter Mini Mix (970904 Asia);1997;Capcom;NO;sgemf;YES;sgemf;-
@@ -2541,7 +2272,6 @@ smgpd;Super Monaco GP (World, Rev B, FD1094 317-0126a decrypted) [Bootleg];1989;
 smooncrs;Super Moon Cresta [Bootleg];1981?;Nichibutsu (Gremlin license);NO;mooncrst;YES;mooncrst;-
 smbombr1;Super Muscle Bomber - the international blowout (940808 Japan);1994;Capcom;NO;ringdest;YES;ringdest;-
 smbomb;Super Muscle Bomber - the international blowout (940831 Japan);1994;Capcom;NO;ringdest;YES;ringdest;-
-superpacm;Super Pac-Man (Midway);1982;Namco (Bally Midway license);NO;superpac;YES;superpac;-
 spangj;Super Pang (Japan 901023);1990;Mitchell;NO;spang;YES;spang;-
 spnchoutj;Super Punch-Out!! (Japan);1984;Nintendo;NO;spnchout;YES;spnchout;-
 spnchouta;Super Punch-Out!! (Rev A);1984;Nintendo;NO;spnchout;YES;spnchout;-
@@ -2552,7 +2282,6 @@ spf2tu;Super Puzzle Fighter II Turbo (Super Puzzle Fighter 2 Turbo 960620 USA);1
 spf2xjd;Super Puzzle Fighter II X (Super Puzzle Fighter 2 X 960531 Japan Phoenix Edition) [Bootleg];1996;bootleg;NO;spf2t;YES;spf2t;-
 spf2xj;Super Puzzle Fighter II X (Super Puzzle Fighter 2 X 960531 Japan);1996;Capcom;NO;spf2t;YES;spf2t;-
 srdarwinj;Super Real Darwin (Japan);1987;Data East Corporation;NO;srdarwin;YES;srdarwin;-
-srmp4o;Super Real Mahjong PIV (Japan, older set);1993;Seta;NO;srmp4;YES;srmp4;-
 macross2g;Super Spacefortress Macross II / Chou-Jikuu Yousai Macross II (GAMEST review build);1993;Banpresto;NO;macross2;YES;macross2;-
 sstarcrs;Super Star Crest [Bootleg];1980?;Nichibutsu (Taito do Brasil license);NO;mooncrst;YES;mooncrst;-
 ssf2jr2;Super Street Fighter II - the new challengers (super street fighter 2 930910 Japan);1993;Capcom;NO;ssf2;YES;ssf2;-
@@ -2567,7 +2296,6 @@ ssf2a;Super Street Fighter II - the new challengers (super street fighter 2 9310
 ssf2j;Super Street Fighter II - the new challengers (super street fighter 2 931005 Japan);1993;Capcom;NO;ssf2;YES;ssf2;-
 ssf2tbr1;Super Street Fighter II - the tournament battle (930911 etc) [Linkup feature not implemented];1993;Capcom;NO;ssf2;YES;ssf2;-
 ssf2tbj1;Super Street Fighter II - the tournament battle (930911 Japan) [Linkup feature not implemented];1993;Capcom;NO;ssf2;YES;ssf2;-
-ssf2tba;Super Street Fighter II - the tournament battle (931005 Asia) [Linkup feature not implemented];1993;Capcom;NO;ssf2;YES;ssf2;-
 ssf2tbh;Super Street Fighter II - the tournament battle (931005 Hispanic) [Linkup feature not implemented];1993;Capcom;NO;ssf2;YES;ssf2;-
 ssf2tbj;Super Street Fighter II - the tournament battle (931005 Japan) [Linkup feature not implemented];1993;Capcom;NO;ssf2;YES;ssf2;-
 ssf2tbd;Super Street Fighter II - the tournament battle (931119 etc Phoenix Edition) [Bootleg, Linkup feature not implemented];1993;bootleg;NO;ssf2;YES;ssf2;-
@@ -2582,34 +2310,24 @@ ssf2xjr1d;Super Street Fighter II X - grand master challenge (super street fight
 ssf2xjr1r;Super Street Fighter II X - grand master challenge (super street fighter 2 X 940223 Japan rent version);1994;Capcom;NO;ssf2t;YES;ssf2t;-
 ssf2xjr1;Super Street Fighter II X - grand master challenge (super street fighter 2 X 940223 Japan);1994;Capcom;NO;ssf2t;YES;ssf2t;-
 ssf2xj;Super Street Fighter II X - grand master challenge (super street fighter 2 X 940311 Japan);1994;Capcom;NO;ssf2t;YES;ssf2t;-
-usg82;Super Ten V8.2;1988;U.S. Games;NO;superten;YES;superten;-
-usg83x;Super Ten V8.3X;1988;U.S. Games;NO;superten;YES;superten;-
 striv2;Super Triv (set 2) [No sound];1985;Hara Industries;NO;striv;YES;striv;-
 svolly91;Super Volley '91 (Japan);1991;Video System Co.;NO;pspikes;YES;pspikes;-
 svolleyk;Super Volleyball (Korea);1989;V-System Co.;NO;svolley;YES;svolley;-
 svolleyu;Super Volleyball (US);1989;V-System Co. (Data East license);NO;svolley;YES;svolley;-
-sws92g;Super World Stadium '92 Gekitouban (Japan);1992;Namco;NO;sws92;YES;sws92;-
 superxm;Super-X (Mitchell);1994;Dooyong (Mitchell license);NO;superx;YES;superx;-
 1942h;Supercharger 1942;1991;hack (Two Bit Score);NO;1942;YES;1942;-
 supermanj;Superman (Japan);1988;Taito Corporation;NO;superman;YES;superman;-
 supermanu;Superman (US);1988;Taito Corporation;NO;superman;YES;superman;-
 suratka;Surprise Attack (Asia ver. L);1990;Konami;NO;suratk;YES;suratk;-
 suratkj;Surprise Attack (Japan ver. M);1990;Konami;NO;suratk;YES;suratk;-
-survartsj;Survival Arts (Japan);1993;Sammy;NO;survarts;YES;survarts;-
-survartsu;Survival Arts (USA);1993;American Sammy;NO;survarts;YES;survarts;-
-gogomileo;Susume! Mile Smile / Go Go! Mile Smile (older);1995;Fuuki;NO;gogomile;YES;gogomile;-
 swarm;Swarm (bootleg?) [Bootleg];1979;Sebelectro;NO;galaxian;YES;galaxian;-
 syvalionp;Syvalion (World, prototype);1988;Taito Corporation;NO;syvalion;YES;syvalion;-
 tnk3j;T.A.N.K (Japan);1985;SNK;NO;tnk3;YES;tnk3;-
 tactcian2;Tactician (set 2);1981;Konami (Sega license);NO;tactcian;YES;tactcian;-
-karatevs;Taisen Karate Dou (Japan VS version);1984;Data East Corporation;NO;kchamp;YES;kchamp;-
 tshingena;Takeda Shingen (Japan, Japanese);1988;Jaleco;NO;tshingen;YES;tshingen;-
-tankfrcej;Tank Force (Japan);1991;Namco;NO;tankfrce;YES;tankfrce;-
-tankfrce4;Tank Force (US, 4 Players);1991;Namco;NO;tankfrce;YES;tankfrce;-
 taotaidoa;Tao Taido (set 2);1993;Video System Co.;NO;taotaido;YES;taotaido;-
 tharrieru;Task Force Harrier (US?);1989;UPL (American Sammy license);NO;tharrier;YES;tharrier;-
 joemac;Tatakae Genshizin Joe & Mac (Japan ver 1);1991;Data East Corporation;NO;cninja;YES;cninja;-
-bigfghtr;Tatakae! Big Fighter (Japan);1989;Nichibutsu;NO;skyrobo;YES;skyrobo;-
 trojanj;Tatakai no Banka (Japan);1986;Capcom;NO;trojan;YES;trojan;-
 tazzmang2;Tazz-Mania (bootleg on Galaxian hardware with Starfield) [Bootleg];1982;bootleg;NO;tazmania;YES;tazmania;-
 tazzmang;Tazz-Mania (bootleg on Galaxian hardware) [Bootleg];1982;bootleg;NO;tazmania;YES;tazmania;-
@@ -2696,7 +2414,6 @@ thehustlj;The Hustler (Japan, program code J);1987;Konami;NO;rackemup;YES;rackem
 thehustl;The Hustler (Japan, program code M);1987;Konami;NO;rackemup;YES;rackemup;-
 skingame;The Irem Skins Game (US set 1);1992;Irem America;NO;majtitl2;YES;majtitl2;-
 skingame2;The Irem Skins Game (US set 2);1992;Irem America;NO;majtitl2;YES;majtitl2;-
-karatourj;The Karate Tournament (Japan);1992;Mitchell;NO;karatour;YES;karatour;-
 killbld104;The Killing Blade (V104);1998;IGS;NO;killbld;YES;killbld;-
 kodr1;The King of Dragons (910711 etc);1991;Capcom;NO;kod;YES;kod;-
 kodb;The King of Dragons (bootleg, 910731 etc) [Bootleg];1991;Capcom;NO;kod;YES;kod;-
@@ -2707,7 +2424,6 @@ kodda;The King of Dragons (Phoenix bootleg, 910731 etc) [Bootleg];1991;Capcom;NO
 kodu;The King of Dragons (US 910910);1991;Capcom;NO;kod;YES;kod;-
 kof95h;The King of Fighters '95 (NGH-084);1995;SNK;NO;kof95;YES;kof95;-
 kof95a;The King of Fighters '95 (NGH-084, alternate board);1995;SNK;NO;kof95;YES;kof95;-
-kof95sp;The King of Fighters '95 (Special 2017, hack) [Hack];2017;hack;NO;kof95;YES;kof95;-
 kof96ae20;The King of Fighters '96 (Anniversary Edition 2.0.0430, EGHT hack) [Hack];2009;hack;NO;kof96;YES;kof96;-
 kof96ae;The King of Fighters '96 (Anniversary Edition, EGHT hack) [Hack];2007;hack;NO;kof96;YES;kof96;-
 kof96ep;The King of Fighters '96 (bootleg / hack) [Bootleg];1996;bootleg;NO;kof96;YES;kof96;-
@@ -2731,7 +2447,6 @@ kof98a;The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream ma
 kof99ae;The King of Fighters '99 (15th Anniversary Edition) [Prototype];2015;SNK;NO;kof99;YES;kof99;-
 kof99e;The King of Fighters '99 - Millennium Battle (earlier);1999;SNK;NO;kof99;YES;kof99;-
 kof99k;The King of Fighters '99 - Millennium Battle (Korean release);1999;SNK;NO;kof99;YES;kof99;-
-kof99ka;The King of Fighters '99 - Millennium Battle (Korean release, non-encrypted program);1999;SNK;NO;kof99;YES;kof99;-
 kof99h;The King of Fighters '99 - Millennium Battle (NGH-2510);1999;SNK;NO;kof99;YES;kof99;-
 kof99p;The King of Fighters '99 - Millennium Battle (prototype) [Prototype];1999;SNK;NO;kof99;YES;kof99;-
 kof10th;The King of Fighters 10th Anniversary (bootleg) [Bootleg];2002;bootleg;NO;kof2002;YES;kof2002;-
@@ -2759,10 +2474,8 @@ kof2k4se;The King of Fighters Special Edition 2004 (bootleg) [Bootleg];2004;boot
 kf2k4pls;The King of Fighters Special Edition 2004 Plus (bootleg) [Bootleg];2004;bootleg;NO;kof2002;YES;kof2002;-
 lastbladh;The Last Blade / Bakumatsu Roman - Gekka no Kenshi (NGH-2340);1997;SNK;NO;lastblad;YES;lastblad;-
 lastblada;The Last Blade / Bakumatsu Roman - Gekka no Kenshi (NGM-2340, alternate board);1997;SNK;NO;lastblad;YES;lastblad;-
-lastbld2eh;The Last Blade 2 / Bakumatsu Roman - Dai Ni Maku Gekka no Kenshi (Enhanced Hack);1998;SNK;NO;lastbld2;YES;lastbld2;-
 lastdaya;The Last Day (set 2);1990;Dooyong;NO;lastday;YES;lastday;-
 lastsold;The Last Soldier (Korean release of The Last Blade);1997;SNK;NO;lastblad;YES;lastblad;-
-lastbladsp;The Last Soldier (Special 2017, hack);2017;SNK;NO;lastblad;YES;lastblad;-
 lkageb;The Legend of Kage (bootleg set 1) [Bootleg];1984;bootleg;NO;lkage;YES;lkage;-
 lkageb2;The Legend of Kage (bootleg set 2) [Bootleg];1984;bootleg;NO;lkage;YES;lkage;-
 lkageb3;The Legend of Kage (bootleg set 3) [Bootleg];1984;bootleg;NO;lkage;YES;lkage;-
@@ -2770,21 +2483,15 @@ lkageo;The Legend of Kage (older);1984;Taito Corporation;NO;lkage;YES;lkage;-
 lkageoo;The Legend of Kage (oldest);1984;Taito Corporation;NO;lkage;YES;lkage;-
 silkroada;The Legend of Silkroad (larger roms);1999;Unico;NO;silkroad;YES;silkroad;-
 lordofk;The Lord of King (Japan);1989;Jaleco;NO;astyanax;YES;astyanax;-
-mainevt2p;The Main Event (2 Players ver. X);1988;Konami;NO;mainevt;YES;mainevt;-
-mainevto;The Main Event (4 Players ver. F);1988;Konami;NO;mainevt;YES;mainevt;-
 tnzsj;The NewZealand Story (Japan, new version, newer PCB);1988;Taito Corporation;NO;tnzs;YES;tnzs;-
 tnzsjo;The NewZealand Story (Japan, old version) (older PCB);1988;Taito Corporation;NO;tnzs;YES;tnzs;-
 tnzsuo;The NewZealand Story (US, old version) (older PCB);1988;Taito America Corporation;NO;tnzs;YES;tnzs;-
 tnzso;The NewZealand Story (World, old version) (older PCB);1988;Taito Corporation Japan;NO;tnzs;YES;tnzs;-
 tnzsop;The NewZealand Story (World, prototype) (older PCB);1988;Taito Corporation Japan;NO;tnzs;YES;tnzs;-
-tnzsoa;The NewZealand Story (World, unknown version) (older PCB);1988;Taito Corporation Japan;NO;tnzs;YES;tnzs;-
-tnextspcj;The Next Space (Japan);1989;SNK (Pasadena International Corp. license);NO;tnextspc;YES;tnextspc;-
-tnextspc2;The Next Space (set 2);1989;SNK;NO;tnextspc;YES;tnextspc;-
 ninjakj;The Ninja Kids (Japan);1990;Taito Corporation;NO;ninjak;YES;ninjak;-
 ninjaku;The Ninja Kids (US);1990;Taito America Corporation;NO;ninjak;YES;ninjak;-
 ninjawj;The Ninja Warriors (Japan);1987;Taito Corporation;NO;ninjaw;YES;ninjaw;-
 ninjawu;The Ninja Warriors (US, Romstar license);1987;Taito Corporation America (licensed to Romstar);NO;ninjaw;YES;ninjaw;-
-ninjaw1;The Ninja Warriors (World, earlier version);1987;Taito Corporation Japan;NO;ninjaw;YES;ninjaw;-
 thepitm;The Pit (bootleg on Moon Quasar hardware) [Bootleg];198?;bootleg (KZH);NO;thepit;YES;thepit;-
 punisherh;The Punisher (930422 Hispanic);1993;Capcom;NO;punisher;YES;punisher;-
 punisherj;The Punisher (930422 Japan);1993;Capcom;NO;punisher;YES;punisher;-
@@ -2793,7 +2500,6 @@ punipic;The Punisher (bootleg set 1 (with PIC16c57), 930422 etc) [Bootleg, No so
 punipic2;The Punisher (bootleg set 2 (with PIC16c57), 930422 etc) [Bootleg, No sound];1993;bootleg;NO;punisher;YES;punisher;-
 punipic3;The Punisher (bootleg set 3 (with PIC16c57), 930422 etc) [Bootleg, No sound];1993;bootleg;NO;punisher;YES;punisher;-
 punisherb;The Punisher (bootleg, 930422 etc) [Bootleg];1993;bootleg;NO;punisher;YES;punisher;-
-ghostb2a;The Real Ghostbusters (US 2 Players);1987;Data East USA;NO;ghostb;YES;ghostb;-
 ghostb3;The Real Ghostbusters (US 3 Players);1987;Data East USA;NO;ghostb;YES;ghostb;-
 simpsons2pa;The Simpsons (2 Players Asia);1991;Konami;NO;simpsons;YES;simpsons;-
 simpsons2pj;The Simpsons (2 Players Japan);1991;Konami;NO;simpsons;YES;simpsons;-
@@ -2804,12 +2510,9 @@ simpsons4pa;The Simpsons (4 Players World, set 2);1991;Konami;NO;simpsons;YES;si
 srumbler2;The Speed Rumbler (set 2);1986;Capcom;NO;srumbler;YES;srumbler;-
 srumbler3;The Speed Rumbler (set 3);1986;Capcom (Tecfri license);NO;srumbler;YES;srumbler;-
 thetogyu;The Togyu (315-5065, Japan);1984;Coreland / Sega;NO;bullfgt;YES;bullfgt;-
-todruagao;The Tower of Druaga (Old Ver.);1984;Namco;NO;todruaga;YES;todruaga;-
-todruagas;The Tower of Druaga (Sidam);1984;bootleg? (Sidam);NO;todruaga;YES;todruaga;-
 wintbob;The Winter Bobble (bootleg) [Bootleg];1990;bootleg;NO;snowbros;YES;snowbros;-
 3wondersh;Three Wonders (bootleg set 1, wonder 3 910520 etc) [Bootleg];1991;Capcom;NO;3wonders;YES;3wonders;-
 3wondersb;Three Wonders (bootleg set 2, wonder 3 910520 etc) [Bootleg];1991;Capcom;NO;3wonders;YES;3wonders;-
-3wondersha;Three Wonders (bootleg set 3, wonder 3 910520 etc) [Bootleg];1991;Capcom;NO;3wonders;YES;3wonders;-
 3wondersr1;Three Wonders (wonder 3 910513 etc);1991;Capcom;NO;3wonders;YES;3wonders;-
 3wondersu;Three Wonders (wonder 3 910520 USA);1991;Capcom;NO;3wonders;YES;3wonders;-
 thndrbld1;Thunder Blade (deluxe/standing, unprotected);1987;Sega;NO;thndrbld;YES;thndrbld;-
@@ -2840,7 +2543,6 @@ tp84b;Time Pilot '84 (set 3);1984;Konami;NO;tp84;YES;tp84;-
 timeplta;Time Pilot (Atari);1982;Konami (Atari license);NO;timeplt;YES;timeplt;-
 timepltc;Time Pilot (Centuri);1982;Konami (Centuri license);NO;timeplt;YES;timeplt;-
 timescan1;Time Scanner (set 1, System 16A, FD1089B 317-0024);1987;Sega;NO;timescan;YES;timescan;-
-timesold1;Time Soldiers (US Rev 1);1987;Alpha Denshi Co. (SNK/Romstar license);NO;timesold;YES;timesold;-
 tiptop;Tip Top;1983;Sega;NO;congo;YES;congo;congo
 tokib;Toki (bootleg);1989;bootleg (Datsu);NO;toki;YES;toki;-
 tokip;Toki (US, prototype?);1989;TAD Corporation (Fabtek license);NO;toki;YES;toki;-
@@ -2849,20 +2551,13 @@ tokiua;Toki (US, set 2);1989;TAD Corporation (Fabtek license);NO;toki;YES;toki;-
 tokia;Toki (World, set 2);1989;TAD Corporation;NO;toki;YES;toki;-
 tokiob;Tokio / Scramble Formation (bootleg) [Bootleg];1986;bootleg;NO;tokio;YES;tokio;-
 jackalj;Tokushu Butai Jackal (Japan, 8-way Joystick);1986;Konami;NO;jackal;YES;jackal;-
-tndrcadej;Tokusyu Butai U.A.G. (Japan);1987;Seta (Taito license);NO;tndrcade;YES;tndrcade;-
 topgunbl;Top Gunner (bootleg, Rotary Joystick);1986;bootleg;NO;jackal;YES;jackal;-
 topgunr;Top Gunner (US, 8-way Joystick);1986;Konami;NO;jackal;YES;jackal;-
 tophuntrh;Top Hunter - Roddy & Cathy (NGH-046);1994;SNK;NO;tophuntr;YES;tophuntr;-
 drivfrct;Top Racer (bootleg of Driving Force) [Bootleg];1985;bootleg (EMT Germany);NO;drivfrcp;YES;drivfrcp;-
-trstarj;Top Ranking Stars (Ver 2.1J 1993/05/21) (New Version);1993;Taito Corporation;NO;trstar;YES;trstar;-
-trstaroj;Top Ranking Stars (Ver 2.1J 1993/05/21) (Old Version);1993;Taito Corporation;NO;trstar;YES;trstar;-
-trstaro;Top Ranking Stars (Ver 2.1O 1993/05/21) (Old Version);1993;Taito Corporation Japan;NO;trstar;YES;trstar;-
 topsecrt;Top Secret (Japan);1987;Capcom;NO;bionicc;YES;bionicc;-
 topspeedu;Top Speed (US);1987;Taito America Corporation (Romstar license);NO;topspeed;YES;topspeed;-
 toramich;Tora e no Michi (Japan);1987;Capcom;NO;tigeroad;YES;tigeroad;-
-toride2j;Toride II (Japan) [No sound];1994;Metro;NO;toride2g;YES;toride2g;-
-toride2gg;Toride II Adauchi Gaiden (German);1994;Metro;NO;toride2g;YES;toride2g;-
-toride2gk;Toride II Bok Su Oi Jeon Adauchi Gaiden (Korea);1994;Metro;NO;toride2g;YES;toride2g;-
 touchgoe;Touch & Go (earlier revision);1995;Gaelco;NO;touchgo;YES;touchgo;-
 touchgok;Touch & Go (Korea, unprotected);1995;Gaelco;NO;touchgo;YES;touchgo;-
 touchgon;Touch & Go (Non North America);1995;Gaelco;NO;touchgo;YES;touchgo;-
@@ -2872,10 +2567,8 @@ tturfu;Tough Turf (set 1, US, 8751 317-0099);1989;Sega / Sunsoft;NO;tturf;YES;tt
 tkdenshoa;Toukidenshou - Angel Eyes (VER. 960427) [No sound];1996;Tecmo;NO;tkdensho;YES;tkdensho;-
 trackfldc;Track & Field (Centuri);1983;Konami (Centuri license);NO;trackfld;YES;trackfld;-
 trackfldnz;Track & Field (NZ bootleg?);1982;bootleg? (Goldberg Enterprizes Inc.);NO;trackfld;YES;trackfld;-
-travrusab;Traverse USA (bootleg);1983;bootleg (I.P.);NO;travrusa;YES;travrusa;-
 treahunt;Treasure Hunt (bootleg?);1982;Hara Industries;NO;jack;YES;jack;-
 tripoola;Tri-Pool (Costal Games);1981;Noma (Costal Games license);NO;tripool;YES;tripool;-
-trckydoca;Tricky Doc (set 2);1987;Tecfri;NO;trckydoc;YES;trckydoc;-
 trigon;Trigon (Japan);1990;Konami;NO;lgtnfght;YES;lgtnfght;-
 trikitri;Triki Triki (Lover Boy bootleg);1983;DTT Enterprise Inc;NO;loverboy;YES;loverboy;-
 triothepj;Trio The Punch - Never Forget Me... (Japan);1989;Data East Corporation;NO;triothep;YES;triothep;-
@@ -2888,11 +2581,9 @@ trvmstrc;Trivia Master (set 4);1985;Enerdyne Technologies Inc.;NO;trvmstr;YES;tr
 trojanb;Trojan (bootleg);1986;bootleg;NO;trojan;YES;trojan;-
 trojanr;Trojan (Romstar);1986;Capcom (Romstar license);NO;trojan;YES;trojan;-
 trojana;Trojan (US set 2);1986;Capcom;NO;trojan;YES;trojan;-
-tubeit;Tube-It [Bootleg];1993;bootleg;NO;cachat;YES;cachat;-
 tumbleb;Tumble Pop (bootleg set 1) [Bootleg];1991;Data East Corporation;NO;tumblep;YES;tumblep;-
 tumbleb2;Tumble Pop (bootleg set 2) [Bootleg];1991;Data East Corporation;NO;tumblep;YES;tumblep;-
 tumblepj;Tumble Pop (Japan);1991;Data East Corporation;NO;tumblep;YES;tumblep;-
-turbofrcu;Turbo Force (US);1991;Video System Co.;NO;turbofrc;YES;turbofrc;-
 toutrun3d;Turbo Out Run (cockpit, FD1094 317-0107 decrypted) [Bootleg];1989;Sega;NO;toutrun;YES;toutrun;-
 toutrun3;Turbo Out Run (cockpit, FD1094 317-0107);1989;Sega;NO;toutrun;YES;toutrun;-
 toutrun1;Turbo Out Run (deluxe cockpit, FD1094 317-0109);1989;Sega;NO;toutrun;YES;toutrun;-
@@ -2909,27 +2600,18 @@ turtshipkn;Turtle Ship (Korea, 88/9);1988;Philko;NO;turtship;YES;turtship;-
 turtshipko;Turtle Ship (Korea, older);1988;Philko;NO;turtship;YES;turtship;-
 tutankhms;Tutankham (Stern Electronics);1982;Konami (Stern Electronics license);NO;tutankhm;YES;tutankhm;-
 twinadvk;Twin Adventure (Korea);1995;Barko Corp;NO;twinadv;YES;twinadv;-
-twinbrata;Twin Brats (set 2);1995;Elettronica Video-Games S.R.L.;NO;twinbrat;YES;twinbrat;-
-twincobru;Twin Cobra (US);1987;Toaplan / Taito America Corporation (Romstar license);NO;twincobr;YES;twincobr;-
-tcobra2u;Twin Cobra II (Ver 2.1A 1995/11/30);1995;Taito America Corporation;NO;tcobra2;YES;tcobra2;-
 twinhawku;Twin Hawk (US);1989;Taito America Corporation;NO;twinhawk;YES;twinhawk;-
 twocrude;Two Crude (US FT revision 1);1990;Data East USA;NO;cbuster;YES;cbuster;-
 twocrudea;Two Crude (US FT version);1990;Data East USA;NO;cbuster;YES;cbuster;-
 typhoon;Typhoon;1987;Konami;NO;ajax;YES;ajax;-
 earthjkrp;U.N. Defense Force: Earth Joker (Japan, prototype?);1993;Visco;NO;earthjkr;YES;earthjkr;-
 cawingj;U.S. Navy (901012 Japan);1990;Capcom;NO;cawing;YES;cawing;-
-dangara;Ufo Robo Dangar (12/1/1986);1986;Nichibutsu;NO;dangar;YES;dangar;-
-dangarb;Ufo Robo Dangar (9/26/1986);1986;Nichibutsu;NO;dangar;YES;dangar;-
-dangarj;Ufo Robo Dangar (9/26/1986, Japan);1986;Nichibutsu;NO;dangar;YES;dangar;-
-dangarbt;Ufo Robo Dangar (bootleg) [Bootleg];1986;Nichibutsu;NO;dangar;YES;dangar;-
 uecology;Ultimate Ecology (931203 Japan);1993;Capcom;NO;ecofghtr;YES;ecofghtr;-
 umk3r10;Ultimate Mortal Kombat 3 (rev 1.0);1994;Midway;NO;umk3;YES;umk3;-
 umk3r11;Ultimate Mortal Kombat 3 (rev 1.1);1994;Midway;NO;umk3;YES;umk3;-
-ultraxg;Ultra X Weapons / Ultra Keibitai (GAMEST review build);1995;Banpresto / Tsuburaya Productions;NO;ultrax;YES;ultrax;-
 uccopsar;Undercover Cops (Alpha Renewal Version);1992;Irem;NO;uccops;YES;uccops;-
 uccopsj;Undercover Cops (Japan);1992;Irem;NO;uccops;YES;uccops;-
 uccopsu;Undercover Cops (US);1992;Irem;NO;uccops;YES;uccops;-
-uniwarsa;UniWar S (bootleg);1980;bootleg (Karateco);NO;uniwars;YES;uniwars;-
 upndownu;Up'n Down (not encrypted);1983;Sega;NO;upndown;YES;upndown;-
 mustangs;US AAF Mustang (25th May. 1990 / Seoul Trading);1990;UPL (Seoul Trading license);NO;mustang;YES;mustang;-
 mustangb;US AAF Mustang (bootleg);1990;bootleg;NO;mustang;YES;mustang;-
@@ -2964,7 +2646,6 @@ varthu;Varth - operation thunderstorm (920612 USA);1992;Capcom (Romstar license)
 varthjr;Varth - operation thunderstorm (920714 Japan Resale Ver.);1992;Capcom;NO;varth;YES;varth;-
 varthj;Varth - operation thunderstorm (920714 Japan);1992;Capcom;NO;varth;YES;varth;-
 varthb;Varth - operation thunderstorm (bootleg, 920612 etc) [Bootleg];1992;bootleg;NO;varth;YES;varth;-
-vasara2a;Vasara 2 (set 2);2001;Visco;NO;vasara2;YES;vasara2;-
 vastar2;Vastar (set 2);1983;Sesame Japan;NO;vastar;YES;vastar;-
 vastar3;Vastar (set 3);1983;Sesame Japan;NO;vastar;YES;vastar;-
 vastar4;Vastar (set 4);1983;Sesame Japan;NO;vastar;YES;vastar;-
@@ -2975,7 +2656,6 @@ vendetta2pd;Vendetta (Asia, 2 Players ver. D);1991;Konami;NO;vendetta;YES;vendet
 vendetta2pu;Vendetta (Asia, 2 Players ver. U);1991;Konami;NO;vendetta;YES;vendetta;-
 vendettaz;Vendetta (Asia, 4 Players ver. Z);1991;Konami;NO;vendetta;YES;vendetta;-
 vendettar;Vendetta (US, 4 Players ver. R);1991;Konami;NO;vendetta;YES;vendetta;-
-vendetta2pun;Vendetta (World, 2 Players ver. ?);1991;Konami;NO;vendetta;YES;vendetta;-
 vendetta2peba;Vendetta (World, 2 Players ver. EB-A?);1991;Konami;NO;vendetta;YES;vendetta;-
 vendetta2p;Vendetta (World, 2 Players ver. W);1991;Konami;NO;vendetta;YES;vendetta;-
 venus;Venus [Bootleg];1983;bootleg;NO;gyruss;YES;gyruss;-
@@ -3002,7 +2682,6 @@ viostormu;Violent Storm (ver UAC);1993;Konami;NO;viostorm;YES;viostorm;-
 volfiedjo;Volfied (Japan);1989;Taito Corporation;NO;volfied;YES;volfied;-
 volfiedj;Volfied (Japan, revision 1);1989;Taito Corporation;NO;volfied;YES;volfied;-
 volfiedu;Volfied (US, revision 1);1989;Taito America Corporation;NO;volfied;YES;volfied;-
-vblokbrka;VS Block Breaker (Asia);1997;Kaneko / Mediaworks;NO;vblokbrk;YES;vblokbrk;-
 vulcana;Vulcan Venture (Old);1988;Konami;NO;vulcan;YES;vulcan;-
 vulcanb;Vulcan Venture (Oldest);1988;Konami;NO;vulcan;YES;vulcan;-
 vulgusj;Vulgus (Japan?);1984;Capcom;NO;vulgus;YES;vulgus;-
@@ -3014,7 +2693,6 @@ wwallyjd;Wally wo Sagase! (rev B, Japan, FD1094 317-0197B decrypted) [Bootleg];1
 warofbugu;War of the Bugs or Monsterous Manouvers in a Mushroom Maze (US);1981;Armenia;NO;warofbug;YES;warofbug;-
 warzardr1;War-Zard / Red Earth (Japan 961023);1996;Capcom;NO;redearth;YES;redearth;-
 warzard;War-Zard / Red Earth (Japan 961121);1996;Capcom;NO;redearth;YES;redearth;-
-wardnerj;Wardner no Mori (Japan);1987;Toaplan / Taito Corporation;NO;wardner;YES;wardner;-
 warpwarpr;Warp Warp (Rock-Ola set 1);1981;Namco (Rock-Ola license);NO;warpwarp;YES;warpwarp;-
 warpwarpr2;Warp Warp (Rock-Ola set 2);1981;Namco (Rock-Ola license);NO;warpwarp;YES;warpwarp;-
 wofr1;Warriors of Fate (921002 etc);1992;Capcom;NO;wof;YES;wof;-
@@ -3069,11 +2747,6 @@ wc90t;World Cup '90 (trackball);1989;Tecmo;NO;wc90;YES;wc90;-
 wh1h;World Heroes (ALH-005);1992;Alpha Denshi Co.;NO;wh1;YES;wh1;-
 wh1ha;World Heroes (set 3);1992;Alpha Denshi Co.;NO;wh1;YES;wh1;-
 wh2ja;World Heroes 2 Jet (ADM-007);1994;ADK / SNK;NO;wh2j;YES;wh2j;-
-wrallyat;World Rally (US, 930217);1993;Gaelco (Atari license);NO;wrally;YES;wrally;-
-wrallya;World Rally (Version 1.0, Checksum 3873);1993;Gaelco;NO;wrally;YES;wrally;-
-wrallyb;World Rally (Version 1.0, Checksum 8AA2);1993;Gaelco;NO;wrally;YES;wrally;-
-ws89;World Stadium '89 (Japan);1989;Namco;NO;ws;YES;ws;-
-ws90;World Stadium '90 (Japan);1990;Namco;NO;ws;YES;ws;-
 wrestwar1d;Wrestle War (set 1, Japan, FD1094 317-0090 decrypted) [Bootleg];1988;Sega;NO;wrestwar;YES;wrestwar;-
 wrestwar1;Wrestle War (set 1, Japan, FD1094 317-0090);1988;Sega;NO;wrestwar;YES;wrestwar;-
 wrestwar2d;Wrestle War (set 2, World, FD1094 317-0102 decrypted) [Bootleg];1988;Sega;NO;wrestwar;YES;wrestwar;-
@@ -3085,7 +2758,6 @@ wwfsstaru;WWF Superstars (US, newer);1989;Technos Japan;NO;wwfsstar;YES;wwfsstar
 wwfwfestj;WWF WrestleFest (Japan);1991;Technos Japan (Tecmo License);NO;wwfwfest;YES;wwfwfest;-
 wwfwfestk;WWF WrestleFest (Korea);1991;Technos Japan (Tecmo License);NO;wwfwfest;YES;wwfwfest;-
 wwfwfestb;WWF WrestleFest (US bootleg) [Bootleg];1991;bootleg;NO;wwfwfest;YES;wwfwfest;-
-wwfwfestu;WWF WrestleFest (US);1991;Technos Japan (Tecmo License);NO;wwfwfest;YES;wwfwfest;-
 wwfmaniab;WWF: Wrestlemania (rev 1.20 08/02/95);1995;Midway;NO;wwfmania;YES;wwfmania;-
 xmultiplm72;X Multiply (Japan, M72);1989;Irem;NO;xmultipl;YES;xmultipl;-
 xmen2pa;X-Men (2 Players ver AAA);1992;Konami;NO;xmen;YES;xmen;-
@@ -3131,12 +2803,7 @@ yamato2;Yamato (World?);1983;Sega;NO;yamato;YES;yamato;-
 yankeedo;Yankee DO!;1982;hack;NO;mrdo;YES;mrdo;-
 yieartf;Yie Ar Kung-Fu (GX361 conversion);1985;Konami;NO;yiear;YES;yiear;-
 yiear2;Yie Ar Kung-Fu (program code G);1985;Konami;NO;yiear;YES;yiear;-
-youkaidk2;Yokai Douchuuki (Japan, new version (YD2, Rev B));1987;Namco;NO;shadowld;YES;shadowld;-
-youkaidk1;Yokai Douchuuki (Japan, old version (YD1));1987;Namco;NO;shadowld;YES;shadowld;-
-youma;Youma Ninpou Chou (Japan);1986;Nichibutsu;NO;ninjemak;YES;ninjemak;-
-youma2;Youma Ninpou Chou (Japan, alt);1986;Nichibutsu;NO;ninjemak;YES;ninjemak;-
 yukiwo;Yukiwo (World, prototype) [Prototype, Imperfect graphics];1989;Taito Corporation Japan;NO;masterw;YES;masterw;-
-zavigaj;Zaviga (Japan);1984;Data East Corporation;NO;zaviga;YES;zaviga;-
 zaxxonj;Zaxxon (Japan);1982;Sega;NO;zaxxon;YES;zaxxon;zaxxon
 zaxxon2;Zaxxon (set 2, unknown rev);1982;Sega;NO;zaxxon;YES;zaxxon;zaxxon
 zaxxon3;Zaxxon (set 3, unknown rev);1982;Sega;NO;zaxxon;YES;zaxxon;zaxxon
