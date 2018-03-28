@@ -1,0 +1,9 @@
+name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sasampleof;
+1941;"1941 - Counter Attack";1991;"Hudson";YES;-;NO;-;-;
+aldynes;"Aldynes";1991;"Hudson";YES;-;NO;-;-;
+battlace;"Battle Ace";1989;"Hudson";YES;-;NO;-;-;
+daimakai;"Dai Makaimura";1990;"NEC Avenue";YES;-;NO;-;-;
+daimakai1;"Dai Makaimura (Alt)";1990;"NEC Avenue";NO;daimakai;YES;daimakai;-;
+daimakaid;"Dai Makaimura (Chris Covell's Debug Menu Hack)";1990;"NEC Avenue";NO;daimakai;YES;daimakai;-;
+granzort;"Madou Ou Granzort";1990;"Hudson";YES;-;NO;-;-;
+
