@@ -22,7 +22,7 @@
     "fs-extra": "^5.0.0"
   },
   "devDependencies": {
-    "electron": "^1.8.2",
+    "electron": "^1.8.4",
     "gulp": "^3.9.1"
   }
 }
