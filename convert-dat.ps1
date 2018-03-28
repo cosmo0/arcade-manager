@@ -4,7 +4,7 @@
 # into a CSV
 ###############################################
 
-gci "*.dat" | % {
+gci "tmp\*.dat" | % {
     [xml]$dat = get-content -path $_.FullName
 
     write "Processing $_"
@@ -35,7 +35,7 @@ gci "*.dat" | % {
         $file += "`n"
     }
 
-    $file | out-file "$($_.Name.Replace('.dat', '')).csv"
+    $file | out-file "tmp\$($_.Name.Replace('.dat', '')).csv"
 
     write "OK"
 }
