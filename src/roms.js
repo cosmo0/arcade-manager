@@ -25,6 +25,7 @@ module.exports = {
             });
 
         for (let i = 0; i < fileCsv.length; i++) {
+            let game = fileCsv[i].name;
             let zip = fileCsv[i].name + '.zip';
             let sourceRom = path.join(romset, zip);
             let destRom = path.join(selection, zip);
@@ -41,6 +42,12 @@ module.exports = {
                     
                     // copy rom
                     fs.copySync(sourceRom, destRom);
+
+                    // copy CHD
+                    let sourceChd = path.join(romset, game);
+                    if (fs.existsSync(sourceChd)) {
+                        fs.copySync(sourceChd, path.join(selection, game));
+                    }
 
                     console.log('%s copied', sourceRom);
                 } catch (errSource) {
