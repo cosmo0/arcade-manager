@@ -172,20 +172,11 @@
 
             if (btn.hasClass('folder')) {
                 // selection of a folder
-                dialog.showOpenDialog(
-                    {
-                        filters: { name: 'CSV files', extensions: [ 'csv' ] },
-                        properties: ['openDirectory']
-                    },
-                    (folders) => {
-                        if (folders && folders.length !== 0) {
-                            input.val(folders[0]);
-                        }
-                    });
+                dialog.showOpenDialog({ filters: { name: 'CSV files', extensions: [ 'csv' ] }, properties: ['openDirectory'] },
+                    (folders) => { if (folders && folders.length !== 0) { input.val(folders[0]); } });
             } else if (btn.hasClass('new')) {
                 // create a new file
                 dialog.showSaveDialog((filename) => {
-
                     if (typeof filename !== 'undefined' && filename !== '') {
                         if (!filename.endsWith('.csv')) { filename += '.csv'; }
                         input.val(filename);
@@ -193,16 +184,8 @@
                 });
             } else {
                 // select a file
-                dialog.showOpenDialog(
-                    {
-                        filters: { name: 'CSV files', extensions: [ 'csv' ] },
-                        properties: ['openFile']
-                    },
-                    (files) => {
-                        if (files && files.length !== 0) {
-                            input.val(files[0]);
-                        }
-                    });
+                dialog.showOpenDialog({ filters: { name: 'CSV files', extensions: [ 'csv' ] }, properties: ['openFile'] },
+                    (files) => { if (files && files.length !== 0) { input.val(files[0]); } });
             }
         });
 
@@ -272,7 +255,12 @@
                 break;
             }
 
-            window.alert('Done.');
+            var msg = 'Done.';
+            if (action.val() === 'fileadd') {
+                msg += '\nRemember to copy BIOS and samples!';
+            }
+
+            window.alert(msg);
         });
     </script>
 </body>
