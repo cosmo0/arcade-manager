@@ -15,6 +15,13 @@
             "path": "csv/mame2003"
         },
         {
+            "name": "MAME 2003 only",
+            "description": "Roms list for games that work in MAME 2003 but not in FBA",
+            "image": "",
+            "repository": "retropie-arcade-manager",
+            "path": "csv/mame2003"
+        },
+        {
             "name": "MAME 2010",
             "description": "Roms list for MAME 2010 (0.139)",
             "image": "",

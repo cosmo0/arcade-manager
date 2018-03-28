@@ -1,9 +1,19 @@
 # Arcade manager for Retropie
 
-This repository provides a rom management tool, specifically designed for use with Retropie.
+This repository provides a rom management tool, specifically designed for use with Retropie.  
+It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
+It's also useful if you feel a bit lost among the several thousand games that MAME provides, and only want the very best.
 
-**THIS TOOL DOES NOT REBUILD ROMSETS !!!** It assumes you have a working romset corresponding to the MAME version you're using.  
+**This tool does not rebuild romsets!** It assumes you have a working romset corresponding to the MAME/FBA version you're using.  
 If you ever need to change your romset version use a tool like [CLRMAMEPRO](https://mamedev.emulab.it/clrmamepro/).
+
+If you are new to arcade emulation, please read these resources:
+
+* [Arcade roms and how to play them, a non-technical guide](https://retropie.org.uk/forum/topic/7247/)
+* [Demistifying MAME roms](https://choccyhobnob.com/mame/demystifying-mame-roms/)
+* [Which arcade emulator should I choose?](https://www.reddit.com/r/RetroPie/comments/6v86nd/what_rom_set_works_best_with_mame/dlyhccz/) is:
+* [How to use MAME with Retropie](https://retropie.org.uk/forum/topic/2859/)
+* [Validating, rebuilding and filtering ROM collections](https://github.com/RetroPie/RetroPie-Setup/wiki/Validating,-Rebuilding,-and-Filtering-ROM-Collections)
 
 ## Usage
 
