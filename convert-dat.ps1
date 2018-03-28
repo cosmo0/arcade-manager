@@ -35,7 +35,7 @@ gci "tmp\*.dat" | % {
         $file += "`n"
     }
 
-    $file | out-file "tmp\$($_.Name.Replace('.dat', '')).csv"
+    $file | out-file "tmp\$($_.Name.Replace('.dat', '')).csv" -encoding "UTF8"
 
     write "OK"
 }
