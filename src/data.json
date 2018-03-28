@@ -1,14 +1,7 @@
 {
     "csv": [
         {
-            "name": "FBA 0.2.97.39",
-            "description": "Roms list for Final Burn Alpha 2016 (0.2.97.39)",
-            "image": "",
-            "repository": "cosmo0/retropie-arcade-manager",
-            "path": "csv/fba-0.2.97.39"
-        },
-        {
-            "name": "FBA 0.2.97.42",
+            "name": "FBA 2017",
             "description": "Roms list for Final Burn Alpha 2017 (0.2.97.42)",
             "image": "",
             "repository": "cosmo0/retropie-arcade-manager",
