@@ -4,8 +4,8 @@ This repository provides a rom management tool, specifically designed for use wi
 It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
 It's also useful if you feel a bit lost among the several thousand games that MAME provides, and only want the very best.
 
-**This tool does not rebuild romsets!** It assumes you have a working romset corresponding to the MAME/FBA version you're using.  
-If you ever need to change your romset version use a tool like [CLRMAMEPRO](https://mamedev.emulab.it/clrmamepro/).
+**THIS TOOL DOES NOT REBUILD ROMSETS!!!** It assumes you have a working romset corresponding to the MAME/FBA version you're using.  
+If you ever need to change your romset version use a tool like [ClrMamePro](https://mamedev.emulab.it/clrmamepro/).
 
 If you are new to arcade emulation, please read these resources:
 
@@ -13,7 +13,7 @@ If you are new to arcade emulation, please read these resources:
 * [Demistifying MAME roms](https://choccyhobnob.com/mame/demystifying-mame-roms/)
 * [How to use MAME with Retropie](https://retropie.org.uk/forum/topic/2859/)
 * [Validating, rebuilding and filtering ROM collections](https://github.com/RetroPie/RetroPie-Setup/wiki/Validating,-Rebuilding,-and-Filtering-ROM-Collections)
-* [Which arcade emulator should I choose?](https://www.reddit.com/r/RetroPie/comments/6v86nd/what_rom_set_works_best_with_mame/dlyhccz/) is:
+* [Which arcade emulator should I choose?](https://www.reddit.com/r/RetroPie/comments/6v86nd/what_rom_set_works_best_with_mame/dlyhccz/)
 * [FBA vs MAME](https://retropie.org.uk/forum/topic/13769/)
 
 ## Usage
@@ -22,9 +22,9 @@ The tool provides the ability to copy or remove roms based on predefined lists.
 
 You will probably just want to use one of these files:
 
-* `set-lite`: you want all the games, and you want to discover many things, both good and bad.
-* `set-classics`: you want only good games, but you still want to be surprised, and you don't mind keeping multiple episodes of the same game series
-* `set-classics-lite`: you only want the very best games
+* `set-lite`: you want 1500 games, and you want to discover many things, both good and bad.
+* `set-classics`: you want 250 good games, and you don't mind having multiple episodes of the same game series.
+* `set-classics-lite`: you only want the 50 very best games.
 
 Pick the `pad` version if you have an modern controller with analog sticks (Playstation or Xbox).  
 Pick the `stick` version if you have an arcade stick, or a pad without analog sticks.
