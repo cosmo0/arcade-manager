@@ -2,163 +2,163 @@
     "files": [
         {
             "filename": "controls-alternative",
-            "description": "",
-            "ismain": false
+            "description": "All games having alternative controllers: lightgun, 2 or 3 joysticks, etc.",
+            "types": [ "filter", "controls" ]
         },
         {
             "filename": "controls-analog",
-            "description": "",
-            "ismain": false
+            "description": "All games having analog controllers: wheel, dial, trackball, etc.",
+            "types": [ "filter", "controls" ]
         },
         {
             "filename": "controls-pad",
-            "description": "",
-            "ismain": false
+            "description": "All games that can be controlled with a modern analog pad.",
+            "types": [ "filter", "controls" ]
         },
         {
             "filename": "controls-stick",
-            "description": "",
-            "ismain": false
+            "description": "All games that can be controlled with an arcade stick.",
+            "types": [ "filter", "controls" ]
         },
         {
             "filename": "filter-clones",
-            "description": "",
-            "ismain": false
+            "description": "All clones.",
+            "types": [ "filter" ]
         },
         {
             "filename": "filter-consoles",
-            "description": "",
-            "ismain": false
+            "description": "All console and console-derived games: NeoGeo, Playchoice 10, Nintendo vs, etc.",
+            "types": [ "filter" ]
         },
         {
             "filename": "filter-goodclones",
-            "description": "",
-            "ismain": false
+            "description": "Clones that work while the parent does not.",
+            "types": [ "filter" ]
         },
         {
             "filename": "filter-nonworking",
-            "description": "",
-            "ismain": false
+            "description": "All non-working games.",
+            "types": [ "filter" ]
         },
         {
             "filename": "filter-slow",
-            "description": "",
-            "ismain": false
+            "description": "All games too modern to run on a Raspberry Pi (basically all 3D games).",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-10",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 0-10 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-20",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 10-20 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-30",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 20-30 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-40",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 30-40 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-50",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 40-50 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-60",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 50-60 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-70",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 60-70 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-80",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 70-80 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-90",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 80-90 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "quality-100",
-            "description": "",
-            "ismain": false
+            "description": "All games marked as quality 90-100 by AntoPISA.",
+            "types": [ "filter" ]
         },
         {
             "filename": "set-classics-lite-pad",
-            "description": "",
-            "ismain": true
+            "description": "About 40-50 classic games that can be played with a modern analog gamepad.",
+            "types": [ "set", "main" ]
         },
         {
             "filename": "set-classics-lite-stick",
-            "description": "",
-            "ismain": true
+            "description": "About 40-50 classic games that can be played with an arcade stick.",
+            "types": [ "set", "main" ]
         },
         {
             "filename": "set-classics-pad",
-            "description": "",
-            "ismain": true
+            "description": "About 200-250 games that can be played with a modern analog gamepad.",
+            "types": [ "set", "main" ]
         },
         {
             "filename": "set-classics-stick",
-            "description": "",
-            "ismain": true
+            "description": "About 200-250 games that can be played with an arcade stick.",
+            "types": [ "set", "main" ]
         },
         {
             "filename": "set-complete",
-            "description": "",
-            "ismain": false
+            "description": "All arcade games in a romset.",
+            "types": [ "set" ]
         },
         {
             "filename": "set-lite-pad",
-            "description": "",
-            "ismain": true
+            "description": "All working games, excluding clones and console games, that can be played with a modern analog gamepad.",
+            "types": [ "set", "main" ]
         },
         {
             "filename": "set-lite-stick",
-            "description": "",
-            "ismain": true
+            "description": "All working games, excluding clones and console games, that can be played with an arcade stick.",
+            "types": [ "set", "main" ]
         },
         {
             "filename": "set-noclone-noconsole",
-            "description": "",
-            "ismain": false
+            "description": "All working games excluding clones and console games.",
+            "types": [ "set" ]
         },
         {
             "filename": "set-noclone",
-            "description": "",
-            "ismain": false
+            "description": "All working games excluding clones.",
+            "types": [ "set" ]
         },
         {
             "filename": "set-working",
-            "description": "",
-            "ismain": false
+            "description": "All working games.",
+            "types": [ "set" ]
         },
         {
             "filename": "set-neogeo",
-            "description": "",
-            "ismain": true
+            "description": "All NeoGeo games.",
+            "types": [ "set", "main" ]
         },
         {
             "filename": "set-noclone-nobootleg",
-            "description": "",
-            "ismain": false
+            "description": "All working games excluding clones, bootlegs, homebrews and hacks.",
+            "types": [ "set" ]
         },
         {
             "filename": "set-noclone-noconsole-nobootleg",
-            "description": "",
-            "ismain": false
+            "description": "All working games excluding clones, console games, bootlegs, homebrews and hacks.",
+            "types": [ "set" ]
         }
     ]
 }
