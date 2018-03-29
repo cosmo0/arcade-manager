@@ -11,9 +11,10 @@ If you are new to arcade emulation, please read these resources:
 
 * [Arcade roms and how to play them, a non-technical guide](https://retropie.org.uk/forum/topic/7247/)
 * [Demistifying MAME roms](https://choccyhobnob.com/mame/demystifying-mame-roms/)
-* [Which arcade emulator should I choose?](https://www.reddit.com/r/RetroPie/comments/6v86nd/what_rom_set_works_best_with_mame/dlyhccz/) is:
 * [How to use MAME with Retropie](https://retropie.org.uk/forum/topic/2859/)
 * [Validating, rebuilding and filtering ROM collections](https://github.com/RetroPie/RetroPie-Setup/wiki/Validating,-Rebuilding,-and-Filtering-ROM-Collections)
+* [Which arcade emulator should I choose?](https://www.reddit.com/r/RetroPie/comments/6v86nd/what_rom_set_works_best_with_mame/dlyhccz/) is:
+* [FBA vs MAME](https://retropie.org.uk/forum/topic/13769/)
 
 ## Usage
 
