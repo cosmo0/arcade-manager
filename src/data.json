@@ -5,35 +5,40 @@
             "description": "Roms list for Final Burn Alpha 2017 (0.2.97.42)",
             "image": "",
             "repository": "cosmo0/retropie-arcade-manager",
-            "path": "csv/fba-0.2.97.42"
+            "folder": "csv/fba-0.2.97.42",
+            "details": "csv/files.json"
         },
         {
             "name": "MAME 2003",
             "description": "Roms list for MAME 2003 (0.78)",
             "image": "",
             "repository": "retropie-arcade-manager",
-            "path": "csv/mame2003"
+            "folder": "csv/mame2003",
+            "details": "csv/files.json"
         },
         {
             "name": "MAME 2003 only",
             "description": "Roms list for games that work in MAME 2003 but not in FBA",
             "image": "",
             "repository": "retropie-arcade-manager",
-            "path": "csv/mame2003"
+            "folder": "csv/mame2003",
+            "details": "csv/files.json"
         },
         {
             "name": "MAME 2010",
             "description": "Roms list for MAME 2010 (0.139)",
             "image": "",
             "repository": "retropie-arcade-manager",
-            "path": "csv/mame2010"
+            "folder": "csv/mame2010",
+            "details": "csv/files.json"
         },
         {
             "name": "MAME 2010 only",
             "description": "Roms list for games that work in MAME 2010 but not in MAME 2003",
             "image": "",
             "repository": "retropie-arcade-manager",
-            "path": "csv/mame2010-only"
+            "folder": "csv/mame2010-only",
+            "details": "csv/files.json"
         }
     ],
     "overlays": [

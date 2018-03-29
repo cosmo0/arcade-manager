@@ -1,0 +1,164 @@
+{
+    "files": [
+        {
+            "filename": "controls-alternative",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "controls-analog",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "controls-pad",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "controls-stick",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "filter-clones",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "filter-consoles",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "filter-goodclones",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "filter-nonworking",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "filter-slow",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-10",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-20",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-30",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-40",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-50",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-60",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-70",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-80",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-90",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "quality-100",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "set-classics-lite-pad",
+            "description": "",
+            "ismain": true
+        },
+        {
+            "filename": "set-classics-lite-stick",
+            "description": "",
+            "ismain": true
+        },
+        {
+            "filename": "set-classics-pad",
+            "description": "",
+            "ismain": true
+        },
+        {
+            "filename": "set-classics-stick",
+            "description": "",
+            "ismain": true
+        },
+        {
+            "filename": "set-complete",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "set-lite-pad",
+            "description": "",
+            "ismain": true
+        },
+        {
+            "filename": "set-lite-stick",
+            "description": "",
+            "ismain": true
+        },
+        {
+            "filename": "set-noclone-noconsole",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "set-noclone",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "set-working",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "set-neogeo",
+            "description": "",
+            "ismain": true
+        },
+        {
+            "filename": "set-noclone-nobootleg",
+            "description": "",
+            "ismain": false
+        },
+        {
+            "filename": "set-noclone-noconsole-nobootleg",
+            "description": "",
+            "ismain": false
+        }
+    ]
+}
