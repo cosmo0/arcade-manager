@@ -1,0 +1,55 @@
+<h2>Copy roms</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="roms.html" class="navmenu">Manage roms</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Copy</li>
+    </ol>
+</nav>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">CSV file</span>
+    </div>
+    <input type="text" class="form-control" id="fileMainCsv">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">Select the file listing the games to copy</small>
+</p>
+
+<!-- Full romset location -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Full romset</span>
+    </div>
+    <input type="text" class="form-control" id="fileRomset">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomset">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The folder containing all the files of the romset</small>
+</p>
+
+<!-- Selection romset location -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Rom selection</span>
+    </div>
+    <input type="text" class="form-control" id="fileRomSelection">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomSelection">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The folder containing the subset of the roms you want</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Copy</button>
+</p>
+    

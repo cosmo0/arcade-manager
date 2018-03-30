@@ -1,0 +1,40 @@
+<h2>Delete roms NOT listed</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="roms.html" class="navmenu">Manage roms</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Filter</li>
+    </ol>
+</nav>
+    
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">CSV file</span>
+    </div>
+    <input type="text" class="form-control" id="fileMainCsv">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">Select the file containing the games to keep</small>
+</p>
+
+<!-- Selection romset location -->
+<div class="input-group mb-0 optional d-none addfiles removefiles">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Rom selection</span>
+    </div>
+    <input type="text" class="form-control" id="fileRomSelection">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomSelection">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3 optional d-none addfiles removefiles">
+    <small class="form-text text-muted">The folder containing the roms you want to delete</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Filter</button>
+</p>

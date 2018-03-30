@@ -17,130 +17,11 @@
         <hr>
 
         <p>
-            Easily manage your arcade roms using pre-computed CSV files.<br>
-            Select a file, an action, and a target.
+            Easily manage your arcade roms using pre-computed CSV files.
         </p>
 
-        <form>
-
-            <!-- Main CSV file -->
-            <div class="input-group mb-0">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Main CSV file</span>
-                </div>
-                <input type="text" class="form-control" id="fileMainCsv">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">Browse</button>
-                </div>
-            </div>
-            <p class="mt-0 mb-3">
-                <small class="form-text text-muted">Select the file to execute an action with</small>
-            </p>
-            
-            <!-- Action -->
-            <div class="row">
-                <div class="col-6">
-                    <div class="border rounded mb-3 p-2">
-                        <p class="mb-0">
-                            <strong>Manage ROM files</strong>
-                        </p>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="action" value="fileadd" id="fileadd" data-display=".addfiles">
-                            <label class="form-check-label" for="fileadd"><i class="icon-folder-down"></i> Add listed files</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="action" value="fileremove" id="fileremove" data-display=".removefiles">
-                            <label class="form-check-label" for="fileremove"><i class="icon-folder-up"></i> Remove listed files</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="action" value="filefilter" id="filefilter" data-display=".removefiles">
-                            <label class="form-check-label" for="filefilter"><i class="icon-folder-minus"></i> Remove files not listed</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="border rounded mb-3 p-2">
-                        <p class="mb-0">
-                            <strong>Manage CSV files</strong>
-                        </p>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="action" value="csvadd" id="csvadd" data-display=".merge">
-                            <label class="form-check-label" for="csvadd"><i class="icon-merge"></i> Add rows from another file</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="action" value="csvremove" id="csvremove" data-display=".merge">
-                            <label class="form-check-label" for="csvremove"><i class="icon-split"></i> Remove rows from another file</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="action" value="csvfilter" id="csvfilter" data-display=".merge">
-                            <label class="form-check-label" for="csvfilter"><i class="icon-shuffle"></i> Remove rows not listed in another file</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Merge: secondary CSV file -->
-            <div class="input-group mb-0 optional d-none merge">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Secondary CSV file</span>
-                </div>
-                <input type="text" class="form-control" id="fileSecondaryCsv">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary browse" type="button" data-input="fileSecondaryCsv">Browse</button>
-                </div>
-            </div>
-            <p class="mt-0 mb-3 optional d-none merge">
-                <small class="form-text text-muted">This file will modify the first one using the selected action.</small>
-            </p>
-
-            <!-- Merge: target output file -->
-            <div class="input-group mb-0 optional d-none merge">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Target file</span>
-                </div>
-                <input type="text" class="form-control" id="fileTarget">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">Browse</button>
-                </div>
-            </div>
-            <p class="mt-0 mb-3 optional d-none merge">
-                <small class="form-text text-muted">The merged file to be saved</small>
-            </p>
-    
-            <!-- Full romset location -->
-            <div class="input-group mb-0 optional d-none addfiles">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Full romset</span>
-                </div>
-                <input type="text" class="form-control" id="fileRomset">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomset">Browse</button>
-                </div>
-            </div>
-            <p class="mt-0 mb-3 optional d-none addfiles">
-                <small class="form-text text-muted">The folder containing all the files of the romset</small>
-            </p>
-            
-            <!-- Selection romset location -->
-            <div class="input-group mb-0 optional d-none addfiles removefiles">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Rom selection</span>
-                </div>
-                <input type="text" class="form-control" id="fileRomSelection">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomSelection">Browse</button>
-                </div>
-            </div>
-            <p class="mt-0 mb-3 optional d-none addfiles removefiles">
-                <small class="form-text text-muted">The folder containing the subset of the roms you want</small>
-            </p>
-            
-            <p class="mt-3">
-                <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block" disabled="disabled">Run</button>
-            </p>
-
-        </form>
-
+        <div id="content">
+        </div>
     </div>
 
     <!-- Fixes jQuery integration https://stackoverflow.com/a/37480521/6776 -->
@@ -155,6 +36,27 @@
         const csv = require('./csv.js');
         const roms = require('./roms.js');
         const path = require('path');
+
+        // bind menu navigation
+        function bindNav() {
+            content.find('.navmenu').on('click', (e) => {
+                let link = $(e.currentTarget);
+                content.load('menus/' + link.attr('href'), () => {
+                    bindNav();
+                });
+                
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
+        }
+
+        // load main menu
+        const content = $('#content');
+        content.load('menus/index-menu.html', () => {
+            bindNav();
+        });
+
 
         let btn = $('#buttonOk');
 

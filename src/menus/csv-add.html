@@ -1,0 +1,55 @@
+<h2>Add games to a CSV file</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="csv.html" class="navmenu">Manage CSV</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add games</li>
+    </ol>
+</nav>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Main CSV file</span>
+    </div>
+    <input type="text" class="form-control" id="fileMainCsv">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The CSV file to add games to</small>
+</p>
+
+<!-- secondary CSV file -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Secondary CSV file</span>
+    </div>
+    <input type="text" class="form-control" id="fileSecondaryCsv">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse" type="button" data-input="fileSecondaryCsv">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The CSV file with the games to add.</small>
+</p>
+
+<!-- target output file -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Target file</span>
+    </div>
+    <input type="text" class="form-control" id="fileTarget">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The merged file to be saved</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Add</button>
+</p>
+    
