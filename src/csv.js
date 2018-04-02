@@ -119,14 +119,14 @@ module.exports = {
     },
 
     /**
-     * Removes roms in the main file that are NOT listed in the
+     * Only keeps roms in the main file that are listed in the
      * secondary file, and saves the result in the target file.
      * 
      * @param {string} main The path to the main CSV file
      * @param {string} secondary The path to the secondary CSV file
      * @param {string} target The path to the combined file to save
      */
-    filter: function filter (main, secondary, target) {
+    keep: function filter (main, secondary, target) {
         // load up csv files
         let mainCsv = csvparse(
             fs.readFileSync(main),

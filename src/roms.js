@@ -7,7 +7,7 @@ const defaultDelimiter = ';';
 
 module.exports = {
     /**
-     * Adds roms from a romset to a selection,
+     * Adds roms from a romset to a folder,
      * based on a CSV file
      * 
      * @param {string} file The path to the file
@@ -58,7 +58,7 @@ module.exports = {
     },
 
     /**
-     * Removes roms from a selection,
+     * Removes roms from a folder,
      * based on a CSV file
      * 
      * @param {string} file The path to the file
@@ -92,15 +92,14 @@ module.exports = {
         }
     },
 
-
     /**
-     * Removes roms not listed from a selection,
-     * based on a CSV file
+     * Keeps only listed roms in a folder
+     * that are listed in a CSV file
      * 
      * @param {string} file The path to the file
      * @param {string} selection The path to the selection folder
      */
-    filter: function filter (file, selection) {
+    keep: function filter (file, selection) {
         let fileCsv = csvparse(
             fs.readFileSync(file),
             {
