@@ -2,7 +2,7 @@
     "csv": [
         {
             "name": "FBA 2017",
-            "description": "Roms list for Final Burn Alpha 2017 (0.2.97.42)",
+            "description": "Final Burn Alpha 2017 (0.2.97.42)",
             "image": "",
             "repository": "cosmo0/retropie-arcade-manager",
             "folder": "csv/fba-0.2.97.42",
@@ -10,33 +10,33 @@
         },
         {
             "name": "MAME 2003",
-            "description": "Roms list for MAME 2003 (0.78)",
+            "description": "MAME 2003 (0.78)",
             "image": "",
-            "repository": "retropie-arcade-manager",
+            "repository": "cosmo0/retropie-arcade-manager",
             "folder": "csv/mame2003",
             "details": "csv/files.json"
         },
         {
             "name": "MAME 2003 only",
-            "description": "Roms list for games that work in MAME 2003 but not in FBA",
+            "description": "Games that work in MAME 2003 but not in FBA",
             "image": "",
-            "repository": "retropie-arcade-manager",
+            "repository": "cosmo0/retropie-arcade-manager",
             "folder": "csv/mame2003",
             "details": "csv/files.json"
         },
         {
             "name": "MAME 2010",
-            "description": "Roms list for MAME 2010 (0.139)",
+            "description": "MAME 2010 (0.139)",
             "image": "",
-            "repository": "retropie-arcade-manager",
+            "repository": "cosmo0/retropie-arcade-manager",
             "folder": "csv/mame2010",
             "details": "csv/files.json"
         },
         {
             "name": "MAME 2010 only",
-            "description": "Roms list for games that work in MAME 2010 but not in MAME 2003",
+            "description": "Games that work in MAME 2010 but not in MAME 2003",
             "image": "",
-            "repository": "retropie-arcade-manager",
+            "repository": "cosmo0/retropie-arcade-manager",
             "folder": "csv/mame2010-only",
             "details": "csv/files.json"
         }

@@ -12,6 +12,26 @@
   </head>
   <body>
 
+    <!-- Fixes jQuery integration https://stackoverflow.com/a/37480521/6776 -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/popper.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
+    <script>
+        const {dialog} = require('electron').remote;
+        const fs = require('fs-extra');
+        const path = require('path');
+        const http = require('http');
+        const https = require('https');
+
+        const csv = require('./csv.js');
+        const roms = require('./roms.js');
+
+        const api = 'https://api.github.com';
+    </script>
+
     <div class="container mt-3">
         <h1><i class="icon-pacman"></i> Retropie romset arcade manager</h1>
         <hr>
@@ -24,18 +44,7 @@
         </div>
     </div>
 
-    <!-- Fixes jQuery integration https://stackoverflow.com/a/37480521/6776 -->
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/popper.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
-    <script>if (window.module) module = window.module;</script>
-
     <script type="text/javascript">
-        const {dialog} = require('electron').remote;
-        const csv = require('./csv.js');
-        const roms = require('./roms.js');
-
         /**
          * Bind form actions
          */

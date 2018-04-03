@@ -1,0 +1,132 @@
+<h2>Download CSV</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="csv.html" class="navmenu">Manage CSV</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Download</li>
+    </ol>
+</nav>
+
+<script>
+$(() => {
+    let data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), { encoding: 'utf8' }));
+    let template = $('#csvItemTemplate').html();
+
+    // list CSV folders
+    for (let csv of data.csv) {
+        let li = $(template)
+        li.find('.name').text(csv.name);
+        li.find('.desc').text(csv.description);
+        li.data('repository', csv.repository);
+        li.data('folder', csv.folder);
+        li.data('details', csv.details);
+
+        li.on('click', () => {
+            $('#csvs').find('a').removeClass('active');
+            li.addClass('active');
+            listFiles(csv.repository, csv.folder, csv.details);
+        });
+
+        $('#csvs').append(li);
+    }
+});
+
+/**
+ * List the files in a CSV repository and displays them in the window
+ * 
+ * @param {string} repository The repository: username/repository
+ * @param {string} folder The path to the folder: csv/mame2003
+ * @param {string} details The path to the files details: csv/files.json
+ */
+function listFiles(repository, folder, details) {
+    $('#files').empty();
+    let template = $('#fileItemTemplate').html();
+
+    // get files details
+    $.get(api + '/repos/' + repository + '/contents/' + details)
+    .done((filesData) => {
+        // read files details
+        let filesdetails = JSON.parse(Buffer.from(filesData.content, filesData.encoding).toString('utf8'));
+        // sort files details
+        filesdetails.files.sort((a, b) => {
+            // both are main files
+            if (a.types.indexOf('main') >= 0 && b.types.indexOf('main') >= 0) {
+                return a.name < b.name; // order by name
+            }
+
+            // a is main and not b
+            if (a.types.indexOf('main') >= 0 && b.types.indexOf('main') < 0) {
+                return -1;
+            }
+
+            // b is main and not a
+            if (a.types.indexOf('main') < 0 && b.types.indexOf('main') >= 0) {
+                return 1;
+            }
+        });
+
+        // list folder files
+        $.get(api + '/repos/' + repository + '/contents/' + folder)
+        .done((folderContents) => {
+            // iterate over file details
+            for (let filedetail of filesdetails.files) {
+                // get matching file in the folder
+                let fileinfos = folderContents.find((item) => item.name === filedetail.filename);
+                if (typeof fileinfos !== 'undefined') {
+                    let li = $(template);
+                    li.find('.file').text(filedetail.filename);
+                    li.find('.desc').text(filedetail.description);
+                    if (filedetail.types.indexOf('main') >= 0) {
+                        li.addClass('text-primary border-primary');
+                    }
+
+                    // handle click
+                    li.on('click', (e) => {
+                        dialog.showSaveDialog({
+                            'defaultPath': fileinfos.name
+                        }, (filename) => {
+                            if (typeof filename !== 'undefined' && filename !== '') {
+                                var file = fs.createWriteStream(filename);
+                                var request = (fileinfos.download_url.startsWith('https') ? https : http)
+                                    .get(fileinfos.download_url, function(response) {
+                                        response.pipe(file);
+                                    });
+                            }
+                        });
+                    });
+                    
+                    $('#files').append(li);
+                }
+            }
+        })
+        .fail((foldererr) => {
+            $('#files').text(foldererr);
+        });
+    })
+    .fail((fileserr) => {
+        $('#files').text(fileserr);
+    });
+}
+</script>
+
+<div class="row">
+    <div class="col-4">
+        <div class="list-group" id="csvs" role="tablist"></div>
+    </div>
+    <div class="col-8" id="files"></div>
+</div>
+
+<script type="text/template" id="csvItemTemplate">
+    <a href="#" class="list-group-item list-group-item-action">
+        <h5 class="mb-1 name"></h5>
+        <p class="mb-0 desc"></p>
+    </a>
+</script>
+
+<script type="text/template" id="fileItemTemplate">
+    <a href="#" class="list-group-item list-group-item-action">
+        <h6 class="mb-1 font-weight-bold file"></h6>
+        <p class="mb-1 text-muted desc"></p>
+    </a>
+</script>
