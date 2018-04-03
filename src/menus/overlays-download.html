@@ -1,0 +1,138 @@
+<h2>Download overlays</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="overlays.html" class="navmenu">Install overlays</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Download</li>
+    </ol>
+</nav>
+
+<script>
+$(() => {
+    let data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), { encoding: 'utf8' }));
+    let template = $('#csvItemTemplate').html();
+
+    // list overlays packs
+    for (let ovl of data.overlays) {
+        let li = $(template);
+
+        // build pack infos
+        li.find('.name').text(ovl.name);
+        li.find('.desc').text(ovl.description);
+        if (ovl.image !== '') {
+            li.find('img').attr('src', ovl.image);
+        } else {
+            li.find('img').remove();
+        }
+
+        // pack meta-data
+        li.data('repository', ovl.repository);
+        li.data('roms', ovl.roms);
+        li.data('overlays', ovl.overlays);
+        li.data('common', ovl.common);
+        li.data('shaders', ovl.shaders);
+
+        li.on('click', () => {
+            $('#packs').find('a').removeClass('active');
+            li.addClass('active');
+        });
+
+        $('#packs').append(li);
+    }
+
+    // Handle click on validation button
+    $('#buttonInstall').on('click', (e) => {
+        let romsFolder = $('#romsFolder').val(),
+            configFolder = $('#configFolder').val()
+            pack = $('#packs a.active');
+        
+        // check inputs and paths
+        if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
+        if (romsFolder === '') { window.alert('Please fill the path to the roms folder'); return; }
+        if (configFolder === '') { window.alert('Please fill the path to the Retropie config share'); return; }
+        if (!overlays.checkAccess(romsFolder, true)) { window.alert('The specified roms folder cannot be written to.'); return; }
+        if (!overlays.checkAccess(path.join(configFolder, 'all/retroarch/'), true)) { window.alert('The specified config folder cannot be written to.'); return; }
+
+        // get pack data
+        let packrepository = pack.data('repository'),
+            packroms = pack.data('roms'),
+            packoverlays = pack.data('overlays'),
+            packcommon = pack.data('common'),
+            packshaders = pack.data('shaders');
+        
+        // download and install common configs
+        if (typeof packcommon !== 'undefined') {
+            console.log('Installing common config');
+            downloader.downloadFolder(packrepository, packcommon.src, path.join(configFolder, packcommon.dest));
+        }
+
+        // download and install shaders
+        if (typeof packshaders !== 'undefined') {
+            console.log('Installing shaders');
+            downloader.downloadFolder(packrepository, packshaders.src, path.join(configFolder, packshaders.dest));
+        }
+
+        // get overlays list
+        downloader.listFiles(packrepository, packroms, (overlaysConfigs) => {
+            // download and copy all overlays
+            for (let ovl of overlaysConfigs) {
+                let zip = ovl.name.replace('.cfg', '');
+                if (fs.existsSync(path.join(romsFolder, zip))) {
+                    // download and install rom cfg
+
+                    // parse rom cfg to get overlay cfg
+
+                    // download and install overlay cfg
+
+                    // parse overlay cfg to get overlay image
+
+                    // download and install overlay image
+                }
+            }
+        });
+    });
+});
+</script>
+
+<div class="list-group mb-4" id="packs"></div>
+
+<!-- path to roms -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Roms folder</span>
+    </div>
+    <input type="text" class="form-control" id="romsFolder">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="romsFolder">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The folder containing the roms</small>
+</p>
+
+<!-- path to config -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Retropie config</span>
+    </div>
+    <input type="text" class="form-control" id="configFolder">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="configFolder">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The path to the Retropie config share</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonInstall" class="btn btn-primary btn-lg btn-block">Install</button>
+</p>
+
+<script type="text/template" id="csvItemTemplate">
+    <a href="#" class="list-group-item list-group-item-action">
+        <img src="" class="float-left mr-3">
+        <h5 class="mb-1 name"></h5>
+        <p class="mb-0 desc"></p>
+    </a>
+</script>

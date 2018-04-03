@@ -23,13 +23,11 @@
         const {dialog} = require('electron').remote;
         const fs = require('fs-extra');
         const path = require('path');
-        const http = require('http');
-        const https = require('https');
 
         const csv = require('./csv.js');
         const roms = require('./roms.js');
-
-        const api = 'https://api.github.com';
+        const overlays = require('./overlays.js');
+        const downloader = require('./downloader.js');
     </script>
 
     <div class="container mt-3">

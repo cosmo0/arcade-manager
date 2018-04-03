@@ -15,7 +15,7 @@ $(() => {
 
     // list CSV folders
     for (let csv of data.csv) {
-        let li = $(template)
+        let li = $(template);
         li.find('.name').text(csv.name);
         li.find('.desc').text(csv.description);
         li.data('repository', csv.repository);
@@ -44,11 +44,9 @@ function listFiles(repository, folder, details) {
     let template = $('#fileItemTemplate').html();
 
     // get files details
-    $.get(api + '/repos/' + repository + '/contents/' + details)
-    .done((filesData) => {
-        // read files details
-        let filesdetails = JSON.parse(Buffer.from(filesData.content, filesData.encoding).toString('utf8'));
-        // sort files details
+    downloader.downloadFile(repository, details, (filesdetailsContent) => {
+        let filesdetails = JSON.parse(filesdetailsContent);
+        // sort files details to put main files on top
         filesdetails.files.sort((a, b) => {
             // both are main files
             if (a.types.indexOf('main') >= 0 && b.types.indexOf('main') >= 0) {
@@ -66,10 +64,8 @@ function listFiles(repository, folder, details) {
             }
         });
 
-        // list folder files
-        $.get(api + '/repos/' + repository + '/contents/' + folder)
-        .done((folderContents) => {
-            // iterate over file details
+        // list CSV files in folder
+        downloader.listFiles(repository, folder, (folderContents) => {
             for (let filedetail of filesdetails.files) {
                 // get matching file in the folder
                 let fileinfos = folderContents.find((item) => item.name === filedetail.filename);
@@ -99,20 +95,14 @@ function listFiles(repository, folder, details) {
                     $('#files').append(li);
                 }
             }
-        })
-        .fail((foldererr) => {
-            $('#files').text(foldererr);
         });
-    })
-    .fail((fileserr) => {
-        $('#files').text(fileserr);
     });
 }
 </script>
 
 <div class="row">
     <div class="col-4">
-        <div class="list-group" id="csvs" role="tablist"></div>
+        <div class="list-group" id="csvs"></div>
     </div>
     <div class="col-8" id="files"></div>
 </div>
