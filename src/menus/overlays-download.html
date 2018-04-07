@@ -61,36 +61,8 @@ $(() => {
             packcommon = pack.data('common'),
             packshaders = pack.data('shaders');
         
-        // download and install common configs
-        if (typeof packcommon !== 'undefined') {
-            console.log('Installing common config');
-            downloader.downloadFolder(packrepository, packcommon.src, path.join(configFolder, packcommon.dest));
-        }
-
-        // download and install shaders
-        if (typeof packshaders !== 'undefined') {
-            console.log('Installing shaders');
-            downloader.downloadFolder(packrepository, packshaders.src, path.join(configFolder, packshaders.dest));
-        }
-
-        // get overlays list
-        downloader.listFiles(packrepository, packroms, (overlaysConfigs) => {
-            // download and copy all overlays
-            for (let ovl of overlaysConfigs) {
-                let zip = ovl.name.replace('.cfg', '');
-                if (fs.existsSync(path.join(romsFolder, zip))) {
-                    // download and install rom cfg
-
-                    // parse rom cfg to get overlay cfg
-
-                    // download and install overlay cfg
-
-                    // parse overlay cfg to get overlay image
-
-                    // download and install overlay image
-                }
-            }
-        });
+        // download and install pack
+        overlays.downloadPack(romsFolder, configFolder, packrepository, packroms, packoverlays, packcommon, packshaders);
     });
 });
 </script>
