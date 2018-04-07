@@ -2,10 +2,12 @@ const fs = require('fs-extra');
 const path = require('path');
 const http = require('http');
 const https = require('https');
+const events = require('events');
 
-const downloader = require('./downloader.js');
+const Downloader = require('./downloader.js');
+const downloader = new Downloader();
 
-module.exports = {
+module.exports = class Overlays extends events {
     /**
      * Checks that the program can access the specified folder
      * 
@@ -13,7 +15,7 @@ module.exports = {
      * @param {string} checkWrite Whether to check for write access
      * @returns {bool} Whether the check is successful
      */
-    checkAccess: function checkAccess (folder, checkWrite) {
+    checkAccess (folder, checkWrite) {
         try {
             fs.ensureDirSync(folder);
         } catch (err) {
@@ -51,7 +53,7 @@ module.exports = {
         }
 
         return true;
-    },
+    }
 
     /**
      * Installs a local overlay pack
@@ -60,17 +62,26 @@ module.exports = {
      * @param {string} config The path to the Retropie configs share
      * @param {string} pack The path to the overlays pack
      */
-    installPack: function installPack(roms, config, pack) {
+    installPack (roms, config, pack) {
         // checks that a folders.json file exists
         if (!fs.existsSync(path.join(pack, 'folders.json'))) {
             throw 'No folder.json file has been found in the overlay pack.';
         }
 
         let folders = JSON.parse(fs.readFileSync(path.join(pack, 'folders.json'), { 'encoding': 'utf8' }));
+        let packConfigsFolder = path.join(pack, folders.roms);
+        let romfiles = fs.readdirSync(roms);
+        let packConfigs = fs.readdirSync(packConfigsFolder);
+
+        let total = romfiles.length;
+        let current = 1;
 
         // copy common files
         if (typeof folders.common !== 'undefined' && folders.common) {
-            console.log('Installing common config');
+            total++;
+            
+            this.emit('progress.install', total, current++, 'common files');
+
             let commonTarget = path.join(config, folders.common.dest);
             fs.ensureDirSync(commonTarget);
             fs.copySync(path.join(pack, folders.common.src), commonTarget, { 'overwrite': false });
@@ -78,17 +89,19 @@ module.exports = {
 
         // copy shaders
         if (typeof folders.shaders !== 'undefined' && folders.shaders) {
-            console.log('Installing shaders');
+            total++;
+            
+            this.emit('progress.install', total, current++, 'shaders');
+
             let shadersTarget = path.join(config, folders.shaders.dest);
             fs.ensureDirSync(shadersTarget);
             fs.copySync(path.join(pack, folders.shaders.src), shadersTarget, { 'overwrite': false });
         }
 
         // list all roms & roms cfg
-        let packConfigsFolder = path.join(pack, folders.roms);
-        let romfiles = fs.readdirSync(roms);
-        let packConfigs = fs.readdirSync(packConfigsFolder);
         for (let rom of romfiles) {
+            current++;
+            
             if (!rom.endsWith('.zip')) { continue; }
 
             // for each zip, search a matching rom cfg
@@ -97,7 +110,8 @@ module.exports = {
                 console.log('No overlay found for %s', rom);
                 continue;
             } else {
-                console.log('Installing overlay %s', rom);
+                this.emit('progress.install', total, current, rom);
+
                 let packCfg = packConfigs[packCfgIdx];
                 let destCfg = path.join(roms, packCfg);
 
@@ -124,7 +138,7 @@ module.exports = {
                     { 'encoding': 'utf-8' });
             }
         }
-    },
+    }
 
     /**
      * Downloads and installs an overlay pack
@@ -137,7 +151,7 @@ module.exports = {
      * @param {string} common The common files folder, if any (ex: overlays/config/common)
      * @param {string} shaders The shaders folder, if any (ex: overlays/config/shaders)
      */
-    downloadPack: function downloadPack(romsFolder, configFolder, repository, roms, overlays, common, shaders) {
+    downloadPack (romsFolder, configFolder, repository, roms, overlays, common, shaders) {
         
         /***********************************
         *

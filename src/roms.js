@@ -1,11 +1,12 @@
 const fs = require('fs-extra');
 const path = require('path');
+const events = require('events');
 const csvparse = require('csv-parse/lib/sync');
 
 // delimiter
 const defaultDelimiter = ';';
 
-module.exports = {
+module.exports = class Roms extends events {
     /**
      * Adds roms from a romset to a folder,
      * based on a CSV file
@@ -14,7 +15,7 @@ module.exports = {
      * @param {string} romset The path to the romset folder
      * @param {string} selection The path to the selection folder
      */
-    add: function add (file, romset, selection) {
+    add (file, romset, selection) {
         let fileCsv = csvparse(
             fs.readFileSync(file),
             {
@@ -29,6 +30,8 @@ module.exports = {
             let zip = fileCsv[i].name + '.zip';
             let sourceRom = path.join(romset, zip);
             let destRom = path.join(selection, zip);
+
+            this.emit('progress.add', fileCsv.length, i + 1, zip);
 
             try {
                 // test if destination file exists
@@ -55,7 +58,7 @@ module.exports = {
                 }
             }
         }
-    },
+    }
 
     /**
      * Removes roms from a folder,
@@ -64,7 +67,7 @@ module.exports = {
      * @param {string} file The path to the file
      * @param {string} selection The path to the selection folder
      */
-    remove: function remove (file, selection) {
+    remove (file, selection) {
         let fileCsv = csvparse(
             fs.readFileSync(file),
             {
@@ -78,6 +81,8 @@ module.exports = {
             let zip = fileCsv[i].name + '.zip';
             let rom = path.join(selection, zip);
 
+            this.emit('progress.remove', fileCsv.length, i + 1, zip);
+
             try {
                 // test if rom exists
                 fs.accessSync(rom, fs.constants.W_OK);
@@ -90,7 +95,7 @@ module.exports = {
                 console.log('Unable to delete %s - %o', rom, errRom);
             }
         }
-    },
+    }
 
     /**
      * Keeps only listed roms in a folder
@@ -99,7 +104,7 @@ module.exports = {
      * @param {string} file The path to the file
      * @param {string} selection The path to the selection folder
      */
-    keep: function filter (file, selection) {
+    keep (file, selection) {
         let fileCsv = csvparse(
             fs.readFileSync(file),
             {
@@ -113,6 +118,8 @@ module.exports = {
         var files = fs.readdirSync(selection);
         for (let i = 0; i < files.length; i++) {
             let zip = files[i];
+
+            this.emit('progress.keep', files.length, i + 1, zip);
 
             // skip non-zip files
             if (!zip.endsWith('.zip')) { continue; }

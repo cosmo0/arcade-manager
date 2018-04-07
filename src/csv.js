@@ -1,13 +1,13 @@
 const fs = require('fs-extra');
 const path = require('path');
+const events = require('events');
 const csvparse = require('csv-parse/lib/sync');
 const stringify = require('csv-stringify/lib/sync');
 
 // delimiter
 const defaultDelimiter = ';';
 
-module.exports = {
-
+module.exports = class Csv extends events {
     /**
      * Combines roms from the main and secondary CSV files,
      * and saves the result in the target file.
@@ -16,7 +16,7 @@ module.exports = {
      * @param {string} secondary The path to the secondary CSV file
      * @param {string} target The path to the combined file to save
      */
-    add: function add (main, secondary, target) {
+    add (main, secondary, target) {
         // load up csv files
         let mainCsv = csvparse(
             fs.readFileSync(main),
@@ -39,6 +39,8 @@ module.exports = {
 
         // read the secondary csv and add entries to main that do not yet exist
         for (let i = 0; i < secondaryCsv.length; i++) {
+            this.emit('progress.add', secondaryCsv.length, i + 1, secondaryCsv[i].name);
+
             let mainItem = mainCsv.find((item) => item.name === secondaryCsv[i].name);
             // if no matching main CSV entry is found: add it
             if (typeof mainItem === 'undefined') {
@@ -60,7 +62,7 @@ module.exports = {
             );
 
         console.log('OK');
-    },
+    }
 
     /**
      * Removes roms in the main file that are listed in the
@@ -70,7 +72,7 @@ module.exports = {
      * @param {string} secondary The path to the secondary CSV file
      * @param {string} target The path to the combined file to save
      */
-    remove: function remove (main, secondary, target) {
+    remove (main, secondary, target) {
         // load up csv files
         let mainCsv = csvparse(
             fs.readFileSync(main),
@@ -95,6 +97,8 @@ module.exports = {
 
         // read the main csv and add entries to merge that do not exist in secondary
         for (let i = 0; i < mainCsv.length; i++) {
+            this.emit('progress.remove', mainCsv.length, i + 1, mainCsv[i].name);
+
             let secondaryItem = secondaryCsv.find((item) => item.name === mainCsv[i].name);
             // if no matching main CSV entry is found: add to merge
             if (typeof secondaryItem === 'undefined') {
@@ -116,7 +120,7 @@ module.exports = {
             );
 
         console.log('OK');
-    },
+    }
 
     /**
      * Only keeps roms in the main file that are listed in the
@@ -126,7 +130,7 @@ module.exports = {
      * @param {string} secondary The path to the secondary CSV file
      * @param {string} target The path to the combined file to save
      */
-    keep: function filter (main, secondary, target) {
+    keep (main, secondary, target) {
         // load up csv files
         let mainCsv = csvparse(
             fs.readFileSync(main),
@@ -151,6 +155,8 @@ module.exports = {
 
         // read the main csv and add entries to merge that do not exist in secondary
         for (let i = 0; i < mainCsv.length; i++) {
+            this.emit('progress.keep', mainCsv.length, i + 1, mainCsv[i].name);
+
             let secondaryItem = secondaryCsv.find((item) => item.name === mainCsv[i].name);
             // if a matching main CSV entry is found: add to merge
             if (typeof secondaryItem !== 'undefined') {

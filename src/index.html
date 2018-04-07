@@ -20,25 +20,30 @@
     <script>if (window.module) module = window.module;</script>
 
     <script>
+        // require modules
         const {dialog} = require('electron').remote;
         const {shell} = require('electron');
         const fs = require('fs-extra');
         const path = require('path');
-
-        const csv = require('./csv.js');
-        const roms = require('./roms.js');
-        const overlays = require('./overlays.js');
-        const downloader = require('./downloader.js');
+        const events = require('events');
+        
+        // require local modules
+        const Csv = require('./csv.js');
+        const Roms = require('./roms.js');
+        const Overlays = require('./overlays.js');
+        const Downloader = require('./downloader.js');
+        
+        // Instantiate local modules
+        const csv = new Csv();
+        const roms = new Roms();
+        const overlays = new Overlays();
+        const downloader = new Downloader();
     </script>
 
     <div class="container mt-3">
         <h1><i class="icon-pacman"></i> Retropie romset arcade manager</h1>
         <hr>
-
-        <p>
-            Easily manage your arcade roms using pre-computed CSV files.
-        </p>
-
+        <p>Easily manage your arcade roms using pre-computed CSV files.</p>
         <div id="content">
         </div>
     </div>
@@ -59,7 +64,9 @@
         </div>
     </div>
 
-    <script type="text/javascript">
+    <script>
+        const content = $('#content');
+
         /**
          * Bind form actions
          */
@@ -84,10 +91,6 @@
                 return false;
             });
         }
-
-        // load main menu
-        const content = $('#content');
-        content.load('menus/index-menu.html', bindNav);
 
         /**
          * Binds the click on the browse buttons
@@ -200,6 +203,38 @@
         }
 
         /**
+         * Binds the modules events to the app
+         */
+        function bindEvents() {
+            // bind rom events
+            roms.on('progress.add', (total, item, game) => {
+                progress('Copying roms', total, item, 'Copying ' + game);
+            });
+            roms.on('progress.remove', (total, item, game) => {
+                progress('Deleting roms', total, item, 'Removing ' + game);
+            });
+            roms.on('progress.keep', (total, item, game) => {
+                progress('Filtering roms', total, item, 'Processing ' + game);
+            });
+
+            // bind csv events
+            csv.on('progress.add', (total, item, game) => {
+                progress('Merging files', total, item, 'Processing ' + game);
+            });
+            csv.on('progress.remove', (total, item, game) => {
+                progress('Splitting files', total, item, 'Processing ' + game);
+            });
+            csv.on('progress.keep', (total, item, game) => {
+                progress('Filtering files', total, item, 'Processing ' + game);
+            });
+
+            // bind overlays events
+            overlays.on('progress.install', (total, item, game) => {
+                progress('Installing overlays', total, item, 'Installing ' + game);
+            });
+        }
+
+        /**
          * Shows the progression modal
          * 
          * @param {string} title The modal title
@@ -220,7 +255,20 @@
             // calculate current percentage
             let percent = current != 0 ? current / total * 100 : 0;
             p.find('.progress .progress-bar').width(percent + '%');
+
+            if (current >= total) {
+                p.modal('hide');
+            }
         }
+
+        /**
+         * Loads main menu on app load
+         */
+        $(() => {
+            content.load('menus/index-menu.html', bindNav);
+
+            bindEvents();
+        });
     </script>
 </body>
 </html>

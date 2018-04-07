@@ -2,11 +2,12 @@ const fs = require('fs-extra');
 const path = require('path');
 const http = require('http');
 const https = require('https');
+const events = require('events');
 
 const protocol = 'https:';
 const host = 'api.github.com';
 
-module.exports = {
+module.exports = class Downloader extends events {
     /**
      * Downloads a file from GitHub and returns its content
      * 
@@ -15,7 +16,7 @@ module.exports = {
      * @param {Function} callback The callback method
      * @returns {String} The file content
      */
-    downloadFile: function downloadFile(repository, file, callback) {
+    downloadFile (repository, file, callback) {
         let url = '/repos/' + repository + '/contents/' + file;
         https.get({ protocol, host, 'path': url, 'headers': { 'User-Agent': 'retropie-arcade-manager' } }, (res) => {
             res.setEncoding('utf8');
@@ -27,7 +28,7 @@ module.exports = {
                 callback(fileContent);
             });
         });
-    },
+    }
 
     /**
      * Recursively downloads a folder into a target folder
@@ -36,7 +37,7 @@ module.exports = {
      * @param {string} folder The path to the folder (path/to/folder)
      * @param {string} targetFolder The folder to download into
      */
-    downloadFolder: function downloadFolder(repository, folder, targetFolder) {
+    downloadFolder (repository, folder, targetFolder) {
         fs.ensureDirSync(targetFolder);
         
         this.listFiles(repository, folder, (list) => {
@@ -54,7 +55,7 @@ module.exports = {
                 }
             }
         });
-    },
+    }
 
     /**
      * Lists the files in a folder
@@ -64,7 +65,7 @@ module.exports = {
      * @param {Function} callback The callback method
      * @returns {String} The files list
      */
-    listFiles: function listFiles(repository, folder, callback) {
+    listFiles (repository, folder, callback) {
         let url = '/repos/' + repository + '/contents/' + folder;
         https.get({ protocol, host, 'path': url, 'headers': { 'User-Agent': 'retropie-arcade-manager' } }, (res) => {
             res.setEncoding('utf8');
