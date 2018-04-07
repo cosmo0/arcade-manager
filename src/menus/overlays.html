@@ -8,8 +8,49 @@
 </nav>
 
 <div class="list-group">
-    <a href="overlays-download.html" class="navmenu list-group-item list-group-item-action text-primary">
-        <i class="icon-download"></i> Download and install overlays</a>
     <a href="overlays-local.html" class="navmenu list-group-item list-group-item-action text-primary">
         <i class="icon-drive"></i> Install local pack</a>
+    <!-- <a href="overlays-download.html" class="navmenu list-group-item list-group-item-action text-primary">
+        <i class="icon-download"></i> Download and install overlays</a> -->
 </div>
+
+<h2 class="mt-4">Download overlays packs</h2>
+
+<div class="list-group" id="overlayslinks"></div>
+
+<script>
+$(() => {
+    let data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), { encoding: 'utf8' }));
+    let template = $('#linkTemplate').html();
+
+    for (let ovl of data.overlays) {
+        let li = $(template);
+
+        // display pack infos
+        li.find('.name').text(ovl.name);
+        li.find('.desc').text(ovl.description);
+        if (ovl.image !== '') {
+            li.find('img').attr('src', ovl.image);
+        } else {
+            li.find('img').remove();
+        }
+
+        // open the link in default browser
+        let url = 'https://github.com/' + ovl.repository + '/releases';
+        li.on('click', (e) => {
+            shell.openExternal(url);
+            e.preventDefault();
+        });
+
+        $('#overlayslinks').append(li);
+    }
+});
+</script>
+
+<script type="text/template" id="linkTemplate">
+    <a href="#" class="list-group-item list-group-item-action">
+        <img src="" class="float-left mr-3">
+        <h5 class="mb-1 name text-primary"></h5>
+        <p class="mb-0 desc"></p>
+    </a>
+</script>

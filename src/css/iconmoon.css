@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?dxirjh');
-  src:  url('../fonts/icomoon.eot?dxirjh#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?dxirjh') format('truetype'),
-    url('../fonts/icomoon.woff?dxirjh') format('woff'),
-    url('../fonts/icomoon.svg?dxirjh#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?it3r3v');
+  src:  url('../fonts/icomoon.eot?it3r3v#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?it3r3v') format('truetype'),
+    url('../fonts/icomoon.woff?it3r3v') format('woff'),
+    url('../fonts/icomoon.svg?it3r3v#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -50,4 +50,10 @@
 }
 .icon-drive:before {
   content: "\e963";
+}
+.icon-github:before {
+  content: "\eab0";
+}
+.icon-file-excel:before {
+  content: "\eae2";
 }

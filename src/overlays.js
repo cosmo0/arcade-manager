@@ -65,6 +65,26 @@ module.exports = {
      * @param {string} shaders The shaders folder, if any (ex: overlays/config/shaders)
      */
     downloadPack: function downloadPack(romsFolder, configFolder, repository, roms, overlays, common, shaders) {
+        
+        /***********************************
+        *
+        *                   THIS METHOD IS NOT FINISHED
+        * 
+        * Since Github limits the anonymous calls to their API to 60 requests an hour,
+        * and an overlay download requires at least 3 API calls (game cfg, overlay cfg, image),
+        * and there are up to 1200 overlays in some pack, even the authenticated requests
+        * (max 5000 requests per hour) wouldn't work in some cases.
+        * 
+        * Making this work would require:
+        * - making the user enter their Github account credentials
+        * - checking the remaining limits before downloading anything
+        * 
+        * ... and it's not a priority, so... maybe I'll do it later.
+        *
+        ************************************/
+        
+        return;
+        
         // download and install common configs
         if (typeof common !== 'undefined' && common) {
             console.log('Installing common config');
