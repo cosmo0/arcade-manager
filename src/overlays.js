@@ -54,6 +54,79 @@ module.exports = {
     },
 
     /**
+     * Installs a local overlay pack
+     * 
+     * @param {string} roms The path to the roms folder
+     * @param {string} config The path to the Retropie configs share
+     * @param {string} pack The path to the overlays pack
+     */
+    installPack: function installPack(roms, config, pack) {
+        // checks that a folders.json file exists
+        if (!fs.existsSync(path.join(pack, 'folders.json'))) {
+            throw 'No folder.json file has been found in the overlay pack.';
+        }
+
+        let folders = JSON.parse(fs.readFileSync(path.join(pack, 'folders.json'), { 'encoding': 'utf8' }));
+
+        // copy common files
+        if (typeof folders.common !== 'undefined' && folders.common) {
+            console.log('Installing common config');
+            let commonTarget = path.join(config, folders.common.dest);
+            fs.ensureDirSync(commonTarget);
+            fs.copySync(path.join(pack, folders.common.src), commonTarget, { 'overwrite': false });
+        }
+
+        // copy shaders
+        if (typeof folders.shaders !== 'undefined' && folders.shaders) {
+            console.log('Installing shaders');
+            let shadersTarget = path.join(config, folders.shaders.dest);
+            fs.ensureDirSync(shadersTarget);
+            fs.copySync(path.join(pack, folders.shaders.src), shadersTarget, { 'overwrite': false });
+        }
+
+        // list all roms & roms cfg
+        let packConfigsFolder = path.join(pack, folders.roms);
+        let romfiles = fs.readdirSync(roms);
+        let packConfigs = fs.readdirSync(packConfigsFolder);
+        for (let rom of romfiles) {
+            if (!rom.endsWith('.zip')) { continue; }
+
+            // for each zip, search a matching rom cfg
+            let packCfgIdx = packConfigs.indexOf(rom + '.cfg');
+            if (packCfgIdx < 0) {
+                console.log('No overlay found for %s', rom);
+                continue;
+            } else {
+                console.log('Installing overlay %s', rom);
+                let packCfg = packConfigs[packCfgIdx];
+                let destCfg = path.join(roms, packCfg);
+
+                // copy the rom cfg
+                fs.copySync(path.join(packConfigsFolder, packCfg), destCfg, { 'overwrite': false });
+
+                // parse rom cfg to get overlay cfg
+                let packCfgContent = fs.readFileSync(destCfg, { 'encoding': 'utf8' });
+                let overlayFile = /input_overlay[\s]*=[\s]*(.*\.cfg)/igm.exec(packCfgContent)[1]; // extract overlay path
+                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/') + 1); // just the file name
+
+                // copy overlay cfg
+                let destOverlayFile = path.join(config, folders.overlays.dest, overlayFile);
+                fs.copySync(path.join(pack, folders.overlays.src, overlayFile), destOverlayFile, { 'overwrite': false });
+
+                // parse overlay cfg to get overlay image
+                let overlayContent = fs.readFileSync(destOverlayFile, { 'encoding': 'utf-8' });
+                let overlayImage = /overlay0_overlay[\s]*=[\s]*(.*\.png)/igm.exec(overlayContent)[1];
+        
+                // copy overlay image
+                fs.copySync(
+                    path.join(pack, folders.overlays.src, overlayImage),
+                    path.join(config, folders.overlays.dest, overlayImage),
+                    { 'encoding': 'utf-8' });
+            }
+        }
+    },
+
+    /**
      * Downloads and installs an overlay pack
      * 
      * @param {string} romsFolder The path to the roms
