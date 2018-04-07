@@ -2,6 +2,9 @@ a.navmenu:hover {
     text-decoration: none;
 }
 
+/*
+* Home page menu
+*/
 .mainmenu a.navmenu .card {
     transition: box-shadow 0.2s ease-in-out;
 }
@@ -19,4 +22,12 @@ a.navmenu:hover {
 .mainmenu a.navmenu:hover .card .card-footer {
     color: #ffffff;
     background-color: #007bff;
+}
+
+/*
+* CSV download folders list
+*/
+.list-group .active .text-primary,
+.list-group .active .text-muted {
+    color: #ffffff !important;
 }
