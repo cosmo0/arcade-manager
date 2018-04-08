@@ -94,25 +94,32 @@ module.exports = class Roms extends events {
                     delimiter: defaultDelimiter
                 });
 
-            for (let i = 0; i < fileCsv.length; i++) {
-                let zip = fileCsv[i].name + '.zip';
-                let rom = path.join(selection, zip);
+            let requests = fileCsv.reduce((promisechain, line, index) => {
+                return promisechain.then(() => new Promise((resolve) => {
+                    let zip = line.name + '.zip';
+                    let rom = path.join(selection, zip);
 
-                this.emit('progress.remove', fileCsv.length, i + 1, zip);
+                    this.emit('progress.remove', fileCsv.length, index + 1, zip);
 
-                // test if rom exists
-                fs.pathExists(rom, (err, romExists) => {
-                    if (romExists) {
-                        // delete rom
-                        fs.remove(rom, (err) => {
-                            console.log('%s deleted', rom);
-                            if (i + 1 >= fileCsv.length) { callback(); }
-                        });
-                    } else {
-                        if (i + 1 >= fileCsv.length) { callback(); }
-                    }
-                });
-            }
+                    // test if rom exists
+                    fs.pathExists(rom, (err, romExists) => {
+                        if (romExists) {
+                            // delete rom
+                            fs.remove(rom, (err) => {
+                                console.log('%s deleted', rom);
+                                resolve();
+                            });
+                        } else {
+                            resolve();
+                        }
+                    });
+                }));
+            }, Promise.resolve());
+
+            requests.then(() => {
+                this.emit('done.remove');
+                callback();
+            });
         });
     }
 
@@ -138,25 +145,38 @@ module.exports = class Roms extends events {
                 });
 
             // list files in selection folder
-            var files = fs.readdirSync(selection);
-            for (let i = 0; i < files.length; i++) {
-                let zip = files[i];
+            fs.readdir(selection, (err, files) => {
+                if (err) throw err;
 
-                this.emit('progress.keep', files.length, i + 1, zip);
+                let requests = files.reduce((promisechain, zip, index) => {
+                    return promisechain.then(() => new Promise((resolve) => {
+                        this.emit('progress.keep', files.length, index + 1, zip);
 
-                // skip non-zip files
-                if (!zip.endsWith('.zip')) {
-                    if (i + 1 >= files.length) { callback(); }
-                    continue;
-                }
+                        // skip non-zip files
+                        if (!zip.endsWith('.zip')) {
+                            resolve();
+                            return;
+                        }
 
-                // file not found in csv -> remove it
-                let csvItem = fileCsv.find((item) => item.name === zip.replace('.zip', ''));
-                if (typeof secondaryItem === 'undefined') {
-                    console.log('remove %s', zip);
-                    fs.unlinkSync(path.join(selection, zip));
-                }
-            }
+                        // file not found in csv -> remove it
+                        let csvItem = fileCsv.find((item) => item.name === zip.replace('.zip', ''));
+                        if (typeof csvItem === 'undefined') {
+                            console.log('remove %s', zip);
+                            fs.remove(path.join(selection, zip), (err) => {
+                                resolve();
+                            });
+                        } else {
+                            // file found in csv -> keep it
+                            resolve();
+                        }
+                    }));
+                }, Promise.resolve());
+
+                requests.then(() => {
+                    this.emit('done.keep');
+                    callback();
+                });
+            });
         });
     }
 };
