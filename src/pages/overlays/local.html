@@ -66,11 +66,6 @@ $('#buttonInstall').on('click', () => {
     if (!overlays.checkAccess(roms, true)) { window.alert('The specified roms folder cannot be written to.'); return; }
     if (!overlays.checkAccess(path.join(configFolder, 'all/retroarch/'), true)) { window.alert('The specified config folder cannot be written to.'); return; }
 
-    try {
-        overlays.installPack(roms, configFolder, overlayPack);
-        window.alert('Done.');
-    } catch (err) {
-        window.alert(err);
-    }
+    overlays.installPack(roms, configFolder, overlayPack);
 });
 </script>

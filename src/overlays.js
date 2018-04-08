@@ -67,6 +67,8 @@ module.exports = class Overlays extends events {
      * @param {string} pack The path to the overlays pack
      */
     installPack (roms, config, pack) {
+        this.emit('start.install');
+
         // checks that a folders.json file exists
         if (!fs.existsSync(path.join(pack, 'folders.json'))) {
             throw 'No folder.json file has been found in the overlay pack.';
@@ -80,84 +82,78 @@ module.exports = class Overlays extends events {
         let total = romfiles.length;
         let current = 1;
 
-        let copyCommon = new Promise((fulfill, reject) => {
-            // copy common files
-            if (typeof folders.common !== 'undefined' && folders.common) {
-                total++;
-                
-                this.emit('progress.install', total, current++, 'common files');
-
-                let commonTarget = path.join(config, folders.common.dest);
-                fs.ensureDirSync(commonTarget);
-                fs.copySync(path.join(pack, folders.common.src), commonTarget, { 'overwrite': false });
-                
-                fulfill();
-            } else {
-                fulfill();
-            }
-        });
-
-        let copyShaders = new Promise((fulfill, reject) => {
-            // copy shaders
-            if (typeof folders.shaders !== 'undefined' && folders.shaders) {
-                total++;
-                
-                this.emit('progress.install', total, current++, 'shaders');
-
-                let shadersTarget = path.join(config, folders.shaders.dest);
-                fs.ensureDirSync(shadersTarget);
-                fs.copySync(path.join(pack, folders.shaders.src), shadersTarget, { 'overwrite': false });
-
-                fulfill();
-            } else {
-                fulfill();
-            }
-        });
-
-        let copyOverlays = new Promise((fulfill, reject) => {
-            // list all roms & roms cfg
-            for (let rom of romfiles) {
-                current++;
-                
-                if (!rom.endsWith('.zip')) { continue; }
-
-                // for each zip, search a matching rom cfg
-                let packCfgIdx = packConfigs.indexOf(rom + '.cfg');
-                if (packCfgIdx < 0) {
-                    console.log('No overlay found for %s', rom);
-                    continue;
-                } else {
-                    this.emit('progress.install', total, current, rom);
-
-                    let packCfg = packConfigs[packCfgIdx];
-                    let destCfg = path.join(roms, packCfg);
-
-                    // copy the rom cfg
-                    fs.copySync(path.join(packConfigsFolder, packCfg), destCfg, { 'overwrite': false });
-
-                    // parse rom cfg to get overlay cfg
-                    let packCfgContent = fs.readFileSync(destCfg, { 'encoding': 'utf8' });
-                    let overlayFile = /input_overlay[\s]*=[\s]*(.*\.cfg)/igm.exec(packCfgContent)[1]; // extract overlay path
-                    overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/') + 1); // just the file name
-
-                    // copy overlay cfg
-                    let destOverlayFile = path.join(config, folders.overlays.dest, overlayFile);
-                    fs.copySync(path.join(pack, folders.overlays.src, overlayFile), destOverlayFile, { 'overwrite': false });
-
-                    // parse overlay cfg to get overlay image
-                    let overlayContent = fs.readFileSync(destOverlayFile, { 'encoding': 'utf-8' });
-                    let overlayImage = /overlay0_overlay[\s]*=[\s]*(.*\.png)/igm.exec(overlayContent)[1];
+        // copy common files
+        if (typeof folders.common !== 'undefined' && folders.common) {
+            total++;
             
-                    // copy overlay image
-                    fs.copySync(
-                        path.join(pack, folders.overlays.src, overlayImage),
-                        path.join(config, folders.overlays.dest, overlayImage),
-                        { 'encoding': 'utf-8' });
-                }
-            }
-        });
+            this.emit('progress.install', total, current++, 'common files');
 
-        copyCommon().then(() => copyShaders()).then(() => copyOverlays());
+            let commonTarget = path.join(config, folders.common.dest);
+            fs.ensureDirSync(commonTarget);
+            fs.copySync(path.join(pack, folders.common.src), commonTarget, { 'overwrite': false });
+            
+            fulfill();
+        } else {
+            fulfill();
+        }
+
+        // copy shaders
+        if (typeof folders.shaders !== 'undefined' && folders.shaders) {
+            total++;
+            
+            this.emit('progress.install', total, current++, 'shaders');
+
+            let shadersTarget = path.join(config, folders.shaders.dest);
+            fs.ensureDirSync(shadersTarget);
+            fs.copySync(path.join(pack, folders.shaders.src), shadersTarget, { 'overwrite': false });
+
+            fulfill();
+        } else {
+            fulfill();
+        }
+
+        // list all roms & roms cfg
+        for (let rom of romfiles) {
+            current++;
+            
+            if (!rom.endsWith('.zip')) { continue; }
+
+            // for each zip, search a matching rom cfg
+            let packCfgIdx = packConfigs.indexOf(rom + '.cfg');
+            if (packCfgIdx < 0) {
+                console.log('No overlay found for %s', rom);
+                continue;
+            } else {
+                this.emit('progress.install', total, current, rom);
+
+                let packCfg = packConfigs[packCfgIdx];
+                let destCfg = path.join(roms, packCfg);
+
+                // copy the rom cfg
+                fs.copySync(path.join(packConfigsFolder, packCfg), destCfg, { 'overwrite': false });
+
+                // parse rom cfg to get overlay cfg
+                let packCfgContent = fs.readFileSync(destCfg, { 'encoding': 'utf8' });
+                let overlayFile = /input_overlay[\s]*=[\s]*(.*\.cfg)/igm.exec(packCfgContent)[1]; // extract overlay path
+                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/') + 1); // just the file name
+
+                // copy overlay cfg
+                let destOverlayFile = path.join(config, folders.overlays.dest, overlayFile);
+                fs.copySync(path.join(pack, folders.overlays.src, overlayFile), destOverlayFile, { 'overwrite': false });
+
+                // parse overlay cfg to get overlay image
+                let overlayContent = fs.readFileSync(destOverlayFile, { 'encoding': 'utf-8' });
+                let overlayImage = /overlay0_overlay[\s]*=[\s]*(.*\.png)/igm.exec(overlayContent)[1];
+        
+                // copy overlay image
+                fs.copySync(
+                    path.join(pack, folders.overlays.src, overlayImage),
+                    path.join(config, folders.overlays.dest, overlayImage),
+                    { 'encoding': 'utf-8' });
+            }
+        }
+
+        this.emit('end.install');
     }
 
     /**
