@@ -50,6 +50,28 @@
 </p>
 
 <p class="mt-3">
-    <button type="button" id="buttonOk" data-action="romsadd" class="btn btn-primary btn-lg btn-block">Copy</button>
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Copy</button>
 </p>
-    
+
+
+<script>
+let btn = $('#buttonOk');
+
+// Action button clicked
+btn.on('click', () => {
+    // get paths from file inputs
+    let main = $('#fileMainCsv').val(),
+        romset = $('#fileRomset').val(),
+        selection = $('#fileRomSelection').val();
+
+    // check every path is filled
+    if (main === '') { window.alert('Please choose a main CSV file'); return; }
+    if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
+    if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
+
+    // execute action
+    roms.add(main, romset, selection);
+
+    window.alert('Done.\nRemember to copy BIOS and samples!');
+});
+</script>

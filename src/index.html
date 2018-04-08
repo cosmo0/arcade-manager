@@ -68,14 +68,6 @@
         const content = $('#content');
 
         /**
-         * Bind form actions
-         */
-        function bindForm() {
-            bindBrowse();
-            bindValidate();
-        }
-
-        /**
          * Bind menu navigation
          */
         function bindNav() {
@@ -83,7 +75,7 @@
                 let link = $(e.currentTarget);
                 content.load('menus/' + link.attr('href'), () => {
                     bindNav();
-                    bindForm();
+                    bindBrowse();
                 });
                 
                 e.preventDefault();
@@ -118,87 +110,6 @@
                     dialog.showOpenDialog({ filters: { name: 'CSV files', extensions: [ 'csv' ] }, properties: ['openFile'] },
                         (files) => { if (files && files.length !== 0) { input.val(files[0]); } });
                 }
-            });
-        }
-
-        /**
-         * Binds the validation of the form
-         */
-        function bindValidate() {
-            let btn = $('#buttonOk');
-
-            // Action button clicked
-            btn.on('click', () => {
-                // get paths from file inputs
-                let main = $('#fileMainCsv').val(),
-                    secondary = $('#fileSecondaryCsv').val(),
-                    target = $('#fileTarget').val(),
-                    romset = $('#fileRomset').val(),
-                    selection = $('#fileRomSelection').val(),
-                    action = btn.data('action');
-
-                switch (action) {
-                    case 'romsadd':
-                        // check every path is filled
-                        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-                        if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
-                        if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
-
-                        // execute action
-                        roms.add(main, romset, selection);
-                    break;
-                    case 'romsdelete':
-                        // check every path is filled
-                        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-                        if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
-
-                        // execute action
-                        roms.remove(main, selection);
-                    break;
-                    case 'romskeep':
-                        // check every path is filled
-                        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-                        if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
-
-                        // execute action
-                        roms.keep(main, selection);
-                    break;
-
-                    case 'csvadd':
-                        // check every path is filled
-                        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-                        if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
-                        if (target === '') { window.alert('Please choose the target CSV file'); return; }
-
-                        // execute action
-                        csv.add(main, secondary, target);
-                    break;
-                    case 'csvdelete':
-                        // check every path is filled
-                        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-                        if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
-                        if (target === '') { window.alert('Please choose the target CSV file'); return; }
-
-                        // execute action
-                        csv.remove(main, secondary, target);
-                    break;
-                    case 'csvkeep':
-                        // check every path is filled
-                        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-                        if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
-                        if (target === '') { window.alert('Please choose the target CSV file'); return; }
-
-                        // execute action
-                        csv.keep(main, secondary, target);
-                    break;
-                }
-
-                var msg = 'Done.';
-                if (action === 'romsadd') {
-                    msg += '\nRemember to copy BIOS and samples!';
-                }
-
-                window.alert(msg);
             });
         }
 
