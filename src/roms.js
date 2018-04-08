@@ -14,6 +14,7 @@ module.exports = class Roms extends events {
      * @param {string} file The path to the file
      * @param {string} romset The path to the romset folder
      * @param {string} selection The path to the selection folder
+     * @param {functiion} callback The callback method
      */
     add (file, romset, selection, callback) {
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
@@ -72,34 +73,39 @@ module.exports = class Roms extends events {
      * @param {string} file The path to the file
      * @param {string} selection The path to the selection folder
      */
-    remove (file, selection) {
-        let fileCsv = csvparse(
-            fs.readFileSync(file),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
+    remove (file, selection, callback) {
+        fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
+            if (err) throw err;
+            
+            let fileCsv = csvparse(
+                fileContents,
+                {
+                    columns: true,
+                    auto_parse: false,
+                    auto_parse_date: false,
+                    delimiter: defaultDelimiter
+                });
 
-        for (let i = 0; i < fileCsv.length; i++) {
-            let zip = fileCsv[i].name + '.zip';
-            let rom = path.join(selection, zip);
+            for (let i = 0; i < fileCsv.length; i++) {
+                let zip = fileCsv[i].name + '.zip';
+                let rom = path.join(selection, zip);
 
-            this.emit('progress.remove', fileCsv.length, i + 1, zip);
+                this.emit('progress.remove', fileCsv.length, i + 1, zip);
 
-            try {
                 // test if rom exists
-                fs.accessSync(rom, fs.constants.W_OK);
-                
-                // delete rom
-                fs.unlinkSync(rom);
-
-                console.log('%s deleted', rom);
-            } catch (errRom) {
-                console.log('Unable to delete %s - %o', rom, errRom);
+                fs.pathExists(rom, (err, romExists) => {
+                    if (romExists) {
+                        // delete rom
+                        fs.remove(rom, (err) => {
+                            console.log('%s deleted', rom);
+                            if (i + 1 >= fileCsv.length) { callback(); }
+                        });
+                    } else {
+                        if (i + 1 >= fileCsv.length) { callback(); }
+                    }
+                });
             }
-        }
+        });
     }
 
     /**
