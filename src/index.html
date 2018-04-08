@@ -73,7 +73,7 @@
         function bindNav() {
             content.find('.navmenu').on('click', (e) => {
                 let link = $(e.currentTarget);
-                content.load('menus/' + link.attr('href'), () => {
+                content.load(link.attr('href'), () => {
                     bindNav();
                     bindBrowse();
                 });
@@ -176,7 +176,7 @@
          * Loads main menu on app load
          */
         $(() => {
-            content.load('menus/index-menu.html', bindNav);
+            content.load('pages/index.html', bindNav);
 
             bindEvents();
         });

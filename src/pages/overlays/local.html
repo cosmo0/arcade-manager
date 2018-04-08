@@ -2,8 +2,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a href="overlays.html" class="navmenu">Install overlays</a></li>
+        <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="pages/overlays/index.html" class="navmenu">Install overlays</a></li>
         <li class="breadcrumb-item active" aria-current="page">Local pack</li>
     </ol>
 </nav>
@@ -55,24 +55,22 @@
 </p>
 
 <script>
-$(() => {
-    $('#buttonInstall').on('click', () => {
-        let overlayPack = $('#overlayPack').val(),
-            roms = $('#roms').val(),
-            configFolder = $('#configFolder').val();
-        
-        if (overlayPack === '') { window.alert('Please choose an overlay pack.'); return; }
-        if (roms === '') { window.alert('Please choose the path to the roms folder.'); return; }
-        if (configFolder === '') { window.alert('Please choose the config folder.'); return; }
-        if (!overlays.checkAccess(roms, true)) { window.alert('The specified roms folder cannot be written to.'); return; }
-        if (!overlays.checkAccess(path.join(configFolder, 'all/retroarch/'), true)) { window.alert('The specified config folder cannot be written to.'); return; }
+$('#buttonInstall').on('click', () => {
+    let overlayPack = $('#overlayPack').val(),
+        roms = $('#roms').val(),
+        configFolder = $('#configFolder').val();
+    
+    if (overlayPack === '') { window.alert('Please choose an overlay pack.'); return; }
+    if (roms === '') { window.alert('Please choose the path to the roms folder.'); return; }
+    if (configFolder === '') { window.alert('Please choose the config folder.'); return; }
+    if (!overlays.checkAccess(roms, true)) { window.alert('The specified roms folder cannot be written to.'); return; }
+    if (!overlays.checkAccess(path.join(configFolder, 'all/retroarch/'), true)) { window.alert('The specified config folder cannot be written to.'); return; }
 
-        try {
-            overlays.installPack(roms, configFolder, overlayPack);
-            window.alert('Done.');
-        } catch (err) {
-            window.alert(err);
-        }
-    });
+    try {
+        overlays.installPack(roms, configFolder, overlayPack);
+        window.alert('Done.');
+    } catch (err) {
+        window.alert(err);
+    }
 });
 </script>

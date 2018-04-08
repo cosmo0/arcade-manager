@@ -2,8 +2,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a href="roms.html" class="navmenu">Manage roms</a></li>
+        <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="pages/roms/index.html" class="navmenu">Manage roms</a></li>
         <li class="breadcrumb-item active" aria-current="page">Keep</li>
     </ol>
 </nav>
@@ -40,10 +40,7 @@
 </p>
 
 <script>
-let btn = $('#buttonOk');
-
-// Action button clicked
-btn.on('click', () => {
+$('#buttonOk').on('click', () => {
     // get paths from file inputs
     let main = $('#fileMainCsv').val(),
         selection = $('#fileRomSelection').val();

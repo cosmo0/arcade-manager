@@ -2,12 +2,12 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index-menu.html" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a href="csv.html" class="navmenu">Manage CSV</a></li>
+        <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="pages/csv/index.html" class="navmenu">Manage CSV</a></li>
         <li class="breadcrumb-item active" aria-current="page">Delete games</li>
     </ol>
 </nav>
-    
+
 <div class="input-group mb-0">
     <div class="input-group-prepend">
         <span class="input-group-text">Main CSV file</span>
@@ -54,10 +54,7 @@
 </p>
 
 <script>
-let btn = $('#buttonOk');
-
-// Action button clicked
-btn.on('click', () => {
+$('#buttonOk').on('click', () => {
     // get paths from file inputs
     let main = $('#fileMainCsv').val(),
         secondary = $('#fileSecondaryCsv').val(),
