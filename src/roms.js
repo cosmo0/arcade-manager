@@ -15,49 +15,54 @@ module.exports = class Roms extends events {
      * @param {string} romset The path to the romset folder
      * @param {string} selection The path to the selection folder
      */
-    add (file, romset, selection) {
-        let fileCsv = csvparse(
-            fs.readFileSync(file),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
+    add (file, romset, selection, callback) {
+        fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
+            if (err) throw err;
 
-        for (let i = 0; i < fileCsv.length; i++) {
-            let game = fileCsv[i].name;
-            let zip = fileCsv[i].name + '.zip';
-            let sourceRom = path.join(romset, zip);
-            let destRom = path.join(selection, zip);
+            let fileCsv = csvparse(
+                fileContents,
+                {
+                    columns: true,
+                    auto_parse: false,
+                    auto_parse_date: false,
+                    delimiter: defaultDelimiter
+                });
 
-            this.emit('progress.add', fileCsv.length, i + 1, zip);
+            console.log('Copying %i files', fileCsv.length);
 
-            try {
-                // test if destination file exists
-                fs.accessSync(destRom, fs.constants.F_OK);
-                console.log('Rom %s already exists', destRom);
-            } catch (errDest) {
-                // destination rom does not exist (accessSync has thrown)
-                try {
-                    // test if source rom exists
-                    fs.accessSync(sourceRom, fs.constants.R_OK);
-                    
+            for (let i = 0; i < fileCsv.length; i++) {
+                let game = fileCsv[i].name;
+                let zip = fileCsv[i].name + '.zip';
+                let sourceRom = path.join(romset, zip);
+                let destRom = path.join(selection, zip);
+
+                this.emit('progress.add', fileCsv.length, i + 1, zip);
+
+                // test if source file exists and destination does not
+                if (fs.existsSync(sourceRom) && !fs.existsSync(destRom)) {
                     // copy rom
-                    fs.copySync(sourceRom, destRom);
+                    fs.copy(sourceRom, destRom, (err) => {
+                        if (err) throw err;
 
-                    // copy CHD
-                    let sourceChd = path.join(romset, game);
-                    if (fs.existsSync(sourceChd)) {
-                        fs.copySync(sourceChd, path.join(selection, game));
-                    }
-
-                    console.log('%s copied', sourceRom);
-                } catch (errSource) {
-                    console.log('Unable to access %s - %o', sourceRom, errSource);
+                        // copy CHD
+                        let sourceChd = path.join(romset, game);
+                        if (fs.existsSync(sourceChd)) {
+                            fs.copy(sourceChd, path.join(selection, game), (err) => {
+                                if (err) throw err;
+                                console.log('%s copied', sourceChd);
+                                if (i + 1 >= fileCsv.length) { callback(); }
+                            });
+                        } else {
+                            console.log('%s copied', sourceRom);
+                            if (i + 1 >= fileCsv.length) { callback(); }
+                        }
+                    });
+                } else {
+                    console.log('%s game source not found or rom already copied', game);
+                    if (i + 1 >= fileCsv.length) { callback(); }
                 }
             }
-        }
+        });
     }
 
     /**

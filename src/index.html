@@ -60,6 +60,9 @@
                     </div>
                     <p class="text-center details"></p>
                 </div>
+                <div class="modal-footer d-none">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                  </div>
             </div>
         </div>
     </div>
@@ -157,6 +160,7 @@
             let p = $('#progress');
             if (!p.is(':visible')) {
                 p.modal({ 'backdrop': 'static', 'keyboard': false });
+                p.find('.modal-footer').addClass('d-none');
             }
 
             // set texts
@@ -168,7 +172,8 @@
             p.find('.progress .progress-bar').width(percent + '%');
 
             if (current >= total) {
-                p.modal('hide');
+                p.find('.modal-footer').removeClass('d-none');
+                window.setTimeout(() => { p.modal('hide'); }, 2000);
             }
         }
 
