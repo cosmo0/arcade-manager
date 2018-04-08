@@ -50,8 +50,6 @@ $('#buttonOk').on('click', () => {
     if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
     // execute action
-    roms.keep(main, selection, () => {
-        window.alert('Done.');
-    });
+    roms.keep(main, selection);
 });
 </script>

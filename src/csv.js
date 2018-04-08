@@ -17,6 +17,8 @@ module.exports = class Csv extends events {
      * @param {string} target The path to the combined file to save
      */
     add (main, secondary, target) {
+        this.emit('start.add');
+
         // load up csv files
         let mainCsv = csvparse(
             fs.readFileSync(main),
@@ -61,6 +63,7 @@ module.exports = class Csv extends events {
                 })
             );
 
+        this.emit('end.add');
         console.log('OK');
     }
 
@@ -73,6 +76,8 @@ module.exports = class Csv extends events {
      * @param {string} target The path to the combined file to save
      */
     remove (main, secondary, target) {
+        this.emit('start.remove');
+
         // load up csv files
         let mainCsv = csvparse(
             fs.readFileSync(main),
@@ -119,6 +124,7 @@ module.exports = class Csv extends events {
                 })
             );
 
+        this.emit('end.remove');
         console.log('OK');
     }
 
@@ -131,6 +137,8 @@ module.exports = class Csv extends events {
      * @param {string} target The path to the combined file to save
      */
     keep (main, secondary, target) {
+        this.emit('start.keep');
+
         // load up csv files
         let mainCsv = csvparse(
             fs.readFileSync(main),
@@ -177,6 +185,7 @@ module.exports = class Csv extends events {
                 })
             );
 
+        this.emit('end.keep');
         console.log('OK');
     }
 };

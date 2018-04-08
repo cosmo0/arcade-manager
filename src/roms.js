@@ -17,6 +17,8 @@ module.exports = class Roms extends events {
      * @param {functiion} callback The callback method
      */
     add (file, romset, selection, callback) {
+        this.emit('start.add');
+
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
 
@@ -67,8 +69,8 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
-                this.emit('done.add');
-                callback();
+                this.emit('end.add');
+                if (callback) callback();
             });
         });
     }
@@ -82,6 +84,8 @@ module.exports = class Roms extends events {
      * @param {functiion} callback The callback method
      */
     remove (file, selection, callback) {
+        this.emit('start.remove');
+
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
 
@@ -117,8 +121,8 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
-                this.emit('done.remove');
-                callback();
+                this.emit('end.remove');
+                if (callback) callback();
             });
         });
     }
@@ -132,6 +136,8 @@ module.exports = class Roms extends events {
      * @param {functiion} callback The callback method
      */
     keep (file, selection, callback) {
+        this.emit('start.keep');
+
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
             
@@ -173,8 +179,8 @@ module.exports = class Roms extends events {
                 }, Promise.resolve());
 
                 requests.then(() => {
-                    this.emit('done.keep');
-                    callback();
+                    this.emit('end.keep');
+                    if (callback) callback();
                 });
             });
         });

@@ -66,8 +66,6 @@ $('#buttonOk').on('click', () => {
     if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
     // execute action
-    roms.add(main, romset, selection, () => {
-        window.alert('Done.\nRemember to copy BIOS and samples!');
-    });
+    roms.add(main, romset, selection);
 });
 </script>

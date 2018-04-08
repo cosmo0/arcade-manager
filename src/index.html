@@ -59,6 +59,7 @@
                         <div class="progress-bar" role="progressbar"></div>
                     </div>
                     <p class="text-center details"></p>
+                    <p class="d-none msg"></p>
                 </div>
                 <div class="modal-footer d-none">
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
@@ -121,60 +122,79 @@
          */
         function bindEvents() {
             // bind rom events
-            roms.on('progress.add', (total, item, game) => {
-                progress('Copying roms', total, item, 'Copying ' + game);
-            });
-            roms.on('progress.remove', (total, item, game) => {
-                progress('Deleting roms', total, item, 'Removing ' + game);
-            });
-            roms.on('progress.keep', (total, item, game) => {
-                progress('Filtering roms', total, item, 'Processing ' + game);
-            });
+            roms.on('start.add', () => { progressInit('Copying roms'); });
+            roms.on('progress.add', progress);
+            roms.on('end.add', () => { progressDone('Done.<br>Remember to copy BIOS and samples!'); });
+
+            roms.on('start.remove', () => { progressInit('Deleting roms'); });
+            roms.on('progress.remove', progress);
+            roms.on('end.remove', () => { progressDone('Done'); });
+
+            roms.on('start.keep', () => { progressInit('Filtering roms'); });
+            roms.on('progress.keep', progress);
+            roms.on('end.keep', () => { progressDone('Done'); });
 
             // bind csv events
-            csv.on('progress.add', (total, item, game) => {
-                progress('Merging files', total, item, 'Processing ' + game);
-            });
-            csv.on('progress.remove', (total, item, game) => {
-                progress('Splitting files', total, item, 'Processing ' + game);
-            });
-            csv.on('progress.keep', (total, item, game) => {
-                progress('Filtering files', total, item, 'Processing ' + game);
-            });
+            csv.on('start.add', () => { progressInit('Merging files'); });
+            csv.on('progress.add', progress);
+            csv.on('end.add', () => { progressDone('Done'); });
+
+            csv.on('start.remove', () => { progressInit('Splitting files'); });
+            csv.on('progress.remove', progress);
+            csv.on('end.remove', () => { progressDone('Done'); });
+
+            csv.on('start.keep', () => { progressInit('Filtering files'); });
+            csv.on('progress.keep', progress);
+            csv.on('end.keep', () => { progressDone('Done'); });
 
             // bind overlays events
-            overlays.on('progress.install', (total, item, game) => {
-                progress('Installing overlays', total, item, 'Installing ' + game);
-            });
+            overlays.on('start.install', () => { progressInit('Installing overlays'); });
+            overlays.on('progress.install', progress);
+            overlays.on('end.install', () => { progressDone('Done'); });
         }
 
         /**
          * Shows the progression modal
          * 
          * @param {string} title The modal title
+         */
+         function progressInit(title) {
+            let p = $('#progress');
+            p.modal({ 'backdrop': 'static', 'keyboard': false });
+            p.find('.modal-footer, .msg').addClass('d-none');
+            p.find('.progress, .details').removeClass('d-none');
+            p.find('.modal-title').html(title);
+            p.find('.progress .progress-bar').width(0);
+        }
+
+        /**
+         * Advances the progression modal
+         * 
          * @param {int} total The total number of items
          * @param {int} current The current item number
          * @param {string} details The details to display
          */
-        function progress(title, total, current, details) {
+        function progress(total, current, item) {
             let p = $('#progress');
-            if (!p.is(':visible')) {
-                p.modal({ 'backdrop': 'static', 'keyboard': false });
-                p.find('.modal-footer').addClass('d-none');
-            }
 
             // set texts
-            p.find('.modal-title').text(title);
-            p.find('.details').text(details);
+            p.find('.details').text('Processing ' + item);
 
             // calculate current percentage
             let percent = current != 0 ? current / total * 100 : 0;
             p.find('.progress .progress-bar').width(percent + '%');
+        }
 
-            if (current >= total) {
-                p.find('.modal-footer').removeClass('d-none');
-                window.setTimeout(() => { p.modal('hide'); }, 2000);
-            }
+        /**
+         * Finishes the progression
+         * 
+         * @param {string} msg The message to display
+         */
+        function progressDone(msg) {
+            let p = $('#progress');
+            p.find('.modal-footer, .msg').removeClass('d-none');
+            p.find('.progress, .details').addClass('d-none');
+            p.find('.msg').html(msg);
         }
 
         /**
