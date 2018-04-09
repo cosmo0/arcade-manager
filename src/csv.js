@@ -20,51 +20,60 @@ module.exports = class Csv extends events {
         this.emit('start.add');
 
         // load up csv files
-        let mainCsv = csvparse(
-            fs.readFileSync(main),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
-        let secondaryCsv = csvparse(
-            fs.readFileSync(secondary),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
+        fs.readFile(main, { 'encoding': 'utf8' }, (err, mainContents) => {
+            if (err) throw err;
 
-        console.log('Merging main (%i lines) and secondary (%i lines)', mainCsv.length, secondaryCsv.length);
-
-        // read the secondary csv and add entries to main that do not yet exist
-        for (let i = 0; i < secondaryCsv.length; i++) {
-            this.emit('progress.add', secondaryCsv.length, i + 1, secondaryCsv[i].name);
-
-            let mainItem = mainCsv.find((item) => item.name === secondaryCsv[i].name);
-            // if no matching main CSV entry is found: add it
-            if (typeof mainItem === 'undefined') {
-                mainCsv.push(secondaryCsv[i]);
-            }
-        }
-
-        console.log('Result has %i lines; saving it', mainCsv.length);
-
-        // save the result
-        fs.writeFileSync(
-            target,
-            stringify(
-                mainCsv,
+            let mainCsv = csvparse(
+                mainContents,
                 {
-                    header: true,
+                    columns: true,
+                    auto_parse: false,
+                    auto_parse_date: false,
                     delimiter: defaultDelimiter
-                })
-            );
+                });
 
-        this.emit('end.add');
-        console.log('OK');
+            fs.readFile(secondary, { 'encoding': 'utf8' }, (err, secondaryContents) => {
+                if (err) throw err;
+
+                let secondaryCsv = csvparse(
+                    secondaryContents,
+                    {
+                        columns: true,
+                        auto_parse: false,
+                        auto_parse_date: false,
+                        delimiter: defaultDelimiter
+                    });
+
+                console.log('Merging main (%i lines) and secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+
+                // read the secondary csv and add entries to main that do not yet exist
+                let requests = secondaryCsv.reduce((promisechain, line, index) => {
+                    return promisechain.then(() => new Promise((resolve) => {
+                        this.emit('progress.add', secondaryCsv.length, index + 1, line.name);
+
+                        let mainItem = mainCsv.find((item) => item.name === line.name);
+                        // if no matching main CSV entry is found: add it
+                        if (typeof mainItem === 'undefined') {
+                            mainCsv.push(line);
+                        }
+
+                        resolve();
+                    }));
+                }, Promise.resolve());
+
+                requests.then(() => {
+                    console.log('Result has %i lines; saving it', mainCsv.length);
+
+                    // save the result
+                    fs.writeFile(target, stringify(mainCsv, { header: true, delimiter: defaultDelimiter }), (err) => {
+                        if (err) throw err;
+
+                        this.emit('end.add');
+                        console.log('OK');
+                    });
+                });
+            });
+        });
     }
 
     /**
@@ -79,53 +88,56 @@ module.exports = class Csv extends events {
         this.emit('start.remove');
 
         // load up csv files
-        let mainCsv = csvparse(
-            fs.readFileSync(main),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
-        let secondaryCsv = csvparse(
-            fs.readFileSync(secondary),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
-
-        console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
-
-        let merged = [];
-
-        // read the main csv and add entries to merge that do not exist in secondary
-        for (let i = 0; i < mainCsv.length; i++) {
-            this.emit('progress.remove', mainCsv.length, i + 1, mainCsv[i].name);
-
-            let secondaryItem = secondaryCsv.find((item) => item.name === mainCsv[i].name);
-            // if no matching main CSV entry is found: add to merge
-            if (typeof secondaryItem === 'undefined') {
-                merged.push(mainCsv[i]);
-            }
-        }
-
-        console.log('Result has %i lines; saving it', merged.length);
-
-        // save the result
-        fs.writeFileSync(
-            target,
-            stringify(
-                merged,
+        fs.readFile(main, { 'encoding': 'utf8' }, (err, mainContents) => {
+            let mainCsv = csvparse(
+                mainContents,
                 {
-                    header: true,
+                    columns: true,
+                    auto_parse: false,
+                    auto_parse_date: false,
                     delimiter: defaultDelimiter
-                })
-            );
+                });
+            
+            fs.readFile(secondary, { 'encoding': 'utf8' }, (err, secondaryContents) => {
+                let secondaryCsv = csvparse(
+                    secondaryContents,
+                    {
+                        columns: true,
+                        auto_parse: false,
+                        auto_parse_date: false,
+                        delimiter: defaultDelimiter
+                    });
 
-        this.emit('end.remove');
-        console.log('OK');
+                console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+
+                let merged = [];
+
+                // read the main csv and add entries to merge that do not exist in secondary
+                let requests = mainCsv.reduce((promisechain, line, index) => {
+                    return promisechain.then(() => new Promise((resolve) => {
+                        this.emit('progress.remove', mainCsv.length, index + 1, line.name);
+
+                        let secondaryItem = secondaryCsv.find((item) => item.name === line.name);
+                        // if no matching main CSV entry is found: add to merge
+                        if (typeof secondaryItem === 'undefined') {
+                            merged.push(line);
+                        }
+
+                        resolve();
+                    }));
+                }, Promise.resolve());
+
+                requests.then(() => {
+                    console.log('Result has %i lines; saving it', merged.length);
+
+                    // save the result
+                    fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
+                        this.emit('end.remove');
+                        console.log('OK');
+                    });                        
+                });
+            });
+        });
     }
 
     /**
@@ -140,52 +152,55 @@ module.exports = class Csv extends events {
         this.emit('start.keep');
 
         // load up csv files
-        let mainCsv = csvparse(
-            fs.readFileSync(main),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
-        let secondaryCsv = csvparse(
-            fs.readFileSync(secondary),
-            {
-                columns: true,
-                auto_parse: false,
-                auto_parse_date: false,
-                delimiter: defaultDelimiter
-            });
-
-        console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
-
-        let merged = [];
-
-        // read the main csv and add entries to merge that do not exist in secondary
-        for (let i = 0; i < mainCsv.length; i++) {
-            this.emit('progress.keep', mainCsv.length, i + 1, mainCsv[i].name);
-
-            let secondaryItem = secondaryCsv.find((item) => item.name === mainCsv[i].name);
-            // if a matching main CSV entry is found: add to merge
-            if (typeof secondaryItem !== 'undefined') {
-                merged.push(mainCsv[i]);
-            }
-        }
-
-        console.log('Result has %i lines; saving it', merged.length);
-
-        // save the result
-        fs.writeFileSync(
-            target,
-            stringify(
-                merged,
+        fs.readFile(main, { 'encoding': 'utf8' }, (err, mainContents) => {
+            let mainCsv = csvparse(
+                mainContents,
                 {
-                    header: true,
+                    columns: true,
+                    auto_parse: false,
+                    auto_parse_date: false,
                     delimiter: defaultDelimiter
-                })
-            );
+                });
 
-        this.emit('end.keep');
-        console.log('OK');
+            fs.readFile(secondary, { 'encoding': 'utf8' }, (err, secondaryContents) => {
+                let secondaryCsv = csvparse(
+                    secondaryContents,
+                    {
+                        columns: true,
+                        auto_parse: false,
+                        auto_parse_date: false,
+                        delimiter: defaultDelimiter
+                    });
+
+                console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+
+                let merged = [];
+
+                // read the main csv and add entries to merge that do not exist in secondary
+                let requests = mainCsv.reduce((promisechain, line, index) => {
+                    return promisechain.then(() => new Promise((resolve) => {
+                        this.emit('progress.keep', mainCsv.length, index + 1, line.name);
+
+                        let secondaryItem = secondaryCsv.find((item) => item.name === line.name);
+                        // if a matching main CSV entry is found: add to merge
+                        if (typeof secondaryItem !== 'undefined') {
+                            merged.push(line);
+                        }
+
+                        resolve();
+                    }));
+                }, Promise.resolve());
+
+                requests.then(() => {
+                    console.log('Result has %i lines; saving it', merged.length);
+
+                    // save the result
+                    fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
+                        this.emit('end.keep');
+                        console.log('OK');
+                    });
+                });
+            });
+        });
     }
 };
