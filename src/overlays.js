@@ -76,84 +76,113 @@ module.exports = class Overlays extends events {
 
         let folders = JSON.parse(fs.readFileSync(path.join(pack, 'folders.json'), { 'encoding': 'utf8' }));
         let packConfigsFolder = path.join(pack, folders.roms);
-        let romfiles = fs.readdirSync(roms);
-        let packConfigs = fs.readdirSync(packConfigsFolder);
-
-        let total = romfiles.length;
-        let current = 1;
-
-        // copy common files
-        if (typeof folders.common !== 'undefined' && folders.common) {
-            total++;
+        fs.readdir(roms, (err, romfiles) => {
+            if (err) throw err;
+            fs.readdir(packConfigsFolder, (err, packConfigs) => {
+                if (err) throw err;
             
-            this.emit('progress.install', total, current++, 'common files');
+                let total = romfiles.length;
+                if (typeof folders.common !== 'undefined' && folders.common) { total++; }
+                if (typeof folders.shaders !== 'undefined' && folders.shaders) { total++; }
+                let current = 1;
 
-            let commonTarget = path.join(config, folders.common.dest);
-            fs.ensureDirSync(commonTarget);
-            fs.copySync(path.join(pack, folders.common.src), commonTarget, { 'overwrite': false });
-            
-            fulfill();
-        } else {
-            fulfill();
-        }
+                // copy common files
+                let installCommon = new Promise((resolve) => {
+                    if (typeof folders.common !== 'undefined' && folders.common) {
+                        this.emit('progress.install', total, current++, 'common files');
+                        console.log('installing common files');
 
-        // copy shaders
-        if (typeof folders.shaders !== 'undefined' && folders.shaders) {
-            total++;
-            
-            this.emit('progress.install', total, current++, 'shaders');
+                        let commonTarget = path.join(config, folders.common.dest);
+                        fs.ensureDir(commonTarget, (err) => {
+                            if (err) throw err;
+                            fs.copy(path.join(pack, folders.common.src), commonTarget, { 'overwrite': false }, (err) => {
+                                if (err) throw err;
+                                resolve();
+                            });
+                        });
+                    } else {
+                        resolve();
+                    }
+                });
 
-            let shadersTarget = path.join(config, folders.shaders.dest);
-            fs.ensureDirSync(shadersTarget);
-            fs.copySync(path.join(pack, folders.shaders.src), shadersTarget, { 'overwrite': false });
+                let installShaders = new Promise((resolve) => {
+                    // copy shaders
+                    if (typeof folders.shaders !== 'undefined' && folders.shaders) {
+                        this.emit('progress.install', total, current++, 'shaders');
+                        console.log('Installing shaders');
 
-            fulfill();
-        } else {
-            fulfill();
-        }
+                        let shadersTarget = path.join(config, folders.shaders.dest);
+                        fs.ensureDir(shadersTarget, (err) => {
+                            if (err) throw err;
+                            fs.copy(path.join(pack, folders.shaders.src), shadersTarget, { 'overwrite': false }, (err) => {
+                                if (err) throw err;
+                                resolve();
+                            });
+                        });
+                    } else {
+                        resolve();
+                    }
+                });
 
-        // list all roms & roms cfg
-        for (let rom of romfiles) {
-            current++;
-            
-            if (!rom.endsWith('.zip')) { continue; }
+                let requests = romfiles.reduce((promisechain, rom, index) => {
+                    return promisechain.then(() => new Promise((resolve) => {
+                        this.emit('progress.install', total, current++, rom);
+                        console.log('Processing %s', rom);
 
-            // for each zip, search a matching rom cfg
-            let packCfgIdx = packConfigs.indexOf(rom + '.cfg');
-            if (packCfgIdx < 0) {
-                console.log('No overlay found for %s', rom);
-                continue;
-            } else {
-                this.emit('progress.install', total, current, rom);
+                        if (!rom.endsWith('.zip')) {
+                            resolve();
+                            return;
+                        }
 
-                let packCfg = packConfigs[packCfgIdx];
-                let destCfg = path.join(roms, packCfg);
+                        // for each zip, search a matching rom cfg
+                        let packCfgIdx = packConfigs.indexOf(rom + '.cfg');
+                        if (packCfgIdx < 0) {
+                            console.log('No overlay found for %s', rom);
+                            resolve();
+                        } else {    
+                            let packCfg = packConfigs[packCfgIdx];
+                            let destCfg = path.join(roms, packCfg);
 
-                // copy the rom cfg
-                fs.copySync(path.join(packConfigsFolder, packCfg), destCfg, { 'overwrite': false });
+                            // copy the rom cfg
+                            fs.copy(path.join(packConfigsFolder, packCfg), destCfg, { 'overwrite': false }, (err) => {
+                                if (err) throw err;
 
-                // parse rom cfg to get overlay cfg
-                let packCfgContent = fs.readFileSync(destCfg, { 'encoding': 'utf8' });
-                let overlayFile = /input_overlay[\s]*=[\s]*(.*\.cfg)/igm.exec(packCfgContent)[1]; // extract overlay path
-                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/') + 1); // just the file name
+                                // parse rom cfg to get overlay cfg
+                                let packCfgContent = fs.readFileSync(destCfg, { 'encoding': 'utf8' });
+                                let overlayFile = /input_overlay[\s]*=[\s]*(.*\.cfg)/igm.exec(packCfgContent)[1]; // extract overlay path
+                                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/') + 1); // just the file name
 
-                // copy overlay cfg
-                let destOverlayFile = path.join(config, folders.overlays.dest, overlayFile);
-                fs.copySync(path.join(pack, folders.overlays.src, overlayFile), destOverlayFile, { 'overwrite': false });
+                                // copy overlay cfg
+                                let destOverlayFile = path.join(config, folders.overlays.dest, overlayFile);
+                                fs.copy(path.join(pack, folders.overlays.src, overlayFile), destOverlayFile, { 'overwrite': false }, (err) => {
+                                    if (err) throw err;
 
-                // parse overlay cfg to get overlay image
-                let overlayContent = fs.readFileSync(destOverlayFile, { 'encoding': 'utf-8' });
-                let overlayImage = /overlay0_overlay[\s]*=[\s]*(.*\.png)/igm.exec(overlayContent)[1];
-        
-                // copy overlay image
-                fs.copySync(
-                    path.join(pack, folders.overlays.src, overlayImage),
-                    path.join(config, folders.overlays.dest, overlayImage),
-                    { 'encoding': 'utf-8' });
-            }
-        }
+                                    // parse overlay cfg to get overlay image
+                                    let overlayContent = fs.readFileSync(destOverlayFile, { 'encoding': 'utf-8' });
+                                    let overlayImage = /overlay0_overlay[\s]*=[\s]*(.*\.png)/igm.exec(overlayContent)[1];
 
-        this.emit('end.install');
+                                    // copy overlay image
+                                    fs.copy(
+                                        path.join(pack, folders.overlays.src, overlayImage),
+                                        path.join(config, folders.overlays.dest, overlayImage),
+                                        { 'encoding': 'utf-8' }, (err) => {
+                                            if (err) throw err;
+                                            resolve();
+                                        });
+                                });
+                            });
+                        }
+                    }));
+                }, Promise.resolve());
+
+                installCommon
+                .then(() => installShaders)
+                .then(() => requests)
+                .then(() => {
+                    this.emit('end.install');
+                });
+            });
+        });
     }
 
     /**
