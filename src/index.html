@@ -42,10 +42,15 @@
 
     <div class="container mt-3">
         <h1><i class="icon-pacman"></i> Retropie romset arcade manager</h1>
+        
         <hr>
+        
         <p>Easily manage your arcade roms using pre-computed CSV files.</p>
+        
         <div id="content">
         </div>
+
+        <hr>
     </div>
 
     <div class="modal" tabindex="-1" role="dialog" id="progress">
@@ -85,6 +90,12 @@
                 e.preventDefault();
                 e.stopPropagation();
                 return false;
+            });
+
+            content.find('.blank').on('click', (e) => {
+                let link = $(e.currentTarget);
+                shell.openExternal(link.attr('href'));
+                e.preventDefault();
             });
         }
 

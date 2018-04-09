@@ -1,0 +1,64 @@
+<h2>Why so many emulators, which one should I choose?</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="pages/help/index.html" class="navmenu">Help</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Why so many emulators?</li>
+    </ol>
+</nav>
+
+<h3>Why so many MAME versions?</h3>
+
+<p>
+    MAME is an old project, dating back to the end of the 90's. As with many popular open source
+    emulators, over the years there have been many competitors, forks and splits.<br>
+    These forks include the various Libretro versions, MAME4ALL, and AdvanceMAME. Each of these
+    have patched the original fork to improve some buggy or non-working games.
+</p>
+
+<p>
+    The "lr-" versions are made to be used with Libretro, the library used by most emulators in Retropie, allowing
+    all emulators to have a common control configuration, shaders, menu, etc.<br>
+    <a href="https://github.com/squidrpi/mame4all-pi" class="blank">MAME4ALL</a> is a fork of an old version (2000)
+    that aims to run games as fast as possible, even on weaker hardware.<br>
+    <a href="https://www.advancemame.it" class="blank">AdvanceMAME</a> is a fork of a not-quite-as-old MAME version
+    (2005 or 2006), optimized to run inside actual arcade cabinets, notably with CRT screens.
+</p>
+
+<h3>Why so many Libretro versions?</h3>
+
+<p>
+    MAME has a stated goal of accuracy over anything else, to reference exactly how the hardware works.
+    This kind of precise emulation comes at a cost: it requires a very powerful computer to run at full speed.<br>
+    Older version of MAME were less precise in their emulation, and so, are faster. However, they (obviously)
+    <a href="http://mamedev.org/history.html" class="blank">run fewer games</a>. So, choosing
+    a Libretro MAME version is always a tradeoff between speed, accuracy and compatibility.
+</p>
+
+<h3>What about Final Burn Alpha (FBA)?</h3>
+
+<p>
+    FBA has started life as an emulator of After Burner only (hence the name).
+    <a href="https://www.fbalpha.com/history/" class="blank">Over time</a>, games and systems have been added,
+    and it now emulates a very large number of games, although still smaller than MAME.<br>
+    The goal of FBA is not accuracy, and as a result, games generally run much faster on recent FBA versions
+    than on recent MAME versions.
+</p>
+
+<h3>So, which one should I choose?</h3>
+
+<p>
+    Unfortunately, there is no easy answer, and it varies from game to game, and on your personal preferences.<br>
+    The generally agreed-upon consensus on a Raspberry seems to be this one:
+</p>
+<ul>
+    <li>If you have a Pi 1 or Pi Zero, prefer MAME4ALL because it's much faster</li>
+    <li>Otherwise, by default, use FBA because it's fast, and emulates many games quite well</li>
+    <li>For all the games that FBA do not emulate, use MAME 2003 because it's faster</li>
+    <li>MAME 2010 is the preferred emulator for games that do not work in either FBA or MAME 2003, because it's
+        still mostly fast enough, and have less bugs</li>
+    <li>Vector games like Asteroids are generally better to run on AdvanceMAME, because it makes them prettier</li>
+    <li>Other MAME versions are generally too old (2000) or too slow (2014, 2016), but again, it's a matter of
+        personal preference.</li>
+</ul>
