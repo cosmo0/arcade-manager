@@ -16,15 +16,19 @@ install:
   - npm install
   - npm prune
   # build electron package
-  - npm run make
+  - npm run make -- --platform=win32,linux --arch=x64
 
 test_script:
   - node --version
   - npm --version
 
 artifacts:
-  - path: out\make\*
-    name: MakeOutput
+  - path: out\make\*win32*
+    name: Windows
+  - path: out\make\*linux*
+    name: Linux
+  - path: out\make\*darwin*
+    name: MacOS
 
 # Don't actually build.
 build: off
