@@ -3,6 +3,7 @@ const path = require('path');
 const events = require('events');
 const csvparse = require('csv-parse/lib/sync');
 const stringify = require('csv-stringify/lib/sync');
+const parseString = require('xml2js').parseString;
 
 // delimiter
 const defaultDelimiter = ';';
@@ -199,6 +200,75 @@ module.exports = class Csv extends events {
                         this.emit('end.keep');
                         console.log('OK');
                     });
+                });
+            });
+        });
+    }
+
+    /**
+     * Converts a DAT (XML) file to CSV
+     * 
+     * @param {any} dat The path to the DAT file to convert
+     * @param {any} target The path to the target CSV file
+     */
+    convert (dat, target) {
+        this.emit('start.convert');
+
+        this.emit('progress.convert', 100, 10, 'DAT file');
+
+        // read DAT file
+        fs.readFile(dat, { 'encoding': 'utf8' }, (err, datContents) => {
+            if (err) throw err;
+
+            // check that it's an XML file and it looks like something expected
+            if (!datContents.startsWith('<?xml')) {
+                throw 'Unable to read the DAT file, expected to start with <?xml version="1.0"?>';
+            }
+            
+            parseString(datContents, (err, datXml) => {
+                if (err) throw err;
+
+                if (!datXml.datafile || !datXml.datafile.game) {
+                    throw 'DAT file needs to be in the CLR MAME PRO format';
+                }
+
+                // create a file handler to write into
+                let stream = fs.createWriteStream(target, { 'encoding': 'utf8' });
+
+                // write the header
+                stream.write('name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sampleof\n');
+
+                // for each game in the DAT, write a line in the CSV
+                let requests = datXml.datafile.game.reduce((promisechain, game, index) => {
+                    return promisechain.then(() => new Promise((resolve) => {
+                        this.emit('progress.convert', datXml.datafile.game.length, index + 1, game.$.name);
+
+                        let line = '';
+                        line += game.$.name + ';';
+                        line += '"' + (game.description ? game.description[0] : '').replace(';', '-').replace('"', '') + '";';
+                        line += (game.year ? game.year[0] : '') + ';';
+                        line += '"' + (game.manufacturer ? game.manufacturer[0] : '') + '";';
+                        
+                        line += (game.$.cloneof ? 'NO' : 'YES') + ';'; // is_parent
+                        line += (game.$.romof || '-') + ';'; // romof
+                        line += (game.$.cloneof ? 'YES' : 'NO') + ';'; // is_clone
+                        line += (game.$.cloneof || '-') + ';'; // cloneof
+                        line += (game.$.sampleof || '-'); // sampleof
+
+                        line += '\n';
+
+                        stream.write(line, () => {
+                            resolve();
+                        });
+                    }));
+                }, Promise.resolve());
+
+                requests.then(() => {
+                    console.log('done');
+                    this.emit('end.convert');
+                    
+                    // close the file handler
+                    stream.end();
                 });
             });
         });

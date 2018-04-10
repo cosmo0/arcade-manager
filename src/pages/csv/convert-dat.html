@@ -1,0 +1,55 @@
+<h2>Convert a DAT (XML) file</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="pages/csv/index.html" class="navmenu">Manage CSV</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Convert DAT</li>
+    </ol>
+</nav>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">DAT file</span>
+    </div>
+    <input type="text" class="form-control" id="fileMain">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMain">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The DAT file to convert</small>
+</p>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Converted file</span>
+    </div>
+    <input type="text" class="form-control" id="fileTarget">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The converted file to be saved</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Convert</button>
+</p>
+
+<script>
+$('#buttonOk').on('click', () => {
+    // get paths from file inputs
+    let main = $('#fileMain').val(),
+        target = $('#fileTarget').val();
+
+    // check every path is filled
+    if (main === '') { window.alert('Please choose a DAT file to convert'); return; }
+    if (target === '') { window.alert('Please choose the target CSV file'); return; }
+    if (!main.toLowerCase().endsWith('.xml') && !main.toLowerCase().endsWith('.dat')) { window.alert('The DAT file should be a .DAT or .XML file.'); }
+
+    // execute action
+    csv.convert(main, target);
+});
+</script>
