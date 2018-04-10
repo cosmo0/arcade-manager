@@ -4,18 +4,21 @@ platform:
 environment:
   nodejs_version: "9"
 
+cache:
+- 'node_modules'
+- '%USERPROFILE%\.electron'
+
 # Install scripts. (runs after repo cloning)
 install:
-  # Get the latest stable version of Node.js or io.js
+  # install node
   - ps: Install-Product node $env:nodejs_version
   # install node modules
   - npm install
+  - npm prune
   # build electron package
   - npm run make
 
-# Post-install test scripts.
 test_script:
-  # Output useful info for debugging.
   - node --version
   - npm --version
 
