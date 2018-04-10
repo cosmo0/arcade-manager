@@ -16,19 +16,17 @@ install:
   - npm install
   - npm prune
   # build electron package
-  - npm run make -- --platform=win32,linux --arch=x64
+  - npm run package -- --platform=win32,linux --arch=x64
 
 test_script:
   - node --version
   - npm --version
 
 artifacts:
-  - path: out\make\*win32*
+  - path: out\make\retropie-arcade-manager-win32-x64
     name: Windows
-  - path: out\make\*linux*
+  - path: out\make\retropie-arcade-manager-linux-x64
     name: Linux
-  - path: out\make\*darwin*
-    name: MacOS
 
 # Don't actually build.
 build: off
