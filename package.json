@@ -20,16 +20,16 @@
   "homepage": "https://github.com/cosmo0/retropie-arcade-manager",
   "dependencies": {
     "csv": "^2.0.0",
-    "fs-extra": "^5.0.0"
+    "fs-extra": "^5.0.0",
+    "electron-compile": "^6.4.2",
+    "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "electron-forge": "^5.1.2",
-    "electron-prebuilt-compile": "1.8.4",
-    "electron-compile": "^6.4.2",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-prebuilt-compile": "1.8.4"
   },
   "config": {
     "forge": {
