@@ -1,12 +1,19 @@
-<h2>Download CSV</h2>
-
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a href="pages/csv/index.html" class="navmenu">Manage CSV</a></li>
+        <li class="breadcrumb-item"><a href="pages/csv/index.html" class="navmenu">Manage games lists</a></li>
         <li class="breadcrumb-item active" aria-current="page">Download</li>
     </ol>
 </nav>
+
+<h2>Download a pre-built games list</h2>
+
+<div class="row">
+    <div class="col-4">
+        <div class="list-group" id="csvs"></div>
+    </div>
+    <div class="col-8" id="files"></div>
+</div>
 
 <script>
 $(() => {
@@ -99,13 +106,6 @@ function listFiles(repository, folder, details) {
     });
 }
 </script>
-
-<div class="row">
-    <div class="col-4">
-        <div class="list-group" id="csvs"></div>
-    </div>
-    <div class="col-8" id="files"></div>
-</div>
 
 <script type="text/template" id="csvItemTemplate">
     <a href="#" class="list-group-item list-group-item-action">
