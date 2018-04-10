@@ -5,7 +5,6 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
-    "build": "gulp .",
     "package": "electron-forge package",
     "make": "electron-forge make"
   },
