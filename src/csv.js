@@ -273,4 +273,49 @@ module.exports = class Csv extends events {
             });
         });
     }
+
+    /**
+     * Creates a "CSV" from the files in a folder
+     * 
+     * @param {any} folder The folder to list the files from
+     * @param {any} target The target CSV file
+     */
+    listfiles (folder, target) {
+        this.emit('start.listfiles');
+
+        // get files list
+        fs.readdir(folder, (err, filesList) => {
+            if (err) throw err;
+
+            // create a file handler to write into
+            let stream = fs.createWriteStream(target, { 'encoding': 'utf8' });
+
+            // write the header
+            stream.write('name;\n');
+
+            // for each zip file, write a line in the CSV
+            let requests = filesList.reduce((promisechain, game, index) => {
+                return promisechain.then(() => new Promise((resolve) => {
+                    this.emit('progress.listfiles', filesList.length, index + 1, game);
+
+                    // only list zip files
+                    if (game.endsWith('.zip')) {
+                        stream.write(game.replace('.zip', '') + ';\n', () => {
+                            resolve();
+                        });
+                    } else {
+                        resolve();
+                    }
+                }));
+            }, Promise.resolve());
+
+            requests.then(() => {
+                console.log('done');
+                this.emit('end.listfiles');
+                
+                // close the file handler
+                stream.end();
+            });
+        });
+    }
 };

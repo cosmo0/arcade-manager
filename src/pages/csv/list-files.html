@@ -1,0 +1,60 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="pages/csv/index.html" class="navmenu">Manage games lists</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List roms</li>
+    </ol>
+</nav>
+
+<h2>List the roms in a folder</h2>
+
+<p>
+    Select the folder that contain your roms, and the target CSV file.<br>
+    If you want more informations for each, use the "<a href="pages/csv/keep.html" class="navmenu">keep games</a>"
+    filter, use a "complete romset" CSV as main, and your files list as secondary.
+</p>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Roms folder</span>
+    </div>
+    <input type="text" class="form-control" id="folderMain">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="folderMain">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The DAT file to convert</small>
+</p>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Roms list file</span>
+    </div>
+    <input type="text" class="form-control" id="fileTarget">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The CSV file listing your roms to be saved</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">List the files</button>
+</p>
+
+<script>
+$('#buttonOk').on('click', () => {
+    // get paths from file inputs
+    let main = $('#folderMain').val(),
+        target = $('#fileTarget').val();
+
+    // check every path is filled
+    if (main === '') { window.alert('Please choose a folder to list the files from'); return; }
+    if (target === '') { window.alert('Please choose the target CSV file'); return; }
+
+    // execute action
+    csv.listfiles(main, target);
+});
+</script>

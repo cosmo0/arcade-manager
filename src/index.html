@@ -160,6 +160,10 @@
             csv.on('progress.convert', progress);
             csv.on('end.convert', () => { progressDone('Done'); });
 
+            csv.on('start.listfiles', () => { progressInit('Listing files'); });
+            csv.on('progress.listfiles', progress);
+            csv.on('end.listfiles', () => { progressDone('Done'); });
+
             // bind overlays events
             overlays.on('start.install', () => { progressInit('Installing overlays'); });
             overlays.on('progress.install', progress);
