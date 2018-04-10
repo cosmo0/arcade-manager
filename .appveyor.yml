@@ -23,9 +23,9 @@ test_script:
   - npm --version
 
 artifacts:
-  - path: out\make\retropie-arcade-manager-win32-x64
+  - path: out\retropie-arcade-manager-win32-x64
     name: Windows
-  - path: out\make\retropie-arcade-manager-linux-x64
+  - path: out\retropie-arcade-manager-linux-x64
     name: Linux
 
 # Don't actually build.
