@@ -5,10 +5,13 @@
 
 This repository provides a rom management tool, specifically designed for use with Retropie.  
 It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
-It's also useful if you feel a bit lost among the several thousand games that MAME provides, and only want the very best.
+It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
 
-**THIS TOOL DOES NOT REBUILD ROMSETS!!!** It assumes you have a working romset corresponding to the MAME/FBA version you're using.  
-If you ever need to change your romset version use a tool like [ClrMamePro](https://mamedev.emulab.it/clrmamepro/).
+**THIS TOOL DOES NOT CHANGE THE ROMSET VERSION!!!**  
+Copying files assumes you have a working, **non-merged** romset corresponding to the MAME/FBA version you're using.  
+If you ever need to change your romset version, use a tool like [ClrMamePro](https://mamedev.emulab.it/clrmamepro/).
+
+Obviously, this tool also does not download roms.
 
 If you are new to arcade emulation, please read these resources:
 
