@@ -90,11 +90,12 @@ function listFiles(repository, folder, details) {
                             'defaultPath': fileinfos.name
                         }, (filename) => {
                             if (typeof filename !== 'undefined' && filename !== '') {
-                                var file = fs.createWriteStream(filename);
-                                var request = (fileinfos.download_url.startsWith('https') ? https : http)
-                                    .get(fileinfos.download_url, function(response) {
-                                        response.pipe(file);
+                                downloader.downloadFile(repository, fileinfos.path, (fileContents) => {
+                                    fs.writeFile(filename, fileContents, (err) => {
+                                        if (err) throw err;
+                                        window.alert('Done');
                                     });
+                                });
                             }
                         });
                     });

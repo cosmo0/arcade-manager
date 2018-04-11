@@ -4,8 +4,9 @@ const http = require('http');
 const https = require('https');
 const events = require('events');
 
-const protocol = 'https:';
-const host = 'api.github.com';
+const protocol = 'https:'
+const api = 'api.github.com';
+const raw = 'https://raw.githubusercontent.com';
 
 module.exports = class Downloader extends events {
     /**
@@ -14,18 +15,33 @@ module.exports = class Downloader extends events {
      * @param {String} repository The repository (user/repo)
      * @param {String} file The file path (path/to/file.txt)
      * @param {Function} callback The callback method
-     * @returns {String} The file content
+     * @returns {Buffer} The file content
      */
     downloadFile (repository, file, callback) {
-        let url = '/repos/' + repository + '/contents/' + file;
-        https.get({ protocol, host, 'path': url, 'headers': { 'User-Agent': 'retropie-arcade-manager' } }, (res) => {
-            res.setEncoding('utf8');
-            let rawData = '';
-            res.on('data', (chunk) => { rawData += chunk; });
-            res.on('end', () => {
-                let fileMeta = JSON.parse(rawData);
-                let fileContent = Buffer.from(fileMeta.content, fileMeta.encoding).toString('utf8');
-                callback(fileContent);
+        let url = raw + '/' + repository + '/master/' + file;
+        https.get(url, (res) => {
+            if (res.statusCode !== 200) {
+                res.resume();
+                throw 'Unable to download file ' + res.req.path;
+            }
+
+            let isbinary = res.headers["content-type"].indexOf('text/plain') < 0;
+
+            if (isbinary) {
+                res.setEncoding('utf8');
+            } else {
+                res.setEncoding('binary');
+            }
+
+            let rawData = [];
+            res.on('data', (chunk) => {
+                rawData.push(chunk);
+            }).on('end', () => {
+                if (isbinary) {
+                    callback(Buffer.from(rawData));
+                } else {
+                    callback(Buffer.from(rawData.join(''), 'utf8').toString('utf8'));
+                }
             });
         });
     }
@@ -67,7 +83,7 @@ module.exports = class Downloader extends events {
      */
     listFiles (repository, folder, callback) {
         let url = '/repos/' + repository + '/contents/' + folder;
-        https.get({ protocol, host, 'path': url, 'headers': { 'User-Agent': 'retropie-arcade-manager' } }, (res) => {
+        https.get({ protocol, 'host': api, 'path': url, 'headers': { 'User-Agent': 'retropie-arcade-manager' } }, (res) => {
             res.setEncoding('utf8');
             let rawData = '';
             res.on('data', (chunk) => { rawData += chunk; });
