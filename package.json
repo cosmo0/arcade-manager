@@ -1,12 +1,12 @@
 {
   "name": "retropie-arcade-manager",
   "version": "1.0.0",
-  "description": "Retropie Arcade Manager",
+  "description": "Arcade games manager to be used with Retropie",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,16 @@
     "fs-extra": "^5.0.0",
     "xml2js": "^0.4.19"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "electron": "^1.8.4",
+    "electron-builder": "^20.8.1"
+  },
+  "build": {
+    "appId": "com.cosmo0.retropie-arcade-manager",
+    "productName": "RetropieArcadeManager",
+    "asar": false,
+    "mac": {
+      "category": "public.app-category.games"
+    }
+  }
 }
