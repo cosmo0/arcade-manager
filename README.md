@@ -1,5 +1,9 @@
 # Arcade manager for Retropie
 
+[![MacOS Build Status](https://travis-ci.org/cosmo0/retropie-arcade-manager.svg?branch=master)](https://travis-ci.org/cosmo0/retropie-arcade-manager)
+[![Windows/Linux Build status](https://ci.appveyor.com/api/projects/status/npgiar9ncapx2al4?svg=true)](https://ci.appveyor.com/project/cosmo0/retropie-arcade-manager)
+[![license](https://img.shields.io/github/license/cosmo0/retropie-arcade-manager.svg)](https://github.com/cosmo0/retropie-arcade-manager/blob/master/LICENSE.md)
+
 This repository provides a rom management tool, specifically designed for use with Retropie.  
 It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
 It's also useful if you feel a bit lost among the several thousand games that MAME provides, and only want the very best.
