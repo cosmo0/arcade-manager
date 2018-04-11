@@ -20,4 +20,4 @@ install:
 - npm install
 - npm prune
 script:
-- npm run dist -- --mac
+- npm run dist -- --mac --x64
