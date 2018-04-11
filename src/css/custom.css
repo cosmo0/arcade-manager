@@ -31,3 +31,18 @@ a.navmenu:hover {
 .list-group .active .text-muted {
     color: #ffffff !important;
 }
+
+/*
+* Overlays download
+*/
+#overlayslinks a:hover,
+#packs a:hover, #packs .active a:hover {
+    text-decoration: none;
+    color: #ffffff !important;
+    background-color: #007bff !important;
+}
+
+#packs .active a {
+    color: #007bff !important;
+    border-color: #007bff !important;
+}

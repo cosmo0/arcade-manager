@@ -27,10 +27,8 @@ module.exports = class Downloader extends events {
 
             let isbinary = res.headers["content-type"].indexOf('text/plain') < 0;
 
-            if (isbinary) {
+            if (!isbinary) {
                 res.setEncoding('utf8');
-            } else {
-                res.setEncoding('binary');
             }
 
             let rawData = [];
@@ -38,7 +36,7 @@ module.exports = class Downloader extends events {
                 rawData.push(chunk);
             }).on('end', () => {
                 if (isbinary) {
-                    callback(Buffer.from(rawData));
+                    callback(Buffer.concat(rawData));
                 } else {
                     callback(Buffer.from(rawData.join(''), 'utf8').toString('utf8'));
                 }

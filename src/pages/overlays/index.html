@@ -13,23 +13,29 @@
 <h2>Install overlays</h2>
 
 <div class="list-group">
+    <a href="pages/overlays/download.html" class="navmenu list-group-item list-group-item-action text-primary">
+        <i class="icon-download"></i> Download and install an overlays pack</a>
     <a href="pages/overlays/local.html" class="navmenu list-group-item list-group-item-action text-primary">
         <i class="icon-folder-open"></i> Install a local overlays pack</a>
-    <a href="#" class="disabled list-group-item list-group-item-action text-disabled" title="This feature has problems.">
-        <i class="icon-download"></i> Download and install an overlays pack</a>
 </div>
 
 <h2 class="mt-4">Download packs</h2>
 
-<div class="list-group" id="overlayslinks"></div>
+<div class="row" id="overlayslinks"></div>
 
 <script>
 $(() => {
     let data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), { encoding: 'utf8' }));
     let template = $('#linkTemplate').html();
 
+    let colsize = 12 / data.overlays.length;
+    if (colsize < 3) { colsize = 3; }
+
     for (let ovl of data.overlays) {
         let li = $(template);
+
+        // layout
+        li.addClass('col-' + colsize);
 
         // display pack infos
         li.find('.name').text(ovl.name);
@@ -53,9 +59,11 @@ $(() => {
 </script>
 
 <script type="text/template" id="linkTemplate">
-    <a href="#" class="list-group-item list-group-item-action">
-        <img src="" class="float-left mr-3">
-        <h5 class="mb-1 name text-primary"></h5>
-        <p class="mb-0 desc"></p>
-    </a>
+    <div>
+        <a href="#" class="border border-primary rounded d-block p-2">
+            <img src="" class="float-left mr-3">
+            <h5 class="mb-1 name"></h5>
+            <p class="mb-0 desc"></p>
+        </a>
+    </div>
 </script>

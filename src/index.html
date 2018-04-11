@@ -170,6 +170,10 @@
             overlays.on('start.install', () => { progressInit('Installing overlays'); });
             overlays.on('progress.install', progress);
             overlays.on('end.install', () => { progressDone('Done'); });
+
+            overlays.on('start.download', () => { progressInit('Downloading and installing overlays'); });
+            overlays.on('progress.download', progress);
+            overlays.on('end.download', () => { progressDone('Done'); });
         }
 
         /**

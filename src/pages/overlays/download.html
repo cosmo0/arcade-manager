@@ -6,7 +6,7 @@
     </ol>
 </nav>
 
-<h2>Download overlays</h2>
+<h2>Download and install an overlays pack</h2>
 
 <p>
     Select the overlays pack you want, the path to you roms, and the path to the
@@ -14,7 +14,7 @@
     This will download and install only the files you need for the games you have.
 </p>
 
-<div class="list-group mb-4" id="packs"></div>
+<div class="row mb-4" id="packs"></div>
 
 <!-- path to roms -->
 <div class="input-group mb-0">
@@ -45,7 +45,7 @@
 </p>
 
 <p class="mt-3">
-    <button type="button" id="buttonInstall" class="btn btn-primary btn-lg btn-block">Install</button>
+    <button type="button" id="buttonInstall" class="btn btn-primary btn-lg btn-block">Download and install</button>
 </p>
 
 <script>
@@ -53,9 +53,15 @@ $(() => {
     let data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), { encoding: 'utf8' }));
     let template = $('#csvItemTemplate').html();
 
+    let colsize = 12 / data.overlays.length;
+    if (colsize < 3) { colsize = 3; }
+
     // list overlays packs
     for (let ovl of data.overlays) {
         let li = $(template);
+
+        // layout
+        li.addClass('col-' + colsize);
 
         // build pack infos
         li.find('.name').text(ovl.name);
@@ -74,8 +80,9 @@ $(() => {
         li.data('shaders', ovl.shaders);
 
         li.on('click', () => {
-            $('#packs').find('a').removeClass('active');
-            li.addClass('active');
+            $('#packs').find('.active').removeClass('active');
+            $('#packs').find(':radio').prop('checked', false);
+            li.addClass('active').find(':radio').prop('checked', true);
         });
 
         $('#packs').append(li);
@@ -85,7 +92,7 @@ $(() => {
     $('#buttonInstall').on('click', (e) => {
         let romsFolder = $('#romsFolder').val(),
             configFolder = $('#configFolder').val()
-            pack = $('#packs a.active');
+            pack = $('#packs .active');
         
         // check inputs and paths
         if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
@@ -108,9 +115,12 @@ $(() => {
 </script>
 
 <script type="text/template" id="csvItemTemplate">
-    <a href="#" class="list-group-item list-group-item-action">
-        <img src="" class="float-left mr-3">
-        <h5 class="mb-1 name"></h5>
-        <p class="mb-0 desc"></p>
-    </a>
+    <div>
+        <a href="#" class="border rounded d-block p-3 text-dark">
+            <input type="radio" class="float-left mr-3 mt-4">
+            <img src="" class="float-left mr-3">
+            <h5 class="mb-1 name"></h5>
+            <p class="mb-0 desc"></p>
+        </a>
+    </div>
 </script>
