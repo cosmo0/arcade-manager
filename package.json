@@ -20,49 +20,8 @@
   "homepage": "https://github.com/cosmo0/retropie-arcade-manager",
   "dependencies": {
     "csv": "^2.0.0",
-    "electron-compile": "^6.4.2",
-    "electron-squirrel-startup": "^1.0.0",
     "fs-extra": "^5.0.0",
     "xml2js": "^0.4.19"
   },
-  "devDependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "electron-forge": "^5.1.2",
-    "electron-prebuilt-compile": "1.8.4"
-  },
-  "config": {
-    "forge": {
-      "make_targets": {
-        "win32": [
-          "zip"
-        ],
-        "darwin": [
-          "zip",
-          "dmg"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "npm"
-      },
-      "electronWinstallerConfig": {
-        "name": "RetropieArcadeManager"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "cosmo0",
-        "name": "retropie-arcade-manager"
-      },
-      "windowsStoreConfig": {
-        "packageName": "RetropieArcadeManager",
-        "name": "RetropieArcadeManager"
-      }
-    }
-  }
+  "devDependencies": {}
 }
