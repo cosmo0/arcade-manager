@@ -67,7 +67,8 @@
                     <p class="d-none msg"></p>
                 </div>
                 <div class="modal-footer d-none">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <a href="#" class="d-none open btn btn-outline-info">Open the result</a>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
                   </div>
             </div>
         </div>
@@ -135,36 +136,36 @@
             // bind rom events
             roms.on('start.add', () => { progressInit('Copying roms'); });
             roms.on('progress.add', progress);
-            roms.on('end.add', () => { progressDone('Done.<br>Remember to copy BIOS and samples!'); });
+            roms.on('end.add', (folder) => { progressDone('Done.<br>Remember to copy BIOS and samples!', folder); });
 
             roms.on('start.remove', () => { progressInit('Deleting roms'); });
             roms.on('progress.remove', progress);
-            roms.on('end.remove', () => { progressDone('Done'); });
+            roms.on('end.remove', (folder) => { progressDone('Done', folder); });
 
             roms.on('start.keep', () => { progressInit('Filtering roms'); });
             roms.on('progress.keep', progress);
-            roms.on('end.keep', () => { progressDone('Done'); });
+            roms.on('end.keep', (folder) => { progressDone('Done', folder); });
 
             // bind csv events
             csv.on('start.add', () => { progressInit('Merging files'); });
             csv.on('progress.add', progress);
-            csv.on('end.add', () => { progressDone('Done'); });
+            csv.on('end.add', (file) => { progressDone('Done', file); });
 
             csv.on('start.remove', () => { progressInit('Splitting files'); });
             csv.on('progress.remove', progress);
-            csv.on('end.remove', () => { progressDone('Done'); });
+            csv.on('end.remove', (file) => { progressDone('Done', file); });
 
             csv.on('start.keep', () => { progressInit('Filtering files'); });
             csv.on('progress.keep', progress);
-            csv.on('end.keep', () => { progressDone('Done'); });
+            csv.on('end.keep', (file) => { progressDone('Done', file); });
 
             csv.on('start.convert', () => { progressInit('Converting file'); });
             csv.on('progress.convert', progress);
-            csv.on('end.convert', () => { progressDone('Done'); });
+            csv.on('end.convert', (file) => { progressDone('Done', file); });
 
             csv.on('start.listfiles', () => { progressInit('Listing files'); });
             csv.on('progress.listfiles', progress);
-            csv.on('end.listfiles', () => { progressDone('Done'); });
+            csv.on('end.listfiles', (file) => { progressDone('Done', file); });
 
             // bind overlays events
             overlays.on('start.install', () => { progressInit('Installing overlays'); });
@@ -183,11 +184,22 @@
          */
          function progressInit(title) {
             let p = $('#progress');
+            // display modal
             p.modal({ 'backdrop': 'static', 'keyboard': false });
+
+            // re-hide some items
             p.find('.modal-footer, .msg').addClass('d-none');
+
+            // re-display some items
             p.find('.progress, .details').removeClass('d-none');
+
+            // set title
             p.find('.modal-title').html(title);
+
+            // reset progress bar
             p.find('.progress .progress-bar').width('0%');
+
+            // reset details text
             p.find('.details').text('');
         }
 
@@ -213,12 +225,23 @@
          * Finishes the progression
          * 
          * @param {string} msg The message to display
+         * @param {string} path A path to open, if any
          */
-        function progressDone(msg) {
+        function progressDone(msg, path) {
             let p = $('#progress');
             p.find('.modal-footer, .msg').removeClass('d-none');
             p.find('.progress, .details').addClass('d-none');
             p.find('.msg').html(msg);
+
+            if (path) {
+                p.find('.open')
+                .removeClass('d-none')
+                .off('click')
+                .on('click', (e) => {
+                    shell.openItem(path);
+                    e.preventDefault();
+                });
+            }
         }
 
         /**

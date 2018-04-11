@@ -69,7 +69,7 @@ module.exports = class Csv extends events {
                     fs.writeFile(target, stringify(mainCsv, { header: true, delimiter: defaultDelimiter }), (err) => {
                         if (err) throw err;
 
-                        this.emit('end.add');
+                        this.emit('end.add', target);
                         console.log('OK');
                     });
                 });
@@ -133,7 +133,7 @@ module.exports = class Csv extends events {
 
                     // save the result
                     fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
-                        this.emit('end.remove');
+                        this.emit('end.remove', target);
                         console.log('OK');
                     });                        
                 });
@@ -197,7 +197,7 @@ module.exports = class Csv extends events {
 
                     // save the result
                     fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
-                        this.emit('end.keep');
+                        this.emit('end.keep', target);
                         console.log('OK');
                     });
                 });
@@ -265,7 +265,7 @@ module.exports = class Csv extends events {
 
                 requests.then(() => {
                     console.log('done');
-                    this.emit('end.convert');
+                    this.emit('end.convert', target);
                     
                     // close the file handler
                     stream.end();
@@ -311,7 +311,7 @@ module.exports = class Csv extends events {
 
             requests.then(() => {
                 console.log('done');
-                this.emit('end.listfiles');
+                this.emit('end.listfiles', target);
                 
                 // close the file handler
                 stream.end();

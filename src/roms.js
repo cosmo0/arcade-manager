@@ -14,9 +14,8 @@ module.exports = class Roms extends events {
      * @param {string} file The path to the file
      * @param {string} romset The path to the romset folder
      * @param {string} selection The path to the selection folder
-     * @param {functiion} callback The callback method
      */
-    add (file, romset, selection, callback) {
+    add (file, romset, selection) {
         this.emit('start.add');
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
@@ -69,8 +68,7 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
-                this.emit('end.add');
-                if (callback) callback();
+                this.emit('end.add', selection);
             });
         });
     }
@@ -81,9 +79,8 @@ module.exports = class Roms extends events {
      * 
      * @param {string} file The path to the file
      * @param {string} selection The path to the selection folder
-     * @param {functiion} callback The callback method
      */
-    remove (file, selection, callback) {
+    remove (file, selection) {
         this.emit('start.remove');
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
@@ -121,8 +118,7 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
-                this.emit('end.remove');
-                if (callback) callback();
+                this.emit('end.remove', selection);
             });
         });
     }
@@ -133,9 +129,8 @@ module.exports = class Roms extends events {
      * 
      * @param {string} file The path to the file
      * @param {string} selection The path to the selection folder
-     * @param {functiion} callback The callback method
      */
-    keep (file, selection, callback) {
+    keep (file, selection) {
         this.emit('start.keep');
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
@@ -179,8 +174,7 @@ module.exports = class Roms extends events {
                 }, Promise.resolve());
 
                 requests.then(() => {
-                    this.emit('end.keep');
-                    if (callback) callback();
+                    this.emit('end.keep', selection);
                 });
             });
         });
