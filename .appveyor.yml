@@ -16,16 +16,16 @@ install:
   - npm install
   - npm prune
   # build electron package
-  - npm run package -- --platform=win32,linux --arch=x64
+  - npm run dist -- --windows --linux --x64
 
 test_script:
   - node --version
   - npm --version
 
 artifacts:
-  - path: out\retropie-arcade-manager-win32-x64
+  - path: dist\RetropieArcadeManager*.exe
     name: Retropie-Arcade-Manager-Windows-x64
-  - path: out\retropie-arcade-manager-linux-x64
+  - path: dist\retropie-arcade-manager-linux-x64
     name: Retropie-Arcade-Manager-Linux-x64
 
 # Don't actually build.

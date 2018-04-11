@@ -30,7 +30,6 @@
   "build": {
     "appId": "com.cosmo0.retropie-arcade-manager",
     "productName": "RetropieArcadeManager",
-    "asar": false,
     "mac": {
       "category": "public.app-category.games"
     }

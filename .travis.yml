@@ -18,7 +18,6 @@ branches:
   - /^v\d+\.\d+\.\d+/
 install:
 - npm install
-- npm update
 - npm prune
 script:
-- npm run package -- --platform=darwin --arch=x64
+- npm run dist -- --mac
