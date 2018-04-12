@@ -29,3 +29,10 @@ The tool provides the following abilities:
 * Install overlay packs for your arcade games
 * Copy or remove rom files based on CSV files
 * Manage CSV files: merge, split, etc.
+
+## Screenshots
+
+![Home](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-home.png)
+![Install overlays](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-overlay-download.png)
+![Download CSV](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-csv-download.png)
+![Copy roms](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-rom-copy.png)
