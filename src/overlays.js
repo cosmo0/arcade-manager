@@ -7,11 +7,16 @@ const events = require('events');
 const Downloader = require('./downloader.js');
 const downloader = new Downloader();
 
-function copyFolder() {
-
-}
+let mustCancel = false; // cancellation token
 
 module.exports = class Overlays extends events {
+    /**
+     * Asks the class to cancel the next action
+     */
+    cancel() {
+        mustCancel = true;
+    }
+
     /**
      * Checks that the program can access the specified folder
      * 
@@ -71,6 +76,8 @@ module.exports = class Overlays extends events {
      * @param {bool} overwrite Whether to overwrite existing files
      */
     downloadPack (romsFolder, configFolder, repository, roms, overlays, common, overwrite) {
+        mustCancel = false;
+
         const flag = overwrite ? 'w' : 'wx';
         this.emit('start.download');
 
@@ -83,6 +90,8 @@ module.exports = class Overlays extends events {
 
             // download and install common configs
             let installCommon = new Promise((resolve) => {
+                if (mustCancel) { resolve(); return; }
+
                 if (typeof common !== 'undefined' && common) {
                     total++;
                     console.log('Installing common files');
@@ -96,6 +105,8 @@ module.exports = class Overlays extends events {
             // download and install rom configs
             let requests = romConfigs.reduce((promisechain, romcfg, index) => {
                 return promisechain.then(() => new Promise((resolve) => {
+                    if (mustCancel) { resolve(); return; }
+
                     this.emit('progress.download', total, current++, romcfg.name);
 
                     // only process config files
@@ -105,15 +116,17 @@ module.exports = class Overlays extends events {
                     }
 
                     let zip = romcfg.name.replace('.cfg', '');
+                    let localromcfg = path.join(romsFolder, romcfg.name);
                     if (fs.existsSync(path.join(romsFolder, zip))) {
                         console.log('Installing overlay for %s', zip);
 
                         // download and copy rom cfg
                         downloader.downloadFile(repository, romcfg.path, (romcfgContent) => {
-                            let localromcfg = path.join(romsFolder, romcfg.name);
+                            if (mustCancel) { resolve(); return; }
                             fs.ensureDirSync(path.dirname(localromcfg));
                             fs.writeFile(localromcfg, romcfgContent, { flag }, (err) => {
                                 if (err && err.code !== 'EEXIST') throw err;
+                                if (mustCancel) { resolve(); return; }
 
                                 // parse rom cfg to get overlay cfg
                                 let overlayFile = /input_overlay[\s]*=[\s]*"?(.*\.cfg)"?/igm.exec(romcfgContent)[1]; // extract overlay path
@@ -123,9 +136,11 @@ module.exports = class Overlays extends events {
 
                                 // download and copy overlay cfg
                                 downloader.downloadFile(repository, packOverlayFile, (packOverlayFileContent) => {
+                                    if (mustCancel) { resolve(); return; }
                                     fs.ensureDirSync(path.dirname(localoverlaycfg));
                                     fs.writeFile(localoverlaycfg, packOverlayFileContent, { flag }, (err) => {
                                         if (err && err.code !== 'EEXIST') throw err;
+                                        if (mustCancel) { resolve(); return; }
 
                                         // parse overlay cfg to get overlay image
                                         let packOverlayImage = /overlay0_overlay[\s]*=[\s]*"?(.*\.png)"?/igm.exec(packOverlayFileContent)[1];
@@ -135,6 +150,7 @@ module.exports = class Overlays extends events {
 
                                         // download and copy overlay image
                                         downloader.downloadFile(repository, packOverlayImageFile, (imageContent) => {
+                                            if (mustCancel) { resolve(); return; }
                                             fs.writeFile(localoverlayimg, imageContent, { flag }, (err) => {
                                                 if (err && err.code !== 'EEXIST') throw err;
                                                 
@@ -155,7 +171,7 @@ module.exports = class Overlays extends events {
             installCommon
             .then(() => requests)
             .then(() => {
-                this.emit('end.download');
+                this.emit('end.download', mustCancel);
             });
         });
     }

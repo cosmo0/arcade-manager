@@ -64,6 +64,9 @@
                         <div class="progress-bar" role="progressbar"></div>
                     </div>
                     <p class="text-center details"></p>
+                    <p class="text-center stop">
+                        <button class="btn btn-outline-danger btn-sm pl-5 pr-5">Stop</button>
+                    </p>
                     <p class="d-none msg"></p>
                 </div>
                 <div class="modal-footer d-none">
@@ -134,17 +137,35 @@
          */
         function bindEvents() {
             // bind rom events
-            roms.on('start.add', () => { progressInit('Copying roms'); });
+            roms.on('start.add', () => { progressInit('Copying roms', true); });
             roms.on('progress.add', progress);
-            roms.on('end.add', (folder) => { progressDone('Done.<br>Remember to copy BIOS and samples!', folder); });
+            roms.on('end.add', (cancelled, folder) => {
+                if (cancelled) {
+                    progressDone('Operation cancelled.');
+                } else {
+                    progressDone('Done.<br>Remember to copy BIOS and samples!', folder);
+                }
+            });
 
-            roms.on('start.remove', () => { progressInit('Deleting roms'); });
+            roms.on('start.remove', () => { progressInit('Deleting roms', true); });
             roms.on('progress.remove', progress);
-            roms.on('end.remove', (folder) => { progressDone('Done', folder); });
+            roms.on('end.remove', (cancelled, folder) => {
+                if (cancelled) {
+                    progressDone('Operation cancelled.');
+                } else {
+                    progressDone('Done', folder);
+                }
+            });
 
-            roms.on('start.keep', () => { progressInit('Filtering roms'); });
+            roms.on('start.keep', () => { progressInit('Filtering roms', true); });
             roms.on('progress.keep', progress);
-            roms.on('end.keep', (folder) => { progressDone('Done', folder); });
+            roms.on('end.keep', (cancelled, folder) => {
+                if (cancelled) {
+                    progressDone('Operation cancelled.');
+                } else {
+                    progressDone('Done', folder);
+                }
+            });
 
             // bind csv events
             csv.on('start.add', () => { progressInit('Merging files'); });
@@ -168,21 +189,32 @@
             csv.on('end.listfiles', (file) => { progressDone('Done', file); });
 
             // bind overlays events
-            overlays.on('start.install', () => { progressInit('Installing overlays'); });
-            overlays.on('progress.install', progress);
-            overlays.on('end.install', () => { progressDone('Done'); });
-
-            overlays.on('start.download', () => { progressInit('Downloading and installing overlays'); });
+            overlays.on('start.download', () => { progressInit('Downloading and installing overlays', true); });
             overlays.on('progress.download', progress);
-            overlays.on('end.download', () => { progressDone('Done'); });
+            overlays.on('end.download', (cancelled) => {
+                if (cancelled) {
+                    progressDone('Operation cancelled.');
+                } else {
+                    progressDone('Done');
+                }
+            });
+
+            // bind stop event
+            $('#progress .stop button').on('click', (e) => {
+                roms.cancel();
+                overlays.cancel();
+            });
         }
 
         /**
          * Shows the progression modal
          * 
          * @param {string} title The modal title
+         * @param {bool} canCancel Whether the user can cancel the operation
          */
-         function progressInit(title) {
+         function progressInit(title, canCancel) {
+            if (typeof canCancel === 'undefined') { canCancel = false; }
+
             let p = $('#progress');
             // display modal
             p.modal({ 'backdrop': 'static', 'keyboard': false });
@@ -192,6 +224,13 @@
 
             // re-display some items
             p.find('.progress, .details').removeClass('d-none');
+
+            // display or hide cancel button
+            if (canCancel) {
+                p.find('.stop').removeClass('d-none');
+            } else {
+                p.find('.stop').addClass('d-none');
+            }
 
             // set title
             p.find('.modal-title').html(title);
@@ -230,7 +269,7 @@
         function progressDone(msg, path) {
             let p = $('#progress');
             p.find('.modal-footer, .msg').removeClass('d-none');
-            p.find('.progress, .details').addClass('d-none');
+            p.find('.progress, .details, .stop').addClass('d-none');
             p.find('.msg').html(msg);
 
             if (path) {

@@ -1,12 +1,20 @@
 const fs = require('fs-extra');
 const path = require('path');
 const events = require('events');
-const csvparse = require('csv-parse/lib/sync');
 
-// delimiter
-const defaultDelimiter = ';';
+const Csv = require('./csv.js');
+const csv = new Csv();
+
+let mustCancel = false; // cancellation token
 
 module.exports = class Roms extends events {
+    /**
+     * Asks the class to cancel the next action
+     */
+    cancel() {
+        mustCancel = true;
+    }
+
     /**
      * Adds roms from a romset to a folder,
      * based on a CSV file
@@ -16,24 +24,22 @@ module.exports = class Roms extends events {
      * @param {string} selection The path to the selection folder
      */
     add (file, romset, selection) {
+        mustCancel = false;
+
         this.emit('start.add');
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
+            if (mustCancel) { resolve(); return; }
 
-            let fileCsv = csvparse(
-                fileContents,
-                {
-                    columns: true,
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
+            let fileCsv = csv.parse(fileContents);
 
             console.log('Copying %i files', fileCsv.length);
 
             let requests = fileCsv.reduce((promisechain, line, index) => {
                 return promisechain.then(() => new Promise((resolve) => {
+                    if (mustCancel) { resolve(); return; }
+
                     let game = line.name;
                     let zip = line.name + '.zip';
                     let sourceRom = path.join(romset, zip);
@@ -46,12 +52,15 @@ module.exports = class Roms extends events {
                         // copy rom
                         fs.copy(sourceRom, destRom, (err) => {
                             if (err) throw err;
+                            if (mustCancel) { resolve(); return; }
     
                             // copy CHD
                             let sourceChd = path.join(romset, game);
                             if (fs.existsSync(sourceChd)) {
                                 fs.copy(sourceChd, path.join(selection, game), (err) => {
                                     if (err) throw err;
+                                    if (mustCancel) { resolve(); return; }
+
                                     console.log('%s copied', sourceChd);
                                     resolve();
                                 });
@@ -68,7 +77,7 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
-                this.emit('end.add', selection);
+                this.emit('end.add', mustCancel, selection);
             });
         });
     }
@@ -81,22 +90,20 @@ module.exports = class Roms extends events {
      * @param {string} selection The path to the selection folder
      */
     remove (file, selection) {
+        mustCancel = false;
+
         this.emit('start.remove');
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
+            if (mustCancel) { resolve(); return; }
 
-            let fileCsv = csvparse(
-                fileContents,
-                {
-                    columns: true,
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
+            let fileCsv = csv.parse(fileContents);
 
             let requests = fileCsv.reduce((promisechain, line, index) => {
                 return promisechain.then(() => new Promise((resolve) => {
+                    if (mustCancel) { resolve(); return; }
+
                     let zip = line.name + '.zip';
                     let rom = path.join(selection, zip);
 
@@ -118,7 +125,7 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
-                this.emit('end.remove', selection);
+                this.emit('end.remove', mustCancel, selection);
             });
         });
     }
@@ -131,33 +138,29 @@ module.exports = class Roms extends events {
      * @param {string} selection The path to the selection folder
      */
     keep (file, selection) {
+        mustCancel = false;
+
         this.emit('start.keep');
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
+            if (mustCancel) { resolve(); return; }
             
-            let fileCsv = csvparse(
-                fileContents,
-                {
-                    columns: true,
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
+            let fileCsv = csvparse(fileContents);
 
             // list files in selection folder
             fs.readdir(selection, (err, files) => {
                 if (err) throw err;
+                if (mustCancel) { resolve(); return; }
 
                 let requests = files.reduce((promisechain, zip, index) => {
                     return promisechain.then(() => new Promise((resolve) => {
+                        if (mustCancel) { resolve(); return; }
+
                         this.emit('progress.keep', files.length, index + 1, zip);
 
                         // skip non-zip files
-                        if (!zip.endsWith('.zip')) {
-                            resolve();
-                            return;
-                        }
+                        if (!zip.endsWith('.zip')) { resolve(); return; }
 
                         // file not found in csv -> remove it
                         let csvItem = fileCsv.find((item) => item.name === zip.replace('.zip', ''));
@@ -174,7 +177,7 @@ module.exports = class Roms extends events {
                 }, Promise.resolve());
 
                 requests.then(() => {
-                    this.emit('end.keep', selection);
+                    this.emit('end.keep', mustCancel, selection);
                 });
             });
         });
