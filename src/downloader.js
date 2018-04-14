@@ -1,7 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-const http = require('http');
-const https = require('https');
+const https = require('follow-redirects').https;
 const events = require('events');
 
 const protocol = 'https:'
@@ -81,6 +80,7 @@ module.exports = class Downloader extends events {
      */
     listFiles (repository, folder, callback) {
         let url = '/repos/' + repository + '/contents/' + folder;
+        console.log('Listing files in %s / %s', repository, folder);
         https.get({ protocol, 'host': api, 'path': url, 'headers': { 'User-Agent': 'retropie-arcade-manager' } }, (res) => {
             res.setEncoding('utf8');
             let rawData = '';

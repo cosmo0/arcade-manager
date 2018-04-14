@@ -60,174 +60,36 @@ module.exports = class Overlays extends events {
     }
 
     /**
-     * Installs a local overlay pack
-     * 
-     * @param {string} roms The path to the roms folder
-     * @param {string} config The path to the Retropie configs share
-     * @param {string} pack The path to the overlays pack
-     */
-    installPack (roms, config, pack) {
-        this.emit('start.install');
-
-        // checks that a folders.json file exists
-        if (!fs.existsSync(path.join(pack, 'folders.json'))) {
-            throw 'No folder.json file has been found in the overlay pack.';
-        }
-
-        let folders = JSON.parse(fs.readFileSync(path.join(pack, 'folders.json'), { 'encoding': 'utf8' }));
-        let packConfigsFolder = path.join(pack, folders.roms);
-        fs.readdir(roms, (err, romfiles) => {
-            if (err) throw err;
-            fs.readdir(packConfigsFolder, (err, packConfigs) => {
-                if (err) throw err;
-            
-                let total = romfiles.length;
-                if (typeof folders.common !== 'undefined' && folders.common) { total++; }
-                if (typeof folders.shaders !== 'undefined' && folders.shaders) { total++; }
-                let current = 1;
-
-                // copy common files
-                let installCommon = new Promise((resolve) => {
-                    if (typeof folders.common !== 'undefined' && folders.common) {
-                        this.emit('progress.install', total, current++, 'common files');
-                        console.log('installing common files');
-
-                        let commonTarget = path.join(config, folders.common.dest);
-                        fs.ensureDir(commonTarget, (err) => {
-                            if (err) throw err;
-                            fs.copy(path.join(pack, folders.common.src), commonTarget, { 'overwrite': false }, (err) => {
-                                if (err) throw err;
-                                resolve();
-                            });
-                        });
-                    } else {
-                        resolve();
-                    }
-                });
-
-                let installShaders = new Promise((resolve) => {
-                    // copy shaders
-                    if (typeof folders.shaders !== 'undefined' && folders.shaders) {
-                        this.emit('progress.install', total, current++, 'shaders');
-                        console.log('Installing shaders');
-
-                        let shadersTarget = path.join(config, folders.shaders.dest);
-                        fs.ensureDir(shadersTarget, (err) => {
-                            if (err) throw err;
-                            fs.copy(path.join(pack, folders.shaders.src), shadersTarget, { 'overwrite': false }, (err) => {
-                                if (err) throw err;
-                                resolve();
-                            });
-                        });
-                    } else {
-                        resolve();
-                    }
-                });
-
-                let requests = romfiles.reduce((promisechain, rom, index) => {
-                    return promisechain.then(() => new Promise((resolve) => {
-                        this.emit('progress.install', total, current++, rom);
-                        console.log('Processing %s', rom);
-
-                        if (!rom.endsWith('.zip')) {
-                            resolve();
-                            return;
-                        }
-
-                        // for each zip, search a matching rom cfg
-                        let packCfgIdx = packConfigs.indexOf(rom + '.cfg');
-                        if (packCfgIdx < 0) {
-                            console.log('No overlay found for %s', rom);
-                            resolve();
-                        } else {    
-                            let packCfg = packConfigs[packCfgIdx];
-                            let destCfg = path.join(roms, packCfg);
-
-                            // copy the rom cfg
-                            fs.copy(path.join(packConfigsFolder, packCfg), destCfg, { 'overwrite': false }, (err) => {
-                                if (err) throw err;
-
-                                // parse rom cfg to get overlay cfg
-                                let packCfgContent = fs.readFileSync(destCfg, { 'encoding': 'utf8' });
-                                let overlayFile = /input_overlay[\s]*=[\s]*(.*\.cfg)/igm.exec(packCfgContent)[1]; // extract overlay path
-                                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/') + 1); // just the file name
-
-                                // copy overlay cfg
-                                let destOverlayFile = path.join(config, folders.overlays.dest, overlayFile);
-                                fs.copy(path.join(pack, folders.overlays.src, overlayFile), destOverlayFile, { 'overwrite': false }, (err) => {
-                                    if (err) throw err;
-
-                                    // parse overlay cfg to get overlay image
-                                    let overlayContent = fs.readFileSync(destOverlayFile, { 'encoding': 'utf-8' });
-                                    let overlayImage = /overlay0_overlay[\s]*=[\s]*(.*\.png)/igm.exec(overlayContent)[1];
-
-                                    // copy overlay image
-                                    fs.copy(
-                                        path.join(pack, folders.overlays.src, overlayImage),
-                                        path.join(config, folders.overlays.dest, overlayImage),
-                                        { 'encoding': 'utf-8' }, (err) => {
-                                            if (err) throw err;
-                                            resolve();
-                                        });
-                                });
-                            });
-                        }
-                    }));
-                }, Promise.resolve());
-
-                installCommon
-                .then(() => installShaders)
-                .then(() => requests)
-                .then(() => {
-                    this.emit('end.install');
-                });
-            });
-        });
-    }
-
-    /**
      * Downloads and installs an overlay pack
      * 
      * @param {string} romsFolder The path to the roms
-     * @param {string} configFolder The path to the config share
      * @param {string} repository The Github repository (ex: user/repo)
-     * @param {string} roms The roms configs folder (ex: overlays/roms)
-     * @param {string} overlays The overlays configs folder (ex: overlays/config/overlays)
-     * @param {string} common The common files folder, if any (ex: overlays/config/common)
-     * @param {string} shaders The shaders folder, if any (ex: overlays/config/shaders)
+     * @param {string} files The folder where the config files to copy are located (ex: overlays/)
+     * @param {string} common The folder where common files are located (ex: overlays/common/)
      */
-    downloadPack (romsFolder, configFolder, repository, roms, overlays, common, shaders) {
+    downloadPack (romsFolder, repository, files, common) {
         this.emit('start.download');
 
         this.emit('progress.download', 100, 1, 'files list');
 
         // get roms configs list
-        downloader.listFiles(repository, roms, (romConfigs) => {
+        downloader.listFiles(repository, files, (romConfigs) => {
             let total = romConfigs.length;
             if (typeof common !== 'undefined' && common) { total++; }
-            if (typeof shaders !== 'undefined' && shaders) { total++; }
             let current = 1;
 
             // download and install common configs
             let installCommon = new Promise((resolve) => {
                 if (typeof common !== 'undefined' && common) {
-                    console.log('Installing common config');
-                    this.emit('progress.download', total, current++, 'common');
-                    downloader.downloadFolder(repository, common.src, path.join(configFolder, common.dest));
-                    resolve();
+                    console.log('Installing common files');
+                    this.emit('progress.download', total, current++, 'common files');
+                    downloader.downloadFolder(repository, common.src, path.join(romsFolder, common.dest));
                 }
+                
+                resolve();
             });
 
-            let installShaders = new Promise((resolve) => {
-                // download and install shaders
-                if (typeof shaders !== 'undefined' && shaders) {
-                    console.log('Installing shaders');
-                    this.emit('progress.download', total, current++, 'shaders');
-                    downloader.downloadFolder(repository, shaders.src, path.join(configFolder, shaders.dest));
-                    resolve();
-                }
-            });
-
+            // download and install rom configs
             let requests = romConfigs.reduce((promisechain, romcfg, index) => {
                 return promisechain.then(() => new Promise((resolve) => {
                     this.emit('progress.download', total, current++, romcfg.name);
@@ -250,23 +112,24 @@ module.exports = class Overlays extends events {
                                 if (err) throw err;
 
                                 // parse rom cfg to get overlay cfg
-                                let overlayFile = /input_overlay[\s]*=[\s]*(.*\.cfg)/igm.exec(romcfgContent)[1]; // extract overlay path
-                                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/')); // just the file name
-                                let packOverlayFile = path.join(overlays.src, overlayFile); // concatenate with pack path                            
+                                let overlayFile = /input_overlay[\s]*=[\s]*"?(.*\.cfg)"?/igm.exec(romcfgContent)[1]; // extract overlay path
+                                let packOverlayFile = path.join(files, overlayFile); // concatenate with pack path                          
                                 
                                 // download and copy overlay cfg
                                 downloader.downloadFile(repository, packOverlayFile, (packOverlayFileContent) => {
-                                    let localoverlaycfg = path.join(configFolder, overlays.dest, overlayFile);
+                                    let localoverlaycfg = path.join(romsFolder, overlayFile);
+                                    fs.ensureFileSync(localoverlaycfg);
                                     fs.writeFile(localoverlaycfg, packOverlayFileContent, (err) => {
                                         if (err) throw err;
 
                                         // parse overlay cfg to get overlay image
-                                        let packOverlayImage = /overlay0_overlay[\s]*=[\s]*(.*\.png)/igm.exec(packOverlayFileContent)[1];
-                                        let packOverlayImageFile = path.join(overlays.src, packOverlayImage);
+                                        let packOverlayImage = /overlay0_overlay[\s]*=[\s]*"?(.*\.png)"?/igm.exec(packOverlayFileContent)[1];
+                                        // build path to image file
+                                        let packOverlayImageFile = path.join(path.dirname(packOverlayFile), packOverlayImage);
 
                                         // download and copy overlay image
                                         downloader.downloadFile(repository, packOverlayImageFile, (imageContent) => {
-                                            let localoverlayimg = path.join(configFolder, overlays.dest, packOverlayImage);
+                                            let localoverlayimg = path.join(path.dirname(localoverlaycfg), packOverlayImage);
                                             fs.writeFile(localoverlayimg, imageContent, (err) => {
                                                 if (err) throw err;
                                                 resolve();
@@ -284,7 +147,6 @@ module.exports = class Overlays extends events {
             }, Promise.resolve());
 
             installCommon
-            .then(() => installShaders)
             .then(() => requests)
             .then(() => {
                 this.emit('end.download');

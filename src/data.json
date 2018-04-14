@@ -47,18 +47,15 @@
             "description": "Realistic-looking overlays, with scratches, reflections, and CRT shader",
             "image": "img/overlays-realistic.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-realistic",
-            "roms": "overlays/roms",
-            "overlays": { "src": "overlays/configs/all/retroarch/overlay/arcade", "dest": "all/retroarch/overlay/arcade" },
-            "common": { "src": "overlays/configs/all/retroarch/overlay_cfg", "dest": "all/retroarch/overlay_cfg" },
-            "shaders": { "src": "overlays/configs/all/retroarch/shaders", "dest": "all/retroarch/shaders" }
+            "files": "overlays",
+            "common": { "src": "overlays/overlays/common", "dest": "overlays/common" }
         },
         {
             "name": "Artworks",
             "description": "Artwork-style overlays, as clean as possible, with a large screen area",
             "image": "img/overlays-artwork.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-artwork",
-            "roms": "overlays/roms",
-            "overlays": { "src": "overlays/configs/all/retroarch/overlay/arcade", "dest": "all/retroarch/overlay/arcade" }
+            "files": "overlays"
         }
     ]
 }
