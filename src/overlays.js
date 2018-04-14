@@ -71,6 +71,7 @@ module.exports = class Overlays extends events {
      * @param {bool} overwrite Whether to overwrite existing files
      */
     downloadPack (romsFolder, configFolder, repository, roms, overlays, common, overwrite) {
+        const flag = overwrite ? 'w' : 'wx';
         this.emit('start.download');
 
         this.emit('progress.download', 100, 1, 'files list');
@@ -110,8 +111,8 @@ module.exports = class Overlays extends events {
                         // download and copy rom cfg
                         downloader.downloadFile(repository, romcfg.path, (romcfgContent) => {
                             let localromcfg = path.join(romsFolder, romcfg.name);
-                            fs.ensureFileSync(localromcfg);
-                            fs.writeFile(localromcfg, romcfgContent, { 'flag': 'wx' }, (err) => {
+                            fs.ensureDirSync(path.dirname(localromcfg));
+                            fs.writeFile(localromcfg, romcfgContent, { flag }, (err) => {
                                 if (err && err.code !== 'EEXIST') throw err;
 
                                 // parse rom cfg to get overlay cfg
@@ -122,8 +123,8 @@ module.exports = class Overlays extends events {
 
                                 // download and copy overlay cfg
                                 downloader.downloadFile(repository, packOverlayFile, (packOverlayFileContent) => {
-                                    fs.ensureFileSync(localoverlaycfg);
-                                    fs.writeFile(localoverlaycfg, packOverlayFileContent, { 'flag': 'wx' }, (err) => {
+                                    fs.ensureDirSync(path.dirname(localoverlaycfg));
+                                    fs.writeFile(localoverlaycfg, packOverlayFileContent, { flag }, (err) => {
                                         if (err && err.code !== 'EEXIST') throw err;
 
                                         // parse overlay cfg to get overlay image
@@ -134,7 +135,7 @@ module.exports = class Overlays extends events {
 
                                         // download and copy overlay image
                                         downloader.downloadFile(repository, packOverlayImageFile, (imageContent) => {
-                                            fs.writeFile(localoverlayimg, imageContent, { 'flag': 'wx' }, (err) => {
+                                            fs.writeFile(localoverlayimg, imageContent, { flag }, (err) => {
                                                 if (err && err.code !== 'EEXIST') throw err;
                                                 
                                                 resolve();
