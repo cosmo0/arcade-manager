@@ -68,8 +68,9 @@ module.exports = class Overlays extends events {
      * @param {string} roms The pack folder where the rom config files are located (ex: overlays/roms/)
      * @param {object} overlays The infos of where overlays are located (ex: { src: overlays/config/, dest: all/retroarch/overlay/arcade })
      * @param {object} common The infos of where common files are located (ex: { src: overlays/config/common/, dest: all/retroarch/overlay/common })
+     * @param {bool} overwrite Whether to overwrite existing files
      */
-    downloadPack (romsFolder, configFolder, repository, roms, overlays, common) {
+    downloadPack (romsFolder, configFolder, repository, roms, overlays, common, overwrite) {
         this.emit('start.download');
 
         this.emit('progress.download', 100, 1, 'files list');
@@ -85,7 +86,7 @@ module.exports = class Overlays extends events {
                     total++;
                     console.log('Installing common files');
                     this.emit('progress.download', total, current++, 'common files');
-                    downloader.downloadFolder(repository, common.src, path.join(configFolder, common.dest));
+                    downloader.downloadFolder(repository, common.src, path.join(configFolder, common.dest), overwrite);
                 }
                 
                 resolve();
@@ -110,8 +111,8 @@ module.exports = class Overlays extends events {
                         downloader.downloadFile(repository, romcfg.path, (romcfgContent) => {
                             let localromcfg = path.join(romsFolder, romcfg.name);
                             fs.ensureFileSync(localromcfg);
-                            fs.writeFile(localromcfg, romcfgContent, (err) => {
-                                if (err) throw err;
+                            fs.writeFile(localromcfg, romcfgContent, { 'flag': 'wx' }, (err) => {
+                                if (err && err.code !== 'EEXIST') throw err;
 
                                 // parse rom cfg to get overlay cfg
                                 let overlayFile = /input_overlay[\s]*=[\s]*"?(.*\.cfg)"?/igm.exec(romcfgContent)[1]; // extract overlay path
@@ -122,8 +123,8 @@ module.exports = class Overlays extends events {
                                 // download and copy overlay cfg
                                 downloader.downloadFile(repository, packOverlayFile, (packOverlayFileContent) => {
                                     fs.ensureFileSync(localoverlaycfg);
-                                    fs.writeFile(localoverlaycfg, packOverlayFileContent, (err) => {
-                                        if (err) throw err;
+                                    fs.writeFile(localoverlaycfg, packOverlayFileContent, { 'flag': 'wx' }, (err) => {
+                                        if (err && err.code !== 'EEXIST') throw err;
 
                                         // parse overlay cfg to get overlay image
                                         let packOverlayImage = /overlay0_overlay[\s]*=[\s]*"?(.*\.png)"?/igm.exec(packOverlayFileContent)[1];
@@ -133,8 +134,9 @@ module.exports = class Overlays extends events {
 
                                         // download and copy overlay image
                                         downloader.downloadFile(repository, packOverlayImageFile, (imageContent) => {
-                                            fs.writeFile(localoverlayimg, imageContent, (err) => {
-                                                if (err) throw err;
+                                            fs.writeFile(localoverlayimg, imageContent, { 'flag': 'wx' }, (err) => {
+                                                if (err && err.code !== 'EEXIST') throw err;
+                                                
                                                 resolve();
                                             });
                                         });

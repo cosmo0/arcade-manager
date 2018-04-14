@@ -49,22 +49,23 @@ module.exports = class Downloader extends events {
      * @param {string} repository The repository (user/repo)
      * @param {string} folder The path to the folder (path/to/folder)
      * @param {string} targetFolder The folder to download into
+     * @param {bool} overwrite Whether to overwrite existing files
      */
-    downloadFolder (repository, folder, targetFolder) {
+    downloadFolder (repository, folder, targetFolder, overwrite) {
         fs.ensureDirSync(targetFolder);
         
         this.listFiles(repository, folder, (list) => {
             for (let item of list) {
                 if (item.type === 'file') {
                     let dest = path.join(targetFolder, item.name);
-                    if (!fs.existsSync(dest)) {
+                    if (overwrite === true || !fs.existsSync(dest)) {
                         console.log('write file to ' + dest);
                         downloader.downloadFile(repository, item.path, (content) => {
                             fs.writeFileSync(dest, content);
                         });
                     }
                 } else {
-                    this.downloadFolder(repository, item.path, path.join(targetFolder, item.name));
+                    this.downloadFolder(repository, item.path, path.join(targetFolder, item.name), overwrite);
                 }
             }
         });

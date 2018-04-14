@@ -8,9 +8,9 @@
 <h2>Download and install an overlays pack</h2>
 
 <p>
-    Select the overlays pack you want, and the path to you roms folder.<br>
-    This will download and install only the files you need for the games you have.<br>
-    It will only work with Libretro emulators (lr-mame and lr-fba), not AdvanceMAME or MAME4All.
+    Select the overlays pack you want, and the path to you roms folder. This will
+    download and install only the files you need for the games you have.<br>
+    Note that it will only work with Libretro emulators (lr-mame and lr-fba), not AdvanceMAME or MAME4All.
 </p>
 
 <div class="row mb-4" id="packs"></div>
@@ -42,6 +42,15 @@
 <p class="mt-0 mb-3">
     <small class="form-text text-muted">The path to the Retropie config share (ex: \\retropie\configs)</small>
 </p>
+
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
+    <label class="form-check-label" for="overwriteYes">Overwrite existing files</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
+    <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
+</div>    
 
 <p class="mt-3">
     <button type="button" id="buttonInstall" class="btn btn-primary btn-lg btn-block">Download and install</button>
@@ -87,7 +96,8 @@ $(() => {
     $('#buttonInstall').on('click', (e) => {
         let romsFolder = $('#romsFolder').val(),
             configFolder = $('#configFolder').val(),
-            pack = $('#packs .active');
+            pack = $('#packs .active'),
+            overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
         
         // check inputs and paths
         if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
@@ -98,7 +108,7 @@ $(() => {
         let packInfos = pack.data('pack');
         
         // download and install pack
-        overlays.downloadPack(romsFolder, configFolder, packInfos.repository, packInfos.roms, packInfos.overlays, packInfos.common);
+        overlays.downloadPack(romsFolder, configFolder, packInfos.repository, packInfos.roms, packInfos.overlays, packInfos.common, overwrite);
     });
 });
 </script>
