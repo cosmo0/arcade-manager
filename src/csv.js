@@ -10,6 +10,47 @@ const defaultDelimiter = ';';
 
 module.exports = class Csv extends events {
     /**
+     * Parses the provided content and returns a CSV file object
+     * 
+     * @param {any} content The content to parse
+     * @returns {object} The parsed CSV object
+     */
+    parse(content) {
+        let firstline = content.split('\n', 1)[0];
+
+        // check if first line is "name", or has a "name" column header
+        if (firstline.indexOf(';')
+            && (
+                firstline.indexOf('name;') === 0
+                || firstline.indexOf(';name;') > 0
+            )
+            || firstline === 'name') {
+
+            return csvparse(
+                content,
+                {
+                    columns: true,
+                    auto_parse: false,
+                    auto_parse_date: false,
+                    delimiter: defaultDelimiter
+                });
+        } else if (firstline.indexOf(';') < 0) {
+            // first line does not have a separator, it's probably just a list of names
+            return csvparse(
+                content,
+                {
+                    columns: [ 'name' ],
+                    auto_parse: false,
+                    auto_parse_date: false,
+                    delimiter: defaultDelimiter
+                });
+        } else {
+            // first line has separators but no "name" column: error
+            throw 'If your CSV file has several columns, it must contain a "name" column';
+        }
+    }
+
+    /**
      * Combines roms from the main and secondary CSV files,
      * and saves the result in the target file.
      * 
@@ -24,26 +65,12 @@ module.exports = class Csv extends events {
         fs.readFile(main, { 'encoding': 'utf8' }, (err, mainContents) => {
             if (err) throw err;
 
-            let mainCsv = csvparse(
-                mainContents,
-                {
-                    columns: true,
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
+            let mainCsv = this.parse(mainContents);
 
             fs.readFile(secondary, { 'encoding': 'utf8' }, (err, secondaryContents) => {
                 if (err) throw err;
 
-                let secondaryCsv = csvparse(
-                    secondaryContents,
-                    {
-                        columns: true,
-                        auto_parse: false,
-                        auto_parse_date: false,
-                        delimiter: defaultDelimiter
-                    });
+                let secondaryCsv = this.parse(secondaryContents);
 
                 console.log('Merging main (%i lines) and secondary (%i lines)', mainCsv.length, secondaryCsv.length);
 
@@ -90,24 +117,10 @@ module.exports = class Csv extends events {
 
         // load up csv files
         fs.readFile(main, { 'encoding': 'utf8' }, (err, mainContents) => {
-            let mainCsv = csvparse(
-                mainContents,
-                {
-                    columns: true,
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
+            let mainCsv = this.parse(mainContents);
             
             fs.readFile(secondary, { 'encoding': 'utf8' }, (err, secondaryContents) => {
-                let secondaryCsv = csvparse(
-                    secondaryContents,
-                    {
-                        columns: true,
-                        auto_parse: false,
-                        auto_parse_date: false,
-                        delimiter: defaultDelimiter
-                    });
+                let secondaryCsv = this.parse(secondaryContents);
 
                 console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
 
@@ -154,24 +167,10 @@ module.exports = class Csv extends events {
 
         // load up csv files
         fs.readFile(main, { 'encoding': 'utf8' }, (err, mainContents) => {
-            let mainCsv = csvparse(
-                mainContents,
-                {
-                    columns: true,
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
+            let mainCsv = this.parse(mainContents);
 
             fs.readFile(secondary, { 'encoding': 'utf8' }, (err, secondaryContents) => {
-                let secondaryCsv = csvparse(
-                    secondaryContents,
-                    {
-                        columns: true,
-                        auto_parse: false,
-                        auto_parse_date: false,
-                        delimiter: defaultDelimiter
-                    });
+                let secondaryCsv = this.parse(secondaryContents);
 
                 console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
 
