@@ -26,7 +26,21 @@
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The folder containing the roms</small>
+    <small class="form-text text-muted">The folder containing the roms (ex: \\retropie\roms\arcade)</small>
+</p>
+
+<!-- path to config -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Retropie config</span>
+    </div>
+    <input type="text" class="form-control" id="configFolder">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="configFolder">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The path to the Retropie config share (ex: \\retropie\configs)</small>
 </p>
 
 <p class="mt-3">
@@ -58,9 +72,7 @@ $(() => {
         }
 
         // pack meta-data
-        li.data('repository', ovl.repository);
-        li.data('files', ovl.files);
-        li.data('common', ovl.common);
+        li.data('pack', ovl);
 
         li.on('click', () => {
             $('#packs').find('.active').removeClass('active');
@@ -74,6 +86,7 @@ $(() => {
     // Handle click on validation button
     $('#buttonInstall').on('click', (e) => {
         let romsFolder = $('#romsFolder').val(),
+            configFolder = $('#configFolder').val(),
             pack = $('#packs .active');
         
         // check inputs and paths
@@ -82,12 +95,10 @@ $(() => {
         if (!overlays.checkAccess(romsFolder, true)) { window.alert('The specified roms folder cannot be written to.'); return; }
 
         // get pack data
-        let packrepository = pack.data('repository'),
-            packfiles = pack.data('files'),
-            packcommon = pack.data('common');
+        let packInfos = pack.data('pack');
         
         // download and install pack
-        overlays.downloadPack(romsFolder, packrepository, packfiles, packcommon);
+        overlays.downloadPack(romsFolder, configFolder, packInfos.repository, packInfos.roms, packInfos.overlays, packInfos.common);
     });
 });
 </script>

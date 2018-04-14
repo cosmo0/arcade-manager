@@ -62,28 +62,30 @@ module.exports = class Overlays extends events {
     /**
      * Downloads and installs an overlay pack
      * 
-     * @param {string} romsFolder The path to the roms
+     * @param {string} romsFolder The path to the roms (ex: \\retropie\roms)
+     * @param {string} configFolder The path to the Retropie config (ex: \\retropie\configs)
      * @param {string} repository The Github repository (ex: user/repo)
-     * @param {string} files The folder where the config files to copy are located (ex: overlays/)
-     * @param {string} common The folder where common files are located (ex: overlays/common/)
+     * @param {string} roms The pack folder where the rom config files are located (ex: overlays/roms/)
+     * @param {object} overlays The infos of where overlays are located (ex: { src: overlays/config/, dest: all/retroarch/overlay/arcade })
+     * @param {object} common The infos of where common files are located (ex: { src: overlays/config/common/, dest: all/retroarch/overlay/common })
      */
-    downloadPack (romsFolder, repository, files, common) {
+    downloadPack (romsFolder, configFolder, repository, roms, overlays, common) {
         this.emit('start.download');
 
         this.emit('progress.download', 100, 1, 'files list');
 
         // get roms configs list
-        downloader.listFiles(repository, files, (romConfigs) => {
+        downloader.listFiles(repository, roms, (romConfigs) => {
             let total = romConfigs.length;
-            if (typeof common !== 'undefined' && common) { total++; }
             let current = 1;
 
             // download and install common configs
             let installCommon = new Promise((resolve) => {
                 if (typeof common !== 'undefined' && common) {
+                    total++;
                     console.log('Installing common files');
                     this.emit('progress.download', total, current++, 'common files');
-                    downloader.downloadFolder(repository, common.src, path.join(romsFolder, common.dest));
+                    downloader.downloadFolder(repository, common.src, path.join(configFolder, common.dest));
                 }
                 
                 resolve();
@@ -113,11 +115,12 @@ module.exports = class Overlays extends events {
 
                                 // parse rom cfg to get overlay cfg
                                 let overlayFile = /input_overlay[\s]*=[\s]*"?(.*\.cfg)"?/igm.exec(romcfgContent)[1]; // extract overlay path
-                                let packOverlayFile = path.join(files, overlayFile); // concatenate with pack path                          
-                                
+                                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/')); // just the file name
+                                let packOverlayFile = path.join(overlays.src, overlayFile); // concatenate with pack path                          
+                                let localoverlaycfg = path.join(configFolder, overlays.dest, overlayFile);
+
                                 // download and copy overlay cfg
                                 downloader.downloadFile(repository, packOverlayFile, (packOverlayFileContent) => {
-                                    let localoverlaycfg = path.join(romsFolder, overlayFile);
                                     fs.ensureFileSync(localoverlaycfg);
                                     fs.writeFile(localoverlaycfg, packOverlayFileContent, (err) => {
                                         if (err) throw err;
@@ -125,11 +128,11 @@ module.exports = class Overlays extends events {
                                         // parse overlay cfg to get overlay image
                                         let packOverlayImage = /overlay0_overlay[\s]*=[\s]*"?(.*\.png)"?/igm.exec(packOverlayFileContent)[1];
                                         // build path to image file
-                                        let packOverlayImageFile = path.join(path.dirname(packOverlayFile), packOverlayImage);
+                                        let packOverlayImageFile = path.join(overlays.src, packOverlayImage);
+                                        let localoverlayimg = path.join(configFolder, overlays.dest, packOverlayImage);
 
                                         // download and copy overlay image
                                         downloader.downloadFile(repository, packOverlayImageFile, (imageContent) => {
-                                            let localoverlayimg = path.join(path.dirname(localoverlaycfg), packOverlayImage);
                                             fs.writeFile(localoverlayimg, imageContent, (err) => {
                                                 if (err) throw err;
                                                 resolve();
