@@ -22,8 +22,9 @@ module.exports = class Roms extends events {
      * @param {string} file The path to the file
      * @param {string} romset The path to the romset folder
      * @param {string} selection The path to the selection folder
+     * @param {bool} overwrite Whether to overwrite existing files
      */
-    add (file, romset, selection) {
+    add (file, romset, selection, overwrite) {
         mustCancel = false;
 
         this.emit('start.add');
@@ -48,16 +49,16 @@ module.exports = class Roms extends events {
                     this.emit('progress.add', fileCsv.length, index + 1, zip);
     
                     // test if source file exists and destination does not
-                    if (fs.existsSync(sourceRom) && !fs.existsSync(destRom)) {
+                    if (fs.existsSync(sourceRom) && (!fs.existsSync(destRom) || overwrite)) {
                         // copy rom
-                        fs.copy(sourceRom, destRom, (err) => {
+                        fs.copy(sourceRom, destRom, { overwrite }, (err) => {
                             if (err) throw err;
                             if (mustCancel) { resolve(); return; }
     
                             // copy CHD
                             let sourceChd = path.join(romset, game);
                             if (fs.existsSync(sourceChd)) {
-                                fs.copy(sourceChd, path.join(selection, game), (err) => {
+                                fs.copy(sourceChd, path.join(selection, game), { overwrite }, (err) => {
                                     if (err) throw err;
                                     if (mustCancel) { resolve(); return; }
 
