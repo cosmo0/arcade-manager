@@ -4,6 +4,8 @@ const events = require('events');
 const csvparse = require('csv-parse/lib/sync');
 const stringify = require('csv-stringify/lib/sync');
 const parseString = require('xml2js').parseString;
+const ini = require('ini');
+const sanitize = require("sanitize-filename");
 
 // delimiter
 const defaultDelimiter = ';';
@@ -210,10 +212,10 @@ module.exports = class Csv extends events {
      * @param {any} dat The path to the DAT file to convert
      * @param {any} target The path to the target CSV file
      */
-    convert (dat, target) {
+    convertdat (dat, target) {
         this.emit('start.convert');
 
-        this.emit('progress.convert', 100, 10, 'DAT file');
+        this.emit('progress.convert', 100, 1, 'DAT file');
 
         // read DAT file
         fs.readFile(dat, { 'encoding': 'utf8' }, (err, datContents) => {
@@ -269,6 +271,77 @@ module.exports = class Csv extends events {
                     // close the file handler
                     stream.end();
                 });
+            });
+        });
+    }
+
+    /**
+     * Converts a INI file to multiple CSV
+     * 
+     * @param {any} inifile The path to the INI file to convert
+     * @param {any} target The path to the target folder
+     */
+    convertini (inifile, target) {
+        this.emit('start.convert');
+
+        this.emit('progress.convert', 100, 1, 'INI file');
+
+        // read INI file
+        fs.readFile(inifile, { 'encoding': 'utf8' }, (err, iniContents) => {
+            if (err) throw err;
+
+            // parse INI
+            let iniValues = ini.parse(iniContents);
+            let keys = Object.keys(iniValues).filter(v => v !== 'FOLDER_SETTINGS');
+
+            let requests = keys.reduce((promisechain, section, index) => {
+                return promisechain.then(() => new Promise((resolve) => {
+                    this.emit('progress.convert', keys.length, index + 1, section);
+
+                    let sectionValues = iniValues[section];
+                    let linekeys = Object.keys(sectionValues);
+
+                    // empty section
+                    if (linekeys.length === 0) { resolve(); return; }
+                    
+                    // CSV header
+                    let result = 'name;value\n';
+
+                    // build the CSV lines
+                    for (let linekey of linekeys) {
+                        result += linekey + ';';
+                        
+                        // just the game name without any value is parsed as "game:true"
+                        result += sectionValues[linekey] === true ? '' : sectionValues[linekey];
+                        result += '\n';
+                    }
+
+                    // determine file name (remove special chars)
+                    let fileName = keys.length > 1 ? sanitize(section) : path.basename(inifile).replace('.ini', '');
+                    if (fileName === '') { fileName = 'unknown'; }
+                    fileName += '.csv';
+
+                    // make sure not to overwrite existing conversions
+                    if (fs.existsSync(path.join(target, fileName))) {
+                        let fileIndex = 1;
+                        while (fs.existsSync(path.join(target, fileName.replace('.csv', fileIndex + '.csv')))) {
+                            fileIndex++;
+                        }
+
+                        fileName = fileName.replace('.csv', fileIndex + '.csv');
+                    }
+
+                    // write the file and resolve
+                    fs.writeFile(path.join(target, fileName), result, { flag: 'wx' }, (err) => {
+                        if (err) throw err;
+                        resolve();
+                    });
+                }));
+            }, Promise.resolve());
+
+            requests.then(() => {
+                console.log('done');
+                this.emit('end.convert', target);
             });
         });
     }
