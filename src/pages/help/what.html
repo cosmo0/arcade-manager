@@ -1,0 +1,45 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a href="pages/help/index.html" class="navmenu">Help</a></li>
+        <li class="breadcrumb-item active" aria-current="page">What to do</li>
+    </ol>
+</nav>
+
+<h2>What to do with this tool</h2>
+
+<p>
+    Feeling a bit lost with what this tool can be used for?<br>
+    Installing overlays should be pretty straightforward. If it's not, please open an issue
+    on <a href="https://github.com/cosmo0/retropie-arcade-manager/" class="blank">the GitHub project</a>.<br>
+    For the rest, read on.
+</p>
+
+<h3>An example of typical usage</h3>
+
+<p>
+    Let's say you want to play some arcade classics on your Raspberry Pi using Retropie:
+</p>
+
+<ol>
+    <li>On the main menu, select <strong>Manage games list</strong>, then <strong>Download a pre-build CSV file</strong>.
+        FBA is the preferred emulator by default, so click on <strong>FBA 2017</strong>.</li>
+    <li>If you have a game pad with analogue sticks (like Xbox or Playstation), download <strong>set-classics-pad</strong>.
+        Otherwise, download <strong>set-classics-stick</strong>.</li>
+    <li>Go back to the main menu, and select <strong>Manage roms</strong>.</li>
+    <li>If you have a full FBA romset somewhere, select <strong>Copy listed roms from a full romset</strong>.
+        If you already have a large selection of working games on your pi, and want to trim it down, select
+        <strong>Keep only the roms listed</strong>.</li>
+    <li>Select the CSV file you previously downloaded, fill the folders as required (target \\retropie\roms\fba),
+        then enjoy your great-but-smaller games selection.</li>
+</ol>
+
+<p>
+    FBA is great, but it's missing a few games and systems, like vector games (Asteroids...). If you don't want to miss anything:
+</p>
+
+<ol>
+    <li>Go back to downloading games list, but choose <strong>MAME 2003 only</strong> as the system.</li>
+    <li>Go back to managing roms, and do the same steps, using a MAME 2003 romset and target folder
+        (\\retropie\roms\mame-libretro).</li>
+</ol>

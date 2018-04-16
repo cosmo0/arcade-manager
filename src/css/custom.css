@@ -5,6 +5,12 @@ a.navmenu:hover {
 /*
 * Home page menu
 */
+
+.maintitle a {
+    font-size: 10px;
+    vertical-align: middle;
+}
+
 .mainmenu a.navmenu .card {
     transition: box-shadow 0.2s ease-in-out;
 }
