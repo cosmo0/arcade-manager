@@ -75,6 +75,8 @@ module.exports = class Csv extends events {
                 let secondaryCsv = this.parse(secondaryContents);
 
                 console.log('Merging main (%i lines) and secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+                this.emit('log', 'Main file has ' + mainCsv.length + ' games');
+                this.emit('log', 'Secondary file has' + secondaryCsv.length + ' games');
 
                 // read the secondary csv and add entries to main that do not yet exist
                 let requests = secondaryCsv.reduce((promisechain, line, index) => {
@@ -93,6 +95,7 @@ module.exports = class Csv extends events {
 
                 requests.then(() => {
                     console.log('Result has %i lines; saving it', mainCsv.length);
+                    this.emit('log', 'Result file has ' + mainCsv.length + ' games');
 
                     // save the result
                     fs.writeFile(target, stringify(mainCsv, { header: true, delimiter: defaultDelimiter }), (err) => {
@@ -125,6 +128,8 @@ module.exports = class Csv extends events {
                 let secondaryCsv = this.parse(secondaryContents);
 
                 console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+                this.emit('log', 'Main file has ' + mainCsv.length + ' games');
+                this.emit('log', 'Secondary file has' + secondaryCsv.length + ' games');
 
                 let merged = [];
 
@@ -145,6 +150,7 @@ module.exports = class Csv extends events {
 
                 requests.then(() => {
                     console.log('Result has %i lines; saving it', merged.length);
+                    this.emit('log', 'Result file has ' + merged.length + ' games');
 
                     // save the result
                     fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
@@ -174,7 +180,9 @@ module.exports = class Csv extends events {
             fs.readFile(secondary, { 'encoding': 'utf8' }, (err, secondaryContents) => {
                 let secondaryCsv = this.parse(secondaryContents);
 
-                console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+                console.log('Removing lines from main (%i lines) that do not exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
+                this.emit('log', 'Main file has ' + mainCsv.length + ' games');
+                this.emit('log', 'Secondary file has' + secondaryCsv.length + ' games');
 
                 let merged = [];
 
@@ -195,6 +203,7 @@ module.exports = class Csv extends events {
 
                 requests.then(() => {
                     console.log('Result has %i lines; saving it', merged.length);
+                    this.emit('log', 'Result file has ' + merged.length + ' lines');
 
                     // save the result
                     fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
@@ -232,6 +241,8 @@ module.exports = class Csv extends events {
                 if (!datXml.datafile || !datXml.datafile.game) {
                     throw 'DAT file needs to be in the CLR MAME PRO format';
                 }
+
+                this.emit('log', 'DAT file has ' + datXml.datafile.game.length + ' games');
 
                 // create a file handler to write into
                 let stream = fs.createWriteStream(target, { 'encoding': 'utf8' });
@@ -304,6 +315,8 @@ module.exports = class Csv extends events {
                     // empty section
                     if (linekeys.length === 0) { resolve(); return; }
                     
+                    this.emit('log', 'INI section "' + section + '" with ' + linekeys.length + ' games');
+
                     // CSV header
                     let result = 'name;value\n';
 
@@ -334,6 +347,9 @@ module.exports = class Csv extends events {
                     // write the file and resolve
                     fs.writeFile(path.join(target, fileName), result, { flag: 'wx' }, (err) => {
                         if (err) throw err;
+
+                        this.emit('log', 'Result file saved as ' + fileName);
+
                         resolve();
                     });
                 }));
@@ -383,6 +399,8 @@ module.exports = class Csv extends events {
 
             requests.then(() => {
                 console.log('done');
+                this.emit('log', 'Result file has ' + filesList.length + ' games');
+
                 this.emit('end.listfiles', target);
                 
                 // close the file handler

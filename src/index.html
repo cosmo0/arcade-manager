@@ -68,6 +68,9 @@
                         <button class="btn btn-outline-danger btn-sm pl-5 pr-5">Stop</button>
                     </p>
                     <p class="d-none msg"></p>
+                    <div class="alert alert-info log">
+
+                    </div>
                 </div>
                 <div class="modal-footer d-none">
                     <a href="#" class="d-none open btn btn-outline-info">Open the result</a>
@@ -137,6 +140,8 @@
          */
         function bindEvents() {
             // bind rom events
+            roms.on('log', (msg, error) => { progressLog(msg, error) });
+
             roms.on('start.add', () => { progressInit('Copying roms', true); });
             roms.on('progress.add', progress);
             roms.on('end.add', (cancelled, folder) => {
@@ -168,6 +173,8 @@
             });
 
             // bind csv events
+            csv.on('log', (msg, error) => { progressLog(msg, error) });
+
             csv.on('start.add', () => { progressInit('Merging files'); });
             csv.on('progress.add', progress);
             csv.on('end.add', (file) => { progressDone('Done', file); });
@@ -189,6 +196,8 @@
             csv.on('end.listfiles', (file) => { progressDone('Done', file); });
 
             // bind overlays events
+            overlays.on('log', (msg, error) => { progressLog(msg, error) });
+
             overlays.on('start.download', () => { progressInit('Downloading and installing overlays', true); });
             overlays.on('progress.download', progress);
             overlays.on('end.download', (cancelled) => {
@@ -198,6 +207,16 @@
                     progressDone('Done');
                 }
             });
+
+            // bind errors
+            window.onerror = function(msg, url, line, col, error) {
+                var extra = !col ? '' : ' ; column: ' + col;
+                extra += !error ? '' : '<br><br>error: ' + error;
+
+                progressLog("Error: " + msg + "<br><br>File: " + url + "<br>line: " + line + extra, true);
+
+                return true; // error handled
+            };
 
             // bind stop event
             $('#progress .stop button').on('click', (e) => {
@@ -220,7 +239,7 @@
             p.modal({ 'backdrop': 'static', 'keyboard': false });
 
             // re-hide some items
-            p.find('.modal-footer, .msg').addClass('d-none');
+            p.find('.modal-footer, .msg, .log').addClass('d-none');
 
             // re-display some items
             p.find('.progress, .details').removeClass('d-none');
@@ -232,14 +251,13 @@
                 p.find('.stop').addClass('d-none');
             }
 
-            // set title
-            p.find('.modal-title').html(title);
+            // reset texts
+            p.find('.modal-title').text(title);
+            p.find('.details, .log').text('');
 
-            // reset progress bar
+            // reset styles
             p.find('.progress .progress-bar').width('0%');
-
-            // reset details text
-            p.find('.details').text('');
+            p.find('.log').removeClass('alert-danger').addClass('alert-info');
         }
 
         /**
@@ -258,6 +276,27 @@
             // calculate current percentage
             let percent = current != 0 ? current / total * 100 : 0;
             p.find('.progress .progress-bar').width(percent + '%');
+        }
+
+        /**
+         * Logs some info in the progress dialog
+         */
+        function progressLog(msg, isError) {
+            if (typeof isError === 'undefined') { isError = false; }
+
+            let p = $('#progress');
+            let log = p.find('.log');
+            if (log.hasClass('d-none')) { log.removeClass('d-none'); }
+            log.append(msg + '<br>');
+
+            // display close button if it's an error
+            if (isError) {
+                // log is error
+                p.find('.log').removeClass('alert-info').addClass('alert-danger');
+                // display/hide items
+                p.find('.modal-footer').removeClass('d-none');
+                p.find('.progress, .stop').addClass('d-none');
+            }
         }
 
         /**

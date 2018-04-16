@@ -25,6 +25,14 @@ a.navmenu:hover {
 }
 
 /*
+* Log panel
+*/
+.modal-body .log {
+    max-height: 200px;
+    overflow: auto;
+}
+
+/*
 * CSV download folders list
 */
 .list-group .active .text-primary,
