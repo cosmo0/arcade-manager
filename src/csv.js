@@ -76,7 +76,7 @@ module.exports = class Csv extends events {
 
                 console.log('Merging main (%i lines) and secondary (%i lines)', mainCsv.length, secondaryCsv.length);
                 this.emit('log', 'Main file has ' + mainCsv.length + ' games');
-                this.emit('log', 'Secondary file has' + secondaryCsv.length + ' games');
+                this.emit('log', 'Secondary file has ' + secondaryCsv.length + ' games');
 
                 // read the secondary csv and add entries to main that do not yet exist
                 let requests = secondaryCsv.reduce((promisechain, line, index) => {
@@ -130,7 +130,7 @@ module.exports = class Csv extends events {
 
                 console.log('Removing lines from main (%i lines) that exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
                 this.emit('log', 'Main file has ' + mainCsv.length + ' games');
-                this.emit('log', 'Secondary file has' + secondaryCsv.length + ' games');
+                this.emit('log', 'Secondary file has ' + secondaryCsv.length + ' games');
 
                 let merged = [];
 
@@ -184,7 +184,7 @@ module.exports = class Csv extends events {
 
                 console.log('Removing lines from main (%i lines) that do not exist in secondary (%i lines)', mainCsv.length, secondaryCsv.length);
                 this.emit('log', 'Main file has ' + mainCsv.length + ' games');
-                this.emit('log', 'Secondary file has' + secondaryCsv.length + ' games');
+                this.emit('log', 'Secondary file has ' + secondaryCsv.length + ' games');
 
                 let merged = [];
 
