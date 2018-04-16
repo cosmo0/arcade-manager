@@ -35,6 +35,8 @@ module.exports = class Roms extends events {
 
             let fileCsv = csv.parse(fileContents);
 
+            fs.ensureDirSync(selection);
+
             console.log('Copying %i files', fileCsv.length);
 
             let requests = fileCsv.reduce((promisechain, line, index) => {

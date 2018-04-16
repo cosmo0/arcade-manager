@@ -98,6 +98,7 @@ module.exports = class Csv extends events {
                     this.emit('log', 'Result file has ' + mainCsv.length + ' games');
 
                     // save the result
+                    fs.ensureFileSync(target);
                     fs.writeFile(target, stringify(mainCsv, { header: true, delimiter: defaultDelimiter }), (err) => {
                         if (err) throw err;
 
@@ -153,6 +154,7 @@ module.exports = class Csv extends events {
                     this.emit('log', 'Result file has ' + merged.length + ' games');
 
                     // save the result
+                    fs.ensureFileSync(target);
                     fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
                         this.emit('end.remove', target);
                         console.log('OK');
@@ -206,6 +208,7 @@ module.exports = class Csv extends events {
                     this.emit('log', 'Result file has ' + merged.length + ' lines');
 
                     // save the result
+                    fs.ensureFileSync(target);
                     fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
                         this.emit('end.keep', target);
                         console.log('OK');
@@ -245,6 +248,7 @@ module.exports = class Csv extends events {
                 this.emit('log', 'DAT file has ' + datXml.datafile.game.length + ' games');
 
                 // create a file handler to write into
+                fs.ensureFileSync(target);
                 let stream = fs.createWriteStream(target, { 'encoding': 'utf8' });
 
                 // write the header
@@ -345,6 +349,7 @@ module.exports = class Csv extends events {
                     }
 
                     // write the file and resolve
+                    fs.ensureFileSync(path.join(target, fileName));
                     fs.writeFile(path.join(target, fileName), result, { flag: 'wx' }, (err) => {
                         if (err) throw err;
 
@@ -376,6 +381,7 @@ module.exports = class Csv extends events {
             if (err) throw err;
 
             // create a file handler to write into
+            fs.ensureFileSync(target);
             let stream = fs.createWriteStream(target, { 'encoding': 'utf8' });
 
             // write the header
