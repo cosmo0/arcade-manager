@@ -90,10 +90,11 @@ function listFiles(repository, folder, details) {
                             'defaultPath': fileinfos.name
                         }, (filename) => {
                             if (typeof filename !== 'undefined' && filename !== '') {
+                                progressInit('Download file');
                                 downloader.downloadFile(repository, fileinfos.path, (fileContents) => {
                                     fs.writeFile(filename, fileContents, (err) => {
                                         if (err) throw err;
-                                        window.alert('Done');
+                                        progressDone('Done.');
                                     });
                                 });
                             }
