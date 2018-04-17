@@ -1,6 +1,14 @@
 {
     "csv": [
         {
+            "name": "Best games",
+            "description": "Which games work best on which emulator",
+            "image": "",
+            "repository": "cosmo0/retropie-arcade-manager-data",
+            "folder": "csv/best",
+            "details": "csv/best/files.json"
+        },
+        {
             "name": "FBA 2017",
             "description": "Final Burn Alpha 2017 (0.2.97.42)",
             "image": "",
@@ -17,19 +25,27 @@
             "details": "csv/files.json"
         },
         {
-            "name": "MAME 2003 only",
-            "description": "Games that work in MAME 2003 but not in FBA",
-            "image": "",
-            "repository": "cosmo0/retropie-arcade-manager-data",
-            "folder": "csv/mame2003",
-            "details": "csv/files.json"
-        },
-        {
             "name": "MAME 2010",
             "description": "MAME 2010 (0.139)",
             "image": "",
             "repository": "cosmo0/retropie-arcade-manager-data",
             "folder": "csv/mame2010",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "Advance MAME",
+            "description": "Advance MAME 1.4 and 3.7 (MAME 0.106)",
+            "image": "",
+            "repository": "cosmo0/retropie-arcade-manager-data",
+            "folder": "csv/advancemame",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "MAME 2003 only",
+            "description": "Games that work in MAME 2003 but not in FBA",
+            "image": "",
+            "repository": "cosmo0/retropie-arcade-manager-data",
+            "folder": "csv/mame2003",
             "details": "csv/files.json"
         },
         {
