@@ -60,6 +60,8 @@ module.exports = class Roms extends events {
                             // copy CHD
                             let sourceChd = path.join(romset, game);
                             if (fs.existsSync(sourceChd)) {
+                                this.emit('progress.add', fileCsv.length, index + 1, game + ' CHD');
+
                                 fs.copy(sourceChd, path.join(selection, game), { overwrite }, (err) => {
                                     if (err) throw err;
                                     if (mustCancel) { resolve(); return; }
