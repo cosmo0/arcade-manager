@@ -220,6 +220,11 @@
 
             // bind stop event
             $('#progress .stop button').on('click', (e) => {
+                let btn = $(e.currentTarget);
+                btn.addClass('disabled btn-outline-secondary')
+                    .removeClass('btn-outline-danger')
+                    .prop('disabled', true);
+
                 roms.cancel();
                 overlays.cancel();
             });
@@ -233,15 +238,13 @@
          */
          function progressInit(title, canCancel) {
             if (typeof canCancel === 'undefined') { canCancel = false; }
-
             let p = $('#progress');
+
             // display modal
             p.modal({ 'backdrop': 'static', 'keyboard': false });
 
-            // re-hide some items
+            // hides/displays some items
             p.find('.modal-footer, .msg, .log').addClass('d-none');
-
-            // re-display some items
             p.find('.progress, .details').removeClass('d-none');
 
             // display or hide cancel button
@@ -258,6 +261,10 @@
             // reset styles
             p.find('.progress .progress-bar').width('0%');
             p.find('.log').removeClass('alert-danger').addClass('alert-info');
+            $('#progress .stop button')
+                .prop('disabled', false)
+                .removeClass('disabled btn-outline-secondary')
+                .addClass('btn-outline-danger');
         }
 
         /**
