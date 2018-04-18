@@ -127,7 +127,6 @@ module.exports = class Overlays extends events {
                             fs.ensureDirSync(path.dirname(localromcfg));
                             fs.writeFile(localromcfg, romcfgContent, { flag }, (err) => {
                                 if (err && err.code !== 'EEXIST') throw err;
-                                nbOverlays++;
                                 if (mustCancel) { resolve(); return; }
 
                                 // parse rom cfg to get overlay cfg
@@ -155,7 +154,7 @@ module.exports = class Overlays extends events {
                                             if (mustCancel) { resolve(); return; }
                                             fs.writeFile(localoverlayimg, imageContent, { flag }, (err) => {
                                                 if (err && err.code !== 'EEXIST') throw err;
-                                                
+                                                nbOverlays++;
                                                 resolve();
                                             });
                                         });
