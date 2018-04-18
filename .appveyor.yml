@@ -12,6 +12,8 @@ cache:
 install:
   # install node
   - ps: Install-Product node $env:nodejs_version
+  # update package version in json
+  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
   # install node modules
   - npm install
   - npm prune
