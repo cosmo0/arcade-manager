@@ -25,12 +25,10 @@ install:
 script:
 - npm run dist -- --mac --x64
 
-before_deploy:
-  - export RELEASE_FILES=$(ls dist/*.{dmg,zip})
-
 deploy:
   skip_cleanup: true
-  file: "${RELEASE_FILES}"
+  file_glob: true
+  file: "dist/RetropieArcadeManager-*.dmg"
   provider: bintray
   user: cosmo0
   key:
