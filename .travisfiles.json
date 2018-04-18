@@ -1,0 +1,21 @@
+{
+    "package": {
+        "name": "retropie-arcade-manager",
+        "repo": "retropie-arcade-manager",
+        "subject": "cosmo0"
+    },
+
+    "version": {
+        "name": "3.0"
+    },
+
+    "files":
+        [
+            {
+                "includePattern": "dist/(RetropieArcadeManager-.*)",
+                "excludePattern": "dist/.*.blockmap$",
+                "uploadPattern": "/$1"
+            }
+        ],
+    "publish": true
+}
