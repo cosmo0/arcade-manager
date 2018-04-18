@@ -26,6 +26,7 @@ module.exports = class Roms extends events {
      */
     add (file, romset, selection, overwrite) {
         mustCancel = false;
+        let romsCopied = 0;
 
         this.emit('start.add');
 
@@ -55,6 +56,7 @@ module.exports = class Roms extends events {
                         // copy rom
                         fs.copy(sourceRom, destRom, { overwrite }, (err) => {
                             if (err) throw err;
+                            romsCopied++;
                             if (mustCancel) { resolve(); return; }
     
                             // copy CHD
@@ -82,6 +84,7 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
+                this.emit('log', 'Copied ' + romsCopied + ' roms');
                 this.emit('end.add', mustCancel, selection);
             });
         });
@@ -96,6 +99,7 @@ module.exports = class Roms extends events {
      */
     remove (file, selection) {
         mustCancel = false;
+        let romsRemoved = 0;
 
         this.emit('start.remove');
 
@@ -119,6 +123,7 @@ module.exports = class Roms extends events {
                         if (romExists) {
                             // delete rom
                             fs.remove(rom, (err) => {
+                                romsRemoved++;
                                 console.log('%s deleted', rom);
                                 resolve();
                             });
@@ -130,6 +135,7 @@ module.exports = class Roms extends events {
             }, Promise.resolve());
 
             requests.then(() => {
+                this.emit('log', 'Deleted ' + romsRemoved + ' roms');
                 this.emit('end.remove', mustCancel, selection);
             });
         });
@@ -144,6 +150,7 @@ module.exports = class Roms extends events {
      */
     keep (file, selection) {
         mustCancel = false;
+        let romsRemoved = 0;
 
         this.emit('start.keep');
 
@@ -172,6 +179,7 @@ module.exports = class Roms extends events {
                         if (typeof csvItem === 'undefined') {
                             console.log('remove %s', zip);
                             fs.remove(path.join(selection, zip), (err) => {
+                                romsRemoved++;
                                 resolve();
                             });
                         } else {
@@ -182,6 +190,7 @@ module.exports = class Roms extends events {
                 }, Promise.resolve());
 
                 requests.then(() => {
+                    this.emit('log', 'Deleted ' + romsRemoved + ' roms');
                     this.emit('end.keep', mustCancel, selection);
                 });
             });

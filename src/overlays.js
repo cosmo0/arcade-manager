@@ -77,6 +77,7 @@ module.exports = class Overlays extends events {
      */
     downloadPack (romsFolder, configFolder, repository, roms, overlays, common, overwrite) {
         mustCancel = false;
+        let nbOverlays = 0;
 
         const flag = overwrite ? 'w' : 'wx';
         this.emit('start.download');
@@ -126,6 +127,7 @@ module.exports = class Overlays extends events {
                             fs.ensureDirSync(path.dirname(localromcfg));
                             fs.writeFile(localromcfg, romcfgContent, { flag }, (err) => {
                                 if (err && err.code !== 'EEXIST') throw err;
+                                nbOverlays++;
                                 if (mustCancel) { resolve(); return; }
 
                                 // parse rom cfg to get overlay cfg
@@ -171,6 +173,7 @@ module.exports = class Overlays extends events {
             installCommon
             .then(() => requests)
             .then(() => {
+                this.emit('log', 'Installed ' + nbOverlays + ' overlays');
                 this.emit('end.download', mustCancel);
             });
         });
