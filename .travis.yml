@@ -6,25 +6,34 @@ os:
 dist: trusty
 osx_image: xcode9.3
 sudo: required
+
 cache:
   directories:
   - node_modules
 env:
   matrix:
   - NODE_INSTALLER=npm
+
 branches:
   only:
   - master
   - "/^v\\d+\\.\\d+\\.\\d+/"
+
 install:
 - npm install
 - npm prune
 script:
 - npm run dist -- --mac --x64
+
+before_deploy:
+  - export RELEASE_DMG=$(ls dist/*.dmg)
+  - export RELEASE_ZIP=$(ls dist/*.zip)
+
 deploy:
   skip_cleanup: true
-  file_glob: true
-  file: "dist/RetropieArcadeManager-*"
+  file:
+    - "${RELEASE_DMG}"
+    - "${RELEASE_ZIP}"
   provider: bintray
   user: cosmo0
   key:
