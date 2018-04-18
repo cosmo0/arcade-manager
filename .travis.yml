@@ -26,14 +26,11 @@ script:
 - npm run dist -- --mac --x64
 
 before_deploy:
-  - export RELEASE_DMG=$(ls dist/*.dmg)
-  - export RELEASE_ZIP=$(ls dist/*.zip)
+  - export RELEASE_FILES=$(ls dist/*.{dmg,zip})
 
 deploy:
   skip_cleanup: true
-  file:
-    - "${RELEASE_DMG}"
-    - "${RELEASE_ZIP}"
+  file: "${RELEASE_FILES}"
   provider: bintray
   user: cosmo0
   key:
