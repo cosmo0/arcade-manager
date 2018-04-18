@@ -15,9 +15,19 @@ env:
 branches:
   only:
   - master
-  - /^v\d+\.\d+\.\d+/
+  - "/^v\\d+\\.\\d+\\.\\d+/"
 install:
 - npm install
 - npm prune
 script:
 - npm run dist -- --mac --x64
+deploy:
+  skip_cleanup: true
+  file_glob: true
+  file:
+    - "dist/RetropieArcadeManager-*.dmg"
+    - "dist/RetropieArcadeManager-*.zip"
+  provider: bintray
+  user: cosmo0
+  key:
+    secure: uCFxzz7TFvKZRN/rpW3HHirtiUOPLqisTKERW+xBuOsEOY9ITEPa95U3cU6Q8hPEK3o5PVT72E0Umbg2/NizQJwng2PfsXeuueYZe1zia/EES28C9uyO1X+MOg3p1WkUQ1gLk1nHGKQPhByk/ahHgZYy8DSAgLyjgnz9HBifo/YyzaPq/Q+oLgyjiQ/XwaxAz0UmwUbvrJwJRj91FPHWoQhJY0eKlMF0CabJU5u7YaD73/A4LqnQQLV3w0ARLorhla5tCoIyHNfDkr8tbVj7+oX7445B2ER9VA4Js1xXhJsNot/jQhtXMdLSLbbqXZGp51oxMO2Kx815x9MFI6LIqADMycrdXIu625Ny7/YfKMqGhX+d38mMgqM/FdRlvrEkBCrI+jxWoVjSaybVm74bycRNee86CJK0TWGv+IMs7LcVLuFGh4opxqz5hqYL8YWaelYYIGISiDWK0wOA0heNcXM6o/9N7SKIETvzD+q23XxHavlrvfMf1/NEPeXP0imYqp7WBBg9qbtkX1lOOb1BOH7UMqNwumJ1DgvxnXlwq6UXP+MZzM71VgVy4cy7K7lFwcGZ94kd1ZVwdzOsNiZduDjj/yXtvR9qtOmRYhFC3bJEiqVT7mYuoczhSkn/qYehp3BV8CPKJHwb7PKLUNsAh6sq8/BVHb6T9swuLSFKSfA=

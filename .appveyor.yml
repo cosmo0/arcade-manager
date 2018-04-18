@@ -34,3 +34,15 @@ artifacts:
 
 # Don't actually build.
 build: off
+
+deploy:
+- provider: BinTray
+  username: cosmo0
+  api_key:
+    secure: NWundKYe7riNRrADb64QuUkdctcNJIFT3iVjTu1Yuh/pdPpmaIi8BO35II0ECo00
+  subject: cosmo0
+  repo: retropie-arcade-manager
+  package: retropie-arcade-manager
+  publish: true
+  override: true
+  explode: false
