@@ -24,9 +24,7 @@ script:
 deploy:
   skip_cleanup: true
   file_glob: true
-  file:
-    - "dist/RetropieArcadeManager-*.dmg"
-    - "dist/RetropieArcadeManager-*.zip"
+  file: "dist/RetropieArcadeManager-*"
   provider: bintray
   user: cosmo0
   key:
