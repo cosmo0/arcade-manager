@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "electron": "^1.8.4",
-    "electron-builder": "^20.8.1"
+    "electron-builder": "^20.9.2"
   },
   "build": {
     "appId": "com.cosmo0.retropie-arcade-manager",
