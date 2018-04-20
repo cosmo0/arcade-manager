@@ -24,7 +24,7 @@ install:
 - npm install
 - npm prune
 script:
-- npm run dist -- --mac --x64
+- npm run dist -- --mac --win --linux --x64
 
 deploy:
   provider: bintray
