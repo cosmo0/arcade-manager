@@ -5,14 +5,15 @@
         "subject": "cosmo0"
     },
 
-    "version": {
-        "name": "3.0"
-    },
-
     "files":
         [
             {
-                "includePattern": "dist/(RetropieArcadeManager-.*)",
+                "includePattern": "dist/(RetropieArcadeManager.*)",
+                "excludePattern": "dist/.*.blockmap$",
+                "uploadPattern": "/$1"
+            },
+            {
+                "includePattern": "dist/(retropie-arcade-manager.*)",
                 "excludePattern": "dist/.*.blockmap$",
                 "uploadPattern": "/$1"
             }
