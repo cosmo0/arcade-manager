@@ -65,7 +65,8 @@
             "repository": "cosmo0/retropie-overlays-arcade-realistic",
             "roms": "overlays/roms",
             "overlays": { "src": "overlays/configs", "dest": "all/retroarch/overlay/arcade-realistic" },
-            "common": { "src": "overlays/configs/common", "dest": "all/retroarch/overlay/arcade-realistic/common" }
+            "common": { "src": "overlays/configs/common", "dest": "all/retroarch/overlay/arcade-realistic/common" },
+            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
         },
         {
             "name": "Artworks",
@@ -73,7 +74,8 @@
             "image": "img/overlays-artwork.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-artwork",
             "roms": "overlays/roms",
-            "overlays": { "src": "overlays/configs", "dest": "all/retroarch/overlay/arcade-artwork" }
+            "overlays": { "src": "overlays/configs", "dest": "all/retroarch/overlay/arcade-artwork" },
+            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
         }
     ]
 }
