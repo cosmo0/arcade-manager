@@ -5,7 +5,10 @@
     </ol>
 </nav>
 
-<h2>Download and install an overlays pack</h2>
+<h2>
+    Download and install an overlays pack
+    <a href="pages/help/shares.html" class="navmenu">How to access my Retropie shares</a>
+</h2>
 
 <p>
     Select the overlays pack you want, and the path to you roms folder. This will
@@ -99,14 +102,15 @@ $(() => {
             pack = $('#packs .active'),
             overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
         
+        // get pack data
+        let packInfos = pack.data('pack');
+
         // check inputs and paths
         if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
         if (romsFolder === '') { window.alert('Please fill the path to the roms folder'); return; }
         if (!overlays.checkAccess(romsFolder, true)) { window.alert('The specified roms folder cannot be written to.'); return; }
+        if (!overlays.checkAccess(packInfos.overlays.dest, true)) { window.alert('The specified configs share cannot be written to.'); return; }
 
-        // get pack data
-        let packInfos = pack.data('pack');
-        
         // download and install pack
         overlays.downloadPack(romsFolder, configFolder, packInfos.repository, packInfos.roms, packInfos.overlays, packInfos.common, overwrite);
     });

@@ -6,9 +6,10 @@ a.navmenu:hover {
 * Home page menu
 */
 
-.maintitle a {
+h1 a, h2 a, h3 a {
     font-size: 10px;
     vertical-align: middle;
+    margin-left: 1rem;
 }
 
 .mainmenu a.navmenu .card {
