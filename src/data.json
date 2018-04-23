@@ -64,9 +64,21 @@
             "image": "img/overlays-realistic.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-realistic",
             "roms": "overlays/roms",
-            "overlays": { "src": "overlays/configs", "dest": "all/retroarch/overlay/arcade-realistic" },
-            "common": { "src": "overlays/configs/common", "dest": "all/retroarch/overlay/arcade-realistic/common" },
-            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
+            "overlays": {
+                "src": "overlays/configs",
+                "dest": {
+                    "retropie": "all/retroarch/overlay/arcade-realistic",
+                    "recalbox": "system/configs/retroarch/overlays/arcade-realistic"
+                }
+            },
+            "common": {
+                "src": "overlays/configs/common",
+                "dest": {
+                    "retropie": "all/retroarch/overlay/arcade-realistic/common",
+                    "recalbox": "system/configs/retroarch/overlays/arcade-realistic/common"
+                }
+            },
+            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/shares/system/configs/retroarch/overlays/" }
         },
         {
             "name": "Artworks",
@@ -74,8 +86,36 @@
             "image": "img/overlays-artwork.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-artwork",
             "roms": "overlays/roms",
-            "overlays": { "src": "overlays/configs", "dest": "all/retroarch/overlay/arcade-artwork" },
-            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
+            "overlays": {
+                "src": "overlays/configs",
+                "dest": {
+                    "retropie": "all/retroarch/overlay/arcade-artwork",
+                    "recalbox": "system/configs/retroarch/overlays/arcade-artwork"
+                }
+            },
+            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/shares/system/configs/retroarch/overlays/" }
         }
-    ]
+    ],
+    "defaults": {
+        "roms": {
+            "retropie": {
+                "win": "\\\\retropie\\roms\\arcade\\",
+                "mac": "/Volumes/roms/arcade/"
+            },
+            "recalbox": {
+                "win": "\\\\recalbox\\shares\\",
+                "mac": "/Volumes/shares/"
+            }
+        },
+        "configs": {
+            "retropie": {
+                "win": "\\\\retropie\\configs\\",
+                "mac": "/Volumes/configs/"
+            },
+            "recalbox": {
+                "win": "\\\\recalbox\\shares\\",
+                "mac": "/Volumes/shares/"
+            }
+        }
+    }
 }
