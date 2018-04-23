@@ -108,8 +108,6 @@ $(() => {
         // check inputs and paths
         if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
         if (romsFolder === '') { window.alert('Please fill the path to the roms folder'); return; }
-        if (!overlays.checkAccess(romsFolder, true)) { window.alert('The specified roms folder cannot be written to.'); return; }
-        if (!overlays.checkAccess(packInfos.overlays.dest, true)) { window.alert('The specified configs share cannot be written to.'); return; }
 
         // download and install pack
         overlays.downloadPack(romsFolder, configFolder, packInfos.repository, packInfos.roms, packInfos.overlays, packInfos.common, overwrite);
