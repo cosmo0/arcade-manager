@@ -1,6 +1,6 @@
 # Arcade manager for Retropie
 
-[![Windows/Linux Build status](https://ci.appveyor.com/api/projects/status/npgiar9ncapx2al4?svg=true)](https://ci.appveyor.com/project/cosmo0/retropie-arcade-manager) [![Download](https://api.bintray.com/packages/cosmo0/retropie-arcade-manager/retropie-arcade-manager/images/download.svg)](https://bintray.com/cosmo0/retropie-arcade-manager/retropie-arcade-manager/_latestVersion)
+[![Windows/Linux Build status](https://ci.appveyor.com/api/projects/status/npgiar9ncapx2al4?svg=true)](https://ci.appveyor.com/project/cosmo0/retropie-arcade-manager)
 
 This repository provides a rom management tool, specifically designed for use with Retropie.  
 It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
