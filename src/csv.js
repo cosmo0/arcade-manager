@@ -350,7 +350,7 @@ module.exports = class Csv extends events {
 
                     // write the file and resolve
                     fs.ensureFileSync(path.join(target, fileName));
-                    fs.writeFile(path.join(target, fileName), result, { flag: 'wx' }, (err) => {
+                    fs.writeFile(path.join(target, fileName), result, (err) => {
                         if (err) throw err;
 
                         this.emit('log', 'Result file saved as ' + fileName);
