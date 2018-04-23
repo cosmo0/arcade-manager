@@ -2,15 +2,15 @@ a.navmenu:hover {
     text-decoration: none;
 }
 
-/*
-* Home page menu
-*/
-
 h1 a, h2 a, h3 a {
     font-size: 10px;
     vertical-align: middle;
     margin-left: 1rem;
 }
+
+/*
+* Home page menu
+*/
 
 .mainmenu a.navmenu .card {
     transition: box-shadow 0.2s ease-in-out;
@@ -29,6 +29,16 @@ h1 a, h2 a, h3 a {
 .mainmenu a.navmenu:hover .card .card-footer {
     color: #ffffff;
     background-color: #007bff;
+}
+
+.mainmenu a.disabled:hover {
+    text-decoration: none;
+}
+.mainmenu a.disabled img {
+    opacity: 0.5;
+}
+.mainmenu a.disabled .card-footer {
+    color: #6c757d;
 }
 
 /*

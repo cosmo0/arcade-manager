@@ -15,11 +15,11 @@
 
 <div class="row mainmenu">
     <div class="col-4">
-       <a href="pages/overlays/index.html" class="navmenu">
+       <a href="pages/overlays/index.html" class="navmenu overlays">
            <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/overlays.png">
                 <div class="card-footer">
-                    Install overlays (Retropie only)
+                    Install overlays
                 </div>
             </div>
         </a>
@@ -64,3 +64,19 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(() => {
+        if (settings.get('os') === 'none') {
+            // disable overlays entry if no OS has been selected
+            $('.mainmenu .overlays')
+                .prop('disabled', true)
+                .addClass('disabled')
+                .removeClass('navmenu')
+                .attr('href', '#')
+                .off('click')
+                .find('.card')
+                .removeClass('border-primary');
+        }
+    });
+</script>
