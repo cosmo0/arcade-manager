@@ -53,6 +53,12 @@
 </p>
 
 <script>
+$(() => {
+    if (settings.has('os')) {
+        $('#fileRomSelection').val(data.defaults.roms[settings.get('os')][process.platform]);
+    }
+});
+
 $('#buttonOk').on('click', () => {
     // get paths from file inputs
     let main = $('#fileMainCsv').val(),

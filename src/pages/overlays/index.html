@@ -67,6 +67,12 @@ $(() => {
     let colsize = 12 / data.overlays.length;
     if (colsize < 3) { colsize = 3; }
 
+    // fill paths with defaults
+    if (settings.has('os')) {
+        $('#romsFolder').val(data.defaults.roms[settings.get('os')][process.platform]);
+        $('#configFolder').val(data.defaults.configs[settings.get('os')][process.platform]);
+    }
+
     // list overlays packs
     for (let ovl of data.overlays) {
         let li = $(template);

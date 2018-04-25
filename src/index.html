@@ -41,6 +41,9 @@
         const roms = new Roms();
         const overlays = new Overlays();
         const downloader = new Downloader();
+
+        // read data file
+        const data = require('./data.json');
     </script>
 
     <div class="container mt-3">
@@ -119,10 +122,11 @@
                 // build default open path
                 let existingPath = input.val();
                 if (existingPath && existingPath != '') {
-                    existingPath = path.dirname(existingPath);
-                    if (!fs.existsSync(existingPath)) {
-                        existingPath = '';
-                    }
+                    // point to folder if path is a file
+                    if (fs.statSync(existingPath).isFile()) { existingPath = path.dirname(existingPath); }
+                    
+                    // let the system decide if the path does not exist
+                    if (!fs.existsSync(existingPath)) { existingPath = ''; }
                 }
 
                 if (btn.hasClass('folder')) {

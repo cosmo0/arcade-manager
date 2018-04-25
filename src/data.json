@@ -99,22 +99,22 @@
     "defaults": {
         "roms": {
             "retropie": {
-                "win": "\\\\retropie\\roms\\arcade\\",
-                "mac": "/Volumes/roms/arcade/"
+                "win32": "\\\\retropie\\roms\\arcade\\",
+                "darwin": "/Volumes/roms/arcade/"
             },
             "recalbox": {
-                "win": "\\\\recalbox\\shares\\",
-                "mac": "/Volumes/shares/"
+                "win32": "\\\\recalbox\\shares\\",
+                "darwin": "/Volumes/shares/"
             }
         },
         "configs": {
             "retropie": {
-                "win": "\\\\retropie\\configs\\",
-                "mac": "/Volumes/configs/"
+                "win32": "\\\\retropie\\configs\\",
+                "darwin": "/Volumes/configs/"
             },
             "recalbox": {
-                "win": "\\\\recalbox\\shares\\",
-                "mac": "/Volumes/shares/"
+                "win32": "\\\\recalbox\\shares\\",
+                "darwin": "/Volumes/shares/"
             }
         }
     }
