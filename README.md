@@ -1,8 +1,8 @@
-# Arcade manager for Retropie
+# Arcade manager for Retropie & Recalbox
 
-[![Windows/Linux Build status](https://ci.appveyor.com/api/projects/status/npgiar9ncapx2al4?svg=true)](https://ci.appveyor.com/project/cosmo0/retropie-arcade-manager)
+[![Windows/Linux Build status](https://ci.appveyor.com/api/projects/status/npgiar9ncapx2al4?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager)
 
-This repository provides a rom management tool, specifically designed for use with Retropie.  
+This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox.  
 It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
 It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
 
@@ -31,7 +31,7 @@ The tool provides the following abilities:
 
 ## Screenshots
 
-![Home](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-home.png)
-![Install overlays](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-overlay-download.png)
-![Download CSV](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-csv-download.png)
-![Copy roms](https://raw.githubusercontent.com/cosmo0/retropie-arcade-manager/docs/images/screen-rom-copy.png)
+![Home](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-home.png)
+![Install overlays](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-overlay-download.png)
+![Download CSV](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-csv-download.png)
+![Copy roms](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-rom-copy.png)

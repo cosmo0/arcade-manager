@@ -1,7 +1,7 @@
 {
-  "name": "retropie-arcade-manager",
+  "name": "arcade-manager",
   "version": "4.0.0",
-  "description": "Arcade games manager to be used with Retropie",
+  "description": "Arcade games manager to be used with Retropie and Recalbox",
   "main": "src/index.js",
   "scripts": {
     "start": "electron .",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cosmo0/retropie-arcade-manager.git"
+    "url": "git+https://github.com/cosmo0/arcade-manager.git"
   },
   "author": "cosmo0",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cosmo0/retropie-arcade-manager/issues"
+    "url": "https://github.com/cosmo0/arcade-manager/issues"
   },
-  "homepage": "https://github.com/cosmo0/retropie-arcade-manager",
+  "homepage": "https://github.com/cosmo0/arcade-manager",
   "dependencies": {
     "csv": "^2.0.0",
     "electron-settings": "^3.1.4",
@@ -32,8 +32,8 @@
     "electron-builder": "^20.10.0"
   },
   "build": {
-    "appId": "com.cosmo0.retropie-arcade-manager",
-    "productName": "RetropieArcadeManager",
+    "appId": "com.cosmo0.arcade-manager",
+    "productName": "ArcadeManager",
     "win": {
       "target": [
         {

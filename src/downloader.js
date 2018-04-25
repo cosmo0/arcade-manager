@@ -82,7 +82,7 @@ module.exports = class Downloader extends events {
     listFiles (repository, folder, callback) {
         let url = '/repos/' + repository + '/contents/' + folder;
         console.log('Listing files in %s / %s', repository, folder);
-        https.get({ protocol, 'host': api, 'path': url, 'headers': { 'User-Agent': 'retropie-arcade-manager' } }, (res) => {
+        https.get({ protocol, 'host': api, 'path': url, 'headers': { 'User-Agent': 'arcade-manager' } }, (res) => {
             res.setEncoding('utf8');
             let rawData = '';
             res.on('data', (chunk) => { rawData += chunk; });

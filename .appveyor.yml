@@ -26,14 +26,14 @@ test_script:
   - npm --version
 
 # artifacts:
-#   - path: dist\RetropieArcadeManager Setup*.exe
-#     name: Retropie Arcade Manager Windows (Setup)
-#   - path: dist\RetropieArcadeManager-*-win.zip
-#     name: Retropie Arcade Manager Windows (Standalone)
-#   - path: dist\retropie-arcade-manager*.snap
-#     name: Retropie Arcade Manager Linux (Snap)
-#   - path: dist\retropie-arcade-manager*.AppImage
-#     name: Retropie Arcade Manager Linux (AppImage)
+#   - path: dist\ArcadeManager Setup*.exe
+#     name: Arcade Manager Windows (Setup)
+#   - path: dist\ArcadeManager-*-win.zip
+#     name: Arcade Manager Windows (Standalone)
+#   - path: dist\arcade-manager*.snap
+#     name: Arcade Manager Linux (Snap)
+#   - path: dist\arcade-manager*.AppImage
+#     name: Arcade Manager Linux (AppImage)
 
 # Don't actually build.
 build: off
@@ -44,8 +44,8 @@ build: off
 #   api_key:
 #     secure: NWundKYe7riNRrADb64QuUkdctcNJIFT3iVjTu1Yuh/pdPpmaIi8BO35II0ECo00
 #   subject: cosmo0
-#   repo: retropie-arcade-manager
-#   package: retropie-arcade-manager
+#   repo: arcade-manager
+#   package: arcade-manager
 #   publish: true
 #   override: true
 #   explode: false
