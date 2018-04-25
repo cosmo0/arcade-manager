@@ -116,7 +116,7 @@ $(() => {
         if (romsFolder === '') { window.alert('Please fill the path to the roms folder'); return; }
 
         // download and install pack
-        overlays.downloadPack(romsFolder, configFolder, packInfos.repository, packInfos.roms, packInfos.overlays, packInfos.common, overwrite);
+        overlays.downloadPack(romsFolder, configFolder, packInfos, overwrite);
     });
 });
 </script>
