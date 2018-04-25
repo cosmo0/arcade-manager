@@ -78,7 +78,7 @@
                     "recalbox": "system/configs/retroarch/overlays/arcade-realistic/common"
                 }
             },
-            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/shares/system/configs/retroarch/overlays/" }
+            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
         },
         {
             "name": "Artworks",
@@ -93,7 +93,7 @@
                     "recalbox": "system/configs/retroarch/overlays/arcade-artwork"
                 }
             },
-            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/shares/system/configs/retroarch/overlays/" }
+            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
         }
     ],
     "defaults": {
@@ -103,8 +103,8 @@
                 "darwin": "/Volumes/roms/arcade/"
             },
             "recalbox": {
-                "win32": "\\\\recalbox\\shares\\roms\\arcade\\",
-                "darwin": "/Volumes/shares/roms/arcade/"
+                "win32": "\\\\recalbox\\share\\roms\\arcade\\",
+                "darwin": "/Volumes/share/roms/arcade/"
             }
         },
         "configs": {
@@ -113,8 +113,8 @@
                 "darwin": "/Volumes/configs/"
             },
             "recalbox": {
-                "win32": "\\\\recalbox\\shares\\",
-                "darwin": "/Volumes/shares/"
+                "win32": "\\\\recalbox\\share\\",
+                "darwin": "/Volumes/share/"
             }
         }
     }
