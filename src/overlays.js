@@ -76,7 +76,7 @@ module.exports = class Overlays extends events {
     fixPath(base, content) {
         let fromOs = settings.get('os') === 'retropie' ? 'recalbox' : 'retropie';
         let toOs = settings.get('os');
-        return content.replace(base[fromOs], base[toOs]);
+        return content.replace(new RegExp(base[fromOs], 'gm'), base[toOs]);
     }
 
     /**
