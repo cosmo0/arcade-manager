@@ -11,48 +11,33 @@
 </h2>
 
 <p>
-    Select the overlays pack you want, and the path to you roms folder. This will
-    download and install only the files you need for the games you have.<br>
-    Note that it will only work with Libretro emulators (lr-mame and lr-fba), not AdvanceMAME or MAME4All.
+    Select the overlays pack you want, and the arcade roms folder(s) to install overlays in.
+    This will download and install only the files you need.<br>
+    Note that it will only work with Libretro emulators (mame-libretro and fba-libretro),
+    not AdvanceMAME, MAME4All, PiMAME, FBA2x, PiFBA, etc.
 </p>
 
-<div class="row mb-4" id="packs"></div>
-
-<!-- path to roms -->
-<div class="input-group mb-0">
-    <div class="input-group-prepend">
-        <span class="input-group-text">Roms folder</span>
+<div class="row">
+    <div class="col-6">
+        <h3>Overlay pack</h3>
+        <div id="packs"></div>
     </div>
-    <input type="text" class="form-control" id="romsFolder">
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse folder" type="button" data-input="romsFolder">Browse</button>
+    <div class="col-6">
+        <h3>Roms folders</h3>
+        <div id="romFoldersContainer"></div>
+        <hr>
+        <div class="mt-3">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
+                <label class="form-check-label" for="overwriteYes">Overwrite existing files</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
+                <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
+            </div>
+        </div>
+        <div id="configFolderContainer"></div>
     </div>
-</div>
-<p class="mt-0 mb-3">
-    <small class="form-text text-muted">The folder containing the roms (ex: \\retropie\roms\mame or \\recalbox\share\roms\mame)</small>
-</p>
-
-<!-- path to config -->
-<div class="input-group mb-0">
-    <div class="input-group-prepend">
-        <span class="input-group-text">Config</span>
-    </div>
-    <input type="text" class="form-control" id="configFolder">
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse folder" type="button" data-input="configFolder">Browse</button>
-    </div>
-</div>
-<p class="mt-0 mb-3">
-    <small class="form-text text-muted">The path to the configs share (ex: \\retropie\configs or \\recalbox\share)</small>
-</p>
-
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
-    <label class="form-check-label" for="overwriteYes">Overwrite existing files</label>
-</div>
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
-    <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
 </div>
 
 <p class="mt-3">
@@ -61,24 +46,42 @@
 
 <script>
 $(() => {
-    let data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data.json'), { encoding: 'utf8' }));
-    let template = $('#csvItemTemplate').html();
+    const os = settings.get('os');
+    let configShare = data.defaults.configs[os][process.platform];
 
-    let colsize = 12 / data.overlays.length;
-    if (colsize < 3) { colsize = 3; }
+    // check that the configs share can be accessed
+    if (!configShare || !fs.existsSync(configShare)) {
+        configShare = '';
+        $('#configFolderContainer').html($('#configInputTemplate').html());
+        $('#configFolder').attr('placeholder', 'Config share (ex: ' + data.defaults.configs[os][process.platform] + ')');
+        bindBrowse();
+        bindNav();
+    }
 
-    // fill paths with defaults
-    if (settings.has('os')) {
-        $('#romsFolder').val(data.defaults.roms[settings.get('os')][process.platform]);
-        $('#configFolder').val(data.defaults.configs[settings.get('os')][process.platform]);
+    // list roms folders
+    let folderTemplate = $('#folderTemplate').html();
+    if (data.defaults.roms[os][process.platform] && fs.existsSync(data.defaults.roms[os][process.platform])) {
+        for (let folder of data.defaults.romFolders[os]) {
+            if (fs.existsSync(path.join(data.defaults.roms[os][process.platform]), folder)) {
+                let li = $(folderTemplate);
+
+                li.find('.form-check-input').val(folder).attr('id', 'romFolder' + folder);
+                li.find('.form-check-label').text(folder).attr('for', 'romFolder' + folder);
+
+                $('#romFoldersContainer').append(li);
+            }
+        }
+    } else {
+        $('#romFoldersContainer').html($('#romInputTemplate').html());
+        $('#romFolder').attr('placeholder', 'Roms folder (ex: ' + data.defaults.roms[os][process.platform] + ')');
+        bindBrowse();
+        bindNav();
     }
 
     // list overlays packs
+    let ovlTemplate = $('#overlayTemplate').html();
     for (let ovl of data.overlays) {
-        let li = $(template);
-
-        // layout
-        li.addClass('col-' + colsize);
+        let li = $(ovlTemplate);
 
         // build pack infos
         li.find('.name').text(ovl.name);
@@ -103,31 +106,74 @@ $(() => {
 
     // Handle click on validation button
     $('#buttonInstall').on('click', (e) => {
-        let romsFolder = $('#romsFolder').val(),
-            configFolder = $('#configFolder').val(),
-            pack = $('#packs .active'),
-            overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
+        let pack = $('#packs .active'),
+            overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false,
+            romFolders = $('input[name=romFolder]:checked').map((idx, item) => $(item).val()).get();
         
-        // get pack data
-        let packInfos = pack.data('pack');
+        // rom folder is not found, maybe it's the text input
+        if (romFolders.length === 0 && $('#romFolder').length > 0 && $('#romFolder').val() !== '') {
+            romFolders = [ $('#romFolder').val() ];
+        }
+
+        // config share is empty, maybe it's the text input
+        if (configShare === '') {
+            configShare = $('#configFolder').val();
+        }
 
         // check inputs and paths
         if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
-        if (romsFolder === '') { window.alert('Please fill the path to the roms folder'); return; }
-
+        if (romFolders.length === 0) { window.alert('Please select the roms folder'); return; }
+        if (!configShare || configShare === '') { window.alert('Please fill the path to the config share'); return; }
+        
         // download and install pack
-        overlays.downloadPack(romsFolder, configFolder, packInfos, overwrite);
+        overlays.downloadPack(romFolders, configShare, pack.data('pack'), overwrite);
     });
 });
 </script>
 
-<script type="text/template" id="csvItemTemplate">
+<script type="text/template" id="overlayTemplate">
     <div>
-        <a href="#" class="border rounded d-block p-3 text-dark">
+        <a href="#" class="border rounded d-block p-3 mb-3 text-dark">
             <input type="radio" class="float-left mr-3 mt-4">
             <img src="" class="float-left mr-3">
             <h5 class="mb-1 name"></h5>
             <p class="mb-0 desc"></p>
         </a>
     </div>
+</script>
+
+<script type="text/template" id="folderTemplate">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="romFolder" id="" value="" checked>
+        <label class="form-check-label" for=""></label>
+    </div>
+</script>
+
+<script type="text/template" id="romInputTemplate">
+    <div class="input-group mb-0">
+        <input type="text" class="form-control" id="romFolder">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary browse folder" type="button" data-input="romFolder">Browse</button>
+        </div>
+    </div>
+    <p class="mt-0 mb-3">
+        <small class="form-text text-muted">
+            Unable to automatically list the rom folders. Please select the path to your roms.
+        </small>
+    </p>
+</script>
+
+<script type="text/template" id="configInputTemplate">
+    <hr>
+    <div class="input-group mb-0">
+        <input type="text" class="form-control" id="configFolder" placeholder="">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary browse folder" type="button" data-input="configFolder">Browse</button>
+        </div>
+    </div>
+    <p class="mt-0 mb-3">
+        <small class="form-text text-muted">
+            Unable to connect to the config share. Please select the path to the share.
+        </small>
+    </p>
 </script>

@@ -91,7 +91,9 @@
          * Bind menu navigation
          */
         function bindNav() {
-            content.find('.navmenu').on('click', (e) => {
+            content.find('.navmenu')
+            .off('click')
+            .on('click', (e) => {
                 let link = $(e.currentTarget);
                 content.load(link.attr('href'), () => {
                     bindNav();
@@ -103,7 +105,9 @@
                 return false;
             });
 
-            content.find('.blank').on('click', (e) => {
+            content.find('.blank')
+            .off('click')
+            .on('click', (e) => {
                 let link = $(e.currentTarget);
                 shell.openExternal(link.attr('href'));
                 e.preventDefault();
@@ -115,7 +119,9 @@
          */
         function bindBrowse() {
             // target file is new so default file browse cannot be used
-            $('.browse').on('click', (e) => {
+            $('.browse')
+            .off('click')
+            .on('click', (e) => {
                 let btn = $(e.target);
                 let input = $('#' + btn.data('input'));
                 

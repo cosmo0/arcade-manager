@@ -82,12 +82,11 @@ module.exports = class Overlays extends events {
     /**
      * Downloads and installs an overlay pack
      * 
-     * @param {string} romsFolder The path to the roms (ex: \\retropie\roms)
-     * @param {string} configFolder The path to the Retropie config (ex: \\retropie\configs)
+     * @param {array} romFolders The rom folders to install the overlays for
      * @param {object} packInfos The chosen pack informations
      * @param {bool} overwrite Whether to overwrite existing files
      */
-    downloadPack (romsFolder, configFolder, packInfos, overwrite) {
+    downloadPack (romFolders, packInfos, overwrite) {
         mustCancel = false;
         let nbOverlays = 0;
 
@@ -99,8 +98,8 @@ module.exports = class Overlays extends events {
 
         const flag = overwrite ? 'w' : 'wx';
         const os = settings.get('os');
-        this.emit('start.download');
 
+        this.emit('start.download');
         this.emit('progress.download', 100, 1, 'files list');
 
         // get roms configs list

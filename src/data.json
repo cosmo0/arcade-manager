@@ -63,48 +63,66 @@
             "description": "Realistic-looking overlays, with scratches, reflections, and CRT shader",
             "image": "img/overlays-realistic.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-realistic",
-            "roms": "overlays/roms",
+            "roms": {
+                "src": "overlays/roms",
+                "dest": {
+                    "retropie": "roms",
+                    "recalbox": "configs"
+                }
+            },
             "overlays": {
                 "src": "overlays/configs",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-realistic",
-                    "recalbox": "system/configs/retroarch/overlays/arcade-realistic"
+                    "recalbox": "overlays/fba_libretro/realistic"
                 }
             },
             "common": {
                 "src": "overlays/configs/common",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-realistic/common",
-                    "recalbox": "system/configs/retroarch/overlays/arcade-realistic/common"
+                    "recalbox": "overlays/fba_libretro/overlays/common"
                 }
             },
-            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
+            "base": {
+                "retropie": "/opt/retropie/configs/all/retroarch/overlay/",
+                "recalbox": "/recalbox/share/overlays/fba_libretro/"
+            }
         },
         {
             "name": "Artworks",
             "description": "Artwork-style overlays, as clean as possible, with a large screen area",
             "image": "img/overlays-artwork.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-artwork",
-            "roms": "overlays/roms",
+            "roms": {
+                "src": "overlays/roms",
+                "dest": {
+                    "retropie": "roms",
+                    "recalbox": "configs"
+                }
+            },
             "overlays": {
                 "src": "overlays/configs",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-artwork",
-                    "recalbox": "system/configs/retroarch/overlays/arcade-artwork"
+                    "recalbox": "overlays/fba_libretro/artwork"
                 }
             },
-            "base": { "retropie": "/opt/retropie/configs/all/retroarch/overlay/", "recalbox": "/recalbox/share/system/configs/retroarch/overlays/" }
+            "base": {
+                "retropie": "/opt/retropie/configs/all/retroarch/overlay/",
+                "recalbox": "/recalbox/share/overlays/fba_libretro/"
+            }
         }
     ],
     "defaults": {
         "roms": {
             "retropie": {
-                "win32": "\\\\retropie\\roms\\arcade\\",
-                "darwin": "/Volumes/roms/arcade/"
+                "win32": "\\\\retropie\\roms\\",
+                "darwin": "/Volumes/roms/"
             },
             "recalbox": {
-                "win32": "\\\\recalbox\\share\\roms\\arcade\\",
-                "darwin": "/Volumes/share/roms/arcade/"
+                "win32": "\\\\recalbox\\share\\roms",
+                "darwin": "/Volumes/share/roms/"
             }
         },
         "configs": {
@@ -116,6 +134,10 @@
                 "win32": "\\\\recalbox\\share\\",
                 "darwin": "/Volumes/share/"
             }
+        },
+        "romFolders": {
+            "retropie": [ "arcade", "fba", "mame", "mame-libretro" ],
+            "recalbox": [ "fba", "fba_libretro", "mame" ]
         }
     }
 }
