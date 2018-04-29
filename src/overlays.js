@@ -151,12 +151,13 @@ module.exports = class Overlays extends events {
      * 
      * @param {String} repository The repository
      * @param {String} sourcePath The source path to the rom config to download
+     * @param {String} destPath The path to save the rom configs to
      * @param {Array} folders The list of folders where to download the config to
      * @param {Boolean} overwrite Whether to overwrite existing files
      * @param {Object} base The base paths
      * @returns {Promise} A promise that downloads the rom config
      */
-    downloadRomConfig(repository, sourcePath, folders, overwrite, base) {
+    downloadRomConfig(repository, sourcePath, destPath, folders, overwrite, base) {
         return new Promise((resolveConfig, reject) => {
             let cfg = path.basename(sourcePath);
             let zip = cfg.replace('.cfg', '');
@@ -167,7 +168,7 @@ module.exports = class Overlays extends events {
             .then((romFolders) => {
                 let foldersPromises = folders.reduce((promisechain, folder, index) => {
                     return promisechain.then(() => new Promise((resolve, reject) => {
-                        let localromcfg = path.join(folder, cfg);
+                        let localromcfg = path.join(destPath, cfg);
                         if (fs.existsSync(path.join(folder, zip))) {
                             // corresponding zip file exists
                             console.log('Installing overlay for %s', zip);
@@ -298,11 +299,14 @@ module.exports = class Overlays extends events {
             base = packInfos.base;
 
         const os = settings.get('os');
+        const romCfgFolder = packInfos.roms.dest[os] === 'roms'
+            ? romFolders // save rom cfg directly into rom folder
+            : path.join(configShare, packInfos.roms.dest[os]); // save rom cfg in config folder
 
         this.emit('start.download');
         this.emit('progress.download', 100, 1, 'files list');
 
-        this.downloadCommon(repository, common, path.join(configShare, common.dest[os]), overwrite)
+        this.downloadCommon(repository, common, common ? path.join(configShare, common.dest[os]) : '', overwrite)
         .then(() => {
             return this.listFiles(repository, roms.src)
         })
@@ -324,9 +328,9 @@ module.exports = class Overlays extends events {
                     }
     
                     // download rom config
-                    this.downloadRomConfig(repository, romcfg.path, romFolders, overwrite, base)
+                    this.downloadRomConfig(repository, romcfg.path, romCfgFolder, romFolders, overwrite, base)
                     .then((romcfgContent) => {
-                        if (romcfgContent === '') { return Promise.resolve(''); }
+                        if (!romcfgContent || romcfgContent === '') { return Promise.resolve(''); }
 
                         // parse rom cfg to get overlay cfg
                         let overlayFile = /input_overlay[\s]*=[\s]*"?(.*\.cfg)"?/igm.exec(romcfgContent)[1]; // extract overlay path
@@ -338,7 +342,7 @@ module.exports = class Overlays extends events {
                         return this.downloadOverlay(repository, packOverlayFile, localoverlaycfg, overwrite, base);
                     })
                     .then((overlayCfgContent) => {
-                        if (overlayCfgContent === '') { return Promise.resolve(); }
+                        if (!overlayCfgContent || overlayCfgContent === '') { return Promise.resolve(); }
 
                         // parse overlay cfg to get overlay image
                         let packOverlayImage = /overlay0_overlay[\s]*=[\s]*"?(.*\.png)"?/igm.exec(overlayCfgContent)[1];

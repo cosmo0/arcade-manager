@@ -67,21 +67,21 @@
                 "src": "overlays/roms",
                 "dest": {
                     "retropie": "roms",
-                    "recalbox": "configs"
+                    "recalbox": "overlays/fba_libretro"
                 }
             },
             "overlays": {
                 "src": "overlays/configs",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-realistic",
-                    "recalbox": "overlays/fba_libretro/realistic"
+                    "recalbox": "overlays/fba_libretro/arcade-realistic"
                 }
             },
             "common": {
                 "src": "overlays/configs/common",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-realistic/common",
-                    "recalbox": "overlays/fba_libretro/overlays/common"
+                    "recalbox": "overlays/fba_libretro/arcade-realistic/common"
                 }
             },
             "base": {
@@ -98,14 +98,14 @@
                 "src": "overlays/roms",
                 "dest": {
                     "retropie": "roms",
-                    "recalbox": "configs"
+                    "recalbox": "overlays/fba_libretro"
                 }
             },
             "overlays": {
                 "src": "overlays/configs",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-artwork",
-                    "recalbox": "overlays/fba_libretro/artwork"
+                    "recalbox": "overlays/fba_libretro/arcade-artwork"
                 }
             },
             "base": {
