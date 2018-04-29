@@ -67,7 +67,7 @@
                 "src": "overlays/roms",
                 "dest": {
                     "retropie": "roms",
-                    "recalbox": "overlays/fba_libretro"
+                    "recalbox": "overlays"
                 }
             },
             "overlays": {
@@ -98,7 +98,7 @@
                 "src": "overlays/roms",
                 "dest": {
                     "retropie": "roms",
-                    "recalbox": "overlays/fba_libretro"
+                    "recalbox": "overlays"
                 }
             },
             "overlays": {

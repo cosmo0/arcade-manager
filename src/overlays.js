@@ -171,7 +171,16 @@ module.exports = class Overlays extends events {
             .then((romFolders) => {
                 let foldersPromises = folders.reduce((promisechain, folder, index) => {
                     return promisechain.then(() => new Promise((resolve, reject) => {
-                        let localromcfg = path.join(destPath ? destPath : folder, cfg);
+                        let localromcfgPath = destPath;
+                        if (localromcfgPath) {
+                            // save in config: ex: config/mame, config/fba
+                            localromcfgPath = path.join(localromcfgPath, path.basename(folder));
+                        } else {
+                            // save in rom folder
+                            localromcfgPath = folder;
+                        }
+
+                        let localromcfg = path.join(localromcfgPath, cfg);
                         if (fs.existsSync(path.join(folder, zip))) {
                             // corresponding zip file exists
                             console.log('Installing overlay for %s', zip);
