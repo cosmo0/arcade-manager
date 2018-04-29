@@ -185,34 +185,27 @@ module.exports = class Overlays extends events {
                             // corresponding zip file exists
                             console.log('Installing overlay for %s', zip);
 
-                            if (!overwrite && fs.existsSync(localromcfg)) {
-                                // rom cfg already exists
-                                fs.readFile(localromcfg, { 'encoding': 'utf8' }, (err, romcfgContent) => {
-                                    if (err) throw err;
-                                    if (mustCancel) { resolve(); return; }
+                            downloader.downloadFile(repository, sourcePath, (romcfgContent) => {
+                                if (mustCancel) { resolve(); return; }
 
-                                    romConfigContent = romcfgContent;
+                                romConfigContent = romcfgContent;
+                                if (!overwrite && fs.existsSync(localromcfg)) {
                                     resolve();
-                                });
-                            } else {
-                                // download rom cfg
-                                downloader.downloadFile(repository, sourcePath, (romcfgContent) => {
-                                    if (mustCancel) { resolve(); return; }
-
+                                } else {
+                                    // download rom cfg
                                     romcfgContent = this.fixPath(base, romcfgContent);
                                     fs.ensureDirSync(path.dirname(localromcfg));
                                     fs.writeFile(localromcfg, romcfgContent, (err) => {
                                         if (err && err.code !== 'EEXIST') throw err;
                                         if (mustCancel) { resolve(); return; }
 
-                                        romConfigContent = romcfgContent;
                                         resolve();
                                     });
-                                });
-                            }
+                                }
+                            });
                         } else {
                             // the corresponding zip file does not exist
-                            resolve('');
+                            resolve();
                         }
                     }));
                 }, Promise.resolve());
@@ -238,18 +231,14 @@ module.exports = class Overlays extends events {
      */
     downloadOverlay(repository, sourcePath, destPath, overwrite, base) {
         return new Promise((resolve, reject) => {
-            if (!overwrite && fs.existsSync(destPath)) {
-                // overlay cfg already exists
-                fs.readFile(destPath, { 'encoding': 'utf8'}, (err, overlayFileContent) => {
-                    if (err) throw err;
-                    if (mustCancel) { resolve(); return; }
+            downloader.downloadFile(repository, sourcePath, (packOverlayFileContent) => {
+                if (mustCancel) { resolve(); return; }
 
-                    resolve(overlayFileContent);
-                });
-            } else {
-                // download overlay cfg
-                downloader.downloadFile(repository, sourcePath, (packOverlayFileContent) => {
-                    if (mustCancel) { resolve(); return; }
+                if (!overwrite && fs.existsSync(destPath)) {
+                    // overlay cfg already exists
+                    resolve(packOverlayFileContent);
+                } else {
+                    // download overlay cfg
                     packOverlayFileContent = this.fixPath(base, packOverlayFileContent);
                     fs.ensureDirSync(path.dirname(destPath));
                     fs.writeFile(destPath, packOverlayFileContent, (err) => {
@@ -258,8 +247,8 @@ module.exports = class Overlays extends events {
 
                         resolve(packOverlayFileContent);
                     });
-                });
-            }
+                }
+            });
         });
     }
 
