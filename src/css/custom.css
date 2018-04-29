@@ -41,6 +41,18 @@ h1 a, h2 a, h3 a {
     color: #6c757d;
 }
 
+.system a img {
+    max-height: 20px;
+    float: right;
+    margin-top: 4px;
+}
+
+h2 img {
+    max-height: 30px;
+    float: right;
+    margin-top: 6px;
+}
+
 /*
 * Log panel
 */

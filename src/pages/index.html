@@ -49,14 +49,14 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-10">
+    <div class="col-10 help">
         <div class="list-group">
             <a href="pages/help/index.html" class="navmenu list-group-item list-group-item-action text-primary border-primary">
                 <i class="icon-help"></i> Help
             </a>
         </div>
     </div>
-    <div class="col-2">
+    <div class="col-2 system">
         <div class="list-group">
             <a href="pages/os.html" class="navmenu list-group-item list-group-item-action text-info border-info">
                 Change system
@@ -67,7 +67,8 @@
 
 <script>
     $(() => {
-        if (settings.get('os') === 'none') {
+        let os = settings.get('os');
+        if (os === 'none') {
             // disable overlays entry if no OS has been selected
             $('.mainmenu .overlays')
                 .prop('disabled', true)
@@ -77,6 +78,11 @@
                 .off('click')
                 .find('.card')
                 .removeClass('border-primary');
+        } else {
+            // resize footer links
+            $('.help').removeClass('col-10').addClass('col-8');
+            $('.system').removeClass('col-2').addClass('col-4')
+                .find('.list-group a').prepend($('<img src="img/' + os + '-h.png">'));
         }
     });
 </script>

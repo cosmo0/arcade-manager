@@ -49,6 +49,8 @@ $(() => {
     const os = settings.get('os');
     let configShare = data.defaults.configs[os][process.platform];
 
+    $('h2').append($('<img src="img/' + os + '-h.png">'));
+
     // check that the configs share can be accessed
     if (!configShare || !fs.existsSync(configShare)) {
         configShare = '';
