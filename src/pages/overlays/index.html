@@ -62,10 +62,11 @@ $(() => {
     let folderTemplate = $('#folderTemplate').html();
     if (data.defaults.roms[os][process.platform] && fs.existsSync(data.defaults.roms[os][process.platform])) {
         for (let folder of data.defaults.romFolders[os]) {
-            if (fs.existsSync(path.join(data.defaults.roms[os][process.platform]), folder)) {
+            let romFolder = path.join(data.defaults.roms[os][process.platform], folder);
+            if (fs.existsSync(romFolder)) {
                 let li = $(folderTemplate);
 
-                li.find('.form-check-input').val(folder).attr('id', 'romFolder' + folder);
+                li.find('.form-check-input').val(romFolder).attr('id', 'romFolder' + folder);
                 li.find('.form-check-label').text(folder).attr('for', 'romFolder' + folder);
 
                 $('#romFoldersContainer').append(li);
