@@ -50,8 +50,9 @@ module.exports = class Downloader extends events {
      * @param {string} folder The path to the folder (path/to/folder)
      * @param {string} targetFolder The folder to download into
      * @param {bool} overwrite Whether to overwrite existing files
+     * @param {function} replace A function to replace things in the content
      */
-    downloadFolder (repository, folder, targetFolder, overwrite) {
+    downloadFolder (repository, folder, targetFolder, overwrite, replace) {
         fs.ensureDirSync(targetFolder);
         
         this.listFiles(repository, folder, (list) => {
@@ -61,11 +62,12 @@ module.exports = class Downloader extends events {
                     if (overwrite === true || !fs.existsSync(dest)) {
                         console.log('write file to ' + dest);
                         downloader.downloadFile(repository, item.path, (content) => {
+                            if (replace && typeof content === 'string') { content = replace(content); }
                             fs.writeFileSync(dest, content);
                         });
                     }
                 } else {
-                    this.downloadFolder(repository, item.path, path.join(targetFolder, item.name), overwrite);
+                    this.downloadFolder(repository, item.path, path.join(targetFolder, item.name), overwrite, replace);
                 }
             }
         });

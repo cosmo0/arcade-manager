@@ -106,9 +106,10 @@ module.exports = class Overlays extends events {
      * @param {Object} common The common elements
      * @param {String} destPath The destination folder
      * @param {Boolean} overwrite Whether to overwrite existing files
+     * @param {Object} base The base paths (ex: { retropie: /etc/, recalbox: /etc/ })
      * @returns {Promise} A promise downloading the items in the common folder
      */
-    downloadCommon(repository, common, destPath, overwrite) {
+    downloadCommon(repository, common, destPath, overwrite, base) {
         return new Promise((resolve, reject) => {
             if (mustCancel) { reject(); return; }
 
@@ -119,7 +120,9 @@ module.exports = class Overlays extends events {
 
                 // only download if target folder does not exist
                 if (overwrite || !fs.existsSync(destPath)) {
-                    downloader.downloadFolder(repository, common.src, destPath, overwrite);
+                    downloader.downloadFolder(repository, common.src, destPath, overwrite, (content) => {
+                        return this.fixPath(base, content);
+                    });
                 }
             }
             
@@ -306,7 +309,7 @@ module.exports = class Overlays extends events {
         this.emit('start.download');
         this.emit('progress.download', 100, 1, 'files list');
 
-        this.downloadCommon(repository, common, common ? path.join(configShare, common.dest[os]) : '', overwrite)
+        this.downloadCommon(repository, common, common ? path.join(configShare, common.dest[os]) : '', overwrite, base)
         .then(() => {
             return this.listFiles(repository, roms.src)
         })
