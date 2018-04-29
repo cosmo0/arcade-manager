@@ -154,7 +154,7 @@ module.exports = class Overlays extends events {
      * 
      * @param {String} repository The repository
      * @param {String} sourcePath The source path to the rom config to download
-     * @param {String} destPath The path to save the rom configs to
+     * @param {String} destPath The path to save the rom configs to, if any
      * @param {Array} folders The list of folders where to download the config to
      * @param {Boolean} overwrite Whether to overwrite existing files
      * @param {Object} base The base paths
@@ -171,7 +171,7 @@ module.exports = class Overlays extends events {
             .then((romFolders) => {
                 let foldersPromises = folders.reduce((promisechain, folder, index) => {
                     return promisechain.then(() => new Promise((resolve, reject) => {
-                        let localromcfg = path.join(destPath, cfg);
+                        let localromcfg = path.join(destPath ? destPath : folder, cfg);
                         if (fs.existsSync(path.join(folder, zip))) {
                             // corresponding zip file exists
                             console.log('Installing overlay for %s', zip);
@@ -302,8 +302,10 @@ module.exports = class Overlays extends events {
             base = packInfos.base;
 
         const os = settings.get('os');
+
+        // check if the destination of rom cfg is the rom folder
         const romCfgFolder = packInfos.roms.dest[os] === 'roms'
-            ? romFolders // save rom cfg directly into rom folder
+            ? null // save rom cfg directly into rom folder(s)
             : path.join(configShare, packInfos.roms.dest[os]); // save rom cfg in config folder
 
         this.emit('start.download');
