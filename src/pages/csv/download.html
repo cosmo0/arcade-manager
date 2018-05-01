@@ -51,27 +51,9 @@ function listFiles(repository, folder, details) {
 
     // get files details
     downloader.downloadFile(repository, details, (filesdetailsContent) => {
-        let filesdetails = JSON.parse(filesdetailsContent);
-        // sort files details to put main files on top
-        filesdetails.files.sort((a, b) => {
-            // both are main files
-            if (a.types.indexOf('main') >= 0 && b.types.indexOf('main') >= 0) {
-                return a.name < b.name; // order by name
-            }
-
-            // a is main and not b
-            if (a.types.indexOf('main') >= 0 && b.types.indexOf('main') < 0) {
-                return -1;
-            }
-
-            // b is main and not a
-            if (a.types.indexOf('main') < 0 && b.types.indexOf('main') >= 0) {
-                return 1;
-            }
-        });
-
         // list CSV files in folder
         downloader.listFiles(repository, folder, (folderContents) => {
+            let filesdetails = JSON.parse(filesdetailsContent);
             for (let filedetail of filesdetails.files) {
                 // get matching file in the folder
                 let fileinfos = folderContents.find((item) => item.name === filedetail.filename);
