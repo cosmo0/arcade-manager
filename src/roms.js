@@ -158,7 +158,7 @@ module.exports = class Roms extends events {
             if (err) throw err;
             if (mustCancel) { resolve(); return; }
             
-            let fileCsv = csvparse(fileContents);
+            let fileCsv = csv.parse(fileContents);
 
             // list files in selection folder
             fs.readdir(selection, (err, files) => {
