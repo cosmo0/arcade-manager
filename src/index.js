@@ -1,8 +1,8 @@
 const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { Menu, app, shell, BrowserWindow } = electron;
 const path = require('path');
 const url = require('url');
+const defaultMenu = require('electron-default-menu');
 
 // global reference to window so it's not closed
 // when garbage collected
@@ -12,6 +12,9 @@ let mainWindow;
  * Creates the main window
  */
 function createWindow () {
+    const menu = defaultMenu(app, shell);
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menu));
+
     mainWindow = new BrowserWindow({
         width: 1280,
         height: 720,

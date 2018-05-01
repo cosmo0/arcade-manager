@@ -20,6 +20,7 @@
   "homepage": "https://github.com/cosmo0/arcade-manager",
   "dependencies": {
     "csv": "^2.0.0",
+    "electron-default-menu": "^1.0.1",
     "electron-settings": "^3.1.4",
     "follow-redirects": "^1.4.1",
     "fs-extra": "^5.0.0",
