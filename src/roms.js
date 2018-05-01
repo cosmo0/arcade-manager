@@ -16,6 +16,36 @@ module.exports = class Roms extends events {
     }
 
     /**
+     * Computes an entry size for display
+     * 
+     * @param {String} entry The file or folder entry to compute the size
+     * @returns The entry size with the size unit
+     */
+    entrySize(entry) {
+        let size = 0;
+        let stat = fs.statSync(entry);
+
+        if (stat.isDirectory()) {
+            // if folder, sum the size of files in it
+            const files = fs.readdirSync(entry);
+            for (let f of files) {
+                size += fs.statSync(path.join(entry, f)).size;
+            }
+        } else {
+            size = stat.size;
+        }
+
+        // compute size in a human-readable format
+        let unit = 0;
+        while (size > 1024) {
+            size = size / 1024;
+            unit++;
+        }
+
+        return Math.round(size).toLocaleString() + ' ' + [ 'bytes', 'KB', 'MB', 'GB' ][unit];
+    }
+
+    /**
      * Adds roms from a romset to a folder,
      * based on a CSV file
      * 
@@ -49,7 +79,7 @@ module.exports = class Roms extends events {
                     let sourceRom = path.join(romset, zip);
                     let destRom = path.join(selection, zip);
     
-                    this.emit('progress.add', fileCsv.length, index + 1, zip);
+                    this.emit('progress.add', fileCsv.length, index + 1, game + ' (' + this.entrySize(sourceRom) + ')');
     
                     // test if source file exists and destination does not
                     if (fs.existsSync(sourceRom) && (!fs.existsSync(destRom) || overwrite)) {
@@ -62,7 +92,7 @@ module.exports = class Roms extends events {
                             // copy CHD
                             let sourceChd = path.join(romset, game);
                             if (fs.existsSync(sourceChd)) {
-                                this.emit('progress.add', fileCsv.length, index + 1, game + ' CHD');
+                                this.emit('progress.add', fileCsv.length, index + 1, game + ' chd (' + this.entrySize(sourceChd) + ')');
 
                                 fs.copy(sourceChd, path.join(selection, game), { overwrite }, (err) => {
                                     if (err) throw err;
