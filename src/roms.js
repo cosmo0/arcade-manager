@@ -22,6 +22,10 @@ module.exports = class Roms extends events {
      * @returns The entry size with the size unit
      */
     entrySize(entry) {
+        if (!fs.existsSync(entry)) {
+            return '';
+        }
+
         let size = 0;
         let stat = fs.statSync(entry);
 
