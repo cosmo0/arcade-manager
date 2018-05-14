@@ -118,25 +118,29 @@
         "roms": {
             "retropie": {
                 "win32": "\\\\retropie\\roms\\",
-                "darwin": "/Volumes/roms/"
+                "darwin": "/Volumes/roms/",
+                "linux": "/mnt/retropie/roms/"
             },
             "recalbox": {
-                "win32": "\\\\recalbox\\share\\roms",
-                "darwin": "/Volumes/share/roms/"
+                "win32": "\\\\recalbox\\share\\roms\\",
+                "darwin": "/Volumes/share/roms/",
+                "linux": "/mnt/recalbox/share/roms/"
             }
         },
         "configs": {
             "retropie": {
                 "win32": "\\\\retropie\\configs\\",
-                "darwin": "/Volumes/configs/"
+                "darwin": "/Volumes/configs/",
+                "linux": "/mnt/retropie/configs/"
             },
             "recalbox": {
                 "win32": "\\\\recalbox\\share\\",
-                "darwin": "/Volumes/share/"
+                "darwin": "/Volumes/share/",
+                "linux": "/mnt/recalbox/share/"
             }
         },
         "romFolders": {
-            "retropie": [ "arcade", "fba", "mame", "mame-libretro" ],
+            "retropie": [ "arcade", "fba", "mame", "mame-libretro", "neogeo" ],
             "recalbox": [ "fba", "fba_libretro", "mame" ]
         }
     }
