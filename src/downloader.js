@@ -51,25 +51,38 @@ module.exports = class Downloader extends events {
      * @param {string} targetFolder The folder to download into
      * @param {bool} overwrite Whether to overwrite existing files
      * @param {function} replace A function to replace things in the content
+     * @param {function} callback A callback
      */
-    downloadFolder (repository, folder, targetFolder, overwrite, replace) {
+    downloadFolder (repository, folder, targetFolder, overwrite, replace, callback) {
         fs.ensureDirSync(targetFolder);
         
+        console.log('Downloading folder %s to %s', folder, targetFolder);
+
         this.listFiles(repository, folder, (list) => {
-            for (let item of list) {
-                if (item.type === 'file') {
-                    let dest = path.join(targetFolder, item.name);
-                    if (overwrite === true || !fs.existsSync(dest)) {
-                        console.log('write file to ' + dest);
-                        downloader.downloadFile(repository, item.path, (content) => {
-                            if (replace && typeof content === 'string') { content = replace(content); }
-                            fs.writeFileSync(dest, content);
-                        });
+            let requests = list.reduce((promisechain, item, index) => {
+                return promisechain.then(() => new Promise((resolve, reject) => {
+                    if (item.type === 'file') {
+                        let dest = path.join(targetFolder, item.name);
+                        if (overwrite === true || !fs.existsSync(dest)) {
+                            console.log('write file to ' + dest);
+                            downloader.downloadFile(repository, item.path, (content) => {
+                                if (replace && typeof content === 'string') { content = replace(content); }
+                                fs.writeFileSync(dest, content);
+                                resolve();
+                            });
+                        }
+                    } else {
+                        this.downloadFolder(repository, item.path, path.join(targetFolder, item.name), overwrite, replace, resolve);
                     }
-                } else {
-                    this.downloadFolder(repository, item.path, path.join(targetFolder, item.name), overwrite, replace);
-                }
-            }
+                }));
+            }, Promise.resolve());
+
+            // execute requests
+            requests
+            .then(() => {
+                console.log('Folder %s has been downloaded', folder);
+                if (callback) callback();
+            });
         });
     }
 

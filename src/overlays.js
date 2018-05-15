@@ -122,11 +122,15 @@ module.exports = class Overlays extends events {
                 if (overwrite || !fs.existsSync(destPath)) {
                     downloader.downloadFolder(repository, common.src, destPath, overwrite, (content) => {
                         return this.fixPath(base, content);
-                    });
+                    }, resolve);
+                } else {
+                    // no not overwrite and target folder already exists
+                    resolve();
                 }
+            } else {
+                // common does not exist
+                resolve();
             }
-            
-            resolve();
         });
     }
 
@@ -183,7 +187,7 @@ module.exports = class Overlays extends events {
                         let localromcfg = path.join(localromcfgPath, cfg);
                         if (fs.existsSync(path.join(folder, zip))) {
                             // corresponding zip file exists
-                            console.log('Installing overlay for %s', zip);
+                            console.log('Installing overlay for %s in %s', zip, folder);
 
                             downloader.downloadFile(repository, sourcePath, (romcfgContent) => {
                                 if (mustCancel) { resolve(); return; }
@@ -322,14 +326,16 @@ module.exports = class Overlays extends events {
                 return promisechain.then(() => new Promise((resolve, reject) => {
                     if (mustCancel) { resolve(); return; }
 
-                    this.emit('progress.download', total, current++, romcfg.name);
-    
+                    current++;
+
                     // only process config files
                     if (romcfg.type !== 'file' || !romcfg.name.endsWith('.zip.cfg')) { 
                         resolve();
                         return;
                     }
-    
+
+                    this.emit('progress.download', total, current, romcfg.name.replace('.zip.cfg', ''));
+        
                     // download rom config
                     this.downloadRomConfig(repository, romcfg.path, romCfgFolder, romFolders, overwrite, base)
                     .then((romcfgContent) => {
