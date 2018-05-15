@@ -35,15 +35,20 @@
         const Roms = require('./roms.js');
         const Overlays = require('./overlays.js');
         const Downloader = require('./downloader.js');
+        const Updater = require('./updater.js');
         
         // Instantiate local modules
         const csv = new Csv();
         const roms = new Roms();
         const overlays = new Overlays();
         const downloader = new Downloader();
+        const updater = new Updater();
 
         // read data file
         const data = require('./data.json');
+
+        // check for update
+        updater.checkUpdate();
     </script>
 
     <div class="container mt-3">
