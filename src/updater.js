@@ -23,7 +23,7 @@ module.exports = class Updater extends events {
                 // parse version number
                 let data = JSON.parse(rawData);
                 let latest = data[0].name.replace('v', '');
-                console.log(latest);
+                console.log('latest version: %s', latest);
 
                 // version has been ignored
                 if (settings.has('ignoreVersion') && settings.get('ignoreVersion') === latest) {
@@ -36,7 +36,9 @@ module.exports = class Updater extends events {
                     console.log('newer version available: %s', latest);
                     dialog.showMessageBox({
                         'type': 'question',
-                        'message': 'A newer version is available. Do you want to download it?',
+                        'message': 'A newer version is available : ' + latest + '.'
+                            + '\nYou are currently using ' + app.getVersion() + '.'
+                            + '\nDo you want to download it?',
                         'buttons': [ 'Yes', 'No' ],
                         'defaultId': 0,
                         'cancelId': 1,
