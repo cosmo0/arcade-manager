@@ -17,7 +17,7 @@ function createWindow () {
 
     mainWindow = new BrowserWindow({
         width: 1280,
-        height: 750,
+        height: 800,
         title: "Arcade Manager"
     });
 

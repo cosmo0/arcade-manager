@@ -83,6 +83,47 @@ module.exports = class Overlays extends events {
     }
 
     /**
+     * Extracts a configuration value from the content
+     * 
+     * @param {String} content The content to search into
+     * @param {String} value The value to search for
+     * @returns {Number} The configuration value
+     */
+    parseValue(content, value) {
+        let regex = new RegExp(value + '[\\s]*=[\\s]*"?(\\d+)"?', 'igm');
+        let result = regex.exec(content);
+        if (result && result.length >= 2) {
+            return parseInt(result[1]);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Changes the specified file content resolution
+     * 
+     * @param {String} content The file content
+     * @param {Number} ratio The ratio to multiply width/height/x/y with
+     * @returns {String} The modified content
+     */
+    changeResolution(content, ratio) {
+        let parameters = [
+            'custom_viewport_width', 'custom_viewport_height',
+            'custom_viewport_x', 'custom_viewport_y',
+            'video_fullscreen_x', 'video_fullscreen_y'
+        ];
+        for (let p of parameters) {
+            let val = this.parseValue(content, p);
+            if (val) {
+                val = Math.round(val * ratio);
+                content = content.replace(new RegExp(p + '[\\s]*=[\\s]*"?(\\d+)"?', 'img'), p + ' = ' + val);
+            }
+        }
+
+        return content;
+    }
+
+    /**
      * Lists the files in the specified folder
      * 
      * @param {any} repository The repository
@@ -107,9 +148,10 @@ module.exports = class Overlays extends events {
      * @param {String} destPath The destination folder
      * @param {Boolean} overwrite Whether to overwrite existing files
      * @param {Object} base The base paths (ex: { retropie: /etc/, recalbox: /etc/ })
+     * @param {Number} ratio The ratio to multiply width/height/x/y with
      * @returns {Promise} A promise downloading the items in the common folder
      */
-    downloadCommon(repository, common, destPath, overwrite, base) {
+    downloadCommon(repository, common, destPath, overwrite, base, ratio) {
         return new Promise((resolve, reject) => {
             if (mustCancel) { reject(); return; }
 
@@ -121,7 +163,7 @@ module.exports = class Overlays extends events {
                 // only download if target folder does not exist
                 if (overwrite || !fs.existsSync(destPath)) {
                     downloader.downloadFolder(repository, common.src, destPath, overwrite, (content) => {
-                        return this.fixPath(base, content);
+                        return this.changeResolution(this.fixPath(base, content), ratio);
                     }, resolve);
                 } else {
                     // no not overwrite and target folder already exists
@@ -162,10 +204,11 @@ module.exports = class Overlays extends events {
      * @param {Array} folders The list of folders where to download the config to
      * @param {Boolean} overwrite Whether to overwrite existing files
      * @param {Object} base The base paths
+     * @param {Number} ratio The ratio to multiply width/height/x/y with
      * @returns {Promise} A promise that downloads the rom config
      */
-    downloadRomConfig(repository, sourcePath, destPath, folders, overwrite, base) {
-        return new Promise((resolveConfig, reject) => {
+    downloadRomConfig(repository, sourcePath, destPath, folders, overwrite, base, ratio) {
+        return new Promise((resolveConfig) => {
             let cfg = path.basename(sourcePath);
             let zip = cfg.replace('.cfg', '');
 
@@ -174,7 +217,7 @@ module.exports = class Overlays extends events {
             this.getFoldersContaining(folders, zip)
             .then((romFolders) => {
                 let foldersPromises = folders.reduce((promisechain, folder, index) => {
-                    return promisechain.then(() => new Promise((resolve, reject) => {
+                    return promisechain.then(() => new Promise((resolve) => {
                         let localromcfgPath = destPath;
                         if (localromcfgPath) {
                             // save in config: ex: config/mame, config/fba
@@ -192,12 +235,12 @@ module.exports = class Overlays extends events {
                             downloader.downloadFile(repository, sourcePath, (romcfgContent) => {
                                 if (mustCancel) { resolve(); return; }
 
+                                romcfgContent = this.changeResolution(this.fixPath(base, romcfgContent), ratio);
                                 romConfigContent = romcfgContent;
                                 if (!overwrite && fs.existsSync(localromcfg)) {
                                     resolve();
                                 } else {
                                     // download rom cfg
-                                    romcfgContent = this.fixPath(base, romcfgContent);
                                     fs.ensureDirSync(path.dirname(localromcfg));
                                     fs.writeFile(localromcfg, romcfgContent, (err) => {
                                         if (err && err.code !== 'EEXIST') throw err;
@@ -292,8 +335,9 @@ module.exports = class Overlays extends events {
      * @param {String} configShare The path to the config share
      * @param {Object} packInfos The chosen pack informations
      * @param {Boolean} overwrite Whether to overwrite existing files
+     * @param {Number} ratio The ratio to compute the new overlay resolution
      */
-    downloadPack (romFolders, configShare, packInfos, overwrite) {
+    downloadPack (romFolders, configShare, packInfos, overwrite, ratio) {
         mustCancel = false;
         nbOverlays = 0;
 
@@ -313,9 +357,9 @@ module.exports = class Overlays extends events {
         this.emit('start.download');
         this.emit('progress.download', 100, 1, 'files list');
 
-        this.downloadCommon(repository, common, common ? path.join(configShare, common.dest[os]) : '', overwrite, base)
+        this.downloadCommon(repository, common, common ? path.join(configShare, common.dest[os]) : '', overwrite, base, ratio)
         .then(() => {
-            return this.listFiles(repository, roms.src)
+            return this.listFiles(repository, roms.src);
         })
         .then((romConfigs) => {
             total = romConfigs.length;
@@ -337,7 +381,7 @@ module.exports = class Overlays extends events {
                     this.emit('progress.download', total, current, romcfg.name.replace('.zip.cfg', ''));
         
                     // download rom config
-                    this.downloadRomConfig(repository, romcfg.path, romCfgFolder, romFolders, overwrite, base)
+                    this.downloadRomConfig(repository, romcfg.path, romCfgFolder, romFolders, overwrite, base, ratio)
                     .then((romcfgContent) => {
                         if (!romcfgContent || romcfgContent === '') { return Promise.resolve(''); }
 

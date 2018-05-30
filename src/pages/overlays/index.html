@@ -18,7 +18,7 @@
 </p>
 
 <div class="alert alert-info">
-    These overlays are made for a 16:9 resolution (like 1080p or 720p). They won't work with another aspect ratio.
+    These overlays are made for a 16:9 resolution (like 1080p or 720p for example). They won't work with another aspect ratio.
 </div>
 
 <div class="row">
@@ -29,18 +29,36 @@
     <div class="col-6">
         <h3>Roms folders</h3>
         <div id="romFoldersContainer"></div>
+        <div id="configFolderContainer"></div>
         <hr>
-        <div class="mt-3">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
-                <label class="form-check-label" for="overwriteYes">Overwrite existing files</label>
+        <div class="row">
+            <div class="col-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Width" id="width" value="1920">
+                    <div class="input-group-append input-group-prepend">
+                        <span class="input-group-text">&times;</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Height" id="height" value="1080">
+                </div>
+                <small>
+                    <a href="#" class="setsize" data-width="2560" data-height="1440">1440p</a>
+                    /
+                    <a href="#" class="setsize" data-width="1920" data-height="1080">1080p</a>
+                    /
+                    <a href="#" class="setsize" data-width="1280" data-height="720">720p</a>
+                </small>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
-                <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
+            <div class="col-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
+                    <label class="form-check-label" for="overwriteYes">Overwrite existing files</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
+                    <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
+                </div>
             </div>
         </div>
-        <div id="configFolderContainer"></div>
     </div>
 </div>
 
@@ -111,11 +129,20 @@ $(() => {
         $('#packs').append(li);
     }
 
+    // handle click on resolution presets
+    $('a.setsize').on('click', (e) => {
+        let link = $(e.currentTarget);
+        $('#width').val(link.data('width'));
+        $('#height').val(link.data('height'));
+    });
+
     // Handle click on validation button
     $('#buttonInstall').on('click', (e) => {
         let pack = $('#packs .active'),
             overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false,
-            romFolders = $('input[name=romFolder]:checked').map((idx, item) => $(item).val()).get();
+            romFolders = $('input[name=romFolder]:checked').map((idx, item) => $(item).val()).get(),
+            width = parseInt($('#width').val()),
+            height = parseInt($('#height').val());
         
         // rom folder is not found, maybe it's the text input
         if (romFolders.length === 0 && $('#romFolder').length > 0 && $('#romFolder').val() !== '') {
@@ -127,13 +154,19 @@ $(() => {
             configShare = $('#configFolder').val();
         }
 
+        // check the width/height aspect ratio is OK
+        if (width / height !== 16 / 9) {
+            window.alert('Resolution is not correct. These packs will only work with 16:9 screens.');
+            return;
+        }
+
         // check inputs and paths
         if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
         if (romFolders.length === 0) { window.alert('Please select the roms folder'); return; }
         if (!configShare || configShare === '') { window.alert('Please fill the path to the config share'); return; }
         
         // download and install pack
-        overlays.downloadPack(romFolders, configShare, pack.data('pack'), overwrite);
+        overlays.downloadPack(romFolders, configShare, pack.data('pack'), overwrite, height / 1080);
     });
 });
 </script>
