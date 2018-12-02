@@ -373,15 +373,15 @@ module.exports = class Overlays extends events {
                     current++;
 
                     // only process config files
-                    if (romcfg.type !== 'file' || !romcfg.name.endsWith('.zip.cfg')) { 
+                    if ((romcfg.type !== 'file' && romcfg.type !== 'blob') || !romcfg.path.endsWith('.zip.cfg')) { 
                         resolve();
                         return;
                     }
 
-                    this.emit('progress.download', total, current, romcfg.name.replace('.zip.cfg', ''));
-        
+                    this.emit('progress.download', total, current, romcfg.path.replace('.zip.cfg', ''));
+
                     // download rom config
-                    this.downloadRomConfig(repository, romcfg.path, romCfgFolder, romFolders, overwrite, base, ratio)
+                    this.downloadRomConfig(repository, roms.src + '/' + romcfg.path, romCfgFolder, romFolders, overwrite, base, ratio)
                     .then((romcfgContent) => {
                         if (!romcfgContent || romcfgContent === '') { return Promise.resolve(''); }
 
