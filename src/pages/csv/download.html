@@ -31,7 +31,7 @@ $(() => {
         li.on('click', () => {
             $('#csvs').find('a').removeClass('active');
             li.addClass('active');
-            listFiles(csv.repository, csv.folder, csv.details);
+            listFiles(csv.repository, csv.folder, csv.details, li.find('.name').text());
         });
 
         $('#csvs').append(li);
@@ -44,9 +44,10 @@ $(() => {
  * @param {string} repository The repository: username/repository
  * @param {string} folder The path to the folder: csv/mame2003
  * @param {string} details The path to the files details: csv/files.json
+ * @param {string} name The name of the repository to load
  */
-function listFiles(repository, folder, details) {
-    $('#files').empty();
+function listFiles(repository, folder, details, name) {
+    $('#files').empty().html('Loading ' + name + ', please wait...');
     let template = $('#fileItemTemplate').html();
 
     // get files details
@@ -54,6 +55,7 @@ function listFiles(repository, folder, details) {
         // list CSV files in folder
         downloader.listFiles(repository, folder, (folderContents) => {
             let filesdetails = JSON.parse(filesdetailsContent);
+            $('#files').empty();
             for (let filedetail of filesdetails.files) {
                 // get matching file in the folder
                 let fileinfos = folderContents.find((item) => item.path === filedetail.filename);
