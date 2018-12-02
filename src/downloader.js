@@ -61,18 +61,18 @@ module.exports = class Downloader extends events {
         this.listFiles(repository, folder, (list) => {
             let requests = list.reduce((promisechain, item, index) => {
                 return promisechain.then(() => new Promise((resolve, reject) => {
-                    if (item.type === 'file') {
-                        let dest = path.join(targetFolder, item.name);
+                    if (item.type === 'file' || item.type === 'blob') {
+                        let dest = path.join(targetFolder, item.path);
                         if (overwrite === true || !fs.existsSync(dest)) {
                             console.log('write file to ' + dest);
-                            downloader.downloadFile(repository, item.path, (content) => {
+                            downloader.downloadFile(repository, folder + '/' + item.path, (content) => {
                                 if (replace && typeof content === 'string') { content = replace(content); }
                                 fs.writeFileSync(dest, content);
                                 resolve();
                             });
                         }
                     } else {
-                        this.downloadFolder(repository, item.path, path.join(targetFolder, item.name), overwrite, replace, resolve);
+                        this.downloadFolder(repository, folder + '/' + item.path, path.join(targetFolder, item.path), overwrite, replace, resolve);
                     }
                 }));
             }, Promise.resolve());
@@ -95,14 +95,33 @@ module.exports = class Downloader extends events {
      * @returns {String} The files list
      */
     listFiles (repository, folder, callback) {
-        let url = '/repos/' + repository + '/contents/' + folder;
-        console.log('Listing files in %s / %s', repository, folder);
-        https.get({ protocol, 'host': api, 'path': url, 'headers': { 'User-Agent': 'arcade-manager' } }, (res) => {
+        let upFolder = folder.substring(0, folder.lastIndexOf('/'));
+
+        // get level-up folder to get the SHA of the folder
+        let urlUpFolders = '/repos/' + repository + '/contents/' + upFolder;
+        console.log('Listing files in %s / %s', repository, upFolder);
+        https.get({ protocol, 'host': api, 'path': urlUpFolders, 'headers': { 'User-Agent': 'arcade-manager' } }, (res) => {
             res.setEncoding('utf8');
-            let rawData = '';
-            res.on('data', (chunk) => { rawData += chunk; });
+            let rawDataFolders = '';
+            res.on('data', (chunk) => { rawDataFolders += chunk; });
             res.on('end', () => {
-                callback(JSON.parse(rawData));
+                let siblingFolders = JSON.parse(rawDataFolders);
+                for (let f of siblingFolders) {
+                    if (f.path === folder) {
+                        // get full list of files from this folder
+                        let urlFullFilesList = '/repos/' + repository + '/git/trees/' + f.sha;
+                        console.log('Listing files for tree %s', f.sha);
+                        https.get({ protocol, 'host': api, 'path': urlFullFilesList, 'headers': { 'User-Agent': 'arcade-manager' } }, (res) => {
+                            res.setEncoding('utf8');
+                            let rawDataFiles = '';
+                            res.on('data', (chunk) => { rawDataFiles += chunk; });
+                            res.on('end', () => {
+                                callback(JSON.parse(rawDataFiles).tree);
+                            });
+                        });
+                        break;
+                    }
+                }
             });
         });
     }

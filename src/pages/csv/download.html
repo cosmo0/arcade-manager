@@ -12,7 +12,7 @@
     <div class="col-4">
         <div class="list-group" id="csvs"></div>
     </div>
-    <div class="col-8" id="files"></div>
+    <div class="col-8" id="files">Please select an emulator version on the left.</div>
 </div>
 
 <script>
@@ -56,23 +56,23 @@ function listFiles(repository, folder, details) {
             let filesdetails = JSON.parse(filesdetailsContent);
             for (let filedetail of filesdetails.files) {
                 // get matching file in the folder
-                let fileinfos = folderContents.find((item) => item.name === filedetail.filename);
+                let fileinfos = folderContents.find((item) => item.path === filedetail.filename);
                 if (typeof fileinfos !== 'undefined') {
-                    let li = $(template);
-                    li.find('.file').text(filedetail.filename);
-                    li.find('.desc').text(filedetail.description);
+                    let fileItem = $(template);
+                    fileItem.find('.file').text(filedetail.filename);
+                    fileItem.find('.desc').text(filedetail.description);
                     if (filedetail.types.indexOf('main') >= 0) {
-                        li.addClass('text-primary border-primary');
+                        fileItem.addClass('text-primary border-primary');
                     }
 
                     // handle click
-                    li.on('click', (e) => {
+                    fileItem.on('click', (e) => {
                         dialog.showSaveDialog({
-                            'defaultPath': fileinfos.name
+                            'defaultPath': fileinfos.path
                         }, (filename) => {
                             if (typeof filename !== 'undefined' && filename !== '') {
                                 progressInit('Download file');
-                                downloader.downloadFile(repository, fileinfos.path, (fileContents) => {
+                                downloader.downloadFile(repository, folder + '/' + fileinfos.path, (fileContents) => {
                                     fs.writeFile(filename, fileContents, (err) => {
                                         if (err) throw err;
                                         progressDone('Done.');
@@ -82,7 +82,7 @@ function listFiles(repository, folder, details) {
                         });
                     });
                     
-                    $('#files').append(li);
+                    $('#files').append(fileItem);
                 }
             }
         });
