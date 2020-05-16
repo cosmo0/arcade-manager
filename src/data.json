@@ -9,6 +9,14 @@
             "details": "csv/best/files.json"
         },
         {
+            "name": "FinalBurn Neo",
+            "description": "FinalBurn Neo (0.2.97.44)",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/fbneo-0.2.97.44",
+            "details": "csv/files.json"
+        },
+        {
             "name": "FBA 2017",
             "description": "Final Burn Alpha 2017 (0.2.97.42)",
             "image": "",
