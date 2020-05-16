@@ -9,6 +9,8 @@ const sanitize = require("sanitize-filename");
 
 // delimiter
 const defaultDelimiter = ';';
+// authorized delimiters (semicolon, comma, tab, pipe)
+const delimiters = [';', ',', '\t', '\\|'];
 
 module.exports = class Csv extends events {
     /**
@@ -19,37 +21,47 @@ module.exports = class Csv extends events {
      */
     parse(content) {
         let firstline = content.split('\n', 1)[0];
+        let search = "name";
+        let delimiter = defaultDelimiter;
 
-        // check if first line is "name", or has a "name" column header
-        if (firstline.indexOf(';')
-            && (
-                firstline.indexOf('name;') === 0
-                || firstline.indexOf(';name;') > 0
-            )
-            || firstline === 'name') {
-
-            return csvparse(
-                content,
-                {
-                    columns: true,
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
-        } else if (firstline.indexOf(';') < 0) {
-            // first line does not have a separator, it's probably just a list of names
-            return csvparse(
-                content,
-                {
-                    columns: [ 'name' ],
-                    auto_parse: false,
-                    auto_parse_date: false,
-                    delimiter: defaultDelimiter
-                });
-        } else {
-            // first line has separators but no "name" column: error
-            throw 'If your CSV file has several columns, it must contain a "name" column';
+        for (let element of delimiters) {
+            // ,name, OR name, OR ,name
+            let hasKeyword = new RegExp(`${element + search + element}|^${search + element}|${element + search}$`, 'm');
+            // name
+            let hasKeywordAlone = new RegExp(`^${search}$`, 'm');
+            
+            // .csv has a "name" column
+            if (hasKeyword.test(firstline) || hasKeywordAlone.test(firstline)) {
+                
+                delimiter = element.replace(/\\/g, ""); // replace is a fix for pipe symbol
+                
+                if (hasKeyword.test(firstline)) {
+                    
+                    return csvparse(
+                        content,
+                        {
+                            columns: true,
+                            auto_parse: false,
+                            auto_parse_date: false,
+                            delimiter: delimiter
+                        });
+                    
+                } else if (hasKeywordAlone.test(firstline)) {
+                    
+                    return csvparse(
+                        content,
+                        {
+                            columns: [ 'name' ],
+                            auto_parse: false,
+                            auto_parse_date: false,
+                            delimiter: delimiter
+                        });
+                    
+                }
+            }
         }
+        // // first line has separators but no "name" column: error
+        throw 'If your CSV file has several columns, it must contain a "name" column';
     }
 
     /**
