@@ -55,7 +55,7 @@
 <script>
 $(() => {
     if (settings.has('os')) {
-        $('#fileRomSelection').val(data.defaults.roms[settings.get('os')][process.platform]);
+        $('#fileRomSelection').attr("placeholder", data.defaults.roms[settings.get('os')][process.platform]);
     }
 });
 
