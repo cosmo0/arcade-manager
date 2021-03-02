@@ -98,7 +98,7 @@ $(() => {
         }
     } else {
         $('#romFoldersContainer').html($('#romInputTemplate').html());
-        $('#romFolder').attr('placeholder', 'Roms folder (ex: ' + data.defaults.roms[os][process.platform] + ')');
+        $('#romFolder').attr('placeholder', 'Roms folder (ex: ' + data.defaults.roms[os][process.platform] + '/arcade)');
         bindBrowse();
         bindNav();
     }
