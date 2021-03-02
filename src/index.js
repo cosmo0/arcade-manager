@@ -1,7 +1,6 @@
 const electron = require('electron');
 const { Menu, app, shell, BrowserWindow } = electron;
 const path = require('path');
-const url = require('url');
 const defaultMenu = require('electron-default-menu');
 
 // global reference to window so it's not closed
@@ -18,17 +17,17 @@ function createWindow () {
     mainWindow = new BrowserWindow({
         width: 1280,
         height: 800,
-        title: 'Arcade Manager'
+        title: 'Arcade Manager',
+        webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+        }
     });
 
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
+    mainWindow.loadURL('file://' + path.join(__dirname, 'index.html'));
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {

@@ -1,0 +1,11 @@
+{
+    "version": "1.0.0",
+    "configurations": [
+        {
+            "type": "electron",
+            "request": "launch",
+            "name": "Electron",
+            "appDir": "${workspaceFolder}"
+        }
+    ]
+}
