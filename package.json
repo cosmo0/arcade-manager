@@ -29,7 +29,7 @@
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
-    "electron": "^3.1.13",
+    "electron": "^9.4.0",
     "electron-builder": "^20.28.4"
   },
   "build": {
