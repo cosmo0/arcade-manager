@@ -5,7 +5,7 @@ const csvparse = require('csv-parse/lib/sync');
 const stringify = require('csv-stringify/lib/sync');
 const parseString = require('xml2js').parseString;
 const ini = require('ini');
-const sanitize = require("sanitize-filename");
+const sanitize = require('sanitize-filename');
 
 // delimiter
 const defaultDelimiter = ';';
@@ -21,7 +21,7 @@ module.exports = class Csv extends events {
      */
     parse(content) {
         let firstline = content.split('\n', 1)[0];
-        let search = "name";
+        let search = 'name';
         let delimiter = defaultDelimiter;
 
         for (let element of delimiters) {
@@ -33,7 +33,7 @@ module.exports = class Csv extends events {
             // .csv has a "name" column
             if (hasKeyword.test(firstline) || hasKeywordAlone.test(firstline)) {
                 
-                delimiter = element.replace(/\\/g, ""); // replace is a fix for pipe symbol
+                delimiter = element.replace(/\\/g, ''); // replace is a fix for pipe symbol
                 
                 if (hasKeyword.test(firstline)) {
                     
@@ -167,7 +167,7 @@ module.exports = class Csv extends events {
 
                     // save the result
                     fs.ensureFileSync(target);
-                    fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
+                    fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), () => {
                         this.emit('end.remove', target);
                         console.log('OK');
                     });                        
@@ -221,7 +221,7 @@ module.exports = class Csv extends events {
 
                     // save the result
                     fs.ensureFileSync(target);
-                    fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), (err) => {
+                    fs.writeFile(target, stringify(merged, { header: true, delimiter: defaultDelimiter }), () => {
                         this.emit('end.keep', target);
                         console.log('OK');
                     });

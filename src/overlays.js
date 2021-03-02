@@ -1,14 +1,10 @@
 const fs = require('fs-extra');
 const path = require('path');
-const http = require('http');
-const https = require('https');
 const events = require('events');
 const settings = require('electron-settings');
 
 const Downloader = require('./downloader.js');
 const downloader = new Downloader();
-
-const data = require('./data.json');
 
 let mustCancel = false; // cancellation token
 let nbOverlays = 0; // number of installed overlays
@@ -131,7 +127,7 @@ module.exports = class Overlays extends events {
      * @returns {Promise} A promise listing the files in the folder
      */
     listFiles(repository, folder) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             downloader.listFiles(repository, folder, (files) => {
                 if (mustCancel) { resolve(); return; }
                 
@@ -183,7 +179,7 @@ module.exports = class Overlays extends events {
      * @param {String} file The file to look for
      */
     getFoldersContaining(folders, file) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             let result = [];
             for (let folder of folders) {
                 if (fs.existsSync(path.join(folder, file))) {
@@ -215,54 +211,54 @@ module.exports = class Overlays extends events {
             let romConfigContent = '';
 
             this.getFoldersContaining(folders, zip)
-            .then((romFolders) => {
-                let foldersPromises = folders.reduce((promisechain, folder, index) => {
-                    return promisechain.then(() => new Promise((resolve) => {
-                        let localromcfgPath = destPath;
-                        if (localromcfgPath) {
-                            // save in config: ex: config/mame, config/fba
-                            localromcfgPath = path.join(localromcfgPath, path.basename(folder));
-                        } else {
-                            // save in rom folder
-                            localromcfgPath = folder;
-                        }
+                .then((romFolders) => {
+                    let foldersPromises = romFolders.reduce((promisechain, folder) => {
+                        return promisechain.then(() => new Promise((resolve) => {
+                            let localromcfgPath = destPath;
+                            if (localromcfgPath) {
+                                // save in config: ex: config/mame, config/fba
+                                localromcfgPath = path.join(localromcfgPath, path.basename(folder));
+                            } else {
+                                // save in rom folder
+                                localromcfgPath = folder;
+                            }
 
-                        let localromcfg = path.join(localromcfgPath, cfg);
-                        if (fs.existsSync(path.join(folder, zip))) {
-                            // corresponding zip file exists
-                            console.log('Installing overlay for %s in %s', zip, folder);
+                            let localromcfg = path.join(localromcfgPath, cfg);
+                            if (fs.existsSync(path.join(folder, zip))) {
+                                // corresponding zip file exists
+                                console.log('Installing overlay for %s in %s', zip, folder);
 
-                            downloader.downloadFile(repository, sourcePath, (romcfgContent) => {
-                                if (mustCancel) { resolve(); return; }
+                                downloader.downloadFile(repository, sourcePath, (romcfgContent) => {
+                                    if (mustCancel) { resolve(); return; }
 
-                                romcfgContent = this.changeResolution(this.fixPath(base, romcfgContent), ratio);
-                                romConfigContent = romcfgContent;
-                                if (!overwrite && fs.existsSync(localromcfg)) {
-                                    resolve();
-                                } else {
-                                    // download rom cfg
-                                    fs.ensureDirSync(path.dirname(localromcfg));
-                                    fs.writeFile(localromcfg, romcfgContent, (err) => {
-                                        if (err && err.code !== 'EEXIST') throw err;
-                                        if (mustCancel) { resolve(); return; }
-
+                                    romcfgContent = this.changeResolution(this.fixPath(base, romcfgContent), ratio);
+                                    romConfigContent = romcfgContent;
+                                    if (!overwrite && fs.existsSync(localromcfg)) {
                                         resolve();
-                                    });
-                                }
-                            });
-                        } else {
-                            // the corresponding zip file does not exist
-                            resolve();
-                        }
-                    }));
-                }, Promise.resolve());
+                                    } else {
+                                        // download rom cfg
+                                        fs.ensureDirSync(path.dirname(localromcfg));
+                                        fs.writeFile(localromcfg, romcfgContent, (err) => {
+                                            if (err && err.code !== 'EEXIST') throw err;
+                                            if (mustCancel) { resolve(); return; }
 
-                // execute promises
-                foldersPromises
-                .then(() => {
-                    resolveConfig(romConfigContent);
+                                            resolve();
+                                        });
+                                    }
+                                });
+                            } else {
+                                // the corresponding zip file does not exist
+                                resolve();
+                            }
+                        }));
+                    }, Promise.resolve());
+
+                    // execute promises
+                    foldersPromises
+                        .then(() => {
+                            resolveConfig(romConfigContent);
+                        });
                 });
-            });
         });
     }
 
@@ -277,7 +273,7 @@ module.exports = class Overlays extends events {
      * @returns {Promise} A promise that downloads the overlay config
      */
     downloadOverlay(repository, sourcePath, destPath, overwrite, base) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             downloader.downloadFile(repository, sourcePath, (packOverlayFileContent) => {
                 if (mustCancel) { resolve(); return; }
 
@@ -309,7 +305,7 @@ module.exports = class Overlays extends events {
      * @returns {Promise} A promise that downloads the overlay image
      */
     downloadOverlayImage(repository, sourcePath, destPath, overwrite) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (!overwrite && fs.existsSync(destPath)) {
                 // image already exists
                 resolve();
@@ -358,64 +354,64 @@ module.exports = class Overlays extends events {
         this.emit('progress.download', 100, 1, 'files list');
 
         this.downloadCommon(repository, common, common ? path.join(configShare, common.dest[os]) : '', overwrite, base, ratio)
-        .then(() => {
-            return this.listFiles(repository, roms.src);
-        })
-        .then((romConfigs) => {
-            total = romConfigs.length;
-            current = 1;
+            .then(() => {
+                return this.listFiles(repository, roms.src);
+            })
+            .then((romConfigs) => {
+                total = romConfigs.length;
+                current = 1;
 
-            // loop on each config file
-            let requests = romConfigs.reduce((promisechain, romcfg, index) => {
-                return promisechain.then(() => new Promise((resolve, reject) => {
-                    if (mustCancel) { resolve(); return; }
+                // loop on each config file
+                let requests = romConfigs.reduce((promisechain, romcfg) => {
+                    return promisechain.then(() => new Promise((resolve) => {
+                        if (mustCancel) { resolve(); return; }
 
-                    current++;
+                        current++;
 
-                    // only process config files
-                    if ((romcfg.type !== 'file' && romcfg.type !== 'blob') || !romcfg.path.endsWith('.zip.cfg')) { 
-                        resolve();
-                        return;
-                    }
+                        // only process config files
+                        if ((romcfg.type !== 'file' && romcfg.type !== 'blob') || !romcfg.path.endsWith('.zip.cfg')) { 
+                            resolve();
+                            return;
+                        }
 
-                    this.emit('progress.download', total, current, romcfg.path.replace('.zip.cfg', ''));
+                        this.emit('progress.download', total, current, romcfg.path.replace('.zip.cfg', ''));
 
-                    // download rom config
-                    this.downloadRomConfig(repository, roms.src + '/' + romcfg.path, romCfgFolder, romFolders, overwrite, base, ratio)
-                    .then((romcfgContent) => {
-                        if (!romcfgContent || romcfgContent === '') { return Promise.resolve(''); }
+                        // download rom config
+                        this.downloadRomConfig(repository, roms.src + '/' + romcfg.path, romCfgFolder, romFolders, overwrite, base, ratio)
+                            .then((romcfgContent) => {
+                                if (!romcfgContent || romcfgContent === '') { return Promise.resolve(''); }
 
-                        // parse rom cfg to get overlay cfg
-                        let overlayFile = /input_overlay[\s]*=[\s]*"?(.*\.cfg)"?/igm.exec(romcfgContent)[1]; // extract overlay path
-                        overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/')); // just the file name
-                        let packOverlayFile = path.join(overlays.src, overlayFile); // concatenate with pack path                          
-                        let localoverlaycfg = path.join(configShare, overlays.dest[os], overlayFile);
+                                // parse rom cfg to get overlay cfg
+                                let overlayFile = /input_overlay[\s]*=[\s]*"?(.*\.cfg)"?/igm.exec(romcfgContent)[1]; // extract overlay path
+                                overlayFile = overlayFile.substring(overlayFile.lastIndexOf('/')); // just the file name
+                                let packOverlayFile = path.join(overlays.src, overlayFile); // concatenate with pack path                          
+                                let localoverlaycfg = path.join(configShare, overlays.dest[os], overlayFile);
 
-                        // download overlay config
-                        return this.downloadOverlay(repository, packOverlayFile, localoverlaycfg, overwrite, base);
-                    })
-                    .then((overlayCfgContent) => {
-                        if (!overlayCfgContent || overlayCfgContent === '') { return Promise.resolve(); }
+                                // download overlay config
+                                return this.downloadOverlay(repository, packOverlayFile, localoverlaycfg, overwrite, base);
+                            })
+                            .then((overlayCfgContent) => {
+                                if (!overlayCfgContent || overlayCfgContent === '') { return Promise.resolve(); }
 
-                        // parse overlay cfg to get overlay image
-                        let packOverlayImage = /overlay0_overlay[\s]*=[\s]*"?(.*\.png)"?/igm.exec(overlayCfgContent)[1];
-                        let packOverlayImageFile = path.join(overlays.src, packOverlayImage);
-                        let localoverlayimg = path.join(configShare, overlays.dest[os], packOverlayImage);
+                                // parse overlay cfg to get overlay image
+                                let packOverlayImage = /overlay0_overlay[\s]*=[\s]*"?(.*\.png)"?/igm.exec(overlayCfgContent)[1];
+                                let packOverlayImageFile = path.join(overlays.src, packOverlayImage);
+                                let localoverlayimg = path.join(configShare, overlays.dest[os], packOverlayImage);
 
-                        // download overlay image
-                        return this.downloadOverlayImage(repository, packOverlayImageFile, localoverlayimg, overwrite);
-                    })
-                    .then(() => {
-                        resolve();
-                    });
-                }));
-            }, Promise.resolve());
+                                // download overlay image
+                                return this.downloadOverlayImage(repository, packOverlayImageFile, localoverlayimg, overwrite);
+                            })
+                            .then(() => {
+                                resolve();
+                            });
+                    }));
+                }, Promise.resolve());
 
-            return requests;
-        })
-        .then(() => {
-            this.emit('log', 'Installed ' + nbOverlays + ' overlays');
-            this.emit('end.download', mustCancel);
-        });
+                return requests;
+            })
+            .then(() => {
+                this.emit('log', 'Installed ' + nbOverlays + ' overlays');
+                this.emit('end.download', mustCancel);
+            });
     }
 };

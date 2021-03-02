@@ -3,7 +3,7 @@ const path = require('path');
 const https = require('follow-redirects').https;
 const events = require('events');
 
-const protocol = 'https:'
+const protocol = 'https:';
 const api = 'api.github.com';
 const raw = 'https://raw.githubusercontent.com';
 
@@ -24,7 +24,7 @@ module.exports = class Downloader extends events {
                 throw 'Unable to download file ' + res.req.path;
             }
 
-            let isbinary = res.headers["content-type"].indexOf('text/plain') < 0;
+            let isbinary = res.headers['content-type'].indexOf('text/plain') < 0;
 
             if (!isbinary) {
                 res.setEncoding('utf8');
@@ -59,13 +59,13 @@ module.exports = class Downloader extends events {
         console.log('Downloading folder %s to %s', folder, targetFolder);
 
         this.listFiles(repository, folder, (list) => {
-            let requests = list.reduce((promisechain, item, index) => {
-                return promisechain.then(() => new Promise((resolve, reject) => {
+            let requests = list.reduce((promisechain, item) => {
+                return promisechain.then(() => new Promise((resolve) => {
                     if (item.type === 'file' || item.type === 'blob') {
                         let dest = path.join(targetFolder, item.path);
                         if (overwrite === true || !fs.existsSync(dest)) {
                             console.log('write file to ' + dest);
-                            downloader.downloadFile(repository, folder + '/' + item.path, (content) => {
+                            this.downloadFile(repository, folder + '/' + item.path, (content) => {
                                 if (replace && typeof content === 'string') { content = replace(content); }
                                 fs.writeFileSync(dest, content);
                                 resolve();
@@ -79,10 +79,10 @@ module.exports = class Downloader extends events {
 
             // execute requests
             requests
-            .then(() => {
-                console.log('Folder %s has been downloaded', folder);
-                if (callback) callback();
-            });
+                .then(() => {
+                    console.log('Folder %s has been downloaded', folder);
+                    if (callback) callback();
+                });
         });
     }
 

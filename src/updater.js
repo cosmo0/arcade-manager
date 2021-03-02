@@ -5,7 +5,7 @@ const https = require('follow-redirects').https;
 const events = require('events');
 const settings = require('electron-settings');
 
-const protocol = 'https:'
+const protocol = 'https:';
 const api = 'api.github.com';
 
 module.exports = class Updater extends events {
@@ -67,12 +67,10 @@ module.exports = class Updater extends events {
      * @returns 1 if a > b ; -1 if a < b ; 0 if a == b
      */
     compare(a, b) {
-        if (a === b) {
-           return 0;
-        }
+        if (a === b) { return 0; }
     
-        var a_components = a.split(".");
-        var b_components = b.split(".");
+        var a_components = a.split('.');
+        var b_components = b.split('.');
     
         var len = Math.min(a_components.length, b_components.length);
     
@@ -101,4 +99,4 @@ module.exports = class Updater extends events {
         // Otherwise they are the same.
         return 0;
     }
-}
+};

@@ -66,7 +66,7 @@ module.exports = class Roms extends events {
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
-            if (mustCancel) { resolve(); return; }
+            if (mustCancel) { return; }
 
             let fileCsv = csv.parse(fileContents);
 
@@ -86,7 +86,7 @@ module.exports = class Roms extends events {
                     this.emit('progress.add', fileCsv.length, index + 1, game + ' (' + this.entrySize(sourceRom) + ')');
     
                     // test if source file exists and destination does not
-                    if (fs.existsSync(sourceRom) && (!fs.existsSync(destRom) || overwrite)) {
+                    if (fs.existsSync(sourceRom) && (!fs.existsSync(destRom) || overwrite)) {
                         // copy rom
                         fs.copy(sourceRom, destRom, { overwrite }, (err) => {
                             if (err) throw err;
@@ -139,7 +139,7 @@ module.exports = class Roms extends events {
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
-            if (mustCancel) { resolve(); return; }
+            if (mustCancel) { return; }
 
             let fileCsv = csv.parse(fileContents);
 
@@ -156,7 +156,7 @@ module.exports = class Roms extends events {
                     fs.pathExists(rom, (err, romExists) => {
                         if (romExists) {
                             // delete rom
-                            fs.remove(rom, (err) => {
+                            fs.remove(rom, () => {
                                 romsRemoved++;
                                 console.log('%s deleted', rom);
                                 resolve();
@@ -190,14 +190,14 @@ module.exports = class Roms extends events {
 
         fs.readFile(file, { 'encoding': 'utf8' }, (err, fileContents) => {
             if (err) throw err;
-            if (mustCancel) { resolve(); return; }
+            if (mustCancel) { return; }
             
             let fileCsv = csv.parse(fileContents);
 
             // list files in selection folder
             fs.readdir(selection, (err, files) => {
                 if (err) throw err;
-                if (mustCancel) { resolve(); return; }
+                if (mustCancel) { return; }
 
                 let requests = files.reduce((promisechain, zip, index) => {
                     return promisechain.then(() => new Promise((resolve) => {
@@ -212,7 +212,7 @@ module.exports = class Roms extends events {
                         let csvItem = fileCsv.find((item) => item.name === zip.replace('.zip', ''));
                         if (typeof csvItem === 'undefined') {
                             console.log('remove %s', zip);
-                            fs.remove(path.join(selection, zip), (err) => {
+                            fs.remove(path.join(selection, zip), () => {
                                 romsRemoved++;
                                 resolve();
                             });
