@@ -373,7 +373,7 @@
          * Loads main menu on app load
          */
         $(() => {
-            if (settings.has('os')) {
+            if (settings.hasSync('os')) {
                 content.load('pages/index.html', bindNav);
             } else {
                 content.load('pages/os.html', bindNav);

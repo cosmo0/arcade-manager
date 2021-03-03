@@ -73,8 +73,8 @@ module.exports = class Overlays extends events {
      * @param {string} content The file content to fix
      */
     fixPath(base, content) {
-        let fromOs = settings.get('os') === 'retropie' ? 'recalbox' : 'retropie';
-        let toOs = settings.get('os');
+        let fromOs = settings.getSync('os') === 'retropie' ? 'recalbox' : 'retropie';
+        let toOs = settings.getSync('os');
         return content.replace(new RegExp(base[fromOs], 'gm'), base[toOs]);
     }
 
@@ -343,7 +343,7 @@ module.exports = class Overlays extends events {
             common = packInfos.common,
             base = packInfos.base;
 
-        const os = settings.get('os');
+        const os = settings.getSync('os');
 
         // check if the destination of rom cfg is the rom folder
         const romCfgFolder = packInfos.roms.dest[os] === 'roms'

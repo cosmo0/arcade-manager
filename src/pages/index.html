@@ -1,11 +1,11 @@
 
 <p>
     This tool helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.<br>
-    It assumes you have a working, <strong>non-merged</strong> romset corresponding to the MAME/FBA version you're using.<br>
+    It assumes you have a working romset corresponding to the MAME/FBA/FBNeo version you're using.<br>
     It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
 </p>
 <div class="alert alert-info">
-    If you have no idea what a "romset" is, what "non-merged" means, or why the MAME version is important,
+    If you have no idea what a "romset" is, or why the MAME version is important,
     check out <a href="pages/help/index.html" class="navmenu">the help section</a> first.
 </div>
 
@@ -67,19 +67,9 @@
 
 <script>
     $(() => {
-        let os = await settings.get('os');
-        if (os === 'none') {
-            // disable overlays entry if no OS has been selected
-            $('.mainmenu .overlays')
-                .prop('disabled', true)
-                .addClass('disabled')
-                .removeClass('navmenu')
-                .attr('href', '#')
-                .off('click')
-                .find('.card')
-                .removeClass('border-primary');
-        } else {
-            // resize footer links
+        let os = settings.getSync('os');
+        if (os !== 'none') {
+            // Add system logo
             $('.help').removeClass('col-10').addClass('col-8');
             $('.system').removeClass('col-2').addClass('col-4')
                 .find('.list-group a').prepend($('<img src="img/' + os + '-h.png">'));

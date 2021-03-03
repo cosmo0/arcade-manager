@@ -54,9 +54,9 @@
         $('.mainmenu a').on('click', (e) => {
             let link = $(e.currentTarget);
             if (link.data('os')) {
-                settings.set('os', link.data('os'));
+                settings.setSync('os', link.data('os'));
             } else {
-                settings.delete('os');
+                settings.unsetSync('os');
             }
         });
     });

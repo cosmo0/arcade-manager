@@ -26,7 +26,7 @@ module.exports = class Updater extends events {
                 console.log('latest version: %s', latest);
 
                 // version has been ignored
-                if (settings.has('ignoreVersion') && settings.get('ignoreVersion') === latest) {
+                if (settings.hasSync('ignoreVersion') && settings.getSync('ignoreVersion') === latest) {
                     console.log('Version has been ignored: %s', latest);
                     return;
                 }
@@ -44,7 +44,7 @@ module.exports = class Updater extends events {
                         'cancelId': 1,
                         'checkboxLabel': 'Do not notify me again for this version'
                     }, (response, checked) => {
-                        if (checked) { settings.set('ignoreVersion', latest); }
+                        if (checked) { settings.setSync('ignoreVersion', latest); }
 
                         // user has clicked yes
                         if (response === 0) {

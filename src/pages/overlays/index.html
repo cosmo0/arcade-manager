@@ -68,8 +68,9 @@
 
 <script>
 $(() => {
-    const os = settings.get('os');
-    let configShare = data.defaults.configs[os][process.platform];
+    const os = settings.getSync('os');
+    let configShare = data.defaults.configs[os] ? data.defaults.configs[os][process.platform] : '';
+    let romShare = data.defaults.roms[os] ? data.defaults.roms[os][process.platform] : '';
 
     $('h2').append($('<img src="img/' + os + '-h.png">'));
 
@@ -77,16 +78,16 @@ $(() => {
     if (!configShare || !fs.existsSync(configShare)) {
         configShare = '';
         $('#configFolderContainer').html($('#configInputTemplate').html());
-        $('#configFolder').attr('placeholder', 'Config share (ex: ' + data.defaults.configs[os][process.platform] + ')');
+        $('#configFolder').attr('placeholder', 'Config folder (ex: \\\\retropie\\configs\\)');
         bindBrowse();
         bindNav();
     }
 
     // list roms folders
     let folderTemplate = $('#folderTemplate').html();
-    if (data.defaults.roms[os][process.platform] && fs.existsSync(data.defaults.roms[os][process.platform])) {
+    if (romShare && fs.existsSync(romShare)) {
         for (let folder of data.defaults.romFolders[os]) {
-            let romFolder = path.join(data.defaults.roms[os][process.platform], folder);
+            let romFolder = path.join(romShare, folder);
             if (fs.existsSync(romFolder)) {
                 let li = $(folderTemplate);
 
@@ -98,7 +99,7 @@ $(() => {
         }
     } else {
         $('#romFoldersContainer').html($('#romInputTemplate').html());
-        $('#romFolder').attr('placeholder', 'Roms folder (ex: ' + data.defaults.roms[os][process.platform] + '/arcade)');
+        $('#romFolder').attr('placeholder', 'Roms folder (ex: \\\\retropie\\roms\\arcade)');
         bindBrowse();
         bindNav();
     }
