@@ -82,19 +82,19 @@
                 "src": "overlays/configs",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-realistic",
-                    "recalbox": "overlays/fba_libretro/arcade-realistic"
+                    "recalbox": "overlays/fbneo/arcade-realistic"
                 }
             },
             "common": {
                 "src": "overlays/configs/common",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-realistic/common",
-                    "recalbox": "overlays/fba_libretro/arcade-realistic/common"
+                    "recalbox": "overlays/fbneo/arcade-realistic/common"
                 }
             },
             "base": {
                 "retropie": "/opt/retropie/configs/all/retroarch/overlay/",
-                "recalbox": "/recalbox/share/overlays/fba_libretro/"
+                "recalbox": "/recalbox/share/overlays/fbneo/"
             }
         },
         {
@@ -113,12 +113,12 @@
                 "src": "overlays/configs",
                 "dest": {
                     "retropie": "all/retroarch/overlay/arcade-artwork",
-                    "recalbox": "overlays/fba_libretro/arcade-artwork"
+                    "recalbox": "overlays/fbneo/arcade-artwork"
                 }
             },
             "base": {
                 "retropie": "/opt/retropie/configs/all/retroarch/overlay/",
-                "recalbox": "/recalbox/share/overlays/fba_libretro/"
+                "recalbox": "/recalbox/share/overlays/fbneo/"
             }
         }
     ],
@@ -149,7 +149,7 @@
         },
         "romFolders": {
             "retropie": [ "arcade", "fba", "mame", "mame-libretro", "neogeo" ],
-            "recalbox": [ "fba", "fba_libretro", "mame" ]
+            "recalbox": [ "fba", "fbneo", "mame" ]
         }
     }
 }
