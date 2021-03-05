@@ -2,10 +2,12 @@
     "version": "1.0.0",
     "configurations": [
         {
-            "type": "electron",
+            "type": "node",
             "request": "launch",
-            "name": "Electron",
-            "appDir": "${workspaceFolder}"
+            "name": "Debug Electron",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "runtimeArgs": [ "${workspaceFolder}" ]
         }
     ]
 }
