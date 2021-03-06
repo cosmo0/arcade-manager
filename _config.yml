@@ -1,1 +1,53 @@
 remote_theme : "manid2/lone-wolf-theme"
+
+lang: "en_US"
+title: "Arcade Manager"
+description: "A too to manage your arcade games"
+url: "https://cosmo0.github.io/"
+baseurl: "/arcade-manager"
+author: cosmo0
+twitter:
+  username: cosmoschtroumpf
+  card: summary
+logo: arcade.png
+
+# Reading Files
+include:
+  - .htaccess
+  - _pages
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+# Conversion
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
+# Plugins (previously gems:)
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jemoji
+  - jekyll-include-cache
+
+# mimic GitHub Pages with --safe
+whitelist:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jemoji
+  - jekyll-include-cache
+
+# HTML Compression
+# - http://jch.penibelst.de/
+compress_html:
+  clippings: all
+  ignore:
+    envs: development
