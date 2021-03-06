@@ -2,16 +2,16 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="pages/index.html" class="navmenu">Home</a></li>
         <li class="breadcrumb-item"><a href="pages/help/index.html" class="navmenu">Help</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Known systems</li>
+        <li class="breadcrumb-item active" aria-current="page">Why can't I install overlays where I want?</li>
     </ol>
 </nav>
 
-<h2>Known systems</h2>
+<h2>Why can't I install overlays where I want?</h2>
 
 <p>
     Each system has strict requirements to load overlays, and they're all different (otherwise where's the fun?).
     This utility can only install overlays on know systems, with a fixed and predictable folder structure,
-    because it has to define absolute paths (and replaces them on the fly while copying the overlays).
+    because it has to define absolute paths.
 </p>
 
 <p>
@@ -26,11 +26,11 @@
     <li>
         Edit the paths in the downloaded cfg files:
         <ul>
-            <li>Move the files located in <code>overlays/fbneo/arcade-xxxx/</code> where you want
+            <li>Move the files located in <code>overlays\fbneo\arcade-xxxx\</code> where you want
                 (including the "common" folder).</li>
-            <li>Move the <code>overlays/roms/romname.zip.cfg</code> files where they need to be; it depends
-                on the system: next to the roms? In a special folder? Check the doc, ask around.</li>
-            <li>In the <code>romname.zip.cfg</code> file, edit the paths to point to the config files</li>
+            <li>Move the <code>overlays\roms\romname.zip.cfg</code> files where they need to be; it depends
+                on the system.</li>
+            <li>In all <code>cfg</code> files, edit the paths to so everything matches nicely.</li>
         </ul>
     </li>
 </ul>
