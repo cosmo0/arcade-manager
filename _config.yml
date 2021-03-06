@@ -1,5 +1,5 @@
-#theme: jekyll-theme-cayman
-remote_theme : "poole/hyde"
+theme: jekyll-theme-cayman
+#remote_theme : "poole/hyde"
 
 title:            Arcade Manager
 tagline:          ''
