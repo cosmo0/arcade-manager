@@ -1,2 +1,15 @@
 #theme: jekyll-theme-cayman
 remote_theme : "poole/hyde"
+
+title:            Arcade Manager
+tagline:          ''
+description:      'Arcade management tool to handle your MAME/FBA romsets'
+url:              https://cosmo0.github.io/
+baseurl:          /arcade-manager
+
+author:
+  name:           'cosmo0'
+  url:            https://twitter.com/cosmoschtroumpf
+
+github:
+  repo:           https://github.com/cosmo0/arcade-manager
