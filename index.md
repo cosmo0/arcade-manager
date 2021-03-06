@@ -4,6 +4,8 @@ This is a rom management tool, specifically designed for use with Retropie & Rec
 It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
 It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
 
+**[Download the latest version](https://github.com/cosmo0/arcade-manager/releases/latest)**
+
 ## Features
 
 **THIS TOOL DOES NOT CHANGE THE ROMSET VERSION!!!**  
@@ -40,9 +42,3 @@ If you are new to arcade emulation, please read these resources:
 ![Install overlays](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-overlay-download.png)
 ![Download CSV](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-csv-download.png)
 ![Copy roms](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-rom-copy.png)
-
-## Development
-
-* Run the app locally: `npm start`
-* Create a runnable package: `npm run pack` for current platform, or `npm run pack -- --mac --win --linux --x64` for all platforms; note you will have to pick at most 2 platforms, you can't build for Mac on Windows or for Windows on Mac
-* Create a package: `npm run dist -- --mac --win --linux --x64`
