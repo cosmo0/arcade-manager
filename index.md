@@ -1,37 +1,48 @@
-## Welcome to GitHub Pages
+# Arcade manager for Retropie & Recalbox
 
-You can use the [editor on GitHub](https://github.com/cosmo0/arcade-manager/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+This is a rom management tool, specifically designed for use with Retropie & Recalbox.  
+It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
+It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Features
 
-### Markdown
+**THIS TOOL DOES NOT CHANGE THE ROMSET VERSION!!!**  
+Copying files assumes you have a working, **non-merged** romset corresponding to the MAME/FBA version you're using.  
+If you ever need to change your romset version, use a tool like [ClrMamePro](https://mamedev.emulab.it/clrmamepro/).
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+* Multi-platform, works on Windows, MacOS and Linux
+* User-friendly, easy to use interface
+* Download and install an overlays pack for either Retropie or Recalbox
+* Manage rom files:
+  * Copy from romset
+  * Remove unwanted files
+  * Keep only wanted files
+* Manage games lists:
+  * Download pre-set files
+  * Merge & split files
+  * Convert DAT or INI files
+  * Create games list from folder
 
-```markdown
-Syntax highlighted code block
+Obviously, this tool does not download roms.
 
-# Header 1
-## Header 2
-### Header 3
+If you are new to arcade emulation, please read these resources:
 
-- Bulleted
-- List
+* [Arcade roms and how to play them, a non-technical guide](https://retropie.org.uk/forum/topic/7247/)
+* [Demistifying MAME roms](https://choccyhobnob.com/mame/demystifying-mame-roms/)
+* [How to use MAME with Retropie](https://retropie.org.uk/forum/topic/2859/)
+* [Validating, rebuilding and filtering ROM collections](https://github.com/RetroPie/RetroPie-Setup/wiki/Validating,-Rebuilding,-and-Filtering-ROM-Collections)
+* [Which arcade emulator should I choose?](https://www.reddit.com/r/RetroPie/comments/6v86nd/what_rom_set_works_best_with_mame/dlyhccz/)
+* [FBA vs MAME](https://retropie.org.uk/forum/topic/13769/)
 
-1. Numbered
-2. List
+## Screenshots
 
-**Bold** and _Italic_ and `Code` text
+![Home](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-home.png)
+![Install overlays](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-overlay-download.png)
+![Download CSV](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-csv-download.png)
+![Copy roms](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-rom-copy.png)
 
-[Link](url) and ![Image](src)
-```
+## Development
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cosmo0/arcade-manager/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+* Run the app locally: `npm start`
+* Create a runnable package: `npm run pack` for current platform, or `npm run pack -- --mac --win --linux --x64` for all platforms; note you will have to pick at most 2 platforms, you can't build for Mac on Windows or for Windows on Mac
+* Create a package: `npm run dist -- --mac --win --linux --x64`
