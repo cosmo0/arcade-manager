@@ -253,11 +253,21 @@ module.exports = class Csv extends events {
             parseString(datContents, (err, datXml) => {
                 if (err) throw err;
 
-                if (!datXml.datafile || !datXml.datafile.game) {
-                    throw 'DAT file needs to be in the CLR MAME PRO format';
+                let gameNode;
+
+                if (datXml.datafile && datXml.datafile.game) {
+                    // CLR MAME Pro format
+                    gameNode = 'game';
+                }
+                else if (datXml.datafile && datXml.datafile.machine) {
+                    // MAME format
+                    gameNode = 'machine';
+                }
+                else {
+                    throw 'DAT file needs to be in the MAME or CLRMAMEPRO format';
                 }
 
-                this.emit('log', 'DAT file has ' + datXml.datafile.game.length + ' games');
+                this.emit('log', 'DAT file has ' + datXml.datafile[gameNode].length + ' games');
 
                 // create a file handler to write into
                 fs.ensureFileSync(target);
@@ -267,9 +277,9 @@ module.exports = class Csv extends events {
                 stream.write('name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sampleof\n');
 
                 // for each game in the DAT, write a line in the CSV
-                let requests = datXml.datafile.game.reduce((promisechain, game, index) => {
+                let requests = datXml.datafile[gameNode].reduce((promisechain, game, index) => {
                     return promisechain.then(() => new Promise((resolve) => {
-                        this.emit('progress.convert', datXml.datafile.game.length, index + 1, game.$.name);
+                        this.emit('progress.convert', datXml.datafile[gameNode].length, index + 1, game.$.name);
 
                         let line = '';
                         line += game.$.name + ';';
