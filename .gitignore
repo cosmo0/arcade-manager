@@ -1,5 +1,18 @@
+# Mac
 .DS_Store
+
+# temp
 tmp/
-node_modules/
 out/
 dist/
+
+# node
+node_modules/
+
+# visual studio
+**/.vs/*
+**/bin/*
+**/obj/*
+
+# vscode
+**/.vscode/*
