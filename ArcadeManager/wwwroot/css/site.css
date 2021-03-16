@@ -2,7 +2,9 @@
     text-decoration: none;
 }
 
-h1 a, h2 a, h3 a {
+h1 a,
+h2 a,
+h3 a {
     font-size: 10px;
     vertical-align: middle;
     margin-left: 1rem;

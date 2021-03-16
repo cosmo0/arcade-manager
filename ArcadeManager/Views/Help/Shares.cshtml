@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Help - Network shares";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index" class="navmenu">Help</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Access network shares</li>
+    </ol>
+</nav>
+
+<h2>How to access network shares</h2>
+
+<p>
+    Roms and configs are stored on your Retropie/Recalbox installation, and are accessible
+    through network shares. This app allows to directly write on these shares.
+</p>
+
+<h3>Windows</h3>
+
+<p>
+    On Windows, you can access the shares very simply:
+</p>
+<ul>
+    <li>Roms: <strong>\\retropie\roms</strong> or <strong>\\recalbox\\roms</strong></li>
+    <li>Configs: <strong>\\retropie\configs</strong> or <strong>\\recalbox\share\system\configs</strong></li>
+</ul>
+
+<h3>MacOS</h3>
+
+<p>
+    On MacOS, first you have to mount the Samba shares.
+</p>
+<ol>
+    <li>Open a Finder window, then select menu <strong>Go &gt; Connect to server</strong></li>
+    <li>Enter: <strong>smb://retropie/</strong> or <strong>smb://recalbox/</strong></li>
+    <li>When asked for a password, connect as guest</li>
+    <li>Select the folder(s) you wish to mount</li>
+</ol>
+<p>
+    Once the folder is mounted, you can access through <strong>/Volumes/name_of_share</strong>
+</p>
+
+<h3>Linux</h3>
+
+<p>
+    Mounting a network share depends on your Linux distribution, and
+    tends to change from version to version. Using the "browse" buttons
+    is probably the easiest way.
+</p>
