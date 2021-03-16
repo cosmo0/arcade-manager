@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -8,13 +8,6 @@
     }
   },
   "profiles": {
-    "Electron.NET App": {
-      "commandName": "Executable",
-      "executablePath": "electronize",
-      "commandLineArgs": "start",
-      "workingDirectory": "."
-    },
-
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
@@ -22,13 +15,20 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "Electron.NET App": {
+      "commandName": "Executable",
+      "executablePath": "electronize",
+      "commandLineArgs": "start",
+      "workingDirectory": ".",
+      "environmentVariables": {}
+    },
     "ArcadeManager": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:21250/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:21250/"
+      }
     }
   }
 }

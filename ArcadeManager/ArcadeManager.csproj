@@ -11,11 +11,6 @@
     <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="wwwroot\electron.manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Views\Help\" />
     <Folder Include="Views\Overlays\" />
     <Folder Include="Views\Roms\" />

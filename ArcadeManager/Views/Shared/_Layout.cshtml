@@ -55,6 +55,15 @@
     <script src="/js/popper.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/site.js"></script>
+    <script>
+        (function () {
+            const { ipcRenderer } = require("electron");
+
+            $(document).on('click', 'a.blank', () => {
+                ipcRenderer.send('open-blank', $(this).attr('href'));
+            });
+        }());
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
