@@ -1,5 +1,8 @@
 {
   "executable": "ArcadeManager",
+  "splashscreen": {
+    "imageFile": "/wwwroot/img/splash.png"
+  },
   "name": "Arcade Manager",
   "author": "cosmo0",
   "singleInstance": false,
