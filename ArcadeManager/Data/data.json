@@ -1,0 +1,155 @@
+{
+    "csv": [
+        {
+            "name": "Best games",
+            "description": "Which games work best on which emulator",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/best",
+            "details": "csv/best/files.json"
+        },
+        {
+            "name": "FinalBurn Neo",
+            "description": "FinalBurn Neo (0.2.97.44)",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/fbneo-0.2.97.44",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "FBA 2017",
+            "description": "Final Burn Alpha 2017 (0.2.97.42)",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/fba-0.2.97.42",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "MAME 2003",
+            "description": "MAME 2003 (0.78)",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/mame2003",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "MAME 2010",
+            "description": "MAME 2010 (0.139)",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/mame2010",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "Advance MAME",
+            "description": "Advance MAME 1.4 and 3.7 (MAME 0.106)",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/advancemame",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "MAME 2003 only",
+            "description": "Games that work in MAME 2003 but not in FBA",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/mame2003",
+            "details": "csv/files.json"
+        },
+        {
+            "name": "MAME 2010 only",
+            "description": "Games that work in MAME 2010 but not in MAME 2003",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/mame2010-only",
+            "details": "csv/files.json"
+        }
+    ],
+    "overlays": [
+        {
+            "name": "Realistic",
+            "description": "Realistic-looking overlays, with scratches, reflections, and CRT shader",
+            "image": "img/overlays-realistic.jpg",
+            "repository": "cosmo0/retropie-overlays-arcade-realistic",
+            "roms": {
+                "src": "overlays/roms",
+                "dest": {
+                    "retropie": "roms",
+                    "recalbox": "overlays"
+                }
+            },
+            "overlays": {
+                "src": "overlays/configs",
+                "dest": {
+                    "retropie": "all/retroarch/overlay/arcade-realistic",
+                    "recalbox": "overlays/fbneo/arcade-realistic"
+                }
+            },
+            "common": {
+                "src": "overlays/configs/common",
+                "dest": {
+                    "retropie": "all/retroarch/overlay/arcade-realistic/common",
+                    "recalbox": "overlays/fbneo/arcade-realistic/common"
+                }
+            },
+            "base": {
+                "retropie": "/opt/retropie/configs/all/retroarch/overlay/",
+                "recalbox": "/recalbox/share/overlays/fbneo/"
+            }
+        },
+        {
+            "name": "Artworks",
+            "description": "Artwork-style overlays, as clean as possible, with a large screen area",
+            "image": "img/overlays-artwork.jpg",
+            "repository": "cosmo0/retropie-overlays-arcade-artwork",
+            "roms": {
+                "src": "overlays/roms",
+                "dest": {
+                    "retropie": "roms",
+                    "recalbox": "overlays"
+                }
+            },
+            "overlays": {
+                "src": "overlays/configs",
+                "dest": {
+                    "retropie": "all/retroarch/overlay/arcade-artwork",
+                    "recalbox": "overlays/fbneo/arcade-artwork"
+                }
+            },
+            "base": {
+                "retropie": "/opt/retropie/configs/all/retroarch/overlay/",
+                "recalbox": "/recalbox/share/overlays/fbneo/"
+            }
+        }
+    ],
+    "defaults": {
+        "roms": {
+            "retropie": {
+                "win32": "\\\\retropie\\roms\\",
+                "darwin": "/Volumes/roms/",
+                "linux": "/mnt/retropie/roms/"
+            },
+            "recalbox": {
+                "win32": "\\\\recalbox\\share\\roms\\",
+                "darwin": "/Volumes/share/roms/",
+                "linux": "/mnt/recalbox/share/roms/"
+            }
+        },
+        "configs": {
+            "retropie": {
+                "win32": "\\\\retropie\\configs\\",
+                "darwin": "/Volumes/configs/",
+                "linux": "/mnt/retropie/configs/"
+            },
+            "recalbox": {
+                "win32": "\\\\recalbox\\share\\",
+                "darwin": "/Volumes/share/",
+                "linux": "/mnt/recalbox/share/"
+            }
+        },
+        "romFolders": {
+            "retropie": [ "arcade", "fba", "mame", "mame-libretro", "neogeo" ],
+            "recalbox": [ "fba", "fbneo", "mame" ]
+        }
+    }
+}
