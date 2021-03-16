@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ElectronNET.API;
+using ElectronNET.API.Entities;
 
 namespace ArcadeManager
 {
@@ -54,7 +55,25 @@ namespace ArcadeManager
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+            if (HybridSupport.IsElectronActive)
+            {
+                ElectronBootstrap();
+            }
+        }
+
+        public async void ElectronBootstrap()
+        {
+            var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+            {
+                Width = 1280,
+                Height = 800,
+                Show = true
+            });
+
+            await browserWindow.WebContents.Session.ClearCacheAsync();
+
+            browserWindow.OnReadyToShow += () => browserWindow.Show();
+            browserWindow.SetTitle("Arcade Manager");
         }
     }
 }

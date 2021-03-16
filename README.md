@@ -45,6 +45,13 @@ If you are new to arcade emulation, please read these resources:
 
 ## Development
 
-* Run the app locally: `npm start`
-* Create a runnable package: `npm run pack` for current platform, or `npm run pack -- --mac --win --linux --x64` for all platforms; note you will have to pick at most 2 platforms, you can't build for Mac on Windows or for Windows on Mac
-* Create a package: `npm run dist -- --mac --win --linux --x64`
+Build and run:
+
+````bash
+dotnet tool install --global ElectronNET.CLI
+cd ArcadeManager
+dotnet build
+electronize start
+````
+
+Create an install package: TODO

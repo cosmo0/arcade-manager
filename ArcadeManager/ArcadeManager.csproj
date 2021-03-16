@@ -7,4 +7,9 @@
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\electron.manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
