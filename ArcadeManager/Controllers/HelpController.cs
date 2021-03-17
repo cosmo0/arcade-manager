@@ -1,45 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ArcadeManager.Controllers
-{
-    /// <summary>
-    /// Controller for the help pages
-    /// </summary>
-    public class HelpController : BaseController
-    {
-        /// <summary>
-        /// Initializes a new instance of the Help controller
-        /// </summary>
-        /// <param name="logger">The logger</param>
-        public HelpController(ILogger<HelpController> logger) : base(logger)
-        {
-        }
+namespace ArcadeManager.Controllers {
 
-        public IActionResult Index() => View();
+	/// <summary>
+	/// Controller for the help pages
+	/// </summary>
+	public class HelpController : BaseController {
 
-        public IActionResult Basics() => View();
+		/// <summary>
+		/// Initializes a new instance of the <see cref="HelpController" /> class.
+		/// </summary>
+		/// <param name="logger">The logger.</param>
+		public HelpController(ILogger<HelpController> logger) : base(logger) {
+		}
 
-        public IActionResult CustomCsv() => View();
+		/// <summary>
+		/// Basics view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Basics() => View();
 
-        public IActionResult DatFiles() => View();
+		/// <summary>
+		/// Custom CSV view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult CustomCsv() => View();
 
-        public IActionResult Emulators() => View();
+		/// <summary>
+		/// DAT files view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult DatFiles() => View();
 
-        public IActionResult Install() => View();
+		/// <summary>
+		/// Emulators view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Emulators() => View();
 
-        public IActionResult KnownSystems() => View();
+		/// <summary>
+		/// Index view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Index() => View();
 
-        public IActionResult Romsets() => View();
+		/// <summary>
+		/// Install and configure view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Install() => View();
 
-        public IActionResult Shares() => View();
+		/// <summary>
+		/// Known systems view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult KnownSystems() => View();
 
-        public IActionResult Tips() => View();
+		/// <summary>
+		/// Romsets view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Romsets() => View();
 
-        public IActionResult What() => View();
-    }
+		/// <summary>
+		/// Shares view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Shares() => View();
+
+		/// <summary>
+		/// Tips view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Tips() => View();
+
+		/// <summary>
+		/// What view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult What() => View();
+	}
 }
