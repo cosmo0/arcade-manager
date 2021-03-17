@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\favicon.ico" />

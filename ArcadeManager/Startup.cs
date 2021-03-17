@@ -210,6 +210,10 @@ namespace ArcadeManager {
 			browserWindow.OnReadyToShow += () => browserWindow.Show();
 			browserWindow.SetTitle("Arcade Manager");
 
+#if DEBUG
+			browserWindow.WebContents.OpenDevTools();
+#endif
+
 			return browserWindow;
 		}
 	}

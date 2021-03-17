@@ -69,11 +69,25 @@
 </div>
 
 @section Scripts {
-<script>
-$(() => {
-    getOs((os) => {
-        debugger;
-    });
-});
-</script>
+    <script>$(() => {
+            getOs((os) => {
+                if (os === 'none') {
+                    // disable overlays entry if no OS has been selected
+                    $('.mainmenu .overlays')
+                        .prop('disabled', true)
+                        .addClass('disabled')
+                        .removeClass('navmenu')
+                        .attr('href', '#')
+                        .off('click')
+                        .find('.card')
+                        .removeClass('border-primary')
+                        .on('click', () => { window.location.href = '@Url.Action("KnownSystems", "Help")'; });
+                } else {
+                    // Add system logo
+                    $('.help').removeClass('col-10').addClass('col-8');
+                    $('.system').removeClass('col-2').addClass('col-4')
+                        .find('.list-group a').prepend($('<img src="img/' + os + '-h.png">'));
+                }
+            });
+        });</script>
 }
