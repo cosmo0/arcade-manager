@@ -62,7 +62,6 @@ namespace ArcadeManager.Behavior
         private string GetLocalFilePath(string fileName)
         {
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Console.WriteLine($"Settings file: {appData}");
             return Path.Combine(appData, fileName);
         }
 

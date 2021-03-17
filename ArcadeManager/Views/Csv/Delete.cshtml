@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["title"] = "Delete entries from a list";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">Manage games lists</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Delete games</li>
+    </ol>
+</nav>
+
+<h2>Delete games from a CSV file</h2>
+
+<p>
+    Select the main CSV file, the file containing the games you want to remove from the first,
+    and the target file.
+</p>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Main CSV file</span>
+    </div>
+    <input type="text" class="form-control" id="fileMainCsv">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The CSV file to remove games from</small>
+</p>
+
+<!-- secondary CSV file -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Secondary CSV file</span>
+    </div>
+    <input type="text" class="form-control" id="fileSecondaryCsv">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse" type="button" data-input="fileSecondaryCsv">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The CSV files with the games to remove</small>
+</p>
+
+<!-- target output file -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">Target file</span>
+    </div>
+    <input type="text" class="form-control" id="fileTarget">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">Browse</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">The merged file to be saved</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Delete</button>
+</p>
+
+@*<script>$('#buttonOk').on('click', () => {
+        // get paths from file inputs
+        let main = $('#fileMainCsv').val(),
+            secondary = $('#fileSecondaryCsv').val(),
+            target = $('#fileTarget').val();
+
+        // check every path is filled
+        if (main === '') { window.alert('Please choose a main CSV file'); return; }
+        if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
+        if (target === '') { window.alert('Please choose the target CSV file'); return; }
+
+        // execute action
+        csv.remove(main, secondary, target);
+    });</script>*@
