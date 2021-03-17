@@ -28,6 +28,12 @@ namespace ArcadeManager.Controllers
         /// <returns>The view</returns>
         public IActionResult Index() => View();
 
+        /// <summary>
+        /// Gets the OS selection view
+        /// </summary>
+        /// <returns>The view</returns>
+        public IActionResult Os() => View();
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

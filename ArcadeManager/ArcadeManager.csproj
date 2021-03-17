@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\favicon.ico" />
@@ -15,5 +16,6 @@
     <Folder Include="Views\Overlays\" />
     <Folder Include="Views\Roms\" />
     <Folder Include="Views\Csv\" />
+    <Folder Include="Behavior\" />
   </ItemGroup>
 </Project>

@@ -22,28 +22,6 @@ namespace ArcadeManager.Controllers
         protected readonly ILogger logger;
 
         /// <summary>
-        /// Initializes static elements of the app
-        /// </summary>
-        static BaseController()
-        {
-            if (HybridSupport.IsElectronActive)
-            {
-                Electron.IpcMain.On("open-blank", async (args) =>
-                {
-                    if (args != null)
-                    {
-                        Console.WriteLine("open blank link to: " + args.ToString());
-                        await Electron.Shell.OpenExternalAsync(args.ToString());
-                    }
-                    else
-                    {
-                        Console.WriteLine("Unable to open a blank link: no URL provided");
-                    }
-                });
-            }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the BaseController class
         /// </summary>
         /// <param name="logger">The logger</param>
