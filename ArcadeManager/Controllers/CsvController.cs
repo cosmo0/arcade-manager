@@ -40,16 +40,16 @@ namespace ArcadeManager.Controllers {
 		public IActionResult Delete() => View();
 
 		/// <summary>
-		/// Index view
-		/// </summary>
-		/// <returns>The view</returns>
-		public IActionResult Index() => View();
-
-		/// <summary>
 		/// Download a pre-built list
 		/// </summary>
 		/// <returns>The view</returns>
 		public IActionResult Download() => View();
+
+		/// <summary>
+		/// Index view
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Index() => View();
 
 		/// <summary>
 		/// Keep only listed files

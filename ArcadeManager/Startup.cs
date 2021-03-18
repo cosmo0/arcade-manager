@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace ArcadeManager {
@@ -14,6 +15,7 @@ namespace ArcadeManager {
 	/// Startup app
 	/// </summary>
 	public class Startup {
+		private IWebHostEnvironment env;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Startup"/> class.
@@ -37,6 +39,8 @@ namespace ArcadeManager {
 		/// <param name="app">The application.</param>
 		/// <param name="env">The host environment.</param>
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+			this.env = env;
+
 			if (env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
 			}
@@ -98,23 +102,39 @@ namespace ArcadeManager {
 		/// <summary>
 		/// Builds the application menus
 		/// </summary>
-		private void BuildAppMenu() {
+		private static void BuildAppMenu() {
+			static MenuItem firstMenu() {
+				if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+					return new MenuItem {
+						Label = "ArcadeManager",
+						Submenu = new MenuItem[]
+						{
+							new MenuItem { Role = MenuRole.about },
+							new MenuItem { Type = MenuType.separator },
+							new MenuItem { Role = MenuRole.hide },
+							new MenuItem { Role = MenuRole.hideothers },
+							new MenuItem { Type = MenuType.separator },
+							new MenuItem { Role = MenuRole.quit }
+						}
+					};
+				}
+				else {
+					return new MenuItem {
+						Label = "File",
+						Submenu = new MenuItem[]
+						{
+							new MenuItem { Role = MenuRole.about },
+							new MenuItem { Type = MenuType.separator },
+							new MenuItem { Role = MenuRole.quit }
+						}
+					};
+				}
+			};
+
 			var menu = new MenuItem[]
 			{
-                // App name menu
-                new MenuItem
-				{
-					Label = "Prefix",
-					Submenu = new MenuItem[]
-					{
-						new MenuItem { Role = MenuRole.about },
-						new MenuItem { Type = MenuType.separator },
-						new MenuItem { Role = MenuRole.hide },
-						new MenuItem { Role = MenuRole.hideothers },
-						new MenuItem { Type = MenuType.separator },
-						new MenuItem { Role = MenuRole.quit }
-					}
-				},
+                // App name/file menu
+                firstMenu(),
 
                 // Edit
                 new MenuItem {
@@ -210,9 +230,9 @@ namespace ArcadeManager {
 			browserWindow.OnReadyToShow += () => browserWindow.Show();
 			browserWindow.SetTitle("Arcade Manager");
 
-#if DEBUG
-			browserWindow.WebContents.OpenDevTools();
-#endif
+			if (this.env.IsDevelopment()) {
+				browserWindow.WebContents.OpenDevTools();
+			}
 
 			return browserWindow;
 		}

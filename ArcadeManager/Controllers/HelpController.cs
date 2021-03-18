@@ -28,15 +28,15 @@ namespace ArcadeManager.Controllers {
 		public IActionResult Delete() => View();
 
 		/// <summary>
-		/// Keep only listed files
-		/// </summary>
-		/// <returns>The view</returns>
-		public IActionResult Keep() => View();
-
-		/// <summary>
 		/// Index view
 		/// </summary>
 		/// <returns>The view</returns>
 		public IActionResult Index() => View();
+
+		/// <summary>
+		/// Keep only listed files
+		/// </summary>
+		/// <returns>The view</returns>
+		public IActionResult Keep() => View();
 	}
 }

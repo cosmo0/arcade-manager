@@ -7,7 +7,7 @@
   "author": "cosmo0",
   "singleInstance": false,
   "build": {
-    "appId": "com.arcade-manager.app",
+    "appId": "com.ArcadeManager.app",
     "productName": "ArcadeManager",
     "copyright": "Copyright © 2021",
     "buildVersion": "6.0.0",
