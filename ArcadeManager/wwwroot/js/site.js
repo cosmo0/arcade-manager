@@ -1,4 +1,6 @@
 ﻿const { ipcRenderer } = require("electron");
+var selectedOs,
+    appData;
 
 $(() => {
     // bind blank pages navigation
@@ -43,14 +45,29 @@ $(() => {
  * @param {Function} cb the callback
  */
 function getOs(cb) {
-    ipcRenderer.once('get-os', (event, os) => {
-        console.log(`OS: ${os}`);
-        if (cb && typeof cb === 'function') {
-            cb(os);
-        }
-    });
+    if (selectedOs) {
+        cb(selectedOs);
+    } else {
+        ipcRenderer.once('get-os', (event, os) => {
+            console.log(`OS: ${os}`);
+            if (cb && typeof cb === 'function') {
+                selectedOs = os;
+                cb(os);
+            }
+        });
 
-    ipcRenderer.send('get-os');
+        ipcRenderer.send('get-os');
+    }
+}
+
+/**
+ * Sets the selected OS (Recalbox/Retropie)
+ * 
+ * @param {String} os the selected OS
+ */
+function setOs(os) {
+    selectedOs = os;
+    ipcRenderer.send('change-os', os);
 }
 
 /**
@@ -93,4 +110,18 @@ function selectFile(current, cb) {
     });
 
     ipcRenderer.send("select-file", current);
+}
+
+/**
+ * Gets the AppData
+ * 
+ * @param {any} cb
+ */
+function getAppData(cb) {
+    ipcRenderer.once("get-appdata-reply", (sender, data) => {
+        appData = JSON.parse(data);
+        cb(appData);
+    });
+
+    ipcRenderer.send("get-appdata");
 }

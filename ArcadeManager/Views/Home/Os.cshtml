@@ -54,12 +54,10 @@
 </div>
 
 @section Scripts {
-<script>
-    $(() => {
-        $('.mainmenu a.os').on('click', (e) => {
-            const link = $(e.currentTarget);
-            ipcRenderer.send('change-os', link.data('os'));
-        });
-    });
-</script>
+    <script>$(() => {
+            $('.mainmenu a.os').on('click', (e) => {
+                const link = $(e.currentTarget);
+                setOs(link.data('os'));
+            });
+        });</script>
 }

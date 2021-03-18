@@ -16,5 +16,19 @@
     <Folder Include="Views\Roms\" />
     <Folder Include="Views\Csv\" />
     <Folder Include="Behavior\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Data\bios.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Data\bios.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\bios.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

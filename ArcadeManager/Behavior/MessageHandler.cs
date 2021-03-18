@@ -9,6 +9,7 @@ namespace ArcadeManager.Behavior {
 	/// Class for messages handling
 	/// </summary>
 	public static class MessageHandler {
+		private static string appData;
 
 		/// <summary>
 		/// Initializes the global message handling
@@ -16,6 +17,9 @@ namespace ArcadeManager.Behavior {
 		public static void InitMessageHandling(BrowserWindow window) {
 			if (HybridSupport.IsElectronActive) {
 				Electron.IpcMain.On("open-blank", OpenNewWindow);
+
+				// Get AppData
+				Electron.IpcMain.On("get-appdata", (args) => { GetAppData(window); });
 
 				// Get/Set OS
 				Electron.IpcMain.On("get-os", (args) => { GetOs(window); });
@@ -26,6 +30,12 @@ namespace ArcadeManager.Behavior {
 				Electron.IpcMain.On("new-file", async (args) => { await NewFile(args, window); });
 				Electron.IpcMain.On("select-file", async (args) => { await SelectFile(args, window); });
 			}
+		}
+
+		private static void GetAppData(BrowserWindow window)
+        {
+			if (string.IsNullOrEmpty(appData)) { appData = Services.Serializer.Serialize(Models.AppData.Current); }
+			Electron.IpcMain.Send(window, "get-appdata-reply", appData);
 		}
 
 		/// <summary>
@@ -59,7 +69,7 @@ namespace ArcadeManager.Behavior {
 		/// </summary>
 		/// <param name="window">The window reference</param>
 		private static void GetOs(BrowserWindow window) {
-			Electron.IpcMain.Send(window, "get-os", Settings.Os);
+			Electron.IpcMain.Send(window, "get-os", Settings.Os ?? string.Empty);
 		}
 
 		/// <summary>

@@ -80,17 +80,23 @@
 @section Scripts {
 <script>
     $(() => {
+        getOs((os) => {
+            if (!os) { return; }
+            getAppData((data) => {
+                if (!data) { return; }
+                $('#fileRomSelection').attr("placeholder", data.defaults.roms[os][platform]);
+            });
+        });
 
+        // run copy
+        $('#buttonOk').on('click', () => {
+
+        });
     });
 </script>
 }
 
-@*<script>$(() => {
-    if (settings.hasSync('os')) {
-        $('#fileRomSelection').attr("placeholder", data.defaults.roms[settings.getSync('os')][process.platform]);
-    }
-});
-
+@*<script>
 $('#buttonOk').on('click', () => {
     // get paths from file inputs
     let main = $('#fileMainCsv').val(),

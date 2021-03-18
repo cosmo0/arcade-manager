@@ -58,7 +58,9 @@
     <script src="/js/bootstrap.js"></script>
     <script src="/js/site.js"></script>
     <script>if (window.module) module = window.module;</script>
-
+    <script>
+        const platform = '@ArcadeManagerEnvironment.Platform';
+    </script>
 
     @*<script>
         /**
@@ -255,18 +257,6 @@
             }
         }
 
-        /**
-         * Loads main menu on app load
-         */
-        $(() => {
-            if (settings.hasSync('os')) {
-                content.load('pages/index.html', bindNav);
-            } else {
-                content.load('pages/os.html', bindNav);
-            }
-
-            bindEvents();
-        });
     </script>*@
 
     @await RenderSectionAsync("Scripts", required: false)
