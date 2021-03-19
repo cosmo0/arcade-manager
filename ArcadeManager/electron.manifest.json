@@ -3,7 +3,7 @@
   "splashscreen": {
     "imageFile": "/wwwroot/img/splash.png"
   },
-  "name": "Arcade Manager",
+  "name": "ArcadeManager",
   "author": "cosmo0",
   "singleInstance": false,
   "build": {
