@@ -9,12 +9,21 @@ namespace ArcadeManager {
 	/// Provides environment values relative to ArcadeManager
 	/// </summary>
 	public static class ArcadeManagerEnvironment {
-		private readonly static Settings _settings = mgr.LoadSettings() ?? new Settings();
-		private readonly static SettingsManager mgr = new SettingsManager(@"ArcadeManager\userSettings.json");
+		private readonly static Settings settings;
+		private readonly static SettingsManager mgr;
 
 		private static AppData _appData;
 		private static string _basePath;
 		private static string _platform;
+
+		/// <summary>
+        /// Initializes the ArcadeManager environment
+        /// </summary>
+		static ArcadeManagerEnvironment()
+		{
+			mgr = new SettingsManager(@"ArcadeManager\userSettings.json");
+			settings = mgr.LoadSettings() ?? new Settings();
+		}
 
 		/// <summary>
 		/// Gets the current AppData values
@@ -63,6 +72,10 @@ namespace ArcadeManager {
 				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
 					_platform = "linux";
 				}
+				else
+                {
+					throw new NotImplementedException("If you want to run Arcade Manager on something else than Linux, Mac or Windows, you'll have some coding to do!");
+                }
 
 				return _platform;
 			}
@@ -73,12 +86,12 @@ namespace ArcadeManager {
 		/// </summary>
 		public static string SettingsOs {
 			get {
-				return _settings.Os ?? string.Empty;
+				return settings.Os ?? string.Empty;
 			}
 			set {
-				_settings.Os = value;
+				settings.Os = value;
 
-				mgr.SaveSettings(_settings);
+				mgr.SaveSettings(settings);
 			}
 		}
 

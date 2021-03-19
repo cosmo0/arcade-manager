@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Rom adding action
 	/// </summary>
-	public class RomsAdd {
+	public class RomsAction {
 
 		/// <summary>
 		/// Gets or sets the path to the main file

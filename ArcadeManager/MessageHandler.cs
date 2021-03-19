@@ -42,6 +42,7 @@ namespace ArcadeManager {
 
 				// Roms actions
 				Electron.IpcMain.On("roms-add", (args) => { RomsAdd(args, window); });
+				Electron.IpcMain.On("roms-delete", (args) => { RomsDelete(args, window); });
 			}
 		}
 
@@ -147,15 +148,28 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
-		/// Copies roms
+		/// Copies roms from a folder to another
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
 		private static void RomsAdd(object args, BrowserWindow window) {
-			var data = ConvertArgs<RomsAdd>(args);
+			var data = ConvertArgs<RomsAction>(args);
 			MustCancel = false;
 
 			Services.Roms.Add(data, window);
+		}
+
+		/// <summary>
+        /// Deletes rom from a folder
+        /// </summary>
+        /// <param name="args">The arguments</param>
+        /// <param name="window">The window reference</param>
+		private static void RomsDelete(object args, BrowserWindow window)
+		{
+			var data = ConvertArgs<RomsAction>(args);
+			MustCancel = false;
+
+			Services.Roms.Delete(data, window);
 		}
 
 		/// <summary>
