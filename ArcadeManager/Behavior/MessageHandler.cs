@@ -10,9 +10,10 @@ namespace ArcadeManager.Behavior {
 	/// Class for messages handling
 	/// </summary>
 	public static class MessageHandler {
+
 		/// <summary>
-        /// Cancellation token
-        /// </summary>
+		/// Cancellation token
+		/// </summary>
 		public static bool MustCancel { get; set; }
 
 		/// <summary>
@@ -45,47 +46,6 @@ namespace ArcadeManager.Behavior {
 		}
 
 		/// <summary>
-        /// Gets the application data settings
-        /// </summary>
-        /// <param name="window">The window reference</param>
-		private static void GetAppData(BrowserWindow window)
-        {
-			Electron.IpcMain.Send(window, "get-appdata-reply", Models.AppData.Current);
-		}
-
-		/// <summary>
-        /// Copies roms
-        /// </summary>
-        /// <param name="args">The arguments</param>
-        /// <param name="window">The window reference</param>
-		private static void RomsAdd(object args, BrowserWindow window)
-        {
-			var data = ConvertArgs<RomsAdd>(args);
-			MustCancel = false;
-
-			Services.Roms.Add(data, window);
-        }
-
-		/// <summary>
-        /// Convert arguments to strongly-typed object
-        /// </summary>
-        /// <typeparam name="T">The type of the object</typeparam>
-        /// <param name="args">The arguments</param>
-        /// <returns>The object</returns>
-		private static T ConvertArgs<T>(object args)
-        {
-			if (args == null) {
-				return default;
-			}
-
-			if (args.GetType() != typeof(Newtonsoft.Json.Linq.JObject)) {
-				throw new ArgumentException("Unable to convert arguments to JObject");
-			}
-
-			return ((Newtonsoft.Json.Linq.JObject)args).ToObject<T>();
-		}
-
-		/// <summary>
 		/// Browse for a folder to select
 		/// </summary>
 		/// <param name="currentPath">The default path</param>
@@ -112,6 +72,32 @@ namespace ArcadeManager.Behavior {
 		}
 
 		/// <summary>
+		/// Convert arguments to strongly-typed object
+		/// </summary>
+		/// <typeparam name="T">The type of the object</typeparam>
+		/// <param name="args">The arguments</param>
+		/// <returns>The object</returns>
+		private static T ConvertArgs<T>(object args) {
+			if (args == null) {
+				return default;
+			}
+
+			if (args.GetType() != typeof(Newtonsoft.Json.Linq.JObject)) {
+				throw new ArgumentException("Unable to convert arguments to JObject");
+			}
+
+			return ((Newtonsoft.Json.Linq.JObject)args).ToObject<T>();
+		}
+
+		/// <summary>
+		/// Gets the application data settings
+		/// </summary>
+		/// <param name="window">The window reference</param>
+		private static void GetAppData(BrowserWindow window) {
+			Electron.IpcMain.Send(window, "get-appdata-reply", Models.AppData.Current);
+		}
+
+		/// <summary>
 		/// Gets the selected OS
 		/// </summary>
 		/// <param name="window">The window reference</param>
@@ -134,6 +120,19 @@ namespace ArcadeManager.Behavior {
 		}
 
 		/// <summary>
+		/// Opens the explorer to the specified folder
+		/// </summary>
+		/// <param name="folder">The folder to open</param>
+		private static async void OpenFolder(object folder) {
+			if (folder != null) {
+				await Electron.Shell.OpenPathAsync(folder.ToString());
+			}
+			else {
+				Console.WriteLine("Unable to open the folder");
+			}
+		}
+
+		/// <summary>
 		/// Opens a new browser window to the specified URL
 		/// </summary>
 		/// <param name="url">The URL to open</param>
@@ -148,20 +147,16 @@ namespace ArcadeManager.Behavior {
 		}
 
 		/// <summary>
-        /// Opens the explorer to the specified folder
-        /// </summary>
-        /// <param name="folder">The folder to open</param>
-		private static async void OpenFolder(object folder)
-        {
-			if (folder != null)
-            {
-				await Electron.Shell.OpenPathAsync(folder.ToString());
-            }
-			else
-            {
-				Console.WriteLine("Unable to open the folder");
-            }
-        }
+		/// Copies roms
+		/// </summary>
+		/// <param name="args">The arguments</param>
+		/// <param name="window">The window reference</param>
+		private static void RomsAdd(object args, BrowserWindow window) {
+			var data = ConvertArgs<RomsAdd>(args);
+			MustCancel = false;
+
+			Services.Roms.Add(data, window);
+		}
 
 		/// <summary>
 		/// Selects a file

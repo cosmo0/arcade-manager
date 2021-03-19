@@ -83,7 +83,7 @@ namespace ArcadeManager.Behavior {
 		/// </summary>
 		/// <param name="fileName">Name of the file.</param>
 		/// <returns>The local file path</returns>
-		private string GetLocalFilePath(string fileName) {
+		private static string GetLocalFilePath(string fileName) {
 			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 			return Path.Combine(appData, fileName);
 		}

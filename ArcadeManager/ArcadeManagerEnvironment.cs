@@ -1,23 +1,19 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace ArcadeManager
-{
+namespace ArcadeManager {
+
 	/// <summary>
-    /// Provides environment values relative to ArcadeManager
-    /// </summary>
-    public static class ArcadeManagerEnvironment
-    {
+	/// Provides environment values relative to ArcadeManager
+	/// </summary>
+	public static class ArcadeManagerEnvironment {
 		private static string _basePath;
 		private static string _platform;
 
 		/// <summary>
 		/// Gets the base application path
 		/// </summary>
-		public static string BasePath
-		{
-			get
-			{
+		public static string BasePath {
+			get {
 				if (!string.IsNullOrEmpty(_basePath)) { return _basePath; }
 
 				//_basePath = AppContext.BaseDirectory;
@@ -31,29 +27,24 @@ namespace ArcadeManager
 		}
 
 		/// <summary>
-        /// Gets the application platform (win32, darwin, linux)
-        /// </summary>
-		public static string Platform
-        {
-			get
-            {
+		/// Gets the application platform (win32, darwin, linux)
+		/// </summary>
+		public static string Platform {
+			get {
 				if (!string.IsNullOrEmpty(_platform)) { return _platform; }
 
-				if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
+				if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
 					_platform = "darwin";
-                }
-				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
+				}
+				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 					_platform = "win32";
-                }
-				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
+				}
+				else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
 					_platform = "linux";
-                }
+				}
 
 				return _platform;
-            }
-        }
+			}
+		}
 	}
 }
