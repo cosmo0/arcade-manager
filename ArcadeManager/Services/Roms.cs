@@ -49,18 +49,20 @@ namespace ArcadeManager.Services {
 						Electron.IpcMain.Send(window, "progress", new Progress { label = $"{game} ({HumanSize(fi.Length)})", total = total, current = i });
 
 						// copy rom
-						File.Copy(sourceRom, destRom, args.overwrite);
-
-						if (!File.Exists(destRom) || args.overwrite) { copied++; }
+						if (!File.Exists(destRom) || args.overwrite) {
+							File.Copy(sourceRom, destRom, true);
+							copied++;
+						}
 
 						// try to copy chd if it can be found
 						var sourceChd = Path.Join(args.romset, game);
+						var targetChd = Path.Join(args.selection, game);
 						if (Directory.Exists(sourceChd)) {
 							if (MessageHandler.MustCancel) { break; }
 
 							Electron.IpcMain.Send(window, "progress", new Progress { label = $"Copying {game} CHD ({HumanSize(DirectorySize(sourceChd))})", total = total, current = i });
 
-							DirectoryCopy(sourceChd, Path.Join(args.selection, game), args.overwrite, false);
+							DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
 						}
 					}
 				}
@@ -154,7 +156,7 @@ namespace ArcadeManager.Services {
 
                     Electron.IpcMain.Send(window, "progress", new Progress { label = $"{f.Name}", total = total, current = i });
 
-					if (!content.Any(c => $"{c.name}" == f.Name))
+					if (!content.Any(c => $"{c.name}.zip" == f.Name))
                     {
 						File.Delete(f.FullName);
 						deleted++;

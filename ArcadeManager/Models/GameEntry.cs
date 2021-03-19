@@ -6,11 +6,6 @@
 	public struct GameEntry {
 
 		/// <summary>
-		/// Gets or sets the parent rom, if any
-		/// </summary>
-		public string cloneof { get; set; }
-
-		/// <summary>
 		/// Gets or sets the game's name
 		/// </summary>
 		public string name { get; set; }
