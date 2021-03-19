@@ -97,7 +97,7 @@ namespace ArcadeManager {
 			});
 
 			// initializes RPC message handling
-			Behavior.MessageHandler.InitMessageHandling(mainWindow);
+			MessageHandler.InitMessageHandling(mainWindow);
 		}
 
 		/// <summary>

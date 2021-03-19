@@ -73,7 +73,7 @@
         $(() => {
             getOs((os) => {
                 // go to OS selection if none is set
-                if (typeof os === 'undefined' || os === null) {
+                if (typeof os === 'undefined' || os === null || os === '') {
                     window.location.href = '@Url.Action("Os", "Home")';
                 }
 

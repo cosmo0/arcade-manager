@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace ArcadeManager.Models {
 
@@ -7,21 +6,6 @@ namespace ArcadeManager.Models {
 	/// Represents the application data
 	/// </summary>
 	public class AppData {
-		private static AppData _current;
-
-		/// <summary>
-		/// Gets the current AppData values
-		/// </summary>
-		public static AppData Current {
-			get {
-				if (_current != null) { return _current; }
-
-				string content = File.ReadAllText(Path.Join(ArcadeManagerEnvironment.BasePath, Path.Join("Data", "appdata.json")));
-				_current = Services.Serializer.Deserialize<AppData>(content);
-
-				return _current;
-			}
-		}
 
 		/// <summary>
 		/// The list of CSV categories

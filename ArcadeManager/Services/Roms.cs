@@ -33,7 +33,7 @@ namespace ArcadeManager.Services {
 
 				// copy each file found in CSV
 				foreach (var f in content) {
-					if (Behavior.MessageHandler.MustCancel) { break; }
+					if (MessageHandler.MustCancel) { break; }
 
 					i++;
 
@@ -48,15 +48,15 @@ namespace ArcadeManager.Services {
 
 						Electron.IpcMain.Send(window, "progress", new Progress { label = $"{game} ({HumanSize(fi.Length)})", total = total, current = i });
 
-						if (!File.Exists(destRom) || args.overwrite) { copied++; }
-
 						// copy rom
 						File.Copy(sourceRom, destRom, args.overwrite);
+
+						if (!File.Exists(destRom) || args.overwrite) { copied++; }
 
 						// try to copy chd if it can be found
 						var sourceChd = Path.Join(args.romset, game);
 						if (Directory.Exists(sourceChd)) {
-							if (Behavior.MessageHandler.MustCancel) { break; }
+							if (MessageHandler.MustCancel) { break; }
 
 							Electron.IpcMain.Send(window, "progress", new Progress { label = $"Copying {game} CHD ({HumanSize(DirectorySize(sourceChd))})", total = total, current = i });
 
@@ -66,7 +66,7 @@ namespace ArcadeManager.Services {
 				}
 
 				// display result
-				if (Behavior.MessageHandler.MustCancel) {
+				if (MessageHandler.MustCancel) {
 					Electron.IpcMain.Send(window, "progress", new Progress { label = $"Operation cancelled! - Copied {copied} file(s)", end = true, cancelled = true });
 				}
 				else {

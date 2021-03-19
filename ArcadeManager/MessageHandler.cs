@@ -4,7 +4,7 @@ using ElectronNET.API.Entities;
 using System;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Behavior {
+namespace ArcadeManager {
 
 	/// <summary>
 	/// Class for messages handling
@@ -67,7 +67,7 @@ namespace ArcadeManager.Behavior {
 		private static void ChangeOs(object obj) {
 			if (obj != null) {
 				// save the OS in settings
-				Settings.Os = obj.ToString();
+				ArcadeManagerEnvironment.SettingsOs = obj.ToString();
 			}
 		}
 
@@ -94,7 +94,7 @@ namespace ArcadeManager.Behavior {
 		/// </summary>
 		/// <param name="window">The window reference</param>
 		private static void GetAppData(BrowserWindow window) {
-			Electron.IpcMain.Send(window, "get-appdata-reply", Models.AppData.Current);
+			Electron.IpcMain.Send(window, "get-appdata-reply", ArcadeManagerEnvironment.AppData);
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace ArcadeManager.Behavior {
 		/// </summary>
 		/// <param name="window">The window reference</param>
 		private static void GetOs(BrowserWindow window) {
-			Electron.IpcMain.Send(window, "get-os", Settings.Os ?? string.Empty);
+			Electron.IpcMain.Send(window, "get-os", ArcadeManagerEnvironment.SettingsOs);
 		}
 
 		/// <summary>

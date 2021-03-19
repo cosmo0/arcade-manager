@@ -16,7 +16,6 @@
     <Folder Include="Views\Overlays\" />
     <Folder Include="Views\Roms\" />
     <Folder Include="Views\Csv\" />
-    <Folder Include="Behavior\" />
     <Folder Include="Services\" />
     <Folder Include="Actions\" />
   </ItemGroup>

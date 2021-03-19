@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using ArcadeManager.Models;
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ArcadeManager {
 
@@ -6,8 +9,26 @@ namespace ArcadeManager {
 	/// Provides environment values relative to ArcadeManager
 	/// </summary>
 	public static class ArcadeManagerEnvironment {
+		private readonly static Settings _settings = mgr.LoadSettings() ?? new Settings();
+		private readonly static SettingsManager mgr = new SettingsManager(@"ArcadeManager\userSettings.json");
+
+		private static AppData _appData;
 		private static string _basePath;
 		private static string _platform;
+
+		/// <summary>
+		/// Gets the current AppData values
+		/// </summary>
+		public static AppData AppData {
+			get {
+				if (_appData != null) { return _appData; }
+
+				string content = File.ReadAllText(Path.Join(BasePath, Path.Join("Data", "appdata.json")));
+				_appData = Services.Serializer.Deserialize<AppData>(content);
+
+				return _appData;
+			}
+		}
 
 		/// <summary>
 		/// Gets the base application path
@@ -44,6 +65,63 @@ namespace ArcadeManager {
 				}
 
 				return _platform;
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the settings OS.
+		/// </summary>
+		public static string SettingsOs {
+			get {
+				return _settings.Os ?? string.Empty;
+			}
+			set {
+				_settings.Os = value;
+
+				mgr.SaveSettings(_settings);
+			}
+		}
+
+		/// <summary>
+		/// Settings manager
+		/// </summary>
+		internal class SettingsManager {
+			private readonly string _filePath;
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SettingsManager"/> class.
+			/// </summary>
+			/// <param name="fileName">Name of the file.</param>
+			public SettingsManager(string fileName) {
+				_filePath = GetLocalFilePath(fileName);
+			}
+
+			/// <summary>
+			/// Loads the settings.
+			/// </summary>
+			/// <returns>The settings</returns>
+			public Settings LoadSettings() =>
+				File.Exists(_filePath) ?
+				Services.Serializer.Deserialize<Settings>(File.ReadAllText(_filePath)) :
+				null;
+
+			/// <summary>
+			/// Saves the settings.
+			/// </summary>
+			/// <param name="settings">The settings.</param>
+			public void SaveSettings(Settings settings) {
+				string json = Services.Serializer.Serialize(settings);
+				File.WriteAllText(_filePath, json);
+			}
+
+			/// <summary>
+			/// Gets the local file path.
+			/// </summary>
+			/// <param name="fileName">Name of the file.</param>
+			/// <returns>The local file path</returns>
+			private static string GetLocalFilePath(string fileName) {
+				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+				return Path.Combine(appData, fileName);
 			}
 		}
 	}
