@@ -90,25 +90,19 @@
 
         // run copy
         $('#buttonOk').on('click', () => {
+            // get paths from file inputs
+            let main = $('#fileMainCsv').val(),
+                romset = $('#fileRomset').val(),
+                selection = $('#fileRomSelection').val(),
+                overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
 
+            // check every path is filled
+            if (main === '') { window.alert('Please choose a main CSV file'); return; }
+            if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
+            if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
+
+            ipcRenderer.send("roms-add", { main, romset, selection, overwrite });
         });
     });
 </script>
 }
-
-@*<script>
-$('#buttonOk').on('click', () => {
-    // get paths from file inputs
-    let main = $('#fileMainCsv').val(),
-        romset = $('#fileRomset').val(),
-        selection = $('#fileRomSelection').val(),
-        overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
-
-    // check every path is filled
-    if (main === '') { window.alert('Please choose a main CSV file'); return; }
-    if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
-    if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
-
-    // execute action
-    roms.add(main, romset, selection, overwrite);
-});</script>*@

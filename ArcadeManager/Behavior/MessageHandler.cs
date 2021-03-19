@@ -1,4 +1,5 @@
-﻿using ElectronNET.API;
+﻿using ArcadeManager.Actions;
+using ElectronNET.API;
 using ElectronNET.API.Entities;
 using System;
 using System.Threading.Tasks;
@@ -9,14 +10,22 @@ namespace ArcadeManager.Behavior {
 	/// Class for messages handling
 	/// </summary>
 	public static class MessageHandler {
-		private static string appData;
+		/// <summary>
+        /// Cancellation token
+        /// </summary>
+		public static bool MustCancel { get; set; }
 
 		/// <summary>
 		/// Initializes the global message handling
 		/// </summary>
 		public static void InitMessageHandling(BrowserWindow window) {
 			if (HybridSupport.IsElectronActive) {
+				// Cancel actions
+				Electron.IpcMain.On("cancel", (args) => { MustCancel = true; });
+
+				// Navigation
 				Electron.IpcMain.On("open-blank", OpenNewWindow);
+				Electron.IpcMain.On("open-folder", OpenFolder);
 
 				// Get AppData
 				Electron.IpcMain.On("get-appdata", (args) => { GetAppData(window); });
@@ -29,13 +38,51 @@ namespace ArcadeManager.Behavior {
 				Electron.IpcMain.On("select-directory", async (args) => { await BrowseFolder(args, window); });
 				Electron.IpcMain.On("new-file", async (args) => { await NewFile(args, window); });
 				Electron.IpcMain.On("select-file", async (args) => { await SelectFile(args, window); });
+
+				// Roms actions
+				Electron.IpcMain.On("roms-add", (args) => { RomsAdd(args, window); });
 			}
 		}
 
+		/// <summary>
+        /// Gets the application data settings
+        /// </summary>
+        /// <param name="window">The window reference</param>
 		private static void GetAppData(BrowserWindow window)
         {
-			if (string.IsNullOrEmpty(appData)) { appData = Services.Serializer.Serialize(Models.AppData.Current); }
-			Electron.IpcMain.Send(window, "get-appdata-reply", appData);
+			Electron.IpcMain.Send(window, "get-appdata-reply", Models.AppData.Current);
+		}
+
+		/// <summary>
+        /// Copies roms
+        /// </summary>
+        /// <param name="args">The arguments</param>
+        /// <param name="window">The window reference</param>
+		private static void RomsAdd(object args, BrowserWindow window)
+        {
+			var data = ConvertArgs<RomsAdd>(args);
+			MustCancel = false;
+
+			Services.Roms.Add(data, window);
+        }
+
+		/// <summary>
+        /// Convert arguments to strongly-typed object
+        /// </summary>
+        /// <typeparam name="T">The type of the object</typeparam>
+        /// <param name="args">The arguments</param>
+        /// <returns>The object</returns>
+		private static T ConvertArgs<T>(object args)
+        {
+			if (args == null) {
+				return default;
+			}
+
+			if (args.GetType() != typeof(Newtonsoft.Json.Linq.JObject)) {
+				throw new ArgumentException("Unable to convert arguments to JObject");
+			}
+
+			return ((Newtonsoft.Json.Linq.JObject)args).ToObject<T>();
 		}
 
 		/// <summary>
@@ -99,6 +146,22 @@ namespace ArcadeManager.Behavior {
 				Console.WriteLine("Unable to open a blank link: no URL provided");
 			}
 		}
+
+		/// <summary>
+        /// Opens the explorer to the specified folder
+        /// </summary>
+        /// <param name="folder">The folder to open</param>
+		private static async void OpenFolder(object folder)
+        {
+			if (folder != null)
+            {
+				await Electron.Shell.OpenPathAsync(folder.ToString());
+            }
+			else
+            {
+				Console.WriteLine("Unable to open the folder");
+            }
+        }
 
 		/// <summary>
 		/// Selects a file

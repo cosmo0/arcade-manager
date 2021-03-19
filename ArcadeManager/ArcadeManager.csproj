@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
+    <PackageReference Include="CsvHelper" Version="26.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\favicon.ico" />
@@ -17,9 +18,11 @@
     <Folder Include="Views\Csv\" />
     <Folder Include="Behavior\" />
     <Folder Include="Services\" />
+    <Folder Include="Actions\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Data\bios.txt" />
+    <None Remove=".DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Data\bios.txt">

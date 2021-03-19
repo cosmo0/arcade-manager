@@ -1,5 +1,4 @@
-﻿const { ipcRenderer } = require("electron");
-var selectedOs,
+﻿var selectedOs,
     appData;
 
 $(() => {
@@ -119,7 +118,6 @@ function selectFile(current, cb) {
  */
 function getAppData(cb) {
     ipcRenderer.once("get-appdata-reply", (sender, data) => {
-        appData = JSON.parse(data);
         cb(appData);
     });
 
