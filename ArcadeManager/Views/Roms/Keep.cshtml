@@ -56,21 +56,27 @@
     <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Remove files not listed</button>
 </p>
 
-@*<script>$(() => {
-    if (settings.hasSync('os')) {
-        $('#fileRomSelection').attr("placeholder", data.defaults.roms[settings.getSync('os')][process.platform]);
-    }
-});
+@section Scripts {
+    <script>$(() => {
+            getOs((os) => {
+                if (!os) { return; }
+                getAppData((data) => {
+                    if (!data) { return; }
+                    $('#fileRomSelection').attr("placeholder", data.defaults.roms[os][platform]);
+                });
+            });
 
-$('#buttonOk').on('click', () => {
-    // get paths from file inputs
-    let main = $('#fileMainCsv').val(),
-        selection = $('#fileRomSelection').val();
+            // run copy
+            $('#buttonOk').on('click', () => {
+                // get paths from file inputs
+                let main = $('#fileMainCsv').val(),
+                    selection = $('#fileRomSelection').val();
 
-    // check every path is filled
-    if (main === '') { window.alert('Please choose a main CSV file'); return; }
-    if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
+                // check every path is filled
+                if (main === '') { window.alert('Please choose a main CSV file'); return; }
+                if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
-    // execute action
-    roms.keep(main, selection);
-});</script>*@
+                ipcRenderer.send("roms-keep", { main, selection });
+            });
+        });</script>
+}

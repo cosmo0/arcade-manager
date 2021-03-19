@@ -43,6 +43,7 @@ namespace ArcadeManager {
 				// Roms actions
 				Electron.IpcMain.On("roms-add", (args) => { RomsAdd(args, window); });
 				Electron.IpcMain.On("roms-delete", (args) => { RomsDelete(args, window); });
+				Electron.IpcMain.On("roms-keep", (args) => { RomsKeep(args, window); });
 			}
 		}
 
@@ -170,6 +171,19 @@ namespace ArcadeManager {
 			MustCancel = false;
 
 			Services.Roms.Delete(data, window);
+		}
+
+		/// <summary>
+        /// Keeps roms in a folder
+        /// </summary>
+        /// <param name="args">The arguments</param>
+        /// <param name="window">The window reference</param>
+		private static void RomsKeep(object args, BrowserWindow window)
+		{
+			var data = ConvertArgs<RomsAction>(args);
+			MustCancel = false;
+
+			Services.Roms.Keep(data, window);
 		}
 
 		/// <summary>

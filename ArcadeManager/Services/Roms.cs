@@ -121,6 +121,54 @@ namespace ArcadeManager.Services {
             }
         }
 
+		/// <summary>
+        /// Keeps only listed roms in a folder
+        /// </summary>
+        /// <param name="args">The arguments</param>
+        /// <param name="window">The window reference</param>
+		public static void Keep(Actions.RomsAction args, BrowserWindow window)
+        {
+			Electron.IpcMain.Send(window, "progress", new Progress { label = "Filtering roms", init = true, canCancel = true });
+
+			try
+			{
+				// check files and folders
+				if (!File.Exists(args.main)) { throw new FileNotFoundException("Unable to find main CSV file", args.main); }
+				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
+
+				// read CSV file
+				var content = Csv.ReadFile(args.main);
+
+				// get list of files
+				var files = (new DirectoryInfo(args.selection)).GetFiles("*.zip");
+
+				var total = content.Count();
+				var i = 0;
+				var deleted = 0;
+
+				// check if files exist in games list
+                foreach (var f in files)
+                {
+                    if (MessageHandler.MustCancel) { break; }
+                    i++;
+
+                    Electron.IpcMain.Send(window, "progress", new Progress { label = $"{f.Name}", total = total, current = i });
+
+					if (!content.Any(c => $"{c.name}" == f.Name))
+                    {
+						File.Delete(f.FullName);
+						deleted++;
+                    }
+                }
+
+				Done(window, "Deleted", deleted, args.selection);
+			}
+			catch (Exception ex)
+			{
+				Error(window, ex);
+			}
+		}
+
 		private static void Done(BrowserWindow window, string action, int number, string folder)
         {
 			// display result
