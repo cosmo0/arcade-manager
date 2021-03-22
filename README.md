@@ -54,4 +54,13 @@ dotnet build
 electronize start
 ````
 
-Create an install package: TODO
+Create an install package:
+
+````bash
+electronize build /target win
+electronize build /target osx
+electronize build /target linux
+electronize build /target win /electron-arch arm64
+electronize build /target osx /electron-arch arm64
+electronize build /target linux /electron-arch arm64
+````
