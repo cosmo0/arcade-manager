@@ -104,7 +104,7 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="window">The window reference</param>
 		private static void GetOs(BrowserWindow window) {
-			Electron.IpcMain.Send(window, "get-os", ArcadeManagerEnvironment.SettingsOs);
+			Electron.IpcMain.Send(window, "get-os-reply", ArcadeManagerEnvironment.SettingsOs);
 		}
 
 		/// <summary>

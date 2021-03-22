@@ -39,6 +39,23 @@ $(() => {
 });
 
 /**
+ * Sends a message to the IPC handler
+ * 
+ * @param {String} method the method to invoke
+ * @param {any} data the data to send to the back-end
+ * @param {Function} cb the callback function
+ */
+function ipc(method, data, cb) {
+    ipcRenderer.once(method + "-reply", (sender, result) => {
+        if (cb && typeof cb === 'function') {
+            cb(result);
+        }
+    });
+
+    ipcRenderer.send(method, data);
+}
+
+/**
  * Gets the selected OS (Recalbox/Retropie)
  *
  * @param {Function} cb the callback
@@ -47,15 +64,10 @@ function getOs(cb) {
     if (selectedOs) {
         cb(selectedOs);
     } else {
-        ipcRenderer.once('get-os', (event, os) => {
-            console.log(`OS: ${os}`);
-            if (cb && typeof cb === 'function') {
-                selectedOs = os;
-                cb(os);
-            }
+        ipc('get-os', null, (sender, os) => {
+            selectedOs = os;
+            cb(os);
         });
-
-        ipcRenderer.send('get-os');
     }
 }
 
@@ -70,17 +82,29 @@ function setOs(os) {
 }
 
 /**
+ * Gets the AppData
+ * 
+ * @param {any} cb
+ */
+function getAppData(cb) {
+    if (appData) {
+        cb(appData);
+    } else {
+        ipc('get-appdata', null, (sender, data) => {
+            appData = data;
+            cb(data);
+        });
+    }
+}
+
+/**
  * Gets a folder path
  * 
  * @param {String} current the current path
  * @param {Function} cb the callback
  */
 function getFolder(current, cb) {
-    ipcRenderer.once("select-directory-reply", (sender, path) => {
-        cb(path);
-    });
-
-    ipcRenderer.send("select-directory", current);
+    ipc('select-directory', current, cb);
 }
 
 /**
@@ -90,11 +114,7 @@ function getFolder(current, cb) {
  * @param {Function} cb the callback
  */
 function newFile(current, cb) {
-    ipcRenderer.once("new-file-reply", (sender, path) => {
-        cb(path);
-    });
-
-    ipcRenderer.send("new-file", current);
+    ipc('new-file', current, cb);
 }
 
 /**
@@ -104,22 +124,18 @@ function newFile(current, cb) {
  * @param {Function} cb the callback
  */
 function selectFile(current, cb) {
-    ipcRenderer.once("select-file-reply", (sender, path) => {
-        cb(path);
-    });
-
-    ipcRenderer.send("select-file", current);
+    ipc('select-file', current, cb);
 }
 
-/**
- * Gets the AppData
- * 
- * @param {any} cb
- */
-function getAppData(cb) {
-    ipcRenderer.once("get-appdata-reply", (sender, data) => {
-        cb(appData);
-    });
+function 
 
-    ipcRenderer.send("get-appdata");
+/**
+ * Download a file from a Github repository
+ * 
+ * @param {String} repository the repository
+ * @param {String} path the path to the file
+ * @param {Function} cb the callback
+ */
+function downloadFile(repository, path, cb) {
+    ipc('download-file', { repository, path }, cb);
 }
