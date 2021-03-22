@@ -40,19 +40,41 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("new-file", async (args) => { await NewFile(args, window); });
 				Electron.IpcMain.On("select-file", async (args) => { await SelectFile(args, window); });
 
+				// download a file from Github
+				Electron.IpcMain.On("download-file", (args) => { DownloadFile(args, window); });
+
 				// Roms actions
 				Electron.IpcMain.On("roms-add", (args) => { RomsAdd(args, window); });
 				Electron.IpcMain.On("roms-delete", (args) => { RomsDelete(args, window); });
 				Electron.IpcMain.On("roms-keep", (args) => { RomsKeep(args, window); });
+
+				// CSV actions
+				Electron.IpcMain.On("csv-getlist", (args) => { CsvGetList(args, window); });
 			}
 		}
 
-		/// <summary>
-		/// Browse for a folder to select
-		/// </summary>
-		/// <param name="currentPath">The default path</param>
-		/// <param name="window">The window reference</param>
-		private static async Task BrowseFolder(object currentPath, BrowserWindow window) {
+        private static void CsvGetList(object args, BrowserWindow window)
+        {
+            var data = ConvertArgs<CsvActions>(args);
+			MustCancel = false;
+
+			Electron.IpcMain.Send(window, "csv-getlist-reply", Services.Csv.GetList(data));
+        }
+
+        private static void DownloadFile(object args, BrowserWindow window)
+        {
+			var data = ConvertArgs<DownloadAction>(args);
+			MustCancel = false;
+
+			Electron.IpcMain.Send(window, "download-file-reply", Services.Downloader.DownloadFile(data));
+		}
+
+        /// <summary>
+        /// Browse for a folder to select
+        /// </summary>
+        /// <param name="currentPath">The default path</param>
+        /// <param name="window">The window reference</param>
+        private static async Task BrowseFolder(object currentPath, BrowserWindow window) {
 			var options = new OpenDialogOptions {
 				Properties = new OpenDialogProperty[] { OpenDialogProperty.openDirectory },
 				DefaultPath = currentPath as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal)

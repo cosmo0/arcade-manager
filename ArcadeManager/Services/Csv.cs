@@ -1,4 +1,5 @@
-﻿using CsvHelper;
+﻿using ArcadeManager.Actions;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -75,5 +76,10 @@ namespace ArcadeManager.Services {
 
 			throw new FormatException("Your CSV file must have a 'name' column");
 		}
-	}
+
+        public static object GetList(CsvActions data)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
