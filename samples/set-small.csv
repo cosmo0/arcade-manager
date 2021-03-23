@@ -1,0 +1,51 @@
+name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sasampleof
+1942;1942 (Revision B);1984;Capcom;YES;-;NO;-;-
+astdelux;Asteroids Deluxe (rev 3);1980;Atari;YES;-;NO;-;-
+atetris;Tetris (set 1);1988;Atari Games;YES;-;NO;-;-
+baddudes;Bad Dudes vs. Dragonninja (US);1988;Data East USA;YES;-;NO;-;-
+berzerk;Berzerk (set 1);1980;Stern Electronics;YES;-;NO;-;-
+bombjack;Bomb Jack (set 1);1984;Tehkan;YES;-;NO;-;-
+bouldash;Boulder Dash / Boulder Dash Part 2 (World);1990;Data East Corporation (licensed from First Star);YES;-;NO;-;-
+btime;Burger Time (Data East set 1);1982;Data East Corporation;YES;-;NO;-;-
+btoads;Battletoads;1994;Rare / Electronic Arts;YES;-;NO;-;-
+bublbobl;Bubble Bobble (Japan, Ver 0.1);1986;Taito Corporation;YES;-;NO;-;-
+contra;Contra (US / Asia, set 1);1987;Konami;YES;-;NO;-;-
+ddragon;Double Dragon (Japan);1987;Technos Japan;YES;-;NO;-;-
+digdug;Dig Dug (rev 2);1982;Namco;YES;-;NO;-;-
+dino;Cadillacs and Dinosaurs (World 930201);1993;Capcom;YES;-;NO;-;-
+dkong;Donkey Kong (US set 1);1981;Nintendo of America;YES;-;NO;-;-
+dkongjr;Donkey Kong Junior (US set F-2);1982;Nintendo of America;YES;-;NO;-;-
+ffight;Final Fight (World, set 1);1989;Capcom;YES;-;NO;-;-
+frogger;Frogger;1981;Konami;YES;-;NO;-;-
+galaga;Galaga (Namco rev. B);1981;Namco;YES;-;NO;-;-
+garou;Garou - Mark of the Wolves (NGM-2530);1999;SNK;YES;neogeo;NO;-;-
+gauntlet;Gauntlet (rev 14);1985;Atari Games;YES;-;NO;-;-
+ghouls;Ghouls'n Ghosts (World);1988;Capcom;YES;-;NO;-;-
+goldnaxe;Golden Axe (set 6, US) (8751 317-123A);1989;Sega;YES;-;NO;-;-
+indytemp;Indiana Jones and the Temple of Doom (set 1);1985;Atari Games;YES;atarisy1;NO;-;-
+invaders;Space Invaders / Space Invaders M;1978;Taito / Midway;YES;-;NO;-;-
+joust;Joust (White/Green label);1982;Williams;YES;-;NO;-;-
+kof98;The King of Fighters '98 - The Slugfest / King of Fighters '98 - Dream Match Never Ends (NGM-2420);1998;SNK;YES;neogeo;NO;-;-
+ldrun;Lode Runner (set 1);1984;Irem (licensed from Broderbund);YES;-;NO;-;-
+mario;Mario Bros. (US, Revision G);1983;Nintendo of America;YES;-;NO;-;-
+mercs;Mercs (World 900302);1990;Capcom;YES;-;NO;-;-
+mk2;Mortal Kombat II (rev L3.1);1993;Midway;YES;-;NO;-;-
+mslug3;Metal Slug 3 (NGM-2560);2000;SNK;YES;neogeo;NO;-;-
+mvsc;Marvel Vs. Capcom: Clash of Super Heroes (Euro 980123);1998;Capcom;YES;-;NO;-;-
+nbajam;NBA Jam (rev 3.01 04/07/93);1993;Midway;YES;-;NO;-;-
+neogeo;NeoGeo BIOS;;-;YES;neogeo;;;
+pacman;Pac-Man (Midway);1980;Namco (Midway license);NO;puckman;YES;puckman;-
+pang;Pang (World);1989;Mitchell;YES;-;NO;-;-
+pitfall2;Pitfall II (315-5093);1985;Sega;YES;-;NO;-;-
+popeye;Popeye (revision D);1982;Nintendo;YES;-;NO;-;-
+qbert;Q*bert (US set 1);1982;Gottlieb;YES;-;NO;-;qbert
+rampage;Rampage (Rev 3, 8/27/86);1986;Bally Midway;YES;-;NO;-;-
+rtype;R-Type (World);1987;Irem;YES;-;NO;-;-
+samsho2;Samurai Shodown II / Shin Samurai Spirits - Haohmaru Jigokuhen (NGM-063 ~ NGH-063);1994;SNK;YES;neogeo;NO;-;-
+sf2ce;Street Fighter II': Champion Edition (World 920513);1992;Capcom;YES;-;NO;-;-
+sfa2;Street Fighter Alpha 2 (Euro 960229);1996;Capcom;YES;-;NO;-;-
+shinobi;Shinobi (set 6, System 16A) (unprotected);1987;Sega;YES;-;NO;-;-
+simpsons;The Simpsons (4 Players World, set 1);1991;Konami;YES;-;NO;-;-
+strider;Strider (USA, B-Board 89624B-2);1989;Capcom;YES;-;NO;-;-
+tmnt2;Teenage Mutant Ninja Turtles - Turtles in Time (4 Players ver UAA);1991;Konami;YES;-;NO;-;-
+wjammers;Windjammers / Flying Power Disc;1994;Data East Corporation;YES;neogeo;NO;-;-
