@@ -134,7 +134,7 @@ function progressDone(msg, path) {
             .removeClass('d-none')
             .off('click')
             .on('click', (e) => {
-                ipcRenderer.send('open-folder', path);
+                ipc('open-folder', path);
                 e.preventDefault();
             });
     }

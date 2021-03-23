@@ -101,7 +101,7 @@
             if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
             if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
-            ipcRenderer.send("roms-add", { main, romset, selection, overwrite });
+            ipc("roms-add", { main, romset, selection, overwrite });
         });
     });
 </script>

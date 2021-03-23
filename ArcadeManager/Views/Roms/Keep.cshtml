@@ -76,7 +76,7 @@
                 if (main === '') { window.alert('Please choose a main CSV file'); return; }
                 if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
-                ipcRenderer.send("roms-keep", { main, selection });
+                ipc("roms-keep", { main, selection });
             });
         });</script>
 }

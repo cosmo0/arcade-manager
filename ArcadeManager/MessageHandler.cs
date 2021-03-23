@@ -51,6 +51,7 @@ namespace ArcadeManager {
 
 				// CSV actions
 				Electron.IpcMain.On("csv-convertdat", async (args) => { await ConvertDat(args, window); });
+				Electron.IpcMain.On("csv-convertini", async (args) => { await ConvertIni(args, window); });
 			}
 		}
 
@@ -108,8 +109,18 @@ namespace ArcadeManager {
 			MustCancel = false;
 
 			await Services.Csv.ConvertDat(data.main, data.target, new Progressor(window));
+		}
 
-			Electron.IpcMain.Send(window, "download-file-reply", true);
+		/// <summary>
+        /// Converts a INI file
+        /// </summary>
+        /// <param name="args">The arguments</param>
+        /// <param name="window">The window reference</param>
+		private static async Task ConvertIni(object args, BrowserWindow window) {
+			var data = ConvertArgs<CsvAction>(args);
+			MustCancel = false;
+
+			await Services.Csv.ConvertIni(data.main, data.target, new Progressor(window));
 		}
 
 		/// <summary>

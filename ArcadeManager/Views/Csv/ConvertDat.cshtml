@@ -59,7 +59,7 @@
 			if (!main.toLowerCase().endsWith('.xml') && !main.toLowerCase().endsWith('.dat')) { window.alert('The DAT file should be a .DAT or .XML file.'); }
 
 			// execute action
-		    ipcRenderer.send('csv-convertdat', { main, target });
+		    ipc('csv-convertdat', { main, target });
     });
     </script>
 }

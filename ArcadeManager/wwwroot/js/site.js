@@ -1,10 +1,12 @@
-﻿var selectedOs,
+﻿const { ipcRenderer } = require("electron");
+
+var selectedOs,
     appData;
 
 $(() => {
     // bind blank pages navigation
     $('a.blank').on('click', (e) => {
-        ipcRenderer.send('open-blank', $(e.currentTarget).attr('href'));
+        ipc('open-blank', $(e.currentTarget).attr('href'));
         e.preventDefault();
     });
 
@@ -46,11 +48,11 @@ $(() => {
  * @param {Function} cb the callback function
  */
 function ipc(method, data, cb) {
-    ipcRenderer.once(method + "-reply", (sender, result) => {
-        if (cb && typeof cb === 'function') {
+    if (cb && typeof cb === 'function') {
+        ipcRenderer.once(method + "-reply", (sender, result) => {
             cb(result);
-        }
-    });
+        });
+    }
 
     ipcRenderer.send(method, data);
 }
@@ -78,7 +80,7 @@ function getOs(cb) {
  */
 function setOs(os) {
     selectedOs = os;
-    ipcRenderer.send('change-os', os);
+    ipc('change-os', os);
 }
 
 /**
