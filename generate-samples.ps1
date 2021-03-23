@@ -10,11 +10,14 @@ $list = get-content "generate-seed.txt"
 
 write-host "Generating $($list.length) files"
 
+$i = 0
 $list | % {
     $path = "tmp\roms\$_.zip"
+    $i++
+    write-progress -Activity "Generating fake roms" -Status "Creating $_" -PercentComplete ($i / $list.length * 100)
     if (-not(test-path $path)) {
         new-item -path $path -ItemType File -Force | out-null
-        write-host -NoNewline "."
+        write-host -nonewline "."
     }
 }
 
