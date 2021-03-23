@@ -17,7 +17,6 @@
     <Folder Include="Views\Roms\" />
     <Folder Include="Views\Csv\" />
     <Folder Include="Services\" />
-    <Folder Include="Actions\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Data\bios.txt" />

@@ -10,7 +10,7 @@ function listFiles(repository, folder, details, name) {
     $('#files').empty().html('Loading ' + name + ', please wait...');
     const template = $('#fileItemTemplate').html();
 
-    ipc('csv-getlist', { repository, details, folder }, (data) => {
+    getRemoteList(repository, details, folder, (data) => {
         $('#files').empty();
 
         for (let filedetail of data) {
@@ -39,7 +39,6 @@ function listFiles(repository, folder, details, name) {
             });
 
             $('#files').append(fileItem);
-            
         }
     });
 }

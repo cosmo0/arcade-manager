@@ -1,6 +1,4 @@
-﻿using ArcadeManager.Actions;
-using ElectronNET.API;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 
@@ -15,8 +13,8 @@ namespace ArcadeManager.Services {
 		/// Copies roms
 		/// </summary>
 		/// <param name="args">The arguments</param>
-		public static void Add(Actions.RomsAction args, BrowserWindow window) {
-			Electron.IpcMain.Send(window, "progress", new Progress { label = "Copying roms", init = true, canCancel = true });
+		public static void Add(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+			progressor.Init("Copying roms");
 
 			try {
 				// check files and folders
@@ -46,7 +44,7 @@ namespace ArcadeManager.Services {
 					if (File.Exists(sourceRom)) {
 						var fi = new FileInfo(sourceRom);
 
-						Electron.IpcMain.Send(window, "progress", new Progress { label = $"{game} ({HumanSize(fi.Length)})", total = total, current = i });
+						progressor.Progress($"{game} ({HumanSize(fi.Length)})", total, i);
 
 						// copy rom
 						if (!File.Exists(destRom) || args.overwrite) {
@@ -60,17 +58,17 @@ namespace ArcadeManager.Services {
 						if (Directory.Exists(sourceChd)) {
 							if (MessageHandler.MustCancel) { break; }
 
-							Electron.IpcMain.Send(window, "progress", new Progress { label = $"Copying {game} CHD ({HumanSize(DirectorySize(sourceChd))})", total = total, current = i });
+							progressor.Progress($"Copying {game} CHD ({HumanSize(DirectorySize(sourceChd))})", total, i);
 
 							DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
 						}
 					}
 				}
 
-				Done(window, "Copied", copied, args.selection);
+				progressor.Done($"Copied {copied} file(s)", args.selection);
 			}
 			catch (Exception ex) {
-				Error(window, ex);
+				progressor.Error(ex);
 			}
 		}
 
@@ -79,8 +77,8 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		public static void Delete(Actions.RomsAction args, BrowserWindow window) {
-			Electron.IpcMain.Send(window, "progress", new Progress { label = "Deleting roms", init = true, canCancel = true });
+		public static void Delete(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+			progressor.Init("Deleting roms");
 
 			try {
 				// check files and folders
@@ -103,7 +101,7 @@ namespace ArcadeManager.Services {
 					var zip = $"{game}.zip";
 					var filePath = Path.Join(args.selection, zip);
 
-					Electron.IpcMain.Send(window, "progress", new Progress { label = $"{game}", total = total, current = i });
+					progressor.Progress(game, total, i);
 
 					if (File.Exists(filePath)) {
 						File.Delete(filePath);
@@ -111,10 +109,10 @@ namespace ArcadeManager.Services {
 					}
 				}
 
-				Done(window, "Deleted", deleted, args.selection);
+				progressor.Done($"Deleted {deleted} file(s)", args.selection);
 			}
 			catch (Exception ex) {
-				Error(window, ex);
+				progressor.Error(ex);
 			}
 		}
 
@@ -123,8 +121,8 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		public static void Keep(Actions.RomsAction args, BrowserWindow window) {
-			Electron.IpcMain.Send(window, "progress", new Progress { label = "Filtering roms", init = true, canCancel = true });
+		public static void Keep(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+			progressor.Init("Filtering roms");
 
 			try {
 				// check files and folders
@@ -146,7 +144,7 @@ namespace ArcadeManager.Services {
 					if (MessageHandler.MustCancel) { break; }
 					i++;
 
-					Electron.IpcMain.Send(window, "progress", new Progress { label = $"{f.Name}", total = total, current = i });
+					progressor.Progress(f.Name, total, i);
 
 					if (!content.Any(c => $"{c.name}.zip" == f.Name)) {
 						File.Delete(f.FullName);
@@ -154,10 +152,10 @@ namespace ArcadeManager.Services {
 					}
 				}
 
-				Done(window, "Deleted", deleted, args.selection);
+				progressor.Done($"Deleted {deleted} files", args.selection);
 			}
 			catch (Exception ex) {
-				Error(window, ex);
+				progressor.Error(ex);
 			}
 		}
 
@@ -225,20 +223,6 @@ namespace ArcadeManager.Services {
 			}
 
 			return size;
-		}
-
-		private static void Done(BrowserWindow window, string action, int number, string folder) {
-			// display result
-			if (MessageHandler.MustCancel) {
-				Electron.IpcMain.Send(window, "progress", new Progress { label = $"Operation cancelled! - {action} {number} file(s)", end = true, cancelled = true });
-			}
-			else {
-				Electron.IpcMain.Send(window, "progress", new Progress { label = $"{action} {number} file(s)", end = true, folder = folder });
-			}
-		}
-
-		private static void Error(BrowserWindow window, Exception ex) {
-			Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
 		}
 
 		/// <summary>

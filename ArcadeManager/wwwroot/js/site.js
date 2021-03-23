@@ -138,3 +138,14 @@ function selectFile(current, cb) {
 function downloadFile(repository, path, localfile, cb) {
     ipc('download-file', { repository, path, localfile }, cb);
 }
+
+/**
+ * Gets a remote list of files
+ * 
+ * @param {any} repository
+ * @param {any} details
+ * @param {any} folder
+ */
+function getRemoteList(repository, details, folder) {
+    ipc('download-getlist', { repository, details, folder }, cb);
+}
