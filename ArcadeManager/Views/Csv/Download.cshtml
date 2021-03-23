@@ -39,24 +39,23 @@
     $(() => {
         const template = $('#csvItemTemplate').html();
 
-        // list CSV folders
-        for (let csv of appData.csv) {
-            let li = $(template);
-            li.find('.name').text(csv.name);
-            li.find('.desc small').text(csv.description);
-            li.data('repository', csv.repository);
-            li.data('folder', csv.folder);
-            li.data('details', csv.details);
+        getAppData((appData) => {
+            // list CSV folders
+            for (let csv of appData.csv) {
+                const li = $(template);
+                li.find('.name').text(csv.name);
+                li.find('.desc small').text(csv.description);
 
-            li.on('click', () => {
-                $('#csvs').find('a').removeClass('active');
-                li.addClass('active');
+                li.on('click', () => {
+                    $('#csvs').find('a').removeClass('active');
+                    li.addClass('active');
 
-                listFiles(csv.repository, csv.folder, csv.details, li.find('.name').text());
-            });
+                    listFiles(csv.repository, csv.folder, csv.details, li.find('.name').text());
+                });
 
-            $('#csvs').append(li);
-        }
+                $('#csvs').append(li);
+            }
+        });
     });
 </script>
 }

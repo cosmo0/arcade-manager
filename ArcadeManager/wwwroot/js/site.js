@@ -64,7 +64,7 @@ function getOs(cb) {
     if (selectedOs) {
         cb(selectedOs);
     } else {
-        ipc('get-os', null, (sender, os) => {
+        ipc('get-os', null, (os) => {
             selectedOs = os;
             cb(os);
         });
@@ -90,7 +90,7 @@ function getAppData(cb) {
     if (appData) {
         cb(appData);
     } else {
-        ipc('get-appdata', null, (sender, data) => {
+        ipc('get-appdata', null, (data) => {
             appData = data;
             cb(data);
         });
@@ -127,15 +127,14 @@ function selectFile(current, cb) {
     ipc('select-file', current, cb);
 }
 
-function 
-
 /**
  * Download a file from a Github repository
  * 
  * @param {String} repository the repository
  * @param {String} path the path to the file
+ * @param {String} localfile the path to the local file to save
  * @param {Function} cb the callback
  */
-function downloadFile(repository, path, cb) {
-    ipc('download-file', { repository, path }, cb);
+function downloadFile(repository, path, localfile, cb) {
+    ipc('download-file', { repository, path, localfile }, cb);
 }

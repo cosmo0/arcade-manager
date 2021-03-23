@@ -40,33 +40,33 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("new-file", async (args) => { await NewFile(args, window); });
 				Electron.IpcMain.On("select-file", async (args) => { await SelectFile(args, window); });
 
-				// download a file from Github
-				Electron.IpcMain.On("download-file", (args) => { DownloadFile(args, window); });
-
 				// Roms actions
 				Electron.IpcMain.On("roms-add", (args) => { RomsAdd(args, window); });
 				Electron.IpcMain.On("roms-delete", (args) => { RomsDelete(args, window); });
 				Electron.IpcMain.On("roms-keep", (args) => { RomsKeep(args, window); });
 
-				// CSV actions
-				Electron.IpcMain.On("csv-getlist", (args) => { CsvGetList(args, window); });
+				// download actions
+				Electron.IpcMain.On("csv-getlist", async (args) => { await GithubFilesGetList(args, window); });
+				Electron.IpcMain.On("download-file", async (args) => { await DownloadFile(args, window); });
 			}
 		}
 
-        private static void CsvGetList(object args, BrowserWindow window)
+        private static async Task GithubFilesGetList(object args, BrowserWindow window)
         {
-            var data = ConvertArgs<CsvActions>(args);
+            var data = ConvertArgs<DownloadAction>(args);
 			MustCancel = false;
 
-			Electron.IpcMain.Send(window, "csv-getlist-reply", Services.Csv.GetList(data));
+			Electron.IpcMain.Send(window, "csv-getlist-reply", await Services.Downloader.GetList(data));
         }
 
-        private static void DownloadFile(object args, BrowserWindow window)
+        private static async Task DownloadFile(object args, BrowserWindow window)
         {
 			var data = ConvertArgs<DownloadAction>(args);
 			MustCancel = false;
 
-			Electron.IpcMain.Send(window, "download-file-reply", Services.Downloader.DownloadFile(data));
+			await Services.Downloader.DownloadFile(data.repository, data.path, data.localfile);
+
+			Electron.IpcMain.Send(window, "download-file-reply", true);
 		}
 
         /// <summary>
