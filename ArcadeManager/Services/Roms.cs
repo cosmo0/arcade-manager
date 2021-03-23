@@ -75,65 +75,58 @@ namespace ArcadeManager.Services {
 		}
 
 		/// <summary>
-        /// Deletes roms from a folder
-        /// </summary>
-        /// <param name="args">The arguments</param>
-        /// <param name="window">The window reference</param>
-		public static void Delete(Actions.RomsAction args, BrowserWindow window)
-		{
+		/// Deletes roms from a folder
+		/// </summary>
+		/// <param name="args">The arguments</param>
+		/// <param name="window">The window reference</param>
+		public static void Delete(Actions.RomsAction args, BrowserWindow window) {
 			Electron.IpcMain.Send(window, "progress", new Progress { label = "Deleting roms", init = true, canCancel = true });
 
-            try
-            {
-                // check files and folders
-                if (!File.Exists(args.main)) { throw new FileNotFoundException("Unable to find main CSV file", args.main); }
-                if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
+			try {
+				// check files and folders
+				if (!File.Exists(args.main)) { throw new FileNotFoundException("Unable to find main CSV file", args.main); }
+				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
 
-                // read CSV file
-                var content = Csv.ReadFile(args.main);
+				// read CSV file
+				var content = Csv.ReadFile(args.main);
 
-                var total = content.Count();
-                var i = 0;
-                var deleted = 0;
+				var total = content.Count();
+				var i = 0;
+				var deleted = 0;
 
-                foreach (var f in content)
-                {
+				foreach (var f in content) {
 					if (MessageHandler.MustCancel) { break; }
 					i++;
 
-                    // build vars
-                    var game = f.name;
-                    var zip = $"{game}.zip";
-                    var filePath = Path.Join(args.selection, zip);
-					
+					// build vars
+					var game = f.name;
+					var zip = $"{game}.zip";
+					var filePath = Path.Join(args.selection, zip);
+
 					Electron.IpcMain.Send(window, "progress", new Progress { label = $"{game}", total = total, current = i });
 
-					if (File.Exists(filePath))
-                    {
+					if (File.Exists(filePath)) {
 						File.Delete(filePath);
 						deleted++;
-                    }
-                }
+					}
+				}
 
 				Done(window, "Deleted", deleted, args.selection);
-            }
-			catch (Exception ex)
-            {
+			}
+			catch (Exception ex) {
 				Error(window, ex);
-            }
-        }
+			}
+		}
 
 		/// <summary>
-        /// Keeps only listed roms in a folder
-        /// </summary>
-        /// <param name="args">The arguments</param>
-        /// <param name="window">The window reference</param>
-		public static void Keep(Actions.RomsAction args, BrowserWindow window)
-        {
+		/// Keeps only listed roms in a folder
+		/// </summary>
+		/// <param name="args">The arguments</param>
+		/// <param name="window">The window reference</param>
+		public static void Keep(Actions.RomsAction args, BrowserWindow window) {
 			Electron.IpcMain.Send(window, "progress", new Progress { label = "Filtering roms", init = true, canCancel = true });
 
-			try
-			{
+			try {
 				// check files and folders
 				if (!File.Exists(args.main)) { throw new FileNotFoundException("Unable to find main CSV file", args.main); }
 				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
@@ -149,44 +142,23 @@ namespace ArcadeManager.Services {
 				var deleted = 0;
 
 				// check if files exist in games list
-                foreach (var f in files)
-                {
-                    if (MessageHandler.MustCancel) { break; }
-                    i++;
+				foreach (var f in files) {
+					if (MessageHandler.MustCancel) { break; }
+					i++;
 
-                    Electron.IpcMain.Send(window, "progress", new Progress { label = $"{f.Name}", total = total, current = i });
+					Electron.IpcMain.Send(window, "progress", new Progress { label = $"{f.Name}", total = total, current = i });
 
-					if (!content.Any(c => $"{c.name}.zip" == f.Name))
-                    {
+					if (!content.Any(c => $"{c.name}.zip" == f.Name)) {
 						File.Delete(f.FullName);
 						deleted++;
-                    }
-                }
+					}
+				}
 
 				Done(window, "Deleted", deleted, args.selection);
 			}
-			catch (Exception ex)
-			{
+			catch (Exception ex) {
 				Error(window, ex);
 			}
-		}
-
-		private static void Done(BrowserWindow window, string action, int number, string folder)
-        {
-			// display result
-			if (MessageHandler.MustCancel)
-			{
-				Electron.IpcMain.Send(window, "progress", new Progress { label = $"Operation cancelled! - {action} {number} file(s)", end = true, cancelled = true });
-			}
-			else
-			{
-				Electron.IpcMain.Send(window, "progress", new Progress { label = $"{action} {number} file(s)", end = true, folder = folder });
-			}
-		}
-
-		private static void Error(BrowserWindow window, Exception ex)
-        {
-			Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
 		}
 
 		/// <summary>
@@ -253,6 +225,20 @@ namespace ArcadeManager.Services {
 			}
 
 			return size;
+		}
+
+		private static void Done(BrowserWindow window, string action, int number, string folder) {
+			// display result
+			if (MessageHandler.MustCancel) {
+				Electron.IpcMain.Send(window, "progress", new Progress { label = $"Operation cancelled! - {action} {number} file(s)", end = true, cancelled = true });
+			}
+			else {
+				Electron.IpcMain.Send(window, "progress", new Progress { label = $"{action} {number} file(s)", end = true, folder = folder });
+			}
+		}
+
+		private static void Error(BrowserWindow window, Exception ex) {
+			Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
 		}
 
 		/// <summary>
