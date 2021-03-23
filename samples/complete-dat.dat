@@ -376,4 +376,37 @@
 		<rom name="uc10.bin" size="131072" crc="1837d4ba"/>
 		<rom name="ue10.bin" size="131072" crc="71deb9d8"/>
 	</game>
+    <machine name="09825_67907" sourcefile="src/devices/cpu/hphybrid/hphybrid.cpp" isdevice="yes" runnable="no">
+		<description>Hewlett-Packard HP-09825-67907</description>
+	</machine>
+	<machine name="110dance" sourcefile="vt1682.cpp">
+		<description>Retro Dance Mat (110 song Super StepMania + 9-in-1 games) (PAL)</description>
+		<year>200?</year>
+		<manufacturer>&lt;unknown&gt;</manufacturer>
+		<rom name="110songdancemat.bin" size="33554432" crc="cd668e41" sha1="975bfe05f4cce047860b05766bc8539218f6014f"/>
+		<device_ref name="m6502"/>
+		<device_ref name="m6502"/>
+		<device_ref name="vt1682timer"/>
+		<device_ref name="timer"/>
+		<device_ref name="vt1682timer"/>
+		<device_ref name="timer"/>
+		<device_ref name="vt1682timer"/>
+		<device_ref name="timer"/>
+		<device_ref name="screen"/>
+		<device_ref name="timer"/>
+		<device_ref name="timer"/>
+		<device_ref name="vt1682alu"/>
+		<device_ref name="vt1682alu"/>
+		<device_ref name="address_map_bank"/>
+		<device_ref name="address_map_bank"/>
+		<device_ref name="address_map_bank"/>
+		<device_ref name="palette"/>
+		<device_ref name="gfxdecode"/>
+		<device_ref name="vt1682io"/>
+		<device_ref name="vt1682uio"/>
+		<device_ref name="dac_12bit_r2r"/>
+		<device_ref name="dac_12bit_r2r"/>
+		<device_ref name="speaker"/>
+		<driver status="imperfect"/>
+	</machine>
 </datafile>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -20,9 +21,76 @@ namespace ArcadeManager.Services {
 		private static readonly string[] delimiters = { ";", ",", "\t", "|" };
 
 		/// <summary>
+		/// The header row of a DAT conversion
+		/// </summary>
+		private static readonly string headerDatRow = "name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sampleof";
+
+		/// <summary>
 		/// The "name" column name
 		/// </summary>
 		private static readonly string nameColumn = "name";
+
+		/// <summary>
+		/// Converts a DAT file.
+		/// </summary>
+		/// <param name="main">The main file.</param>
+		/// <param name="target">The target file.</param>
+		public static async Task ConvertDat(string main, string target, MessageHandler.Progressor progressor) {
+			progressor.Init("DAT conversion");
+
+			try {
+				// read input file
+				using (var reader = File.OpenRead(main)) {
+					// deserialize file
+					var datFile = Serializer.DeserializeXml<Models.DatFile.Datafile>(reader);
+
+					// output stream
+					using (var outStream = new FileStream(target, FileMode.Create, FileAccess.Write)) {
+						using (var outStreamWriter = new StreamWriter(outStream)) {
+							await outStreamWriter.WriteLineAsync(headerDatRow);
+
+							// list entries depending on if it's a list of machines or games
+							IEnumerable<Models.DatFile.BaseEntry> entries = datFile.Game != null && datFile.Game.Any()
+								? datFile.Game
+								: datFile.Machine;
+
+							int total = entries.Count();
+							int i = 0;
+							foreach (var e in entries) {
+								i++;
+								progressor.Progress($"Converting {e.Name}", total, i);
+
+								var sb = new StringBuilder();
+								sb.Append($"{e.Name};");
+								sb.Append($"{e.Description ?? "-"};");
+								sb.Append($"{e.Year ?? "-"};");
+								sb.Append($"{e.Manufacturer ?? "-"};");
+
+								if (e is Models.DatFile.Game) {
+									var eg = e as Models.DatFile.Game;
+
+									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "NO" : "YES").Append(';'); // is_parent
+									sb.Append(eg.Romof ?? "-").Append(';'); // romof
+									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "YES" : "NO").Append(';'); // is_clone
+									sb.Append(eg.Cloneof ?? "-").Append(';'); // cloneof
+									sb.Append(eg.Sampleof ?? "-").Append(';'); // sampleof
+								}
+								else {
+									sb.Append("-;-;-;-;-;");
+								}
+
+								await outStreamWriter.WriteLineAsync(sb.ToString());
+							}
+						}
+					}
+
+					progressor.Done("DAT file converted", target);
+				}
+			}
+			catch (Exception ex) {
+				progressor.Error(ex);
+			}
+		}
 
 		/// <summary>
 		/// Reads the provided CSV file
@@ -75,97 +143,6 @@ namespace ArcadeManager.Services {
 			}
 
 			throw new FormatException("Your CSV file must have a 'name' column");
-		}
-
-		/// <summary>
-		/// Converts a DAT file.
-		/// </summary>
-		/// <param name="main">The main file.</param>
-		/// <param name="target">The target file.</param>
-		public static Task ConvertDat(string main, string target, MessageHandler.Progressor progressor) {
-			throw new NotImplementedException();
-
-
-
-			/*
-			 
-			 convertdat (dat, target) {
-				this.emit('start.convert');
-
-				this.emit('progress.convert', 100, 1, 'DAT file');
-
-				// read DAT file
-				fs.readFile(dat, { 'encoding': 'utf8' }, (err, datContents) => {
-					if (err) throw err;
-
-					// check that it's an XML file and it looks like something expected
-					if (!datContents.startsWith('<?xml')) {
-						throw 'Unable to read the DAT file, expected to start with <?xml version="1.0"?>';
-					}
-            
-					parseString(datContents, (err, datXml) => {
-						if (err) throw err;
-
-						let gameNode;
-
-						if (datXml.datafile && datXml.datafile.game) {
-							// CLR MAME Pro format
-							gameNode = 'game';
-						}
-						else if (datXml.datafile && datXml.datafile.machine) {
-							// MAME format
-							gameNode = 'machine';
-						}
-						else {
-							throw 'DAT file needs to be in the MAME or CLRMAMEPRO format';
-						}
-
-						this.emit('log', 'DAT file has ' + datXml.datafile[gameNode].length + ' games');
-
-						// create a file handler to write into
-						fs.ensureFileSync(target);
-						let stream = fs.createWriteStream(target, { 'encoding': 'utf8' });
-
-						// write the header
-						stream.write('name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sampleof\n');
-
-						// for each game in the DAT, write a line in the CSV
-						let requests = datXml.datafile[gameNode].reduce((promisechain, game, index) => {
-							return promisechain.then(() => new Promise((resolve) => {
-								this.emit('progress.convert', datXml.datafile[gameNode].length, index + 1, game.$.name);
-
-								let line = '';
-								line += game.$.name + ';';
-								line += '"' + (game.description ? game.description[0] : '').replace(';', '-').replace('"', '') + '";';
-								line += (game.year ? game.year[0] : '') + ';';
-								line += '"' + (game.manufacturer ? game.manufacturer[0] : '') + '";';
-                        
-								line += (game.$.cloneof ? 'NO' : 'YES') + ';'; // is_parent
-								line += (game.$.romof || '-') + ';'; // romof
-								line += (game.$.cloneof ? 'YES' : 'NO') + ';'; // is_clone
-								line += (game.$.cloneof || '-') + ';'; // cloneof
-								line += (game.$.sampleof || '-'); // sampleof
-
-								line += '\n';
-
-								stream.write(line, () => {
-									resolve();
-								});
-							}));
-						}, Promise.resolve());
-
-						requests.then(() => {
-							console.log('done');
-							this.emit('end.convert', target);
-                    
-							// close the file handler
-							stream.end();
-						});
-					});
-				});
-			}
-			 
-			 */
 		}
 	}
 }
