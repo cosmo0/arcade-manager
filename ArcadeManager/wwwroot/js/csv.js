@@ -23,11 +23,11 @@ function listFiles(repository, folder, details, name) {
 
             // handle click
             fileItem.on('click', (e) => {
-                newFile(filedetail.path, (filename) => {
+                newFile(filedetail.filename, (filename) => {
                     if (typeof filename !== 'undefined' && filename !== '') {
                         progressInit('Download file');
 
-                        downloadFile(repository, folder + '/' + filedetail.path, filename, (success) => {
+                        downloadFile(repository, folder + '/' + filedetail.filename, filename, (success) => {
                             if (success) {
                                 progressDone('Done.');
                             } else {
