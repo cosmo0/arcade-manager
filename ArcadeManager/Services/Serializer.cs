@@ -56,6 +56,13 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		public class LowerCaseNamingPolicy : JsonNamingPolicy {
 
+			/// <summary>
+			/// Converts the specified name to lower case
+			/// </summary>
+			/// <param name="name">The name to convert.</param>
+			/// <returns>
+			/// The converted name.
+			/// </returns>
 			public override string ConvertName(string name) =>
 				name?.ToLower();
 		}

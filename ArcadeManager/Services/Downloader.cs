@@ -89,9 +89,19 @@ namespace ArcadeManager.Services {
 		private class ArcadeManagerWebClient : WebClient {
 			private const string userAgent = "arcade-manager (cosmo0/arcade-manager)";
 
+			/// <summary>
+			/// Initializes a new instance of the <see cref="ArcadeManagerWebClient"/> class.
+			/// </summary>
 			public ArcadeManagerWebClient() {
 			}
 
+			/// <summary>
+			/// Returns a <see cref="T:System.Net.WebRequest" /> object for the specified resource.
+			/// </summary>
+			/// <param name="address">A <see cref="T:System.Uri" /> that identifies the resource to request.</param>
+			/// <returns>
+			/// A new <see cref="T:System.Net.WebRequest" /> object for the specified resource.
+			/// </returns>
 			protected override WebRequest GetWebRequest(Uri address) {
 				var request = base.GetWebRequest(address) as HttpWebRequest;
 				request.UserAgent = userAgent;

@@ -86,7 +86,10 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <typeparam name="T">The type of the object</typeparam>
 		/// <param name="args">The arguments</param>
-		/// <returns>The object</returns>
+		/// <returns>
+		/// The object
+		/// </returns>
+		/// <exception cref="ArgumentException">Unable to convert arguments to JObject</exception>
 		private static T ConvertArgs<T>(object args) {
 			if (args == null) {
 				return default;
@@ -112,10 +115,10 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
-        /// Converts a INI file
-        /// </summary>
-        /// <param name="args">The arguments</param>
-        /// <param name="window">The window reference</param>
+		/// Converts a INI file
+		/// </summary>
+		/// <param name="args">The arguments</param>
+		/// <param name="window">The window reference</param>
 		private static async Task ConvertIni(object args, BrowserWindow window) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;

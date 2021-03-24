@@ -98,87 +98,75 @@ namespace ArcadeManager.Services {
 		}
 
 		/// <summary>
-        /// Converts a INI file to CSV
-        /// </summary>
-        /// <param name="main">The main file</param>
-        /// <param name="target">The target folder to create files into</param>
-        /// <param name="progressor">The progress manager</param>
-		public static async Task ConvertIni(string main, string target, MessageHandler.Progressor progressor)
-        {
+		/// Converts a INI file to CSV
+		/// </summary>
+		/// <param name="main">The main file</param>
+		/// <param name="target">The target folder to create files into</param>
+		/// <param name="progressor">The progress manager</param>
+		public static async Task ConvertIni(string main, string target, MessageHandler.Progressor progressor) {
 			progressor.Init("INI conversion");
 
-			try
-            {
+			try {
 				var data = new Dictionary<string, List<IniEntry>>();
 
 				var mainInfo = new FileInfo(main);
 
-				using (var source = new StreamReader(main))
-                {
+				using (var source = new StreamReader(main)) {
 					var isFolderSetting = false;
 					var currentSection = "";
 
-					while (!source.EndOfStream)
-                    {
+					while (!source.EndOfStream) {
 						var line = (await source.ReadLineAsync()).Trim();
 
 						// progress up to 50%
 						progressor.Progress("Reading source file", 100, (int)(source.BaseStream.Position / mainInfo.Length * 50));
 
 						// ignore empty lines and comments
-						if (string.IsNullOrWhiteSpace(line) || line.StartsWith(";"))
-                        {
+						if (string.IsNullOrWhiteSpace(line) || line.StartsWith(";")) {
 							continue;
-                        }
+						}
 
 						// ignore folder settings
-						if (line == "[FOLDER_SETTINGS]")
-						{
+						if (line == "[FOLDER_SETTINGS]") {
 							isFolderSetting = true;
 							continue;
-                        }
+						}
 
-						if (isFolderSetting && !line.StartsWith("["))
-                        {
+						if (isFolderSetting && !line.StartsWith("[")) {
 							continue;
-                        }
+						}
 
 						// we're out of folder settings
 						isFolderSetting = false;
 
 						// found a section
-						if (line.StartsWith("["))
-                        {
+						if (line.StartsWith("[")) {
 							currentSection = line;
 
 							// add to data
-							if (!data.ContainsKey(currentSection))
-                            {
+							if (!data.ContainsKey(currentSection)) {
 								data.Add(currentSection, new List<IniEntry>());
-                            }
+							}
 
 							continue;
-                        }
+						}
 
 						// we're in a section data
-                        if (line.IndexOf("=") > 0)
-                        {
+						if (line.IndexOf("=") > 0) {
 							// game=value
 							var split = line.Split("=", StringSplitOptions.TrimEntries);
 							data[currentSection].Add(new IniEntry { game = split[0], value = split[1] });
 						}
-						else
-                        {
+						else {
 							// simple games list
 							data[currentSection].Add(new IniEntry { game = line });
 						}
-                    }
-                }
+					}
+				}
 
 				// create a file for each non-empty section
 				var i = 0;
-                foreach (var entry in data.Where(d => d.Value.Any()))
-                {
+				foreach (var entry in data.Where(d => d.Value.Any())) {
 					i++;
 
 					// file name = sanitized section name, or source name if there's only one section
@@ -197,23 +185,20 @@ namespace ArcadeManager.Services {
 					progressor.Progress($"Creating file {name}", 100, 50 + (i / data.Count * 50));
 
 					// write into file
-					using (var output = new StreamWriter(path))
-                    {
+					using (var output = new StreamWriter(path)) {
 						await output.WriteLineAsync(headerIniRow);
 
-                        foreach (var iniEntry in entry.Value)
-                        {
+						foreach (var iniEntry in entry.Value) {
 							await output.WriteLineAsync($"{iniEntry.game};{iniEntry.value};");
 						}
-                    }
+					}
 				}
 
 				progressor.Done("INI file converted", target);
-            }
-			catch (Exception ex)
-            {
+			}
+			catch (Exception ex) {
 				progressor.Error(ex);
-            }
+			}
 		}
 
 		/// <summary>
@@ -277,18 +262,27 @@ namespace ArcadeManager.Services {
 		/// <remarks>
 		/// Copied from stackoverflow.com/a/847251/6776
 		/// </remarks>
-		private static string Sanitize(string name)
-		{
+		private static string Sanitize(string name) {
 			string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
 			string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
 			return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
 		}
 
-		private struct IniEntry
-        {
+		/// <summary>
+		/// Represents an INI file entry
+		/// </summary>
+		private struct IniEntry {
+
+			/// <summary>
+			/// The game name
+			/// </summary>
 			public string game;
+
+			/// <summary>
+			/// The additional value, if any
+			/// </summary>
 			public string value;
-        }
+		}
 	}
 }
