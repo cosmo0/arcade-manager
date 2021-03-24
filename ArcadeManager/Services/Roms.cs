@@ -13,6 +13,9 @@ namespace ArcadeManager.Services {
 		/// Copies roms
 		/// </summary>
 		/// <param name="args">The arguments</param>
+		/// <param name="progressor">The progress manager.</param>
+		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
+		/// <exception cref="DirectoryNotFoundException">Unable to find romset folder {args.romset}</exception>
 		public static void Add(Actions.RomsAction args, MessageHandler.Progressor progressor) {
 			progressor.Init("Copying roms");
 
@@ -76,7 +79,9 @@ namespace ArcadeManager.Services {
 		/// Deletes roms from a folder
 		/// </summary>
 		/// <param name="args">The arguments</param>
-		/// <param name="window">The window reference</param>
+		/// <param name="progressor">The progress manager.</param>
+		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
+		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
 		public static void Delete(Actions.RomsAction args, MessageHandler.Progressor progressor) {
 			progressor.Init("Deleting roms");
 
@@ -120,7 +125,9 @@ namespace ArcadeManager.Services {
 		/// Keeps only listed roms in a folder
 		/// </summary>
 		/// <param name="args">The arguments</param>
-		/// <param name="window">The window reference</param>
+		/// <param name="progressor">The progress manager.</param>
+		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
+		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
 		public static void Keep(Actions.RomsAction args, MessageHandler.Progressor progressor) {
 			progressor.Init("Filtering roms");
 
@@ -166,7 +173,10 @@ namespace ArcadeManager.Services {
 		/// <param name="destDirName">The destination directory name</param>
 		/// <param name="overwrite">Wether to overwrite existing files</param>
 		/// <param name="copySubDirs">Whether to copy the sub-directories</param>
-		/// <remarks>From docs.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories</remarks>
+		/// <exception cref="DirectoryNotFoundException">Source directory does not exist or could not be found</exception>
+		/// <remarks>
+		/// From docs.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories
+		/// </remarks>
 		private static void DirectoryCopy(string sourceDirName, string destDirName, bool overwrite, bool copySubDirs) {
 			// Get the subdirectories for the specified directory.
 			DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -204,8 +214,12 @@ namespace ArcadeManager.Services {
 		/// Computes a directory size
 		/// </summary>
 		/// <param name="directory">The path to the directory</param>
-		/// <returns>The directory size</returns>
-		/// <remarks>From stackoverflow.com/a/468131/6776</remarks>
+		/// <returns>
+		/// The directory size
+		/// </returns>
+		/// <remarks>
+		/// From stackoverflow.com/a/468131/6776
+		/// </remarks>
 		private static long DirectorySize(string directory) {
 			var d = new DirectoryInfo(directory);
 
@@ -229,8 +243,12 @@ namespace ArcadeManager.Services {
 		/// Makes a file size human-readable
 		/// </summary>
 		/// <param name="size">The source file size</param>
-		/// <returns>The human-readable file size</returns>
-		/// <remarks>From stackoverflow.com/a/4975942/6776</remarks>
+		/// <returns>
+		/// The human-readable file size
+		/// </returns>
+		/// <remarks>
+		/// From stackoverflow.com/a/4975942/6776
+		/// </remarks>
 		private static string HumanSize(long size) {
 			string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
 			if (size == 0)

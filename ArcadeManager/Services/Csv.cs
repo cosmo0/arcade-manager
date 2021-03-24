@@ -40,6 +40,7 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		/// <param name="main">The main file.</param>
 		/// <param name="target">The target file.</param>
+		/// <param name="progressor">The progress manager.</param>
 		public static async Task ConvertDat(string main, string target, MessageHandler.Progressor progressor) {
 			progressor.Init("DAT conversion");
 
@@ -195,6 +196,43 @@ namespace ArcadeManager.Services {
 				}
 
 				progressor.Done("INI file converted", target);
+			}
+			catch (Exception ex) {
+				progressor.Error(ex);
+			}
+		}
+
+		/// <summary>
+		/// Lists the files in a folder to a CSV file.
+		/// </summary>
+		/// <param name="main">The main folder.</param>
+		/// <param name="target">The target CSV file.</param>
+		/// <param name="progressor">The progressor.</param>
+		/// <exception cref="DirectoryNotFoundException">Unable to find the folder {main}</exception>
+		public static async Task ListFiles(string main, string target, MessageHandler.Progressor progressor) {
+			progressor.Init("List files to a CSV");
+
+			try {
+				if (!Directory.Exists(main)) { throw new DirectoryNotFoundException($"Unable to find the folder {main}"); }
+
+				var di = new DirectoryInfo(main);
+
+				using (var output = new StreamWriter(target, false)) {
+					await output.WriteLineAsync("name;");
+
+					var files = di.GetFiles("*.zip", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive });
+					var total = files.Length;
+					var i = 0;
+
+					foreach (var f in files) {
+						i++;
+						progressor.Progress($"Listing file {f.Name}", total, i);
+
+						await output.WriteLineAsync(f.Name.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase) + ";");
+					}
+				}
+
+				progressor.Done("Files listed", target);
 			}
 			catch (Exception ex) {
 				progressor.Error(ex);

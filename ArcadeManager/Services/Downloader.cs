@@ -19,7 +19,9 @@ namespace ArcadeManager.Services {
 		/// <param name="repository">The repository</param>
 		/// <param name="filePath">The file path</param>
 		/// <param name="localPath">The local file path to save</param>
-		/// <returns>The downloaded file data</returns>
+		/// <returns>
+		/// The downloaded file data
+		/// </returns>
 		public static async Task DownloadFile(string repository, string filePath, string localPath) {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
@@ -32,8 +34,11 @@ namespace ArcadeManager.Services {
 		/// Downloads a JSON file and deserializes it to T
 		/// </summary>
 		/// <typeparam name="T">The type to deserialize into</typeparam>
-		/// <param name="data">The download parameters</param>
-		/// <returns>The downloaded file</returns>
+		/// <param name="repository">The repository.</param>
+		/// <param name="filePath">The file path.</param>
+		/// <returns>
+		/// The downloaded file
+		/// </returns>
 		public static async Task<T> DownloadFile<T>(string repository, string filePath) {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
@@ -46,13 +51,15 @@ namespace ArcadeManager.Services {
 		/// Returns the list of available CSV files in the specified repository folder
 		/// </summary>
 		/// <param name="data">The download parameters</param>
-		/// <returns>The list of files</returns>
+		/// <returns>
+		/// The list of files
+		/// </returns>
 		public static async Task<IEnumerable<CsvFile>> GetList(DownloadAction data) {
 			// get the content of the JSON file that lists the possible CSV files and their descriptions
-			var descriptor = await Downloader.DownloadFile<CsvFilesList>(data.repository, data.details);
+			var descriptor = await DownloadFile<CsvFilesList>(data.repository, data.details);
 
 			// list the actual files in the folder
-			var files = await Downloader.ListFiles(data.repository, data.folder);
+			var files = await ListFiles(data.repository, data.folder);
 
 			// return the files that match in both lists
 			return descriptor.files.Where(d => files.tree.Any((f) => f.path == d.filename));
@@ -63,7 +70,9 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		/// <param name="repository">The repository</param>
 		/// <param name="folder">The folder path</param>
-		/// <returns>The list of files</returns>
+		/// <returns>
+		/// The list of files
+		/// </returns>
 		public static async Task<GithubTree> ListFiles(string repository, string folder) {
 			// get level-up folder to get the SHA of the folder - easy to access but limited to 1000 files docs.github.com/en/rest/reference/repos#get-repository-content
 			var urlUpFolders = $"{protocol}//{api}/repos/{repository}/contents/{folder.Substring(0, folder.LastIndexOf("/"))}";

@@ -50,8 +50,9 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("download-file", async (args) => { await DownloadFile(args, window); });
 
 				// CSV actions
-				Electron.IpcMain.On("csv-convertdat", async (args) => { await ConvertDat(args, window); });
-				Electron.IpcMain.On("csv-convertini", async (args) => { await ConvertIni(args, window); });
+				Electron.IpcMain.On("csv-convertdat", async (args) => { await CsvConvertDat(args, window); });
+				Electron.IpcMain.On("csv-convertini", async (args) => { await CsvConvertIni(args, window); });
+				Electron.IpcMain.On("csv-listfiles", async (args) => { await CsvListFiles(args, window); });
 			}
 		}
 
@@ -107,7 +108,7 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window.</param>
-		private static async Task ConvertDat(object args, BrowserWindow window) {
+		private static async Task CsvConvertDat(object args, BrowserWindow window) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
@@ -119,11 +120,23 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static async Task ConvertIni(object args, BrowserWindow window) {
+		private static async Task CsvConvertIni(object args, BrowserWindow window) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
 			await Services.Csv.ConvertIni(data.main, data.target, new Progressor(window));
+		}
+
+		/// <summary>
+		/// Lists the files in a folder to CSV
+		/// </summary>
+		/// <param name="args">The arguments.</param>
+		/// <param name="window">The window.</param>
+		private static async Task CsvListFiles(object args, BrowserWindow window) {
+			var data = ConvertArgs<CsvAction>(args);
+			MustCancel = false;
+
+			await Services.Csv.ListFiles(data.main, data.target, new Progressor(window));
 		}
 
 		/// <summary>
