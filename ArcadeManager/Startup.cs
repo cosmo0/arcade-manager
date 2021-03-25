@@ -84,6 +84,10 @@ namespace ArcadeManager {
 
 			var mainWindow = await CreateMainWindow();
 
+#if DEBUG
+			mainWindow.WebContents.OpenDevTools();
+#endif
+
 			// re-create main window if last window has been closed
 			Electron.App.On("activate", obj => {
 				var hasWindows = (bool)obj;

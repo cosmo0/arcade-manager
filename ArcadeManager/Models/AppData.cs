@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ArcadeManager.Models {
 
@@ -131,83 +133,106 @@ namespace ArcadeManager.Models {
 				}
 			}
 		}
+	}
+
+	/// <summary>
+	/// Represents an overlay bundle
+	/// </summary>
+	public class OverlayBundle {
 
 		/// <summary>
-		/// Represents an overlay bundle
+		/// Gets or sets the base values.
 		/// </summary>
-		public class OverlayBundle {
+		public Distributions Base { get; set; }
+
+		/// <summary>
+		/// Gets or sets the common files, if any.
+		/// </summary>
+		public SourceDest Common { get; set; }
+
+		/// <summary>
+		/// Gets or sets the description.
+		/// </summary>
+		public string Description { get; set; }
+
+		/// <summary>
+		/// Gets or sets the image.
+		/// </summary>
+		public string Image { get; set; }
+
+		/// <summary>
+		/// Gets or sets the name.
+		/// </summary>
+		public string Name { get; set; }
+
+		/// <summary>
+		/// Gets or sets the overlays paths.
+		/// </summary>
+		public SourceDest Overlays { get; set; }
+
+		/// <summary>
+		/// Gets or sets the repository URL.
+		/// </summary>
+		public string Repository { get; set; }
+
+		/// <summary>
+		/// Gets or sets the roms paths.
+		/// </summary>
+		public SourceDest Roms { get; set; }
+
+		/// <summary>
+		/// Represents a list of distributions
+		/// </summary>
+		public class Distributions {
 
 			/// <summary>
-			/// Gets or sets the base values.
+			/// Gets or sets the value for Recalbox.
 			/// </summary>
-			public Distributions Base { get; set; }
+			public string Recalbox { get; set; }
 
 			/// <summary>
-			/// Gets or sets the common files, if any.
+			/// Gets or sets the value for Retropie.
 			/// </summary>
-			public SourceDest Common { get; set; }
+			public string Retropie { get; set; }
 
 			/// <summary>
-			/// Gets or sets the description.
-			/// </summary>
-			public string Description { get; set; }
+            /// Accesses the value for the specified distribution
+            /// </summary>
+            /// <param name="distribution">The distribution</param>
+            /// <returns>The distribution value</returns>
+			public string this[string distribution]
+			{
+				get
+				{
+					var prop = this.GetType()
+						.GetProperties()
+						.Where(p => p.Name.Equals(distribution, StringComparison.InvariantCultureIgnoreCase))
+						.FirstOrDefault();
 
-			/// <summary>
-			/// Gets or sets the image.
-			/// </summary>
-			public string Image { get; set; }
+					if (prop != null)
+                    {
+						return prop.GetValue(this).ToString();
+                    }
 
-			/// <summary>
-			/// Gets or sets the name.
-			/// </summary>
-			public string Name { get; set; }
-
-			/// <summary>
-			/// Gets or sets the overlays paths.
-			/// </summary>
-			public SourceDest Overlays { get; set; }
-
-			/// <summary>
-			/// Gets or sets the repository URL.
-			/// </summary>
-			public string Repository { get; set; }
-
-			/// <summary>
-			/// Gets or sets the roms paths.
-			/// </summary>
-			public SourceDest Roms { get; set; }
-
-			/// <summary>
-			/// Represents a list of distributions
-			/// </summary>
-			public class Distributions {
-
-				/// <summary>
-				/// Gets or sets the value for Recalbox.
-				/// </summary>
-				public string Recalbox { get; set; }
-
-				/// <summary>
-				/// Gets or sets the value for Retropie.
-				/// </summary>
-				public string Retropie { get; set; }
+					return string.Empty;
+				}
 			}
+		}
+
+		/// <summary>
+		/// Represents a source/destination parameter
+		/// </summary>
+		public class SourceDest {
 
 			/// <summary>
-			/// Represents a source/destination parameter
+			/// Gets or sets the destination values.
 			/// </summary>
-			public class SourceDest {
+			public Distributions Dest { get; set; }
 
-				/// <summary>
-				/// Gets or sets the destination values.
-				/// </summary>
-				public Distributions Dest { get; set; }
-
-				/// <summary>
-				/// Gets or sets the source.
-				/// </summary>
-				public string Src { get; set; }
-			}
+			/// <summary>
+			/// Gets or sets the source.
+			/// </summary>
+			public string Src { get; set; }
 		}
 	}
 }

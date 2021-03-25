@@ -5,13 +5,13 @@ var selectedOs,
 
 $(() => {
     // bind blank pages navigation
-    $('a.blank').on('click', (e) => {
+    $(document).on('click', 'a.blank', (e) => {
         ipc('open-blank', $(e.currentTarget).attr('href'));
         e.preventDefault();
     });
 
     // bind browse buttons
-    $('.browse').on('click', (e) => {
+    $(document).on('click', '.browse', (e) => {
         const btn = $(e.target);
         const input = $('#' + btn.data('input'));
         const existingPath = input.val();

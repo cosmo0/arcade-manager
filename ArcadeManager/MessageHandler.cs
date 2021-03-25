@@ -25,8 +25,8 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("cancel", (args) => { MustCancel = true; });
 
 				// Navigation
-				Electron.IpcMain.On("open-blank", OpenNewWindow);
-				Electron.IpcMain.On("open-folder", OpenFolder);
+				Electron.IpcMain.On("open-blank", async (args) => { await OpenNewWindow(args as string); });
+				Electron.IpcMain.On("open-folder", async (args) => { await OpenFolder(args as string); });
 
 				// Get AppData
 				Electron.IpcMain.On("get-appdata", (args) => { GetAppData(window); });
@@ -39,6 +39,9 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("select-directory", async (args) => { await BrowseFolder(args, window); });
 				Electron.IpcMain.On("new-file", async (args) => { await NewFile(args, window); });
 				Electron.IpcMain.On("select-file", async (args) => { await SelectFile(args, window); });
+
+				// filesystem events
+				Electron.IpcMain.On("fs-exists", (args) => { FsExists(args, window); });
 
 				// Roms actions
 				Electron.IpcMain.On("roms-add", async (args) => { await RomsAdd(args, window); });
@@ -56,6 +59,9 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("csv-merge", async (args) => { await CsvMerge(args, window); });
 				Electron.IpcMain.On("csv-remove", async (args) => { await CsvRemove(args, window); });
 				Electron.IpcMain.On("csv-keep", async (args) => { await CsvKeep(args, window); });
+
+				// overlays action
+				Electron.IpcMain.On("overlays-download", async (args) => { await OverlaysDownload(args, window); });
 			}
 		}
 
@@ -193,6 +199,17 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
+        /// Checks if a path exists
+        /// </summary>
+        /// <param name="window"></param>
+		private static void FsExists(object args, BrowserWindow window)
+		{
+			var path = args as string;
+
+			Electron.IpcMain.Send(window, "fs-exists-reply", Services.FileSystem.Exists(path));
+		}
+
+		/// <summary>
 		/// Gets the application data settings
 		/// </summary>
 		/// <param name="window">The window reference</param>
@@ -238,7 +255,7 @@ namespace ArcadeManager {
 		/// Opens the explorer to the specified folder
 		/// </summary>
 		/// <param name="folder">The folder to open</param>
-		private static async void OpenFolder(object folder) {
+		private static async Task OpenFolder(object folder) {
 			if (folder != null) {
 				await Electron.Shell.OpenPathAsync(folder.ToString());
 			}
@@ -251,7 +268,7 @@ namespace ArcadeManager {
 		/// Opens a new browser window to the specified URL
 		/// </summary>
 		/// <param name="url">The URL to open</param>
-		private static async void OpenNewWindow(object url) {
+		private static async Task OpenNewWindow(object url) {
 			if (url != null) {
 				Console.WriteLine("open blank link to: " + url.ToString());
 				await Electron.Shell.OpenExternalAsync(url.ToString());
@@ -260,6 +277,19 @@ namespace ArcadeManager {
 				Console.WriteLine("Unable to open a blank link: no URL provided");
 			}
 		}
+
+		/// <summary>
+        /// Downloads overlays
+        /// </summary>
+        /// <param name="args">The arguments</param>
+        /// <param name="window">The window reference</param>
+		private static async Task OverlaysDownload(object args, BrowserWindow window)
+        {
+			var data = ConvertArgs<OverlaysAction>(args);
+			MustCancel = false;
+
+			await Services.Overlays.Download(data, new Progressor(window));
+        }
 
 		/// <summary>
 		/// Copies roms from a folder to another
