@@ -17,6 +17,11 @@ namespace ArcadeManager.Services {
 	public class Csv {
 
 		/// <summary>
+		/// The default delimiter
+		/// </summary>
+		private static readonly string defaultDelimiter = ";";
+
+		/// <summary>
 		/// The accepted delimiters
 		/// </summary>
 		/// <remarks>
@@ -71,19 +76,19 @@ namespace ArcadeManager.Services {
 								progressor.Progress($"Converting {e.Name}", total, i);
 
 								var sb = new StringBuilder();
-								sb.Append($"{e.Name};");
-								sb.Append($"{e.Description ?? "-"};");
-								sb.Append($"{e.Year ?? "-"};");
-								sb.Append($"{e.Manufacturer ?? "-"};");
+								sb.Append($"{e.Name}{defaultDelimiter}");
+								sb.Append($"{e.Description ?? "-"}{defaultDelimiter}");
+								sb.Append($"{e.Year ?? "-"}{defaultDelimiter}");
+								sb.Append($"{e.Manufacturer ?? "-"}{defaultDelimiter}");
 
 								if (e is Models.DatFile.Game) {
 									var eg = e as Models.DatFile.Game;
 
-									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "NO" : "YES").Append(';'); // is_parent
-									sb.Append(eg.Romof ?? "-").Append(';'); // romof
-									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "YES" : "NO").Append(';'); // is_clone
-									sb.Append(eg.Cloneof ?? "-").Append(';'); // cloneof
-									sb.Append(eg.Sampleof ?? "-").Append(';'); // sampleof
+									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "NO" : "YES").Append(defaultDelimiter); // is_parent
+									sb.Append(eg.Romof ?? "-").Append(defaultDelimiter); // romof
+									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "YES" : "NO").Append(defaultDelimiter); // is_clone
+									sb.Append(eg.Cloneof ?? "-").Append(defaultDelimiter); // cloneof
+									sb.Append(eg.Sampleof ?? "-").Append(defaultDelimiter); // sampleof
 								}
 								else {
 									sb.Append("-;-;-;-;-;");
@@ -194,7 +199,7 @@ namespace ArcadeManager.Services {
 						await output.WriteLineAsync(headerIniRow);
 
 						foreach (var iniEntry in entry.Value) {
-							await output.WriteLineAsync($"{iniEntry.game};{iniEntry.value};");
+							await output.WriteLineAsync($"{iniEntry.game}{defaultDelimiter}{iniEntry.value}{defaultDelimiter}");
 						}
 					}
 				}
@@ -222,7 +227,7 @@ namespace ArcadeManager.Services {
 				var di = new DirectoryInfo(main);
 
 				using (var output = new StreamWriter(target, false)) {
-					await output.WriteLineAsync("name;");
+					await output.WriteLineAsync($"{nameColumn}{defaultDelimiter}");
 
 					var files = di.GetFiles("*.zip", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive });
 					var total = files.Length;
@@ -232,7 +237,7 @@ namespace ArcadeManager.Services {
 						i++;
 						progressor.Progress($"Listing file {f.Name}", total, i);
 
-						await output.WriteLineAsync(f.Name.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase) + ";");
+						await output.WriteLineAsync(f.Name.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase) + defaultDelimiter);
 					}
 				}
 
@@ -270,10 +275,18 @@ namespace ArcadeManager.Services {
 				var result = mainEntries.ToList(); // the ToList() copies the list instead of creating a reference
 
 				progressor.Progress($"files merging", steps, ++current);
-				foreach (var e in secondaryEntries) {
-					// copy entries in secondary that are not in main
-					if (!mainEntries.Any(me => me.name == e.name)) {
-						result.Add(e);
+				foreach (var sEntry in secondaryEntries) {
+					// get corresponding result entry, if any
+					var rEntry = result.Where(me => me.name == sEntry.name).FirstOrDefault();
+					if (rEntry == null) {
+						// get entries from secondary that are not in main
+						result.Add(sEntry);
+					}
+					else {
+						// copy additional data
+						foreach (var v in sEntry.values.Where(v => !rEntry.values.ContainsKey(v.Key))) {
+							rEntry.values.Add(v.Key, v.Value);
+						}
 					}
 				}
 
@@ -391,11 +404,32 @@ namespace ArcadeManager.Services {
 		/// <summary>
 		/// Writes the file to the specified target.
 		/// </summary>
-		/// <param name="result">The entries to write.</param>
+		/// <param name="entries">The entries to write.</param>
 		/// <param name="target">The target to write to.</param>
 		/// <exception cref="NotImplementedException"></exception>
-		private static async Task WriteFile(List<GameEntry> result, string target) {
-			throw new NotImplementedException();
+		private static async Task WriteFile(List<GameEntry> entries, string target) {
+			var headers = entries.SelectMany(r => r.values.Keys).Distinct().OrderBy(k => k);
+
+			using (var output = new StreamWriter(target, false)) {
+				// header line
+				var headerLine = nameColumn + defaultDelimiter + string.Join(defaultDelimiter, headers);
+
+				await output.WriteLineAsync(headerLine);
+
+				foreach (var entry in entries) {
+					var line = entry.name + defaultDelimiter;
+					foreach (var h in headers) {
+						if (entry.values.ContainsKey(h)) {
+							line += entry.values[h] + defaultDelimiter;
+						}
+						else {
+							line += "-" + defaultDelimiter;
+						}
+					}
+
+					await output.WriteLineAsync(line);
+				}
+			}
 		}
 
 		/// <summary>
