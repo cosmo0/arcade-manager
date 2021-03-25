@@ -266,11 +266,11 @@ namespace ArcadeManager.Services {
 				var fiSecondary = new FileInfo(secondary);
 				var fiTarget = new FileInfo(target);
 
-				progressor.Progress($"file {fiMain.Name}", steps, ++current);
-				var mainEntries = ReadFile(main, true);
+				progressor.Progress($"reading file {fiMain.Name}", steps, ++current);
+				var mainEntries = await ReadFile(main, true);
 
-				progressor.Progress($"file {fiSecondary.Name}", steps, ++current);
-				var secondaryEntries = ReadFile(secondary, true);
+				progressor.Progress($"reading file {fiSecondary.Name}", steps, ++current);
+				var secondaryEntries = await ReadFile(secondary, true);
 
 				var result = mainEntries.ToList(); // the ToList() copies the list instead of creating a reference
 
@@ -308,7 +308,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The list of games in the CSV file
 		/// </returns>
-		public static IEnumerable<GameEntry> ReadFile(string filepath, bool getOtherValues) {
+		public static async Task<IEnumerable<GameEntry>> ReadFile(string filepath, bool getOtherValues) {
 			using (var reader = new StreamReader(filepath)) {
 				// check that the first line has a header
 				var firstLine = reader.ReadLine();
@@ -316,7 +316,7 @@ namespace ArcadeManager.Services {
 
 				// back to the beginning of the file
 				reader.DiscardBufferedData();
-				reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+				reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
 				// build CSV read options
 				var conf = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture) {
@@ -328,10 +328,10 @@ namespace ArcadeManager.Services {
 				// read the file
 				List<GameEntry> result = new();
 				using (var csv = new CsvReader(reader, conf)) {
-					var entries = csv.GetRecords<dynamic>().ToList();
+					var entries = csv.GetRecordsAsync<dynamic>();
 
 					if (hasHeader) {
-						foreach (var e in entries) {
+						await foreach (var e in entries) {
 							var ge = new GameEntry { name = e.name };
 
 							if (getOtherValues) {
@@ -346,11 +346,54 @@ namespace ArcadeManager.Services {
 					}
 					else {
 						// Without headers, CsvReader names the fields Field1, Field2, etc
-						result.AddRange(entries.Select(e => new GameEntry { name = e.Field1 }));
+						result.AddRange((await entries.ToListAsync()).Select(e => new GameEntry { name = e.Field1 }));
 					}
 				}
 
 				return result;
+			}
+		}
+
+		/// <summary>
+		/// Removes entries in the main file that are in the secondary
+		/// </summary>
+		/// <param name="main">The path to the main file.</param>
+		/// <param name="secondary">The path to the secondary file.</param>
+		/// <param name="target">The path to the target file.</param>
+		/// <param name="progressor">The progressor.</param>
+		public static async Task Remove(string main, string secondary, string target, MessageHandler.Progressor progressor) {
+			progressor.Init("Removes entries from a CSV files");
+
+			try {
+				var steps = 5;
+				var current = 0;
+
+				var fiMain = new FileInfo(main);
+				var fiSecondary = new FileInfo(secondary);
+				var fiTarget = new FileInfo(target);
+
+				progressor.Progress($"reading file {fiMain.Name}", steps, ++current);
+				var mainEntries = await ReadFile(main, true);
+
+				progressor.Progress($"reading file {fiSecondary.Name}", steps, ++current);
+				var secondaryEntries = await ReadFile(secondary, true);
+
+				var result = new List<GameEntry>();
+
+				progressor.Progress($"files filtering", steps, ++current);
+				foreach (var me in mainEntries) {
+					if (!secondaryEntries.Any(se => se.name.Equals(me.name, StringComparison.InvariantCultureIgnoreCase))) {
+						result.Add(me);
+					}
+				}
+
+				progressor.Progress($"save to file {fiTarget.Name}", steps, ++current);
+				await WriteFile(result, target);
+
+				progressor.Done($"Entries have been removed, result has {result.Count} entries", target);
+			}
+			catch (Exception ex) {
+				progressor.Error(ex);
 			}
 		}
 
@@ -408,7 +451,7 @@ namespace ArcadeManager.Services {
 		/// <param name="target">The target to write to.</param>
 		/// <exception cref="NotImplementedException"></exception>
 		private static async Task WriteFile(List<GameEntry> entries, string target) {
-			var headers = entries.SelectMany(r => r.values.Keys).Distinct().OrderBy(k => k);
+			var headers = entries.SelectMany(r => r.values.Keys).Distinct();
 
 			using (var output = new StreamWriter(target, false)) {
 				// header line
@@ -416,15 +459,13 @@ namespace ArcadeManager.Services {
 
 				await output.WriteLineAsync(headerLine);
 
+				// entries
 				foreach (var entry in entries) {
 					var line = entry.name + defaultDelimiter;
+
+					// additional values
 					foreach (var h in headers) {
-						if (entry.values.ContainsKey(h)) {
-							line += entry.values[h] + defaultDelimiter;
-						}
-						else {
-							line += "-" + defaultDelimiter;
-						}
+						line += (entry.values[h] ?? "-") + defaultDelimiter;
 					}
 
 					await output.WriteLineAsync(line);

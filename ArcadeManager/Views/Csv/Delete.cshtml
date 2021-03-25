@@ -62,17 +62,21 @@
     <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Delete</button>
 </p>
 
-@*<script>$('#buttonOk').on('click', () => {
-        // get paths from file inputs
-        let main = $('#fileMainCsv').val(),
-            secondary = $('#fileSecondaryCsv').val(),
-            target = $('#fileTarget').val();
+@section Scripts {
+	<script>
+	$('#buttonOk').on('click', () => {
+		// get paths from file inputs
+		let main = $('#fileMainCsv').val(),
+			secondary = $('#fileSecondaryCsv').val(),
+			target = $('#fileTarget').val();
 
-        // check every path is filled
-        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-        if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
-        if (target === '') { window.alert('Please choose the target CSV file'); return; }
+		// check every path is filled
+		if (main === '') { window.alert('Please choose a main CSV file'); return; }
+		if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
+		if (target === '') { window.alert('Please choose the target CSV file'); return; }
 
-        // execute action
-        csv.remove(main, secondary, target);
-    });</script>*@
+		// execute action
+        ipc('csv-remove', { main, secondary, target });
+    });
+    </script>
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Services {
 
@@ -16,7 +17,7 @@ namespace ArcadeManager.Services {
 		/// <param name="progressor">The progress manager.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find romset folder {args.romset}</exception>
-		public static void Add(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+		public static async Task Add(Actions.RomsAction args, MessageHandler.Progressor progressor) {
 			progressor.Init("Copying roms");
 
 			try {
@@ -26,7 +27,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { Directory.CreateDirectory(args.selection); }
 
 				// read CSV file
-				var content = Csv.ReadFile(args.main, false);
+				var content = await Csv.ReadFile(args.main, false);
 
 				var total = content.Count();
 				var i = 0;
@@ -82,7 +83,7 @@ namespace ArcadeManager.Services {
 		/// <param name="progressor">The progress manager.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-		public static void Delete(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+		public static async Task Delete(Actions.RomsAction args, MessageHandler.Progressor progressor) {
 			progressor.Init("Deleting roms");
 
 			try {
@@ -91,7 +92,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
 
 				// read CSV file
-				var content = Csv.ReadFile(args.main, false);
+				var content = await Csv.ReadFile(args.main, false);
 
 				var total = content.Count();
 				var i = 0;
@@ -128,7 +129,7 @@ namespace ArcadeManager.Services {
 		/// <param name="progressor">The progress manager.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-		public static void Keep(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+		public static async Task Keep(Actions.RomsAction args, MessageHandler.Progressor progressor) {
 			progressor.Init("Filtering roms");
 
 			try {
@@ -137,7 +138,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
 
 				// read CSV file
-				var content = Csv.ReadFile(args.main, false);
+				var content = await Csv.ReadFile(args.main, false);
 
 				// get list of files
 				var files = (new DirectoryInfo(args.selection)).GetFiles("*.zip");

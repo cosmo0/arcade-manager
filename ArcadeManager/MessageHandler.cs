@@ -41,9 +41,9 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("select-file", async (args) => { await SelectFile(args, window); });
 
 				// Roms actions
-				Electron.IpcMain.On("roms-add", (args) => { RomsAdd(args, window); });
-				Electron.IpcMain.On("roms-delete", (args) => { RomsDelete(args, window); });
-				Electron.IpcMain.On("roms-keep", (args) => { RomsKeep(args, window); });
+				Electron.IpcMain.On("roms-add", async (args) => { await RomsAdd(args, window); });
+				Electron.IpcMain.On("roms-delete", async (args) => { await RomsDelete(args, window); });
+				Electron.IpcMain.On("roms-keep", async (args) => { await RomsKeep(args, window); });
 
 				// download actions
 				Electron.IpcMain.On("download-getlist", async (args) => { await GithubFilesGetList(args, window); });
@@ -54,6 +54,7 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("csv-convertini", async (args) => { await CsvConvertIni(args, window); });
 				Electron.IpcMain.On("csv-listfiles", async (args) => { await CsvListFiles(args, window); });
 				Electron.IpcMain.On("csv-merge", async (args) => { await CsvMerge(args, window); });
+				Electron.IpcMain.On("csv-remove", async (args) => { await CsvRemove(args, window); });
 			}
 		}
 
@@ -153,6 +154,18 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
+		/// Removes entries from a CSV file
+		/// </summary>
+		/// <param name="args">The arguments.</param>
+		/// <param name="window">The window reference.</param>
+		private static async Task CsvRemove(object args, BrowserWindow window) {
+			var data = ConvertArgs<CsvAction>(args);
+			MustCancel = false;
+
+			await Services.Csv.Remove(data.main, data.secondary, data.target, new Progressor(window));
+		}
+
+		/// <summary>
 		/// Downloads the specified file.
 		/// </summary>
 		/// <param name="args">The arguments.</param>
@@ -240,11 +253,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static void RomsAdd(object args, BrowserWindow window) {
+		private static async Task RomsAdd(object args, BrowserWindow window) {
 			var data = ConvertArgs<RomsAction>(args);
 			MustCancel = false;
 
-			Services.Roms.Add(data, new Progressor(window));
+			await Services.Roms.Add(data, new Progressor(window));
 		}
 
 		/// <summary>
@@ -252,11 +265,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static void RomsDelete(object args, BrowserWindow window) {
+		private static async Task RomsDelete(object args, BrowserWindow window) {
 			var data = ConvertArgs<RomsAction>(args);
 			MustCancel = false;
 
-			Services.Roms.Delete(data, new Progressor(window));
+			await Services.Roms.Delete(data, new Progressor(window));
 		}
 
 		/// <summary>
@@ -264,11 +277,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static void RomsKeep(object args, BrowserWindow window) {
+		private static async Task RomsKeep(object args, BrowserWindow window) {
 			var data = ConvertArgs<RomsAction>(args);
 			MustCancel = false;
 
-			Services.Roms.Keep(data, new Progressor(window));
+			await Services.Roms.Keep(data, new Progressor(window));
 		}
 
 		/// <summary>
