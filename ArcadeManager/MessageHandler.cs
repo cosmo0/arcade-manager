@@ -55,6 +55,7 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("csv-listfiles", async (args) => { await CsvListFiles(args, window); });
 				Electron.IpcMain.On("csv-merge", async (args) => { await CsvMerge(args, window); });
 				Electron.IpcMain.On("csv-remove", async (args) => { await CsvRemove(args, window); });
+				Electron.IpcMain.On("csv-keep", async (args) => { await CsvKeep(args, window); });
 			}
 		}
 
@@ -127,6 +128,18 @@ namespace ArcadeManager {
 			MustCancel = false;
 
 			await Services.Csv.ConvertIni(data.main, data.target, new Progressor(window));
+		}
+
+		/// <summary>
+		/// Keeps only listed entries in a CSV file
+		/// </summary>
+		/// <param name="args">The arguments.</param>
+		/// <param name="window">The window.</param>
+		private static async Task CsvKeep(object args, BrowserWindow window) {
+			var data = ConvertArgs<CsvAction>(args);
+			MustCancel = false;
+
+			await Services.Csv.Keep(data.main, data.secondary, data.target, new Progressor(window));
 		}
 
 		/// <summary>

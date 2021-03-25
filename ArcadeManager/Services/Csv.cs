@@ -211,6 +211,21 @@ namespace ArcadeManager.Services {
 			}
 		}
 
+		public static async Task Keep(string main, string secondary, string target, MessageHandler.Progressor progressor) {
+			await WorkOnTwoFiles(main, secondary, target, progressor, "Filter entries in a CSV files", (main, sec) => {
+				var result = new List<GameEntry>();
+
+				foreach (var me in main) {
+					// keep entries from the main file that also exist in the secondary
+					if (sec.Any(se => se.name == me.name)) {
+						result.Add(me);
+					}
+				}
+
+				return result;
+			});
+		}
+
 		/// <summary>
 		/// Lists the files in a folder to a CSV file.
 		/// </summary>
@@ -256,26 +271,10 @@ namespace ArcadeManager.Services {
 		/// <param name="target">The path to the target file.</param>
 		/// <param name="progressor">The progressor.</param>
 		public static async Task Merge(string main, string secondary, string target, MessageHandler.Progressor progressor) {
-			progressor.Init("Merge two CSV files");
+			await WorkOnTwoFiles(main, secondary, target, progressor, "Merge two CSV files", (main, sec) => {
+				var result = main.ToList(); // the ToList() copies the list instead of creating a reference
 
-			try {
-				var steps = 5;
-				var current = 0;
-
-				var fiMain = new FileInfo(main);
-				var fiSecondary = new FileInfo(secondary);
-				var fiTarget = new FileInfo(target);
-
-				progressor.Progress($"reading file {fiMain.Name}", steps, ++current);
-				var mainEntries = await ReadFile(main, true);
-
-				progressor.Progress($"reading file {fiSecondary.Name}", steps, ++current);
-				var secondaryEntries = await ReadFile(secondary, true);
-
-				var result = mainEntries.ToList(); // the ToList() copies the list instead of creating a reference
-
-				progressor.Progress($"files merging", steps, ++current);
-				foreach (var sEntry in secondaryEntries) {
+				foreach (var sEntry in sec) {
 					// get corresponding result entry, if any
 					var rEntry = result.Where(me => me.name == sEntry.name).FirstOrDefault();
 					if (rEntry == null) {
@@ -290,14 +289,8 @@ namespace ArcadeManager.Services {
 					}
 				}
 
-				progressor.Progress($"save to file {fiTarget.Name}", steps, ++current);
-				await WriteFile(result, target);
-
-				progressor.Done($"Files have been merged, result has {result.Count} entries", target);
-			}
-			catch (Exception ex) {
-				progressor.Error(ex);
-			}
+				return result;
+			});
 		}
 
 		/// <summary>
@@ -362,39 +355,17 @@ namespace ArcadeManager.Services {
 		/// <param name="target">The path to the target file.</param>
 		/// <param name="progressor">The progressor.</param>
 		public static async Task Remove(string main, string secondary, string target, MessageHandler.Progressor progressor) {
-			progressor.Init("Removes entries from a CSV files");
-
-			try {
-				var steps = 5;
-				var current = 0;
-
-				var fiMain = new FileInfo(main);
-				var fiSecondary = new FileInfo(secondary);
-				var fiTarget = new FileInfo(target);
-
-				progressor.Progress($"reading file {fiMain.Name}", steps, ++current);
-				var mainEntries = await ReadFile(main, true);
-
-				progressor.Progress($"reading file {fiSecondary.Name}", steps, ++current);
-				var secondaryEntries = await ReadFile(secondary, true);
-
+			await WorkOnTwoFiles(main, secondary, target, progressor, "", (main, sec) => {
 				var result = new List<GameEntry>();
 
-				progressor.Progress($"files filtering", steps, ++current);
-				foreach (var me in mainEntries) {
-					if (!secondaryEntries.Any(se => se.name.Equals(me.name, StringComparison.InvariantCultureIgnoreCase))) {
+				foreach (var me in main) {
+					if (!sec.Any(se => se.name.Equals(me.name, StringComparison.InvariantCultureIgnoreCase))) {
 						result.Add(me);
 					}
 				}
 
-				progressor.Progress($"save to file {fiTarget.Name}", steps, ++current);
-				await WriteFile(result, target);
-
-				progressor.Done($"Entries have been removed, result has {result.Count} entries", target);
-			}
-			catch (Exception ex) {
-				progressor.Error(ex);
-			}
+				return result;
+			});
 		}
 
 		/// <summary>
@@ -442,6 +413,45 @@ namespace ArcadeManager.Services {
 			string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
 			return Regex.Replace(name, invalidRegStr, "_");
+		}
+
+		/// <summary>
+		/// Processes work on two file
+		/// </summary>
+		/// <param name="main">The path to the main file.</param>
+		/// <param name="secondary">The path to the secondary file.</param>
+		/// <param name="target">The path to the target file.</param>
+		/// <param name="progressor">The progressor.</param>
+		/// <param name="init">The initialization label.</param>
+		/// <param name="action">The action to process.</param>
+		private static async Task WorkOnTwoFiles(string main, string secondary, string target, MessageHandler.Progressor progressor, string init, Func<IEnumerable<GameEntry>, IEnumerable<GameEntry>, List<GameEntry>> action) {
+			progressor.Init(init);
+
+			try {
+				var steps = 5;
+				var current = 0;
+
+				var fiMain = new FileInfo(main);
+				var fiSecondary = new FileInfo(secondary);
+				var fiTarget = new FileInfo(target);
+
+				progressor.Progress($"reading file {fiMain.Name}", steps, ++current);
+				var mainEntries = await ReadFile(main, true);
+
+				progressor.Progress($"reading file {fiSecondary.Name}", steps, ++current);
+				var secondaryEntries = await ReadFile(secondary, true);
+
+				progressor.Progress($"processing files", steps, ++current);
+				var result = action(mainEntries, secondaryEntries);
+
+				progressor.Progress($"save to file {fiTarget.Name}", steps, ++current);
+				await WriteFile(result, target);
+
+				progressor.Done($"Done! Result has {result.Count} entries", target);
+			}
+			catch (Exception ex) {
+				progressor.Error(ex);
+			}
 		}
 
 		/// <summary>
