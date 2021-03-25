@@ -53,6 +53,7 @@ namespace ArcadeManager {
 				Electron.IpcMain.On("csv-convertdat", async (args) => { await CsvConvertDat(args, window); });
 				Electron.IpcMain.On("csv-convertini", async (args) => { await CsvConvertIni(args, window); });
 				Electron.IpcMain.On("csv-listfiles", async (args) => { await CsvListFiles(args, window); });
+				Electron.IpcMain.On("csv-merge", async (args) => { await CsvMerge(args, window); });
 			}
 		}
 
@@ -137,6 +138,18 @@ namespace ArcadeManager {
 			MustCancel = false;
 
 			await Services.Csv.ListFiles(data.main, data.target, new Progressor(window));
+		}
+
+		/// <summary>
+		/// Merges two CSV files
+		/// </summary>
+		/// <param name="args">The arguments.</param>
+		/// <param name="window">The window reference.</param>
+		private static async Task CsvMerge(object args, BrowserWindow window) {
+			var data = ConvertArgs<CsvAction>(args);
+			MustCancel = false;
+
+			await Services.Csv.Merge(data.main, data.secondary, data.target, new Progressor(window));
 		}
 
 		/// <summary>

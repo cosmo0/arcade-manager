@@ -26,7 +26,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { Directory.CreateDirectory(args.selection); }
 
 				// read CSV file
-				var content = Csv.ReadFile(args.main);
+				var content = Csv.ReadFile(args.main, false);
 
 				var total = content.Count();
 				var i = 0;
@@ -91,7 +91,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
 
 				// read CSV file
-				var content = Csv.ReadFile(args.main);
+				var content = Csv.ReadFile(args.main, false);
 
 				var total = content.Count();
 				var i = 0;
@@ -137,7 +137,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
 
 				// read CSV file
-				var content = Csv.ReadFile(args.main);
+				var content = Csv.ReadFile(args.main, false);
 
 				// get list of files
 				var files = (new DirectoryInfo(args.selection)).GetFiles("*.zip");

@@ -61,9 +61,12 @@
     <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Add</button>
 </p>
 
-@*<script>$('#buttonOk').on('click', () => {
+@section Scripts {
+
+<script>
+    $('#buttonOk').on('click', () => {
         // get paths from file inputs
-        let main = $('#fileMainCsv').val(),
+        const main = $('#fileMainCsv').val(),
             secondary = $('#fileSecondaryCsv').val(),
             target = $('#fileTarget').val();
 
@@ -73,5 +76,8 @@
         if (target === '') { window.alert('Please choose the target CSV file'); return; }
 
         // execute action
-        csv.add(main, secondary, target);
-    });</script>*@
+        ipc('csv-merge', { main, secondary, target });
+    });
+</script>
+
+}

@@ -1,4 +1,5 @@
-﻿using CsvHelper;
+﻿using ArcadeManager.Models;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,7 +19,10 @@ namespace ArcadeManager.Services {
 		/// <summary>
 		/// The accepted delimiters
 		/// </summary>
-		private static readonly string[] delimiters = { ";", ",", "\t", "|" };
+		/// <remarks>
+		/// Pipe is escaped because it'll be used in a regex
+		/// </remarks>
+		private static readonly string[] delimiters = { ";", ",", "\t", "\\|" };
 
 		/// <summary>
 		/// The header row of a DAT conversion
@@ -240,11 +244,58 @@ namespace ArcadeManager.Services {
 		}
 
 		/// <summary>
+		/// Merges the specified main and secondary files to the target file.
+		/// </summary>
+		/// <param name="main">The path to the main file.</param>
+		/// <param name="secondary">The path to the secondary file.</param>
+		/// <param name="target">The path to the target file.</param>
+		/// <param name="progressor">The progressor.</param>
+		public static async Task Merge(string main, string secondary, string target, MessageHandler.Progressor progressor) {
+			progressor.Init("Merge two CSV files");
+
+			try {
+				var steps = 5;
+				var current = 0;
+
+				var fiMain = new FileInfo(main);
+				var fiSecondary = new FileInfo(secondary);
+				var fiTarget = new FileInfo(target);
+
+				progressor.Progress($"file {fiMain.Name}", steps, ++current);
+				var mainEntries = ReadFile(main, true);
+
+				progressor.Progress($"file {fiSecondary.Name}", steps, ++current);
+				var secondaryEntries = ReadFile(secondary, true);
+
+				var result = mainEntries.ToList(); // the ToList() copies the list instead of creating a reference
+
+				progressor.Progress($"files merging", steps, ++current);
+				foreach (var e in secondaryEntries) {
+					// copy entries in secondary that are not in main
+					if (!mainEntries.Any(me => me.name == e.name)) {
+						result.Add(e);
+					}
+				}
+
+				progressor.Progress($"save to file {fiTarget.Name}", steps, ++current);
+				await WriteFile(result, target);
+
+				progressor.Done($"Files have been merged, result has {result.Count} entries", target);
+			}
+			catch (Exception ex) {
+				progressor.Error(ex);
+			}
+		}
+
+		/// <summary>
 		/// Reads the provided CSV file
 		/// </summary>
 		/// <param name="filepath">The path to the file</param>
-		/// <returns>The list of games in the CSV file</returns>
-		public static IEnumerable<Models.GameEntry> ReadFile(string filepath) {
+		/// <param name="getOtherValues">if set to <c>true</c> get the values other than the name.</param>
+		/// <returns>
+		/// The list of games in the CSV file
+		/// </returns>
+		public static IEnumerable<GameEntry> ReadFile(string filepath, bool getOtherValues) {
 			using (var reader = new StreamReader(filepath)) {
 				// check that the first line has a header
 				var firstLine = reader.ReadLine();
@@ -262,9 +313,31 @@ namespace ArcadeManager.Services {
 				};
 
 				// read the file
+				List<GameEntry> result = new();
 				using (var csv = new CsvReader(reader, conf)) {
-					return csv.GetRecords<Models.GameEntry>().ToList();
+					var entries = csv.GetRecords<dynamic>().ToList();
+
+					if (hasHeader) {
+						foreach (var e in entries) {
+							var ge = new GameEntry { name = e.name };
+
+							if (getOtherValues) {
+								// get all other columns ; see visualstudiomagazine.com/articles/2019/04/01/working-with-dynamic-objects.aspx
+								ge.values = ((IDictionary<string, object>)e)
+									.Where(elem => !elem.Key.Equals(nameColumn, StringComparison.InvariantCultureIgnoreCase))
+									.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+							}
+
+							result.Add(ge);
+						}
+					}
+					else {
+						// Without headers, CsvReader names the fields Field1, Field2, etc
+						result.AddRange(entries.Select(e => new GameEntry { name = e.Field1 }));
+					}
 				}
+
+				return result;
 			}
 		}
 
@@ -274,6 +347,7 @@ namespace ArcadeManager.Services {
 		/// <param name="line">The line to check</param>
 		/// <returns>Whether a header has been found, and the delimiter, if any</returns>
 		private static (bool, string) HasHeader(string line) {
+			bool hasDelimiter = false;
 			foreach (var d in delimiters) {
 				// ",name," OR "name," OR ",name"
 				var hasKeyword = new Regex($"{d}{nameColumn}{d}|^{nameColumn}{d}|{d}{nameColumn}$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
@@ -281,12 +355,19 @@ namespace ArcadeManager.Services {
 				var hasKeywordAlone = new Regex($"^{d}$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
 				if (hasKeyword.IsMatch(line)) {
-					return (true, d);
+					return (true, d.Replace("\\", ""));
 				}
 
 				if (hasKeywordAlone.IsMatch(line)) {
-					return (false, d);
+					return (false, d.Replace("\\", ""));
 				}
+
+				hasDelimiter |= line.IndexOf(d.Replace("\\", "")) > 0;
+			}
+
+			// no header column found, and no delimiter either
+			if (!hasDelimiter) {
+				return (false, delimiters[0]);
 			}
 
 			throw new FormatException("Your CSV file must have a 'name' column");
@@ -301,10 +382,20 @@ namespace ArcadeManager.Services {
 		/// Copied from stackoverflow.com/a/847251/6776
 		/// </remarks>
 		private static string Sanitize(string name) {
-			string invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(System.IO.Path.GetInvalidFileNameChars()));
+			string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
 			string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
-			return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
+			return Regex.Replace(name, invalidRegStr, "_");
+		}
+
+		/// <summary>
+		/// Writes the file to the specified target.
+		/// </summary>
+		/// <param name="result">The entries to write.</param>
+		/// <param name="target">The target to write to.</param>
+		/// <exception cref="NotImplementedException"></exception>
+		private static async Task WriteFile(List<GameEntry> result, string target) {
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

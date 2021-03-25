@@ -50,10 +50,12 @@ $(() => {
 function ipc(method, data, cb) {
     if (cb && typeof cb === 'function') {
         ipcRenderer.once(method + "-reply", (sender, result) => {
+            console.log('Get results back from ' + method + '-reply');
             cb(result);
         });
     }
 
+    console.log('sending ' + method + ' with data ' + JSON.stringify(data));
     ipcRenderer.send(method, data);
 }
 

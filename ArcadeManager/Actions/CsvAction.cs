@@ -11,6 +11,11 @@
 		public string main { get; set; }
 
 		/// <summary>
+		/// Gets or sets the path to the secondary file.
+		/// </summary>
+		public string secondary { get; set; }
+
+		/// <summary>
 		/// Gets or sets the path to the target file.
 		/// </summary>
 		public string target { get; set; }
