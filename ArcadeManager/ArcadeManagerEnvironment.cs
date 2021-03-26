@@ -121,6 +121,12 @@ namespace ArcadeManager {
 			/// <param name="settings">The settings.</param>
 			public void SaveSettings(Settings settings) {
 				string json = Services.Serializer.Serialize(settings);
+
+				var fi = new FileInfo(_filePath);
+				if (!Directory.Exists(fi.DirectoryName)) {
+					Directory.CreateDirectory(fi.DirectoryName);
+				}
+
 				File.WriteAllText(_filePath, json);
 			}
 

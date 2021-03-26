@@ -28,11 +28,11 @@ namespace ArcadeManager.Services {
 					: Path.Join(data.configFolder, pack.Roms.Dest[os]); // save rom cfg in config folder
 
 				// list the available rom configs
-				progressor.Progress("Listing files to download", 1, 100);
+				progressor.Progress("list of files to download", 1, 100);
 				var romConfigs = await Downloader.ListFiles(pack.Repository, pack.Roms.Src);
 
 				// download common files
-				progressor.Progress("Downloading common files", 1, 100);
+				progressor.Progress("common files", 1, 100);
 				if (pack.Common != null && !string.IsNullOrWhiteSpace(pack.Common.Src)) {
 					await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, progressor, 100, 1);
 				}
@@ -40,7 +40,7 @@ namespace ArcadeManager.Services {
 				if (MessageHandler.MustCancel) { return; }
 
 				// check that thvere is a matching game in any of the roms folders
-				progressor.Progress("Listing games to process", 1, 100);
+				progressor.Progress("games list to process", 1, 100);
 				var processedOverlays = new List<string>();
 				var romsToProcess = GetRomsToProcess(data.romFolders, romConfigs.tree);
 
