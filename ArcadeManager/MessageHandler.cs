@@ -1,94 +1,132 @@
 ﻿using ArcadeManager.Actions;
+using ArcadeManager.Services;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using System;
-using System.Threading.Tasks;
 
 namespace ArcadeManager {
 
 	/// <summary>
 	/// Class for messages handling
 	/// </summary>
-	public static class MessageHandler {
+	public partial class MessageHandler : IMessageHandler {
+		private readonly ICsv csvService;
+		private readonly IDownloader downloaderService;
+		private readonly IOverlays overlaysService;
+		private readonly IRoms romsService;
+
+		private BrowserWindow window;
 
 		/// <summary>
-		/// Cancellation token
+		/// Initializes a new instance of the <see cref="MessageHandler"/> class.
 		/// </summary>
-		public static bool MustCancel { get; set; }
+		/// <param name="csvService">The CSV service.</param>
+		/// <param name="downloaderService">The downloader service.</param>
+		/// <param name="overlaysService">The overlays service.</param>
+		/// <param name="romsService">The roms service.</param>
+		public MessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService) {
+			this.csvService = csvService;
+			this.downloaderService = downloaderService;
+			this.overlaysService = overlaysService;
+			this.romsService = romsService;
+		}
 
 		/// <summary>
-		/// Initializes the global message handling
+		/// Gets or sets the cancellation token
 		/// </summary>
-		public static void InitMessageHandling(BrowserWindow window) {
+		public bool MustCancel { get; set; }
+
+		/// <summary>
+		/// Sends a "done" progress message
+		/// </summary>
+		/// <param name="label">The label.</param>
+		/// <param name="folder">The result folder, if any.</param>
+		public void Done(string label, string folder) {
+			// display result
+			if (MustCancel) {
+				Electron.IpcMain.Send(window, "progress", new Progress { label = $"Operation cancelled! - {label}", end = true, cancelled = true });
+			}
+			else {
+				Electron.IpcMain.Send(window, "progress", new Progress { label = label, end = true, folder = folder });
+			}
+		}
+
+		/// <summary>
+		/// Sends an "error" progress message
+		/// </summary>
+		/// <param name="ex">The exception.</param>
+		public void Error(Exception ex) {
+			Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
+		}
+
+		/// <summary>
+		/// Initializes the message handling for the specified window
+		/// </summary>
+		/// <param name="window">The window.</param>
+		public void Handle(BrowserWindow window) {
+			this.window = window;
+
 			if (HybridSupport.IsElectronActive) {
 				// Cancel actions
 				Electron.IpcMain.On("cancel", (args) => { MustCancel = true; });
 
 				// Navigation
-				Electron.IpcMain.On("open-blank", async (args) => { await OpenNewWindow(args as string); });
-				Electron.IpcMain.On("open-folder", async (args) => { await OpenFolder(args as string); });
+				Electron.IpcMain.On("open-blank", OpenNewWindow);
+				Electron.IpcMain.On("open-folder", OpenFolder);
 
 				// Get AppData
-				Electron.IpcMain.On("get-appdata", (args) => { GetAppData(window); });
+				Electron.IpcMain.On("get-appdata", GetAppData);
 
 				// Get/Set OS
-				Electron.IpcMain.On("get-os", (args) => { GetOs(window); });
+				Electron.IpcMain.On("get-os", GetOs);
 				Electron.IpcMain.On("change-os", ChangeOs);
 
 				// Browse events
-				Electron.IpcMain.On("select-directory", async (args) => { await BrowseFolder(args, window); });
-				Electron.IpcMain.On("new-file", async (args) => { await NewFile(args, window); });
-				Electron.IpcMain.On("select-file", async (args) => { await SelectFile(args, window); });
+				Electron.IpcMain.On("select-directory", BrowseFolder);
+				Electron.IpcMain.On("new-file", NewFile);
+				Electron.IpcMain.On("select-file", SelectFile);
 
 				// filesystem events
-				Electron.IpcMain.On("fs-exists", (args) => { FsExists(args, window); });
+				Electron.IpcMain.On("fs-exists", FsExists);
 
 				// Roms actions
-				Electron.IpcMain.On("roms-add", async (args) => { await RomsAdd(args, window); });
-				Electron.IpcMain.On("roms-delete", async (args) => { await RomsDelete(args, window); });
-				Electron.IpcMain.On("roms-keep", async (args) => { await RomsKeep(args, window); });
+				Electron.IpcMain.On("roms-add", RomsAdd);
+				Electron.IpcMain.On("roms-delete", RomsDelete);
+				Electron.IpcMain.On("roms-keep", RomsKeep);
 
 				// download actions
-				Electron.IpcMain.On("download-getlist", async (args) => { await GithubFilesGetList(args, window); });
-				Electron.IpcMain.On("download-file", async (args) => { await DownloadFile(args, window); });
+				Electron.IpcMain.On("download-getlist", GithubFilesGetList);
+				Electron.IpcMain.On("download-file", DownloadFile);
 
 				// CSV actions
-				Electron.IpcMain.On("csv-convertdat", async (args) => { await CsvConvertDat(args, window); });
-				Electron.IpcMain.On("csv-convertini", async (args) => { await CsvConvertIni(args, window); });
-				Electron.IpcMain.On("csv-listfiles", async (args) => { await CsvListFiles(args, window); });
-				Electron.IpcMain.On("csv-merge", async (args) => { await CsvMerge(args, window); });
-				Electron.IpcMain.On("csv-remove", async (args) => { await CsvRemove(args, window); });
-				Electron.IpcMain.On("csv-keep", async (args) => { await CsvKeep(args, window); });
+				Electron.IpcMain.On("csv-convertdat", CsvConvertDat);
+				Electron.IpcMain.On("csv-convertini", CsvConvertIni);
+				Electron.IpcMain.On("csv-listfiles", CsvListFiles);
+				Electron.IpcMain.On("csv-merge", CsvMerge);
+				Electron.IpcMain.On("csv-remove", CsvRemove);
+				Electron.IpcMain.On("csv-keep", CsvKeep);
 
 				// overlays action
-				Electron.IpcMain.On("overlays-download", async (args) => { await OverlaysDownload(args, window); });
+				Electron.IpcMain.On("overlays-download", OverlaysDownload);
 			}
 		}
 
 		/// <summary>
-		/// Browse for a folder to select
+		/// Sends an "init" progress message
 		/// </summary>
-		/// <param name="currentPath">The default path</param>
-		/// <param name="window">The window reference</param>
-		private static async Task BrowseFolder(object currentPath, BrowserWindow window) {
-			var options = new OpenDialogOptions {
-				Properties = new OpenDialogProperty[] { OpenDialogProperty.openDirectory },
-				DefaultPath = currentPath as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal)
-			};
-
-			string[] files = await Electron.Dialog.ShowOpenDialogAsync(window, options);
-			Electron.IpcMain.Send(window, "select-directory-reply", files);
+		/// <param name="label">The label.</param>
+		public void Init(string label) {
+			Electron.IpcMain.Send(window, "progress", new Progress { label = label, init = true, canCancel = true });
 		}
 
 		/// <summary>
-		/// Changes the selected OS
+		/// Sends a progression message
 		/// </summary>
-		/// <param name="obj">The value</param>
-		private static void ChangeOs(object obj) {
-			if (obj != null) {
-				// save the OS in settings
-				ArcadeManagerEnvironment.SettingsOs = obj.ToString();
-			}
+		/// <param name="label">The label.</param>
+		/// <param name="total">The total number of items.</param>
+		/// <param name="current">The current item number.</param>
+		public void Progress(string label, int total, int current) {
+			Electron.IpcMain.Send(window, "progress", new Progress { label = label, total = total, current = current });
 		}
 
 		/// <summary>
@@ -113,15 +151,41 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
+		/// Browse for a folder to select
+		/// </summary>
+		/// <param name="currentPath">The default path</param>
+		/// <param name="window">The window reference</param>
+		private async void BrowseFolder(object currentPath) {
+			var options = new OpenDialogOptions {
+				Properties = new OpenDialogProperty[] { OpenDialogProperty.openDirectory },
+				DefaultPath = currentPath as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal)
+			};
+
+			string[] files = await Electron.Dialog.ShowOpenDialogAsync(window, options);
+			Electron.IpcMain.Send(window, "select-directory-reply", files);
+		}
+
+		/// <summary>
+		/// Changes the selected OS
+		/// </summary>
+		/// <param name="obj">The value</param>
+		private void ChangeOs(object obj) {
+			if (obj != null) {
+				// save the OS in settings
+				ArcadeManagerEnvironment.SettingsOs = obj.ToString();
+			}
+		}
+
+		/// <summary>
 		/// Converts a DAT file.
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window.</param>
-		private static async Task CsvConvertDat(object args, BrowserWindow window) {
+		private async void CsvConvertDat(object args) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
-			await Services.Csv.ConvertDat(data.main, data.target, new Progressor(window));
+			await csvService.ConvertDat(data.main, data.target, this);
 		}
 
 		/// <summary>
@@ -129,11 +193,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static async Task CsvConvertIni(object args, BrowserWindow window) {
+		private async void CsvConvertIni(object args) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
-			await Services.Csv.ConvertIni(data.main, data.target, new Progressor(window));
+			await csvService.ConvertIni(data.main, data.target, this);
 		}
 
 		/// <summary>
@@ -141,11 +205,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window.</param>
-		private static async Task CsvKeep(object args, BrowserWindow window) {
+		private async void CsvKeep(object args) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
-			await Services.Csv.Keep(data.main, data.secondary, data.target, new Progressor(window));
+			await csvService.Keep(data.main, data.secondary, data.target, this);
 		}
 
 		/// <summary>
@@ -153,11 +217,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window.</param>
-		private static async Task CsvListFiles(object args, BrowserWindow window) {
+		private async void CsvListFiles(object args) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
-			await Services.Csv.ListFiles(data.main, data.target, new Progressor(window));
+			await csvService.ListFiles(data.main, data.target, this);
 		}
 
 		/// <summary>
@@ -165,11 +229,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window reference.</param>
-		private static async Task CsvMerge(object args, BrowserWindow window) {
+		private async void CsvMerge(object args) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
-			await Services.Csv.Merge(data.main, data.secondary, data.target, new Progressor(window));
+			await csvService.Merge(data.main, data.secondary, data.target, this);
 		}
 
 		/// <summary>
@@ -177,11 +241,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window reference.</param>
-		private static async Task CsvRemove(object args, BrowserWindow window) {
+		private async void CsvRemove(object args) {
 			var data = ConvertArgs<CsvAction>(args);
 			MustCancel = false;
 
-			await Services.Csv.Remove(data.main, data.secondary, data.target, new Progressor(window));
+			await csvService.Remove(data.main, data.secondary, data.target, this);
 		}
 
 		/// <summary>
@@ -189,11 +253,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window.</param>
-		private static async Task DownloadFile(object args, BrowserWindow window) {
+		private async void DownloadFile(object args) {
 			var data = ConvertArgs<DownloadAction>(args);
 			MustCancel = false;
 
-			await Services.Downloader.DownloadFile(data.repository, data.path, data.localfile);
+			await downloaderService.DownloadFile(data.repository, data.path, data.localfile);
 
 			Electron.IpcMain.Send(window, "download-file-reply", true);
 		}
@@ -202,17 +266,17 @@ namespace ArcadeManager {
 		/// Checks if a path exists
 		/// </summary>
 		/// <param name="window"></param>
-		private static void FsExists(object args, BrowserWindow window) {
+		private void FsExists(object args) {
 			var path = args as string;
 
-			Electron.IpcMain.Send(window, "fs-exists-reply", Services.FileSystem.Exists(path));
+			Electron.IpcMain.Send(window, "fs-exists-reply", FileSystem.Exists(path));
 		}
 
 		/// <summary>
 		/// Gets the application data settings
 		/// </summary>
 		/// <param name="window">The window reference</param>
-		private static void GetAppData(BrowserWindow window) {
+		private void GetAppData(object _) {
 			Electron.IpcMain.Send(window, "get-appdata-reply", ArcadeManagerEnvironment.AppData);
 		}
 
@@ -220,7 +284,7 @@ namespace ArcadeManager {
 		/// Gets the selected OS
 		/// </summary>
 		/// <param name="window">The window reference</param>
-		private static void GetOs(BrowserWindow window) {
+		private void GetOs(object _) {
 			Electron.IpcMain.Send(window, "get-os-reply", ArcadeManagerEnvironment.SettingsOs);
 		}
 
@@ -229,11 +293,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments.</param>
 		/// <param name="window">The window.</param>
-		private static async Task GithubFilesGetList(object args, BrowserWindow window) {
+		private async void GithubFilesGetList(object args) {
 			var data = ConvertArgs<DownloadAction>(args);
 			MustCancel = false;
 
-			Electron.IpcMain.Send(window, "csv-getlist-reply", await Services.Downloader.GetList(data));
+			Electron.IpcMain.Send(window, "download-getlist-reply", await downloaderService.GetList(data));
 		}
 
 		/// <summary>
@@ -241,7 +305,7 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="path">The default path</param>
 		/// <param name="window">The window reference</param>
-		private static async Task NewFile(object path, BrowserWindow window) {
+		private async void NewFile(object path) {
 			var options = new SaveDialogOptions {
 				DefaultPath = path as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal)
 			};
@@ -254,7 +318,7 @@ namespace ArcadeManager {
 		/// Opens the explorer to the specified folder
 		/// </summary>
 		/// <param name="folder">The folder to open</param>
-		private static async Task OpenFolder(object folder) {
+		private async void OpenFolder(object folder) {
 			if (folder != null) {
 				await Electron.Shell.OpenPathAsync(folder.ToString());
 			}
@@ -267,7 +331,7 @@ namespace ArcadeManager {
 		/// Opens a new browser window to the specified URL
 		/// </summary>
 		/// <param name="url">The URL to open</param>
-		private static async Task OpenNewWindow(object url) {
+		private async void OpenNewWindow(object url) {
 			if (url != null) {
 				Console.WriteLine("open blank link to: " + url.ToString());
 				await Electron.Shell.OpenExternalAsync(url.ToString());
@@ -282,11 +346,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static async Task OverlaysDownload(object args, BrowserWindow window) {
+		private async void OverlaysDownload(object args) {
 			var data = ConvertArgs<OverlaysAction>(args);
 			MustCancel = false;
 
-			await Services.Overlays.Download(data, new Progressor(window));
+			await overlaysService.Download(data, this);
 		}
 
 		/// <summary>
@@ -294,11 +358,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static async Task RomsAdd(object args, BrowserWindow window) {
+		private async void RomsAdd(object args) {
 			var data = ConvertArgs<RomsAction>(args);
 			MustCancel = false;
 
-			await Services.Roms.Add(data, new Progressor(window));
+			await romsService.Add(data, this);
 		}
 
 		/// <summary>
@@ -306,11 +370,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static async Task RomsDelete(object args, BrowserWindow window) {
+		private async void RomsDelete(object args) {
 			var data = ConvertArgs<RomsAction>(args);
 			MustCancel = false;
 
-			await Services.Roms.Delete(data, new Progressor(window));
+			await romsService.Delete(data, this);
 		}
 
 		/// <summary>
@@ -318,11 +382,11 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="args">The arguments</param>
 		/// <param name="window">The window reference</param>
-		private static async Task RomsKeep(object args, BrowserWindow window) {
+		private async void RomsKeep(object args) {
 			var data = ConvertArgs<RomsAction>(args);
 			MustCancel = false;
 
-			await Services.Roms.Keep(data, new Progressor(window));
+			await romsService.Keep(data, this);
 		}
 
 		/// <summary>
@@ -330,7 +394,7 @@ namespace ArcadeManager {
 		/// </summary>
 		/// <param name="path">The default path</param>
 		/// <param name="window">The window reference</param>
-		private static async Task SelectFile(object path, BrowserWindow window) {
+		private async void SelectFile(object path) {
 			var options = new OpenDialogOptions {
 				Properties = new OpenDialogProperty[] { OpenDialogProperty.openFile },
 				DefaultPath = path as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal),
@@ -339,62 +403,6 @@ namespace ArcadeManager {
 
 			string[] files = await Electron.Dialog.ShowOpenDialogAsync(window, options);
 			Electron.IpcMain.Send(window, "select-file-reply", files);
-		}
-
-		/// <summary>
-		/// Handles progression messages
-		/// </summary>
-		public class Progressor {
-			private readonly BrowserWindow window;
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="Progressor"/> class.
-			/// </summary>
-			/// <param name="window">The window reference.</param>
-			public Progressor(BrowserWindow window) {
-				this.window = window;
-			}
-
-			/// <summary>
-			/// Sends a "done" progress message
-			/// </summary>
-			/// <param name="label">The label.</param>
-			/// <param name="folder">The result folder, if any.</param>
-			public void Done(string label, string folder) {
-				// display result
-				if (MessageHandler.MustCancel) {
-					Electron.IpcMain.Send(window, "progress", new Progress { label = $"Operation cancelled! - {label}", end = true, cancelled = true });
-				}
-				else {
-					Electron.IpcMain.Send(window, "progress", new Progress { label = label, end = true, folder = folder });
-				}
-			}
-
-			/// <summary>
-			/// Sends an "error" progress message
-			/// </summary>
-			/// <param name="ex">The exception.</param>
-			public void Error(Exception ex) {
-				Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
-			}
-
-			/// <summary>
-			/// Sends an "init" progress message
-			/// </summary>
-			/// <param name="label">The label.</param>
-			public void Init(string label) {
-				Electron.IpcMain.Send(window, "progress", new Progress { label = label, init = true, canCancel = true });
-			}
-
-			/// <summary>
-			/// Sends a progression message
-			/// </summary>
-			/// <param name="label">The label.</param>
-			/// <param name="total">The total number of items.</param>
-			/// <param name="current">The current item number.</param>
-			public void Progress(string label, int total, int current) {
-				Electron.IpcMain.Send(window, "progress", new Progress { label = label, total = total, current = current });
-			}
 		}
 	}
 }

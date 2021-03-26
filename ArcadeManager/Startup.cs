@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using SimpleInjector;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -16,7 +16,10 @@ namespace ArcadeManager {
 	/// Startup app
 	/// </summary>
 	public class Startup {
+		private readonly Container container = new Container();
+
 		private IWebHostEnvironment env;
+		private IMessageHandler msgHandler;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Startup"/> class.
@@ -42,6 +45,8 @@ namespace ArcadeManager {
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
 			this.env = env;
 
+			app.UseSimpleInjector(container);
+
 			if (env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
 			}
@@ -52,9 +57,7 @@ namespace ArcadeManager {
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
-
 			app.UseRouting();
-
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints => {
@@ -62,6 +65,8 @@ namespace ArcadeManager {
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 			});
+
+			container.Verify();
 
 			if (HybridSupport.IsElectronActive) {
 				ElectronBootstrap();
@@ -74,6 +79,17 @@ namespace ArcadeManager {
 		/// <param name="services">The services.</param>
 		public void ConfigureServices(IServiceCollection services) {
 			services.AddControllersWithViews();
+
+			services.AddLogging();
+
+			// bind SimpleInjector to .Net injection
+			services.AddSimpleInjector(container, options => {
+				options.AddAspNetCore().AddControllerActivation();
+
+				options.AddLogging();
+			});
+
+			this.InitializeInjection();
 		}
 
 		/// <summary>
@@ -84,9 +100,7 @@ namespace ArcadeManager {
 
 			var mainWindow = await CreateMainWindow();
 
-#if DEBUG
 			mainWindow.WebContents.OpenDevTools();
-#endif
 
 			// re-create main window if last window has been closed
 			Electron.App.On("activate", obj => {
@@ -101,7 +115,8 @@ namespace ArcadeManager {
 			});
 
 			// initializes RPC message handling
-			MessageHandler.InitMessageHandling(mainWindow);
+			this.msgHandler = container.GetInstance<IMessageHandler>();
+			this.msgHandler.Handle(mainWindow);
 		}
 
 		/// <summary>
@@ -240,6 +255,20 @@ namespace ArcadeManager {
 			}
 
 			return browserWindow;
+		}
+
+		/// <summary>
+		/// Configures the dependency injection.
+		/// </summary>
+		private void InitializeInjection() {
+			// services
+			container.Register<Services.ICsv, Services.Csv>(Lifestyle.Singleton);
+			container.Register<Services.IDownloader, Services.Downloader>(Lifestyle.Singleton);
+			container.Register<Services.IOverlays, Services.Overlays>(Lifestyle.Singleton);
+			container.Register<Services.IRoms, Services.Roms>(Lifestyle.Singleton);
+
+			// message handler
+			container.Register<IMessageHandler, MessageHandler>(Lifestyle.Singleton);
 		}
 	}
 }

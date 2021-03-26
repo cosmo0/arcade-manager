@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Services {
 
-	public class Downloader {
+	public class Downloader : IDownloader {
 		private const string api = "api.github.com";
 		private const string protocol = "https:";
 		private const string raw = "raw.githubusercontent.com";
@@ -20,10 +20,7 @@ namespace ArcadeManager.Services {
 		/// <param name="repository">The repository</param>
 		/// <param name="filePath">The file path</param>
 		/// <param name="localPath">The local file path to save</param>
-		/// <returns>
-		/// The downloaded file data
-		/// </returns>
-		public static async Task DownloadFile(string repository, string filePath, string localPath) {
+		public async Task DownloadFile(string repository, string filePath, string localPath) {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
@@ -39,7 +36,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The file contents
 		/// </returns>
-		public static async Task<byte[]> DownloadFile(string repository, string filePath) {
+		public async Task<byte[]> DownloadFile(string repository, string filePath) {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
@@ -56,7 +53,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The downloaded file
 		/// </returns>
-		public static async Task<T> DownloadFile<T>(string repository, string filePath) {
+		public async Task<T> DownloadFile<T>(string repository, string filePath) {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
@@ -72,7 +69,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The file contents
 		/// </returns>
-		public static async Task<string> DownloadFileText(string repository, string filePath) {
+		public async Task<string> DownloadFileText(string repository, string filePath) {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
@@ -87,25 +84,27 @@ namespace ArcadeManager.Services {
 		/// <param name="folder">The folder path.</param>
 		/// <param name="targetFolder">The target folder.</param>
 		/// <param name="overwrite">if set to <c>true</c> overwrites existing files.</param>
-		public static async Task<IEnumerable<string>> DownloadFolder(string repository, string folder, string targetFolder, bool overwrite, Action<GithubTree.Entry> progress) {
+		/// <param name="progress">A method called when a file is downloaded.</param>
+		/// <returns></returns>
+		public async Task<IEnumerable<string>> DownloadFolder(string repository, string folder, string targetFolder, bool overwrite, Action<GithubTree.Entry> progress) {
 			FileSystem.EnsureDirectory(targetFolder);
 
 			var result = new List<string>();
 
 			var tree = await ListFiles(repository, folder);
-			foreach (var item in tree.tree) {
+			foreach (var item in tree.Tree) {
 				progress?.Invoke(item);
 
 				if (item.IsFile) {
-					var target = Path.Join(targetFolder, item.path);
+					var target = Path.Join(targetFolder, item.Path);
 					if (overwrite || !File.Exists(target)) {
-						await DownloadFile(repository, folder + "/" + item.path, target);
+						await DownloadFile(repository, folder + "/" + item.Path, target);
 					}
 
 					result.Add(target);
 				}
 				else {
-					result.AddRange(await DownloadFolder(repository, folder + "/" + item.path, Path.Join(targetFolder, item.path), overwrite, progress));
+					result.AddRange(await DownloadFolder(repository, folder + "/" + item.Path, Path.Join(targetFolder, item.Path), overwrite, progress));
 				}
 			}
 
@@ -119,7 +118,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The list of files
 		/// </returns>
-		public static async Task<IEnumerable<CsvFile>> GetList(DownloadAction data) {
+		public async Task<IEnumerable<CsvFile>> GetList(DownloadAction data) {
 			// get the content of the JSON file that lists the possible CSV files and their descriptions
 			var descriptor = await DownloadFile<CsvFilesList>(data.repository, data.details);
 
@@ -127,7 +126,7 @@ namespace ArcadeManager.Services {
 			var files = await ListFiles(data.repository, data.folder);
 
 			// return the files that match in both lists
-			return descriptor.files.Where(d => files.tree.Any((f) => f.path == d.filename));
+			return descriptor.files.Where(d => files.Tree.Any((f) => f.Path == d.filename));
 		}
 
 		/// <summary>
@@ -138,7 +137,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The list of files
 		/// </returns>
-		public static async Task<GithubTree> ListFiles(string repository, string folder) {
+		public async Task<GithubTree> ListFiles(string repository, string folder) {
 			// get level-up folder to get the SHA of the folder - easy to access but limited to 1000 files docs.github.com/en/rest/reference/repos#get-repository-content
 			var urlUpFolders = $"{protocol}//{api}/repos/{repository}/contents/{folder.Substring(0, folder.LastIndexOf("/"))}";
 

@@ -8,7 +8,16 @@ namespace ArcadeManager.Services {
 	/// <summary>
 	/// Roms management
 	/// </summary>
-	public class Roms {
+	public class Roms : IRoms {
+		private readonly ICsv csvService;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Roms"/> class.
+		/// </summary>
+		/// <param name="csvService">The CSV service.</param>
+		public Roms(ICsv csvService) {
+			this.csvService = csvService;
+		}
 
 		/// <summary>
 		/// Copies roms
@@ -17,7 +26,7 @@ namespace ArcadeManager.Services {
 		/// <param name="progressor">The progress manager.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find romset folder {args.romset}</exception>
-		public static async Task Add(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+		public async Task Add(Actions.RomsAction args, IMessageHandler progressor) {
 			progressor.Init("Copying roms");
 
 			try {
@@ -27,7 +36,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { Directory.CreateDirectory(args.selection); }
 
 				// read CSV file
-				var content = await Csv.ReadFile(args.main, false);
+				var content = await csvService.ReadFile(args.main, false);
 
 				var total = content.Count();
 				var i = 0;
@@ -35,7 +44,7 @@ namespace ArcadeManager.Services {
 
 				// copy each file found in CSV
 				foreach (var f in content) {
-					if (MessageHandler.MustCancel) { break; }
+					if (progressor.MustCancel) { break; }
 
 					i++;
 
@@ -60,7 +69,7 @@ namespace ArcadeManager.Services {
 						var sourceChd = Path.Join(args.romset, game);
 						var targetChd = Path.Join(args.selection, game);
 						if (Directory.Exists(sourceChd)) {
-							if (MessageHandler.MustCancel) { break; }
+							if (progressor.MustCancel) { break; }
 
 							progressor.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
 
@@ -83,7 +92,7 @@ namespace ArcadeManager.Services {
 		/// <param name="progressor">The progress manager.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-		public static async Task Delete(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+		public async Task Delete(Actions.RomsAction args, IMessageHandler progressor) {
 			progressor.Init("Deleting roms");
 
 			try {
@@ -92,14 +101,14 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
 
 				// read CSV file
-				var content = await Csv.ReadFile(args.main, false);
+				var content = await csvService.ReadFile(args.main, false);
 
 				var total = content.Count();
 				var i = 0;
 				var deleted = 0;
 
 				foreach (var f in content) {
-					if (MessageHandler.MustCancel) { break; }
+					if (progressor.MustCancel) { break; }
 					i++;
 
 					// build vars
@@ -129,7 +138,7 @@ namespace ArcadeManager.Services {
 		/// <param name="progressor">The progress manager.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-		public static async Task Keep(Actions.RomsAction args, MessageHandler.Progressor progressor) {
+		public async Task Keep(Actions.RomsAction args, IMessageHandler progressor) {
 			progressor.Init("Filtering roms");
 
 			try {
@@ -138,7 +147,7 @@ namespace ArcadeManager.Services {
 				if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
 
 				// read CSV file
-				var content = await Csv.ReadFile(args.main, false);
+				var content = await csvService.ReadFile(args.main, false);
 
 				// get list of files
 				var files = (new DirectoryInfo(args.selection)).GetFiles("*.zip");
@@ -149,7 +158,7 @@ namespace ArcadeManager.Services {
 
 				// check if files exist in games list
 				foreach (var f in files) {
-					if (MessageHandler.MustCancel) { break; }
+					if (progressor.MustCancel) { break; }
 					i++;
 
 					progressor.Progress(f.Name, total, i);

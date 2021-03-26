@@ -49,7 +49,7 @@ $(() => {
  */
 function ipc(method, data, cb) {
     if (cb && typeof cb === 'function') {
-        ipcRenderer.once(method + "-reply", (sender, result) => {
+        ipcRenderer.once(method + "-reply", (_, result) => {
             console.log('Get results back from ' + method + '-reply');
             cb(result);
         });
@@ -150,6 +150,6 @@ function downloadFile(repository, path, localfile, cb) {
  * @param {any} details
  * @param {any} folder
  */
-function getRemoteList(repository, details, folder) {
+function getRemoteList(repository, details, folder, cb) {
     ipc('download-getlist', { repository, details, folder }, cb);
 }

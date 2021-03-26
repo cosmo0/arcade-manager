@@ -1,20 +1,23 @@
 ﻿
 $(() => {
     // bind progress events
-    ipcRenderer.on("progress", (sender, data) => {
+    ipcRenderer.on('progress', (_, data) => {
         if (data.init) {
+            console.log('Init: ' + data.label);
             progressInit(data.label, data.canCancel);
         }
         else if (data.end) {
+            console.log('Done: ' + data.label);
             progressDone(data.label, data.folder);
         }
         else {
+            console.log('Progress: ' + data.total);
             progress(data.total, data.current, data.label);
         }
     });
 
     // bind progress log
-    ipcRenderer.on("progress-log", (sender, data) => {
+    ipcRenderer.on('progress-log', (_, data) => {
         progressLog(data.msg, data.error);
     });
 
@@ -37,15 +40,15 @@ $(() => {
             .prop('disabled', true);
 
         // send cancel message
-        ipcRenderer.once('cancel');
+        ipc('cancel');
     });
 });
 
 /**
  * Shows the progression modal
  *
- * @param {string} title The modal title
- * @param {bool} canCancel Whether the user can cancel the operation
+ * @param {String} title The modal title
+ * @param {Boolean} canCancel Whether the user can cancel the operation
  */
 function progressInit(title, canCancel) {
     if (typeof canCancel === 'undefined') { canCancel = false; }
@@ -81,9 +84,9 @@ function progressInit(title, canCancel) {
 /**
  * Advances the progression modal
  *
- * @param {int} total The total number of items
- * @param {int} current The current item number
- * @param {string} details The details to display
+ * @param {Number} total The total number of items
+ * @param {Number} current The current item number
+ * @param {String} details The details to display
  */
 function progress(total, current, item) {
     let p = $('#progress');
@@ -98,6 +101,9 @@ function progress(total, current, item) {
 
 /**
  * Logs some info in the progress dialog
+ * 
+ * @param {String} msg the message to log
+ * @param {Boolean} isError whether the message is an error message
  */
 function progressLog(msg, isError) {
     if (typeof isError === 'undefined') { isError = false; }
@@ -120,8 +126,8 @@ function progressLog(msg, isError) {
 /**
  * Finishes the progression
  *
- * @param {string} msg The message to display
- * @param {string} path A path to open, if any
+ * @param {String} msg The message to display
+ * @param {String} path A path to open, if any
  */
 function progressDone(msg, path) {
     let p = $('#progress');

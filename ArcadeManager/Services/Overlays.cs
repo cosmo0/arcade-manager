@@ -8,15 +8,27 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Services {
 
-	public class Overlays {
+	public class Overlays : IOverlays {
+		private readonly IDownloader downloaderService;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Overlays"/> class.
+		/// </summary>
+		/// <param name="downloaderService">The downloader service.</param>
+		public Overlays(IDownloader downloaderService) {
+			this.downloaderService = downloaderService;
+		}
 
 		/// <summary>
 		/// Downloads an overlay pack
 		/// </summary>
 		/// <param name="data">The parameters</param>
-		/// <param name="progressor">The progressor</param>
-		public static async Task Download(Actions.OverlaysAction data, MessageHandler.Progressor progressor) {
-			progressor.Init("Download overlay pack");
+		/// <param name="messageHandler">The message handler.</param>
+		/// <exception cref="FileNotFoundException">Unable to parse rom config {game} to find overlay (input_overlay)
+		/// or
+		/// Unable to parse overlay config {game} to find image (overlay0_overlay)</exception>
+		public async Task Download(Actions.OverlaysAction data, IMessageHandler messageHandler) {
+			messageHandler.Init("Download overlay pack");
 
 			try {
 				var os = ArcadeManagerEnvironment.SettingsOs;
@@ -28,47 +40,47 @@ namespace ArcadeManager.Services {
 					: Path.Join(data.configFolder, pack.Roms.Dest[os]); // save rom cfg in config folder
 
 				// list the available rom configs
-				progressor.Progress("list of files to download", 1, 100);
-				var romConfigs = await Downloader.ListFiles(pack.Repository, pack.Roms.Src);
+				messageHandler.Progress("list of files to download", 1, 100);
+				var romConfigs = await downloaderService.ListFiles(pack.Repository, pack.Roms.Src);
 
 				// download common files
-				progressor.Progress("common files", 1, 100);
+				messageHandler.Progress("common files", 1, 100);
 				if (pack.Common != null && !string.IsNullOrWhiteSpace(pack.Common.Src)) {
-					await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, progressor, 100, 1);
+					await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, messageHandler, 100, 1);
 				}
 
-				if (MessageHandler.MustCancel) { return; }
+				if (messageHandler.MustCancel) { return; }
 
 				// check that thvere is a matching game in any of the roms folders
-				progressor.Progress("games list to process", 1, 100);
+				messageHandler.Progress("games list to process", 1, 100);
 				var processedOverlays = new List<string>();
-				var romsToProcess = GetRomsToProcess(data.romFolders, romConfigs.tree);
+				var romsToProcess = GetRomsToProcess(data.romFolders, romConfigs.Tree);
 
-				var total = romConfigs.tree.Count;
+				var total = romConfigs.Tree.Count;
 				var current = 0;
 				var installed = 0;
 
 				foreach (var r in romsToProcess) {
-					if (MessageHandler.MustCancel) { return; }
+					if (messageHandler.MustCancel) { return; }
 
 					current++;
 
 					var game = r.Game;
 
-					progressor.Progress(game, total, current);
+					messageHandler.Progress(game, total, current);
 
 					// download the rom config and extract the overlay file name
 					var romConfigContent = string.Empty;
 					foreach (var romFolder in r.TargetFolder) {
-						if (MessageHandler.MustCancel) { return; }
+						if (messageHandler.MustCancel) { return; }
 
 						var romConfigFile = Path.Join(romFolder, $"{game}.zip.cfg");
-						
+
 						// get rom config content
 						if (string.IsNullOrEmpty(romConfigContent)) {
-							if (data.overwrite || File.Exists(romConfigFile)) {
+							if (data.overwrite || !File.Exists(romConfigFile)) {
 								// file doesn't exist or we'll overwrite it
-								romConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.zip.cfg");
+								romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.zip.cfg");
 
 								// fix resolution and paths
 								romConfigContent = ChangeResolution(romConfigContent, data.ratio);
@@ -79,10 +91,10 @@ namespace ArcadeManager.Services {
 								romConfigContent = await File.ReadAllTextAsync(romConfigFile);
 							}
 						}
-						
+
 						// write rom config
 						if (data.overwrite || !File.Exists(romConfigFile)) {
-							if (MessageHandler.MustCancel) { return; }
+							if (messageHandler.MustCancel) { return; }
 
 							await File.WriteAllTextAsync(romConfigFile, romConfigContent);
 							installed++;
@@ -98,10 +110,10 @@ namespace ArcadeManager.Services {
 					// download the overlay file name and extract the image file name
 					var overlayConfigContent = string.Empty;
 					if (data.overwrite || !File.Exists(overlayConfigDest)) {
-						if (MessageHandler.MustCancel) { return; }
+						if (messageHandler.MustCancel) { return; }
 
-						overlayConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi.Name}");
-						
+						overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi.Name}");
+
 						// fix path
 						overlayConfigContent = FixPaths(overlayConfigContent, pack);
 
@@ -119,34 +131,17 @@ namespace ArcadeManager.Services {
 
 					// download the image
 					if (data.overwrite || !File.Exists(imageDest)) {
-						if (MessageHandler.MustCancel) { return; }
+						if (messageHandler.MustCancel) { return; }
 
-						await Downloader.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi.Name}", imageDest);
+						await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi.Name}", imageDest);
 					}
 				}
 
-				progressor.Done($"Installed {installed} overlays", null);
+				messageHandler.Done($"Installed {installed} overlays", null);
 			}
 			catch (Exception ex) {
-				progressor.Error(ex);
+				messageHandler.Error(ex);
 			}
-		}
-
-		/// <summary>
-		/// Gets data from the specified config file.
-		/// </summary>
-		/// <param name="fileContent">The content of the file.</param>
-		/// <param name="key">The key to look for.</param>
-		/// <returns>
-		/// The config value
-		/// </returns>
-		public static string GetCfgData(string fileContent, string key) {
-			var match = Regex.Match(fileContent, BuildCfgRegex(key), RegexOptions.Multiline);
-			if (match.Success && match.Captures.Any()) {
-				return match.Groups[1].Value.Trim();
-			}
-
-			return null;
 		}
 
 		/// <summary>
@@ -194,41 +189,6 @@ namespace ArcadeManager.Services {
 		}
 
 		/// <summary>
-		/// Downloads the common files.
-		/// </summary>
-		/// <param name="pack">The overlay pack to download.</param>
-		/// <param name="destination">The destination path.</param>
-		/// <param name="overwrite">if set to <c>true</c> overwrite existing files.</param>
-		/// <param name="ratio">The ratio to change resolution.</param>
-		/// <param name="progressor">The progressor.</param>
-		/// <returns>
-		/// How many files have been downloaded
-		/// </returns>
-		private static async Task DownloadCommon(OverlayBundle pack, string destination, bool overwrite, float ratio, MessageHandler.Progressor progressor, int total, int current) {
-			if (MessageHandler.MustCancel) { return; }
-
-			if (pack.Common != null && !string.IsNullOrEmpty(pack.Common.Src)) {
-				IEnumerable<string> files = await Downloader.DownloadFolder(pack.Repository, pack.Common.Src, destination, overwrite, (entry) => {
-					progressor.Progress($"downloading {entry.path}", total, current);
-				});
-
-				foreach (var f in files.Where(f => f.EndsWith(".cfg", StringComparison.InvariantCultureIgnoreCase))) {
-					var fi = new FileInfo(f);
-					progressor.Progress($"fixing {fi.Name}", total, current);
-
-					if (overwrite || !fi.Exists) {
-						var content = await File.ReadAllTextAsync(f);
-
-						content = ChangeResolution(content, ratio);
-						content = FixPaths(content, pack);
-
-						await File.WriteAllTextAsync(f, content);
-					}
-				};
-			}
-		}
-
-		/// <summary>
 		/// Fixes the paths in a config.
 		/// </summary>
 		/// <param name="content">The config content.</param>
@@ -242,6 +202,23 @@ namespace ArcadeManager.Services {
 			}
 
 			return content;
+		}
+
+		/// <summary>
+		/// Gets data from the specified config file.
+		/// </summary>
+		/// <param name="fileContent">The content of the file.</param>
+		/// <param name="key">The key to look for.</param>
+		/// <returns>
+		/// The config value
+		/// </returns>
+		private static string GetCfgData(string fileContent, string key) {
+			var match = Regex.Match(fileContent, BuildCfgRegex(key), RegexOptions.Multiline);
+			if (match.Success && match.Captures.Any()) {
+				return match.Groups[1].Value.Trim();
+			}
+
+			return null;
 		}
 
 		/// <summary>
@@ -263,7 +240,7 @@ namespace ArcadeManager.Services {
 					var game = fi.Name.Replace(".zip", "");
 
 					// only process files that are in the overlays pack
-					if (entries.Any(e => e.path.EndsWith($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
+					if (entries.Any(e => e.Path.EndsWith($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
 						var existing = result.Where(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 						if (existing != null) {
 							existing.TargetFolder.Add(fi.DirectoryName);
@@ -276,6 +253,41 @@ namespace ArcadeManager.Services {
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Downloads the common files.
+		/// </summary>
+		/// <param name="pack">The overlay pack to download.</param>
+		/// <param name="destination">The destination path.</param>
+		/// <param name="overwrite">if set to <c>true</c> overwrite existing files.</param>
+		/// <param name="ratio">The ratio to change resolution.</param>
+		/// <param name="progressor">The progressor.</param>
+		/// <returns>
+		/// How many files have been downloaded
+		/// </returns>
+		private async Task DownloadCommon(OverlayBundle pack, string destination, bool overwrite, float ratio, IMessageHandler progressor, int total, int current) {
+			if (progressor.MustCancel) { return; }
+
+			if (pack.Common != null && !string.IsNullOrEmpty(pack.Common.Src)) {
+				IEnumerable<string> files = await downloaderService.DownloadFolder(pack.Repository, pack.Common.Src, destination, overwrite, (entry) => {
+					progressor.Progress($"downloading {entry.Path}", total, current);
+				});
+
+				foreach (var f in files.Where(f => f.EndsWith(".cfg", StringComparison.InvariantCultureIgnoreCase))) {
+					var fi = new FileInfo(f);
+					progressor.Progress($"fixing {fi.Name}", total, current);
+
+					if (overwrite || !fi.Exists) {
+						var content = await File.ReadAllTextAsync(f);
+
+						content = ChangeResolution(content, ratio);
+						content = FixPaths(content, pack);
+
+						await File.WriteAllTextAsync(f, content);
+					}
+				};
+			}
 		}
 
 		/// <summary>
