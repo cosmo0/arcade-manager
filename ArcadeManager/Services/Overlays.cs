@@ -69,6 +69,10 @@ namespace ArcadeManager.Services {
 							if (data.overwrite || File.Exists(romConfigFile)) {
 								// file doesn't exist or we'll overwrite it
 								romConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.zip.cfg");
+
+								// fix resolution and paths
+								romConfigContent = ChangeResolution(romConfigContent, data.ratio);
+								romConfigContent = FixPaths(romConfigContent, pack);
 							}
 							else {
 								// file exist, we don"t overwrite: read it
@@ -97,6 +101,9 @@ namespace ArcadeManager.Services {
 						if (MessageHandler.MustCancel) { return; }
 
 						overlayConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi.Name}");
+						
+						// fix path
+						overlayConfigContent = FixPaths(overlayConfigContent, pack);
 
 						await File.WriteAllTextAsync(overlayConfigDest, overlayConfigContent);
 					}
@@ -116,13 +123,6 @@ namespace ArcadeManager.Services {
 
 						await Downloader.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi.Name}", imageDest);
 					}
-
-					// resize the overlay coordinates if necessary
-					if (data.ratio != 1) {
-
-					}
-
-					// fix the paths in the config files
 				}
 
 				progressor.Done($"Installed {installed} overlays", null);
