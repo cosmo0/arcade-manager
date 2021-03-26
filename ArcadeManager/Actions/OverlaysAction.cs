@@ -17,9 +17,9 @@ namespace ArcadeManager.Actions
         public string configFolder { get; set; }
 
         /// <summary>
-        /// Gets or sets the selected pack data
+        /// Gets or sets the selected pack name
         /// </summary>
-        public Models.OverlayBundle pack { get; set; }
+        public string pack { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the files should be overwritten

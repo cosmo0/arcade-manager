@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ArcadeManager.Models {
 
@@ -33,6 +34,36 @@ namespace ArcadeManager.Models {
 		public class Entry {
 
 			/// <summary>
+			/// The entry types
+			/// </summary>
+			public enum EntryType {
+
+				/// <summary>
+				/// A text file
+				/// </summary>
+				TextFile,
+
+				/// <summary>
+				/// A binary file
+				/// </summary>
+				BinaryFile,
+
+				/// <summary>
+				/// A folder
+				/// </summary>
+				Folder
+			}
+
+			/// <summary>
+			/// Gets a value indicating whether this instance is a file.
+			/// </summary>
+			public bool IsFile {
+				get {
+					return this.type == "file" || this.type == "blob";
+				}
+			}
+
+			/// <summary>
 			/// Gets or sets the entry mode.
 			/// </summary>
 			public string mode { get; set; }
@@ -56,6 +87,25 @@ namespace ArcadeManager.Models {
 			/// Gets or sets the entry type.
 			/// </summary>
 			public string type { get; set; }
+
+			/// <summary>
+			/// Gets the entry type.
+			/// </summary>
+			[JsonIgnore]
+			public EntryType Type {
+				get {
+					switch (this.type) {
+						case "file":
+							return EntryType.TextFile;
+
+						case "blob":
+							return EntryType.BinaryFile;
+
+						default:
+							return EntryType.Folder;
+					}
+				}
+			}
 
 			/// <summary>
 			/// Gets or sets the URL.

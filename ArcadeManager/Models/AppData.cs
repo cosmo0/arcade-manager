@@ -146,6 +146,11 @@ namespace ArcadeManager.Models {
 		public Distributions Base { get; set; }
 
 		/// <summary>
+		/// Gets or sets the base OS of the bundle.
+		/// </summary>
+		public string BaseOs { get; set; }
+
+		/// <summary>
 		/// Gets or sets the common files, if any.
 		/// </summary>
 		public SourceDest Common { get; set; }
@@ -196,23 +201,20 @@ namespace ArcadeManager.Models {
 			public string Retropie { get; set; }
 
 			/// <summary>
-            /// Accesses the value for the specified distribution
-            /// </summary>
-            /// <param name="distribution">The distribution</param>
-            /// <returns>The distribution value</returns>
-			public string this[string distribution]
-			{
-				get
-				{
+			/// Accesses the value for the specified distribution
+			/// </summary>
+			/// <param name="distribution">The distribution</param>
+			/// <returns>The distribution value</returns>
+			public string this[string distribution] {
+				get {
 					var prop = this.GetType()
 						.GetProperties()
 						.Where(p => p.Name.Equals(distribution, StringComparison.InvariantCultureIgnoreCase))
 						.FirstOrDefault();
 
-					if (prop != null)
-                    {
+					if (prop != null) {
 						return prop.GetValue(this).ToString();
-                    }
+					}
 
 					return string.Empty;
 				}

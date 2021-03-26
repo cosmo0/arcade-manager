@@ -199,11 +199,10 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
-        /// Checks if a path exists
-        /// </summary>
-        /// <param name="window"></param>
-		private static void FsExists(object args, BrowserWindow window)
-		{
+		/// Checks if a path exists
+		/// </summary>
+		/// <param name="window"></param>
+		private static void FsExists(object args, BrowserWindow window) {
 			var path = args as string;
 
 			Electron.IpcMain.Send(window, "fs-exists-reply", Services.FileSystem.Exists(path));
@@ -279,17 +278,16 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
-        /// Downloads overlays
-        /// </summary>
-        /// <param name="args">The arguments</param>
-        /// <param name="window">The window reference</param>
-		private static async Task OverlaysDownload(object args, BrowserWindow window)
-        {
+		/// Downloads overlays
+		/// </summary>
+		/// <param name="args">The arguments</param>
+		/// <param name="window">The window reference</param>
+		private static async Task OverlaysDownload(object args, BrowserWindow window) {
 			var data = ConvertArgs<OverlaysAction>(args);
 			MustCancel = false;
 
 			await Services.Overlays.Download(data, new Progressor(window));
-        }
+		}
 
 		/// <summary>
 		/// Copies roms from a folder to another

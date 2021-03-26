@@ -2,6 +2,7 @@
 using ArcadeManager.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -45,6 +46,38 @@ namespace ArcadeManager.Services {
 			using (var wc = new ArcadeManagerWebClient()) {
 				return Serializer.Deserialize<T>(await wc.DownloadStringTaskAsync(url));
 			}
+		}
+
+		/// <summary>
+		/// Downloads the specified folder.
+		/// </summary>
+		/// <param name="repository">The repository.</param>
+		/// <param name="folder">The folder path.</param>
+		/// <param name="targetFolder">The target folder.</param>
+		/// <param name="overwrite">if set to <c>true</c> overwrites existing files.</param>
+		public static async Task<IEnumerable<string>> DownloadFolder(string repository, string folder, string targetFolder, bool overwrite, Action<GithubTree.Entry> progress) {
+			FileSystem.EnsureDirectory(targetFolder);
+
+			var result = new List<string>();
+
+			var tree = await ListFiles(repository, folder);
+			foreach (var item in tree.tree) {
+				progress?.Invoke(item);
+
+				if (item.IsFile) {
+					var target = Path.Join(targetFolder, item.path);
+					if (overwrite || !File.Exists(target)) {
+						await DownloadFile(repository, folder + "/" + item.path, target);
+					}
+
+					result.Add(target);
+				}
+				else {
+					result.AddRange(await DownloadFolder(repository, folder + "/" + item.path, Path.Join(targetFolder, item.path), overwrite, progress));
+				}
+			}
+
+			return result;
 		}
 
 		/// <summary>
