@@ -54,6 +54,12 @@ dotnet build
 electronize start
 ````
 
+Generate a fake romset in `tmp\roms` (empty zip files with the right names):
+
+````powershell
+.\generate-samples.ps1
+````
+
 Create an install package:
 
 ````bash

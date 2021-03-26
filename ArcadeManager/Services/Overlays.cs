@@ -54,32 +54,73 @@ namespace ArcadeManager.Services {
 					current++;
 
 					var game = r.Game;
-					var zip = $"{game}.zip";
-					var romcfg = $"{game}.zip.cfg";
 
-					progressor.Progress($"Processing {r.Game}", total, current);
+					progressor.Progress(game, total, current);
 
 					// download the rom config and extract the overlay file name
-					var romConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.zip.cfg");
+					var romConfigContent = string.Empty;
 					foreach (var romFolder in r.TargetFolder) {
 						if (MessageHandler.MustCancel) { return; }
 
-						var romFile = Path.Join(romFolder, zip);
-						if (data.overwrite || !File.Exists(romFile)) {
-							await File.WriteAllTextAsync(romFile, romConfigContent);
+						var romConfigFile = Path.Join(romFolder, $"{game}.zip.cfg");
+						
+						// get rom config content
+						if (string.IsNullOrEmpty(romConfigContent)) {
+							if (data.overwrite || File.Exists(romConfigFile)) {
+								// file doesn't exist or we'll overwrite it
+								romConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.zip.cfg");
+							}
+							else {
+								// file exist, we don"t overwrite: read it
+								romConfigContent = await File.ReadAllTextAsync(romConfigFile);
+							}
+						}
+						
+						// write rom config
+						if (data.overwrite || !File.Exists(romConfigFile)) {
+							if (MessageHandler.MustCancel) { return; }
+
+							await File.WriteAllTextAsync(romConfigFile, romConfigContent);
 							installed++;
 						}
 					}
 
-					if (MessageHandler.MustCancel) { return; }
-
-					var overlayFileName = GetCfgData(romConfigContent, "input_overlay");
+					// extract the overlay file name
+					var overlayPath = GetCfgData(romConfigContent, "input_overlay");
+					if (string.IsNullOrWhiteSpace(overlayPath)) { throw new FileNotFoundException($"Unable to parse rom config {game} to find overlay (input_overlay)"); }
+					var overlayFi = new FileInfo(overlayPath);
+					var overlayConfigDest = Path.Join(data.configFolder, overlayFi.Name);
 
 					// download the overlay file name and extract the image file name
+					var overlayConfigContent = string.Empty;
+					if (data.overwrite || !File.Exists(overlayConfigDest)) {
+						if (MessageHandler.MustCancel) { return; }
+
+						overlayConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi.Name}");
+
+						await File.WriteAllTextAsync(overlayConfigDest, overlayConfigContent);
+					}
+					else {
+						overlayConfigContent = File.ReadAllText(overlayConfigDest);
+					}
+
+					// extract the image file name
+					var imagePath = GetCfgData(overlayConfigContent, "overlay0_overlay");
+					if (string.IsNullOrWhiteSpace(imagePath)) { throw new FileNotFoundException($"Unable to parse overlay config {game} to find image (overlay0_overlay)"); }
+					var imageFi = new FileInfo(imagePath);
+					var imageDest = Path.Join(data.configFolder, imageFi.Name);
 
 					// download the image
+					if (data.overwrite || !File.Exists(imageDest)) {
+						if (MessageHandler.MustCancel) { return; }
+
+						await Downloader.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi.Name}", imageDest);
+					}
 
 					// resize the overlay coordinates if necessary
+					if (data.ratio != 1) {
+
+					}
 
 					// fix the paths in the config files
 				}
