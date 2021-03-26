@@ -31,31 +31,93 @@ namespace ArcadeManager.Services {
 				progressor.Progress("Listing files to download", 1, 100);
 				var romConfigs = await Downloader.ListFiles(pack.Repository, pack.Roms.Src);
 
-				int installed = 0;
-				var total = romConfigs.tree.Count;
-
-				progressor.Progress("Downloading common files", 1, 100);
-
 				// download common files
+				progressor.Progress("Downloading common files", 1, 100);
 				if (pack.Common != null && !string.IsNullOrWhiteSpace(pack.Common.Src)) {
-					await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, progressor, total, 1);
+					await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, progressor, 100, 1);
 				}
 
-				// check that there is a matching game in any of the roms folders
+				if (MessageHandler.MustCancel) { return; }
 
-				// download the rom config and extract the overlay file name
+				// check that thvere is a matching game in any of the roms folders
+				progressor.Progress("Listing games to process", 1, 100);
+				var processedOverlays = new List<string>();
+				var romsToProcess = GetRomsToProcess(data.romFolders, romConfigs.tree);
 
-				// download the overlay file name and extract the image file name
+				var total = romConfigs.tree.Count;
+				var current = 0;
+				var installed = 0;
 
-				// download the image
+				foreach (var r in romsToProcess) {
+					if (MessageHandler.MustCancel) { return; }
 
-				// resize the overlay coordinates if necessary
+					current++;
 
-				progressor.Done($"Installed {installed} overlay packs", null);
+					var game = r.Game;
+					var zip = $"{game}.zip";
+					var romcfg = $"{game}.zip.cfg";
+
+					progressor.Progress($"Processing {r.Game}", total, current);
+
+					// download the rom config and extract the overlay file name
+					var romConfigContent = await Downloader.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.zip.cfg");
+					foreach (var romFolder in r.TargetFolder) {
+						if (MessageHandler.MustCancel) { return; }
+
+						var romFile = Path.Join(romFolder, zip);
+						if (data.overwrite || !File.Exists(romFile)) {
+							await File.WriteAllTextAsync(romFile, romConfigContent);
+							installed++;
+						}
+					}
+
+					if (MessageHandler.MustCancel) { return; }
+
+					var overlayFileName = GetCfgData(romConfigContent, "input_overlay");
+
+					// download the overlay file name and extract the image file name
+
+					// download the image
+
+					// resize the overlay coordinates if necessary
+
+					// fix the paths in the config files
+				}
+
+				progressor.Done($"Installed {installed} overlays", null);
 			}
 			catch (Exception ex) {
 				progressor.Error(ex);
 			}
+		}
+
+		/// <summary>
+		/// Gets data from the specified config file.
+		/// </summary>
+		/// <param name="fileContent">The content of the file.</param>
+		/// <param name="key">The key to look for.</param>
+		/// <returns>
+		/// The config value
+		/// </returns>
+		public static string GetCfgData(string fileContent, string key) {
+			var match = Regex.Match(fileContent, BuildCfgRegex(key), RegexOptions.Multiline);
+			if (match.Success && match.Captures.Any()) {
+				return match.Groups[1].Value.Trim();
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Builds a regex string to get the specified key value
+		/// </summary>
+		/// <param name="key">The key.</param>
+		/// <returns>The corresponding value</returns>
+		private static string BuildCfgRegex(string key) {
+			/// searched value looks like:
+			/// key = "value"
+			/// with or without spaces, with or without quotes, with or without trailing spaces
+			return $"^{key}\\s*=\\s?\"?([^\"\\n]*)\"?\\s*$";
 		}
 
 		/// <summary>
@@ -79,7 +141,7 @@ namespace ArcadeManager.Services {
 			};
 
 			foreach (var p in parameters) {
-				var regex = new Regex(p + "[\\s]*=[\\s]*\"?(\\d+)\"?", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+				var regex = new Regex(BuildCfgRegex(p), RegexOptions.Multiline | RegexOptions.IgnoreCase);
 				var foundValue = regex.Match(content).Groups[1].Value;
 				if (double.TryParse(foundValue, out var value)) {
 					value = Math.Round(value * ratio, 0);
@@ -139,6 +201,56 @@ namespace ArcadeManager.Services {
 			}
 
 			return content;
+		}
+
+		/// <summary>
+		/// Gets the list of roms to process and their folder(s).
+		/// </summary>
+		/// <param name="romFolders">The rom folders.</param>
+		/// <param name="entries">The available entries.</param>
+		/// <returns>
+		/// The roms to process
+		/// </returns>
+		private static IEnumerable<RomToProcess> GetRomsToProcess(string[] romFolders, IEnumerable<GithubTree.Entry> entries) {
+			var result = new List<RomToProcess>();
+
+			// list all the folders (arcade, fba, mame...)
+			foreach (var folder in romFolders) {
+				var di = new DirectoryInfo(folder);
+				// get all rom files
+				foreach (var fi in di.GetFiles("*.zip")) {
+					var game = fi.Name.Replace(".zip", "");
+
+					// only process files that are in the overlays pack
+					if (entries.Any(e => e.path.EndsWith($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
+						var existing = result.Where(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+						if (existing != null) {
+							existing.TargetFolder.Add(fi.DirectoryName);
+						}
+						else {
+							result.Add(new RomToProcess { Game = game, TargetFolder = new List<string> { fi.DirectoryName } });
+						}
+					}
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// A rom to process
+		/// </summary>
+		private class RomToProcess {
+
+			/// <summary>
+			/// Gets or sets the name of the game.
+			/// </summary>
+			public string Game { get; set; }
+
+			/// <summary>
+			/// Gets or sets the folders in which the game is present.
+			/// </summary>
+			public List<string> TargetFolder { get; set; } = new();
 		}
 	}
 }

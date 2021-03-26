@@ -32,6 +32,22 @@ namespace ArcadeManager.Services {
 		}
 
 		/// <summary>
+		/// Gets the contents of a file.
+		/// </summary>
+		/// <param name="repository">The repository.</param>
+		/// <param name="filePath">The file path.</param>
+		/// <returns>
+		/// The file contents
+		/// </returns>
+		public static async Task<byte[]> DownloadFile(string repository, string filePath) {
+			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
+
+			using (var wc = new ArcadeManagerWebClient()) {
+				return await wc.DownloadDataTaskAsync(url);
+			}
+		}
+
+		/// <summary>
 		/// Downloads a JSON file and deserializes it to T
 		/// </summary>
 		/// <typeparam name="T">The type to deserialize into</typeparam>
@@ -45,6 +61,22 @@ namespace ArcadeManager.Services {
 
 			using (var wc = new ArcadeManagerWebClient()) {
 				return Serializer.Deserialize<T>(await wc.DownloadStringTaskAsync(url));
+			}
+		}
+
+		/// <summary>
+		/// Downloads the content of a text file.
+		/// </summary>
+		/// <param name="repository">The repository.</param>
+		/// <param name="filePath">The file path.</param>
+		/// <returns>
+		/// The file contents
+		/// </returns>
+		public static async Task<string> DownloadFileText(string repository, string filePath) {
+			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
+
+			using (var wc = new ArcadeManagerWebClient()) {
+				return await wc.DownloadStringTaskAsync(url);
 			}
 		}
 
