@@ -25,7 +25,6 @@
     <None Remove="Assets\electron.ico" />
     <None Remove="Assets\electron_32x32.png" />
     <None Remove="Assets\icon.icns" />
-    <None Remove="Data\bios.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\electron.ico">
@@ -35,9 +34,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\icon.icns">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\bios.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

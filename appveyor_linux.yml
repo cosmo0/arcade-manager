@@ -1,0 +1,13 @@
+version: 1.0.{build}
+branches:
+  only:
+  - dotnet
+image: Ubuntu2004
+init:
+- sh: dotnet tool install --global ElectronNET.CLI
+build_script:
+- sh: >-
+    dotnet build
+    electronize build /target linux
+artifacts:
+- path: bin/Desktop/*.*
