@@ -23,11 +23,15 @@
   <ItemGroup>
     <None Remove=".DS_Store" />
     <None Remove="Assets\electron.ico" />
+    <None Remove="Assets\electron_256x256.png" />
     <None Remove="Assets\electron_32x32.png" />
     <None Remove="Assets\icon.icns" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\electron.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\electron_256x256.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\electron_32x32.png">

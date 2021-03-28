@@ -4,7 +4,9 @@ branches:
   - dotnet
 image: Ubuntu2004
 init:
-- sh: dotnet tool install --global ElectronNET.CLI
+- sh: >-
+    nvm use 10.23.0
+    dotnet tool install --global ElectronNET.CLI
 build_script:
 - sh: >-
     dotnet build
