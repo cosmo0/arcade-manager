@@ -1,13 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <ApplicationIcon>electron.ico</ApplicationIcon>
     <Version>6.0.0</Version>
     <Authors>cosmo0</Authors>
-    <PackageLicenseFile>README.md</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/cosmo0/arcade-manager</PackageProjectUrl>
-    <PackageIcon>electron_32x32.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,25 +21,6 @@
     <Folder Include="Views\Csv\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Data\bios.txt" />
     <None Remove=".DS_Store" />
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="Assets\electron_32x32.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Data\bios.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\bios.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>

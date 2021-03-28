@@ -1,7 +1,9 @@
 ﻿using ArcadeManager.Models;
+using ElectronNET.API;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace ArcadeManager {
 
@@ -90,6 +92,14 @@ namespace ArcadeManager {
 
 				mgr.SaveSettings(settings);
 			}
+		}
+
+		/// <summary>
+		/// Gets the app version.
+		/// </summary>
+		/// <returns>The app version</returns>
+		public static async Task<string> GetVersion() {
+			return await Electron.App.GetVersionAsync();
 		}
 
 		/// <summary>

@@ -415,7 +415,7 @@ namespace ArcadeManager {
 		/// Checks if an update is available
 		/// </summary>
 		private async void UpdateCheck(object _) {
-			var current = await Electron.App.GetVersionAsync();
+			var current = await ArcadeManagerEnvironment.GetVersion();
 			var update = await updaterService.CheckUpdate(current);
 			if (update != null) {
 				update.Current = current;
