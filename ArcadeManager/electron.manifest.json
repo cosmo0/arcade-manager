@@ -40,7 +40,7 @@
 					"arch": [ "x64", "arm64" ]
 				}
 			],
-			"icon": "bin/Assets/electron_32x32.png"
+			"icon": "bin/Assets/electron_256x256.png"
 		},
 		"mac": {
 			"target": [
