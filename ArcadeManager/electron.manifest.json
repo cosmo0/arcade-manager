@@ -1,38 +1,79 @@
 {
-  "executable": "ArcadeManager",
-  "splashscreen": {
-    "imageFile": "/wwwroot/img/splash.png"
-  },
-  "name": "ArcadeManager",
-  "author": "cosmo0",
-  "singleInstance": false,
-  "build": {
-    "appId": "com.ArcadeManager.app",
-    "productName": "ArcadeManager",
-    "copyright": "Copyright © 2021",
-    "buildVersion": "6.0.0",
-    "compression": "maximum",
-    "win": {
-      "icon": "Assets/electron.ico"
-    },
-    "directories": {
-      "output": "../../../bin/Desktop",
-      "buildResources": "Assets"
-    },
-    "extraResources": [
-      {
-        "from": "./bin",
-        "to": "bin",
-        "filter": [ "**/*" ]
-      }
-    ],
-    "files": [
-      {
-        "from": "./ElectronHostHook/node_modules",
-        "to": "ElectronHostHook/node_modules",
-        "filter": [ "**/*" ]
-      },
-      "**/*"
-    ]
-  }
+	"executable": "ArcadeManager",
+	"splashscreen": {
+		"imageFile": "/wwwroot/img/splash.png"
+	},
+	"name": "ArcadeManager",
+	"author": "cosmo0",
+	"singleInstance": true,
+	"build": {
+		"appId": "com.ArcadeManager.app",
+		"productName": "ArcadeManager",
+		"copyright": "Copyright © 2021",
+		"buildVersion": "6.0.0",
+		"compression": "maximum",
+		"win": {
+			"target": [
+				{
+					"target": "nsis",
+					"arch": [ "x64", "arm64" ]
+				},
+				{
+					"target": "zip",
+					"arch": [ "x64", "arm64" ]
+				}
+			],
+			"icon": "Assets/electron.ico"
+		},
+		"linux": {
+			"target": [
+				{
+					"target": "AppImage",
+					"arch": [ "x64", "arm64" ]
+				},
+				{
+					"target": "snap",
+					"arch": [ "x64", "arm64" ]
+				},
+				{
+					"target": "zip",
+					"arch": [ "x64", "arm64" ]
+				}
+			],
+			"icon": "Assets/electron_32x32.png"
+		},
+		"mac": {
+			"target": [
+				{
+					"target": "dmg",
+					"arch": [ "x64" ]
+				},
+				{
+					"target": "zip",
+					"arch": [ "x64", "arm64" ]
+				}
+			],
+			"icon": "Assets/icon.icns",
+			"category": "public.app-category.games"
+		},
+		"directories": {
+			"output": "../../../bin/Desktop",
+			"buildResources": "Assets"
+		},
+		"extraResources": [
+			{
+				"from": "./bin",
+				"to": "bin",
+				"filter": [ "**/*" ]
+			}
+		],
+		"files": [
+			{
+				"from": "./ElectronHostHook/node_modules",
+				"to": "ElectronHostHook/node_modules",
+				"filter": [ "**/*" ]
+			},
+			"**/*"
+		]
+	}
 }

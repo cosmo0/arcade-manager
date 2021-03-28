@@ -12,6 +12,14 @@ namespace ArcadeManager.Services {
 	public interface IDownloader {
 
 		/// <summary>
+		/// Downloads the specified URL in the Github API.
+		/// </summary>
+		/// <param name="repository">The repository.</param>
+		/// <param name="path">The path to the file.</param>
+		/// <returns>The URL content</returns>
+		Task<string> DownloadApiUrl(string repository, string path);
+
+		/// <summary>
 		/// Downloads a binary file
 		/// </summary>
 		/// <param name="repository">The repository</param>

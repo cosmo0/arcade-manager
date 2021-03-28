@@ -2,17 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <ApplicationIcon>electron.ico</ApplicationIcon>
+    <Version>6.0.0</Version>
+    <Authors>cosmo0</Authors>
+    <PackageLicenseFile>README.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/cosmo0/arcade-manager</PackageProjectUrl>
+    <PackageIcon>electron_32x32.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
     <PackageReference Include="CsvHelper" Version="26.1.0" />
+    <PackageReference Include="Markdig" Version="0.24.0" />
     <PackageReference Include="SimpleInjector" Version="5.3.0" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="5.3.0" />
     <PackageReference Include="System.Linq.Async" Version="5.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Help\" />
@@ -23,6 +27,14 @@
   <ItemGroup>
     <None Remove="Data\bios.txt" />
     <None Remove=".DS_Store" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="Assets\electron_32x32.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Update="Data\bios.txt">

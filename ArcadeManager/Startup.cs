@@ -266,6 +266,7 @@ namespace ArcadeManager {
 			container.Register<Services.IDownloader, Services.Downloader>(Lifestyle.Singleton);
 			container.Register<Services.IOverlays, Services.Overlays>(Lifestyle.Singleton);
 			container.Register<Services.IRoms, Services.Roms>(Lifestyle.Singleton);
+			container.Register<Services.IUpdater, Services.Updater>(Lifestyle.Singleton);
 
 			// message handler
 			container.Register<IMessageHandler, MessageHandler>(Lifestyle.Singleton);

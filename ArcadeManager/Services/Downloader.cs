@@ -15,6 +15,22 @@ namespace ArcadeManager.Services {
 		private const string raw = "raw.githubusercontent.com";
 
 		/// <summary>
+		/// Downloads the specified URL in the Github API.
+		/// </summary>
+		/// <param name="repository">The repository.</param>
+		/// <param name="path">The path to the file.</param>
+		/// <returns>
+		/// The URL content
+		/// </returns>
+		public async Task<string> DownloadApiUrl(string repository, string path) {
+			var url = $"{protocol}//{api}/repos/{repository}/{path}";
+
+			using (var wc = new ArcadeManagerWebClient()) {
+				return await wc.DownloadStringTaskAsync(url);
+			}
+		}
+
+		/// <summary>
 		/// Downloads a binary file
 		/// </summary>
 		/// <param name="repository">The repository</param>

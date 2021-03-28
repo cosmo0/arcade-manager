@@ -93,6 +93,27 @@ namespace ArcadeManager {
 		}
 
 		/// <summary>
+		/// Adds the specified version to the list of ignored versions
+		/// </summary>
+		/// <param name="version">The version.</param>
+		public static void SettingsIgnoredVersionAdd(string version) {
+			if (string.IsNullOrWhiteSpace(version)) { return; }
+
+			settings.IgnoredVersions.Add(version);
+
+			mgr.SaveSettings(settings);
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the specified version should be ignored
+		/// </summary>
+		/// <param name="version">The version.</param>
+		/// <returns>Whether the version should be ignored</returns>
+		public static bool SettingsIgnoredVersionHas(string version) {
+			return settings.IgnoredVersions.Contains(version);
+		}
+
+		/// <summary>
 		/// Settings manager
 		/// </summary>
 		internal class SettingsManager {

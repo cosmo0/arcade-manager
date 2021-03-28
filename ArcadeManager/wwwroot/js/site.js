@@ -146,10 +146,19 @@ function downloadFile(repository, path, localfile, cb) {
 /**
  * Gets a remote list of files
  * 
- * @param {any} repository
- * @param {any} details
- * @param {any} folder
+ * @param {String} repository the repository
+ * @param {String} details the file details
+ * @param {String} folder the folder
  */
 function getRemoteList(repository, details, folder, cb) {
     ipc('download-getlist', { repository, details, folder }, cb);
+}
+
+/**
+ * Checks that an update is available
+ * 
+ * @param {Function} cb the callbal
+ */
+function checkUpdate(cb) {
+    ipc('update-check', null, cb);
 }

@@ -14,21 +14,23 @@ namespace ArcadeManager {
 		private readonly IDownloader downloaderService;
 		private readonly IOverlays overlaysService;
 		private readonly IRoms romsService;
-
+		private readonly IUpdater updaterService;
 		private BrowserWindow window;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="MessageHandler"/> class.
+		/// Initializes a new instance of the <see cref="MessageHandler" /> class.
 		/// </summary>
 		/// <param name="csvService">The CSV service.</param>
 		/// <param name="downloaderService">The downloader service.</param>
 		/// <param name="overlaysService">The overlays service.</param>
 		/// <param name="romsService">The roms service.</param>
-		public MessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService) {
+		/// <param name="updaterService">The updater service.</param>
+		public MessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService, IUpdater updaterService) {
 			this.csvService = csvService;
 			this.downloaderService = downloaderService;
 			this.overlaysService = overlaysService;
 			this.romsService = romsService;
+			this.updaterService = updaterService;
 		}
 
 		/// <summary>
@@ -108,6 +110,10 @@ namespace ArcadeManager {
 
 				// overlays action
 				Electron.IpcMain.On("overlays-download", OverlaysDownload);
+
+				// check for update
+				Electron.IpcMain.On("update-check", UpdateCheck);
+				Electron.IpcMain.On("update-ignore", UpdateIgnore);
 			}
 		}
 
@@ -403,6 +409,27 @@ namespace ArcadeManager {
 
 			string[] files = await Electron.Dialog.ShowOpenDialogAsync(window, options);
 			Electron.IpcMain.Send(window, "select-file-reply", files);
+		}
+
+		/// <summary>
+		/// Checks if an update is available
+		/// </summary>
+		private async void UpdateCheck(object _) {
+			var current = await Electron.App.GetVersionAsync();
+			var update = await updaterService.CheckUpdate(current);
+			if (update != null) {
+				update.Current = current;
+			}
+
+			Electron.IpcMain.Send(window, "update-check-reply");
+		}
+
+		/// <summary>
+		/// Ignores the specified version for future updates
+		/// </summary>
+		/// <param name="args">The arguments.</param>
+		private void UpdateIgnore(object args) {
+			ArcadeManagerEnvironment.SettingsIgnoredVersionAdd(args as string);
 		}
 	}
 }
