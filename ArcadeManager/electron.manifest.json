@@ -23,7 +23,7 @@
 					"arch": [ "x64", "arm64" ]
 				}
 			],
-			"icon": "Assets/electron.ico"
+			"icon": "bin/Assets/electron.ico"
 		},
 		"linux": {
 			"target": [
@@ -40,7 +40,7 @@
 					"arch": [ "x64", "arm64" ]
 				}
 			],
-			"icon": "Assets/electron_32x32.png"
+			"icon": "bin/Assets/electron_32x32.png"
 		},
 		"mac": {
 			"target": [
@@ -53,7 +53,7 @@
 					"arch": [ "x64", "arm64" ]
 				}
 			],
-			"icon": "Assets/icon.icns",
+			"icon": "bin/Assets/icon.icns",
 			"category": "public.app-category.games"
 		},
 		"directories": {
