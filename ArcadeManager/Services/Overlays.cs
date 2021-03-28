@@ -262,21 +262,20 @@ namespace ArcadeManager.Services {
 		/// <param name="destination">The destination path.</param>
 		/// <param name="overwrite">if set to <c>true</c> overwrite existing files.</param>
 		/// <param name="ratio">The ratio to change resolution.</param>
-		/// <param name="progressor">The progressor.</param>
-		/// <returns>
-		/// How many files have been downloaded
-		/// </returns>
-		private async Task DownloadCommon(OverlayBundle pack, string destination, bool overwrite, float ratio, IMessageHandler progressor, int total, int current) {
-			if (progressor.MustCancel) { return; }
+		/// <param name="messageHandler">The message handler.</param>
+		/// <param name="total">The total number of items.</param>
+		/// <param name="current">The current item number.</param>
+		private async Task DownloadCommon(OverlayBundle pack, string destination, bool overwrite, float ratio, IMessageHandler messageHandler, int total, int current) {
+			if (messageHandler.MustCancel) { return; }
 
 			if (pack.Common != null && !string.IsNullOrEmpty(pack.Common.Src)) {
 				IEnumerable<string> files = await downloaderService.DownloadFolder(pack.Repository, pack.Common.Src, destination, overwrite, (entry) => {
-					progressor.Progress($"downloading {entry.Path}", total, current);
+					messageHandler.Progress($"downloading {entry.Path}", total, current);
 				});
 
 				foreach (var f in files.Where(f => f.EndsWith(".cfg", StringComparison.InvariantCultureIgnoreCase))) {
 					var fi = new FileInfo(f);
-					progressor.Progress($"fixing {fi.Name}", total, current);
+					messageHandler.Progress($"fixing {fi.Name}", total, current);
 
 					if (overwrite || !fi.Exists) {
 						var content = await File.ReadAllTextAsync(f);

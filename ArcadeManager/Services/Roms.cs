@@ -23,11 +23,11 @@ namespace ArcadeManager.Services {
 		/// Copies roms
 		/// </summary>
 		/// <param name="args">The arguments</param>
-		/// <param name="progressor">The progress manager.</param>
+		/// <param name="messageHandler">The message handler.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find romset folder {args.romset}</exception>
-		public async Task Add(Actions.RomsAction args, IMessageHandler progressor) {
-			progressor.Init("Copying roms");
+		public async Task Add(Actions.RomsAction args, IMessageHandler messageHandler) {
+			messageHandler.Init("Copying roms");
 
 			try {
 				// check files and folders
@@ -44,7 +44,7 @@ namespace ArcadeManager.Services {
 
 				// copy each file found in CSV
 				foreach (var f in content) {
-					if (progressor.MustCancel) { break; }
+					if (messageHandler.MustCancel) { break; }
 
 					i++;
 
@@ -57,7 +57,7 @@ namespace ArcadeManager.Services {
 					if (File.Exists(sourceRom)) {
 						var fi = new FileInfo(sourceRom);
 
-						progressor.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
+						messageHandler.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
 
 						// copy rom
 						if (!File.Exists(destRom) || args.overwrite) {
@@ -69,19 +69,19 @@ namespace ArcadeManager.Services {
 						var sourceChd = Path.Join(args.romset, game);
 						var targetChd = Path.Join(args.selection, game);
 						if (Directory.Exists(sourceChd)) {
-							if (progressor.MustCancel) { break; }
+							if (messageHandler.MustCancel) { break; }
 
-							progressor.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
+							messageHandler.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
 
 							FileSystem.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
 						}
 					}
 				}
 
-				progressor.Done($"Copied {copied} file(s)", args.selection);
+				messageHandler.Done($"Copied {copied} file(s)", args.selection);
 			}
 			catch (Exception ex) {
-				progressor.Error(ex);
+				messageHandler.Error(ex);
 			}
 		}
 
@@ -89,11 +89,11 @@ namespace ArcadeManager.Services {
 		/// Deletes roms from a folder
 		/// </summary>
 		/// <param name="args">The arguments</param>
-		/// <param name="progressor">The progress manager.</param>
+		/// <param name="messageHandler">The message handler.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-		public async Task Delete(Actions.RomsAction args, IMessageHandler progressor) {
-			progressor.Init("Deleting roms");
+		public async Task Delete(Actions.RomsAction args, IMessageHandler messageHandler) {
+			messageHandler.Init("Deleting roms");
 
 			try {
 				// check files and folders
@@ -108,7 +108,7 @@ namespace ArcadeManager.Services {
 				var deleted = 0;
 
 				foreach (var f in content) {
-					if (progressor.MustCancel) { break; }
+					if (messageHandler.MustCancel) { break; }
 					i++;
 
 					// build vars
@@ -116,7 +116,7 @@ namespace ArcadeManager.Services {
 					var zip = $"{game}.zip";
 					var filePath = Path.Join(args.selection, zip);
 
-					progressor.Progress(game, total, i);
+					messageHandler.Progress(game, total, i);
 
 					if (File.Exists(filePath)) {
 						File.Delete(filePath);
@@ -124,10 +124,10 @@ namespace ArcadeManager.Services {
 					}
 				}
 
-				progressor.Done($"Deleted {deleted} file(s)", args.selection);
+				messageHandler.Done($"Deleted {deleted} file(s)", args.selection);
 			}
 			catch (Exception ex) {
-				progressor.Error(ex);
+				messageHandler.Error(ex);
 			}
 		}
 
@@ -135,11 +135,11 @@ namespace ArcadeManager.Services {
 		/// Keeps only listed roms in a folder
 		/// </summary>
 		/// <param name="args">The arguments</param>
-		/// <param name="progressor">The progress manager.</param>
+		/// <param name="messageHandler">The message handler.</param>
 		/// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
 		/// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-		public async Task Keep(Actions.RomsAction args, IMessageHandler progressor) {
-			progressor.Init("Filtering roms");
+		public async Task Keep(Actions.RomsAction args, IMessageHandler messageHandler) {
+			messageHandler.Init("Filtering roms");
 
 			try {
 				// check files and folders
@@ -158,10 +158,10 @@ namespace ArcadeManager.Services {
 
 				// check if files exist in games list
 				foreach (var f in files) {
-					if (progressor.MustCancel) { break; }
+					if (messageHandler.MustCancel) { break; }
 					i++;
 
-					progressor.Progress(f.Name, total, i);
+					messageHandler.Progress(f.Name, total, i);
 
 					if (!content.Any(c => $"{c.name}.zip" == f.Name)) {
 						File.Delete(f.FullName);
@@ -169,10 +169,10 @@ namespace ArcadeManager.Services {
 					}
 				}
 
-				progressor.Done($"Deleted {deleted} files", args.selection);
+				messageHandler.Done($"Deleted {deleted} files", args.selection);
 			}
 			catch (Exception ex) {
-				progressor.Error(ex);
+				messageHandler.Error(ex);
 			}
 		}
 	}
