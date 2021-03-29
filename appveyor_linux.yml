@@ -6,10 +6,17 @@ image: Ubuntu2004
 init:
 - sh: >-
     nvm use 10.23.0
+
     dotnet tool install --global ElectronNET.CLI
+
+    sudo snap install snapcraft --classic
 build_script:
 - sh: >-
     dotnet build
+
+
     electronize build /target linux
 artifacts:
-- path: bin/Desktop/*.*
+- path: bin/Desktop/*.zip
+- path: bin/Desktop/*.AppImage
+- path: bin/Desktop/*.snap
