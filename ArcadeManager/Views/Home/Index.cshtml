@@ -1,0 +1,159 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<p>
+    This tool helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.<br>
+    It assumes you have a working romset corresponding to the MAME/FBA/FBNeo version you're using.<br>
+    It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
+</p>
+<div class="alert alert-info">
+    If you have no idea what a "romset" is, or why the MAME version is important,
+    check out <a asp-controller="Help" asp-action="Index" class="navmenu">the help section</a> first.
+</div>
+
+<h2>
+    Select an action <a asp-controller="Help" asp-action="What" class="navmenu">What should I do?</a>
+</h2>
+
+<div class="row mainmenu">
+    <div class="col-4">
+        <a asp-controller="Overlays" asp-action="Index" class="navmenu overlays">
+            <div class="card text-center border-primary">
+                <img class="card-img-top" src="img/overlays.png">
+                <div class="card-footer">
+                    Install overlays
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-4">
+        <a asp-controller="Roms" asp-action="Index" class="navmenu">
+            <div class="card text-center border-primary">
+                <img class="card-img-top" src="img/roms.png">
+                <div class="card-footer">
+                    Manage roms
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-4">
+        <a asp-controller="Csv" asp-action="Index" class="navmenu">
+            <div class="card text-center border-primary">
+                <img class="card-img-top" src="img/csv.png">
+                <div class="card-footer">
+                    Manage games lists
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-10 help">
+        <div class="list-group">
+            <a asp-controller="Help" asp-action="Index" class="navmenu list-group-item list-group-item-action text-primary border-primary">
+                <i class="icon-help"></i> Help
+            </a>
+        </div>
+    </div>
+    <div class="col-2 system">
+        <div class="list-group">
+            <a asp-controller="Home" asp-action="Os" class="navmenu list-group-item list-group-item-action text-info border-info">
+                Change system
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- update modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-body">
+				<h1 class="display-4" id="versionName"></h1>
+				<p class="lead">
+					Published on
+                    <span id="versionDate"></span>
+                    -
+					<a href="#" class="blank" id="versionLink">more informations</a>
+                    (current version: <span id="versionCurrent"></span>)
+				</p>
+				<div id="versionDetails" class="card p-3" style="max-height: 200px; overflow: auto;"></div>
+				<div class="mt-3 list-group" id="versionAssets"></div>
+			</div>
+			<div class="modal-footer">
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="ignoreVersion" />
+					<label class="form-check-label" for="ignoreVersion">Do not notify me again for this version</label>
+                    </div>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" id="ignoreVersionButton">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+    <script>
+        $(() => {
+            // check that an OS has been selected
+            getOs((os) => {
+                // go to OS selection if none is set
+                if (typeof os === 'undefined' || os === null || os === '') {
+                    window.location.href = '@Url.Action("Os", "Home")';
+                }
+
+                if (os === 'none') {
+                    // disable overlays entry if no OS has been selected
+                    $('.mainmenu .overlays')
+                        .prop('disabled', true)
+                        .addClass('disabled')
+                        .removeClass('navmenu')
+                        .attr('href', '#')
+                        .off('click')
+                        .find('.card')
+                        .removeClass('border-primary')
+                        .on('click', () => { window.location.href = '@Url.Action("KnownSystems", "Help")'; });
+                } else {
+                    // Add system logo
+                    $('.help').removeClass('col-10').addClass('col-8');
+                    $('.system').removeClass('col-2').addClass('col-4')
+                        .find('.list-group a').prepend($('<img src="img/' + os + '-h.png">'));
+                }
+            });
+
+            // checks if an update is available
+            checkUpdate((version) => {
+                if (!version) { return; }
+
+                $('#versionName').text(version.name);
+                $('#ignoreVersion').val(version.tagName);
+				$('#versionDate').text(version.publishedAtLocal);
+				$('#versionLink').attr('href', version.url);
+				$('#versionCurrent').text(version.current);
+                $('#versionDetails').html(version.body);
+                if (version.assets) {
+                    for (let i = 0; i < version.assets.length; i++) {
+                        const asset = version.assets[i];
+						const li = $('<a href="' + asset.downloadURL + '" class="list-group-item list-group-item-action blank">' + asset.name
+							+ ' <span class="badge badge-pill badge-light">' + asset.humanSize + '</span></a>');
+                        $('#versionAssets').append(li);
+                    }
+                } else {
+                    $('#versionAssets').remove();
+				}
+
+                $('#updateModal').modal('show');
+            });
+
+            // ignore latest version
+            $('#ignoreVersionButton').on('click', () => {
+                if ($('#ignoreVersion').prop('checked')) {
+                    ipc('update-ignore', $('#ignoreVersion').val());
+				}
+            });
+        });
+    </script>
+}

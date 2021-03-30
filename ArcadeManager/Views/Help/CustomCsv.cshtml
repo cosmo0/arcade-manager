@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Help - Custom CSV";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index" class="navmenu">Help</a></li>
+        <li class="breadcrumb-item active" aria-current="page">How to create a custom CSV?</li>
+    </ol>
+</nav>
+
+<h2>How to create a custom CSV?</h2>
+
+<p>
+    All the rom and CSV file processing check for only one column: "name", which is the game zip
+    file name, without the extension (example: "altbeast").
+</p>
+
+<p>
+    That's it. All other columns are ignored, and are for your usage only, to filter using Excel
+    or a similar tool. You can do whatever you want, as long as the file is a valid CSV (all
+    lines have the same columns number, the column separator must be consistent, etc).
+</p>
+
+<p>
+    The "name" column doesn't have to be the first column and can be anywhere, as long as it has
+    the column header.
+</p>
+
+<p>
+    Here are a few ways to create a custom CSV:
+</p>
+
+<ul>
+    <li><a asp-controller="Csv" asp-action="ConvertDat" class="navmenu">Convert a DAT file to a CSV file</a></li>
+    <li>
+        Use a site like <a href="http://adb.arcadeitalia.net/lista_mame.php?lang=en" class="blank">ArcadeItalia</a>
+        and export the search results as CSV
+    </li>
+    <li>
+        Write a text file by hand, put one game name per line. Just don't forget to add "name;"
+        on top for the CSV header.
+    </li>
+    <li>
+        Write a shell/batch/Powershell script to export the list of rom files in a folder to a
+        text file, remove the ".zip", and add the "name;" CSV header.
+    </li>
+</ul>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["title"] = "Games lists";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Manage games lists</li>
+    </ol>
+</nav>
+
+<h2>Manage games lists</h2>
+
+<p>
+    This tool uses CSV files for the games list. Why? Because it's easier to use, and
+    you can easily toy with the files using Excel to
+    <a asp-controller="Help" asp-action="CustomCsv" class="navmenu">create your own custom lists</a> or edit
+    the provided ones.
+</p>
+
+<div class="row">
+    <div class="col-6">
+        <p class="font-weight-bold">From an existing source</p>
+
+        <div class="list-group">
+            <a asp-controller="Csv" asp-action="Download" class="navmenu list-group-item list-group-item-action text-primary">
+                <i class="icon-download"></i> Download a pre-built games list
+            </a>
+            <a asp-controller="Csv" asp-action="ConvertDat" class="navmenu list-group-item list-group-item-action text-primary">
+                <i class="icon-file-excel"></i> Convert a DAT file
+            </a>
+            <a asp-controller="Csv" asp-action="ConvertIni" class="navmenu list-group-item list-group-item-action text-primary">
+                <i class="icon-file-excel"></i> Convert a INI file
+            </a>
+            <a asp-controller="Csv" asp-action="ListFiles" class="navmenu list-group-item list-group-item-action text-primary">
+                <i class="icon-folder-open"></i> List the roms in a folder
+            </a>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <p class="font-weight-bold">Create your own files</p>
+
+        <div class="list-group">
+            <a asp-controller="Csv" asp-action="Add" class="navmenu list-group-item list-group-item-action text-primary">
+                <i class="icon-merge"></i> Add games from a file to another file (merge)
+            </a>
+            <a asp-controller="Csv" asp-action="Delete" class="navmenu list-group-item list-group-item-action text-primary">
+                <i class="icon-split"></i> Remove games in a file that are listed in another file
+            </a>
+            <a asp-controller="Csv" asp-action="Keep" class="navmenu list-group-item list-group-item-action text-primary">
+                <i class="icon-shuffle"></i> Keep only games listed in another file
+            </a>
+        </div>
+    </div>
+</div>

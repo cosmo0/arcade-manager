@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["title"] = "Roms management";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Manage roms</li>
+    </ol>
+</nav>
+
+<h2>Manage roms</h2>
+
+<p>
+    Easily copy roms you want, or remove roms you don't want, based on a CSV file listing the
+    games you want to copy or remove.<br>
+    Copying from a romset assumes it matches your MAME version and is non-merged.
+</p>
+
+<div class="list-group">
+    <a asp-controller="Roms" asp-action="Add" class="navmenu list-group-item list-group-item-action text-primary">
+        <i class="icon-folder-down"></i> Copy listed roms from a full romset to a selection folder
+    </a>
+    <a asp-controller="Roms" asp-action="Delete" class="navmenu list-group-item list-group-item-action text-primary">
+        <i class="icon-folder-up"></i> Delete listed roms
+    </a>
+    <a asp-controller="Roms" asp-action="Keep" class="navmenu list-group-item list-group-item-action text-primary">
+        <i class="icon-folder-minus"></i> Keep only the roms listed
+    </a>
+</div>

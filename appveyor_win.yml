@@ -1,0 +1,14 @@
+version: 1.0.{build}
+branches:
+  only:
+  - dotnet
+image: Visual Studio 2019
+init:
+- cmd: dotnet tool install --global ElectronNET.CLI
+build_script:
+- cmd: >-
+    dotnet build
+    electronize build /target win
+artifacts:
+- path: bin/Desktop/*.zip
+- path: bin/Desktop/*.exe
