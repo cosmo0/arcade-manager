@@ -7,7 +7,8 @@ init:
 - cmd: dotnet tool install --global ElectronNET.CLI
 build_script:
 - cmd: >-
-    dotnet build
+    dotnet build ArcadeManager.sln
+    
     electronize build /target win
 artifacts:
 - path: bin/Desktop/*.zip
