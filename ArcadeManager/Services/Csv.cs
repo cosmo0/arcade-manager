@@ -220,11 +220,11 @@ namespace ArcadeManager.Services {
 		/// <param name="messageHandler">The message handler.</param>
 		public async Task Keep(string main, string secondary, string target, IMessageHandler messageHandler) {
 			await WorkOnTwoFiles(main, secondary, target, messageHandler, "Filter entries in a CSV files", (main, sec) => {
-				var result = new List<GameEntry>();
+				var result = new CsvGamesList();
 
-				foreach (var me in main) {
+				foreach (var me in main.Games) {
 					// keep entries from the main file that also exist in the secondary
-					if (sec.Any(se => se.name == me.name)) {
+					if (sec.Games.Any(se => se.Name == me.Name)) {
 						result.Add(me);
 					}
 				}
@@ -279,20 +279,17 @@ namespace ArcadeManager.Services {
 		/// <param name="messageHandler">The message handler.</param>
 		public async Task Merge(string main, string secondary, string target, IMessageHandler messageHandler) {
 			await WorkOnTwoFiles(main, secondary, target, messageHandler, "Merge two CSV files", (main, sec) => {
-				var result = main.ToList(); // the ToList() copies the list instead of creating a reference
+				var result = new CsvGamesList(main.Games);
 
-				foreach (var sEntry in sec) {
-					// get corresponding result entry, if any
-					var rEntry = result.Where(me => me.name == sEntry.name).FirstOrDefault();
-					if (rEntry == null) {
-						// get entries from secondary that are not in main
-						result.Add(sEntry);
+				foreach (var secg in sec.Games) {
+					var maing = main.Games.Where(me => me.Name == secg.Name).FirstOrDefault();
+					if (maing == null) {
+						// entry is in secondary but not main file: copy to result
+						result.Add(secg);
 					}
 					else {
-						// copy additional data
-						foreach (var v in sEntry.values.Where(v => !rEntry.values.ContainsKey(v.Key))) {
-							rEntry.values.Add(v.Key, v.Value);
-						}
+						// entry is already in main: copy additional data
+						result.CopyEntry(secg);
 					}
 				}
 
@@ -308,7 +305,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The list of games in the CSV file
 		/// </returns>
-		public async Task<IEnumerable<GameEntry>> ReadFile(string filepath, bool getOtherValues) {
+		public async Task<CsvGamesList> ReadFile(string filepath, bool getOtherValues) {
 			using (var reader = new StreamReader(filepath)) {
 				// check that the first line has a header
 				var firstLine = reader.ReadLine();
@@ -326,27 +323,26 @@ namespace ArcadeManager.Services {
 				};
 
 				// read the file
-				List<GameEntry> result = new();
+				CsvGamesList result = new();
 				using (var csv = new CsvReader(reader, conf)) {
 					var entries = csv.GetRecordsAsync<dynamic>();
 
 					if (hasHeader) {
 						await foreach (var e in entries) {
-							var ge = new GameEntry { name = e.name };
-
+							Dictionary<string, string> values = new();
 							if (getOtherValues) {
 								// get all other columns ; see visualstudiomagazine.com/articles/2019/04/01/working-with-dynamic-objects.aspx
-								ge.values = ((IDictionary<string, object>)e)
+								values = ((IDictionary<string, object>)e)
 									.Where(elem => !elem.Key.Equals(nameColumn, StringComparison.InvariantCultureIgnoreCase))
 									.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
 							}
 
-							result.Add(ge);
+							result.Add(e.name, values);
 						}
 					}
 					else {
 						// Without headers, CsvReader names the fields Field1, Field2, etc
-						result.AddRange((await entries.ToListAsync()).Select(e => new GameEntry { name = e.Field1 }));
+						result.AddRange((await entries.ToListAsync()).Select(e => new string(e.Field1)));
 					}
 				}
 
@@ -364,10 +360,10 @@ namespace ArcadeManager.Services {
 		/// <returns></returns>
 		public async Task Remove(string main, string secondary, string target, IMessageHandler messageHandler) {
 			await WorkOnTwoFiles(main, secondary, target, messageHandler, "", (main, sec) => {
-				var result = new List<GameEntry>();
+				var result = new CsvGamesList();
 
-				foreach (var me in main) {
-					if (!sec.Any(se => se.name.Equals(me.name, StringComparison.InvariantCultureIgnoreCase))) {
+				foreach (var me in main.Games) {
+					if (!sec.Games.Any(se => se.Name.Equals(me.Name, StringComparison.InvariantCultureIgnoreCase))) {
 						result.Add(me);
 					}
 				}
@@ -429,25 +425,14 @@ namespace ArcadeManager.Services {
 		/// <param name="entries">The entries to write.</param>
 		/// <param name="target">The target to write to.</param>
 		/// <exception cref="NotImplementedException"></exception>
-		private static async Task WriteFile(List<GameEntry> entries, string target) {
-			var headers = entries.SelectMany(r => r.values.Keys).Distinct();
-
+		private static async Task WriteFile(CsvGamesList entries, string target) {
 			using (var output = new StreamWriter(target, false)) {
 				// header line
-				var headerLine = nameColumn + defaultDelimiter + string.Join(defaultDelimiter, headers);
-
-				await output.WriteLineAsync(headerLine);
+				await output.WriteLineAsync(entries.GetHeaderLine(nameColumn, defaultDelimiter));
 
 				// entries
-				foreach (var entry in entries) {
-					var line = entry.name + defaultDelimiter;
-
-					// additional values
-					foreach (var h in headers) {
-						line += (entry.values[h] ?? "-") + defaultDelimiter;
-					}
-
-					await output.WriteLineAsync(line);
+				foreach (var entry in entries.Games) {
+					await output.WriteLineAsync(entry.ToCSVString(defaultDelimiter));
 				}
 			}
 		}
@@ -462,7 +447,7 @@ namespace ArcadeManager.Services {
 		/// <param name="init">The initialization label.</param>
 		/// <param name="action">The action to process.</param>
 		/// <returns></returns>
-		private async Task WorkOnTwoFiles(string main, string secondary, string target, IMessageHandler messageHandler, string init, Func<IEnumerable<GameEntry>, IEnumerable<GameEntry>, List<GameEntry>> action) {
+		private async Task WorkOnTwoFiles(string main, string secondary, string target, IMessageHandler messageHandler, string init, Func<CsvGamesList, CsvGamesList, CsvGamesList> action) {
 			messageHandler.Init(init);
 
 			try {
@@ -479,13 +464,13 @@ namespace ArcadeManager.Services {
 				messageHandler.Progress($"reading file {fiSecondary.Name}", steps, ++current);
 				var secondaryEntries = await ReadFile(secondary, true);
 
-				messageHandler.Progress($"processing files", steps, ++current);
+				messageHandler.Progress($"action", steps, ++current);
 				var result = action(mainEntries, secondaryEntries);
 
 				messageHandler.Progress($"save to file {fiTarget.Name}", steps, ++current);
 				await WriteFile(result, target);
 
-				messageHandler.Done($"Done! Result has {result.Count} entries", target);
+				messageHandler.Done($"Done! Result has {result.Games.Count} entries", target);
 			}
 			catch (Exception ex) {
 				messageHandler.Error(ex);

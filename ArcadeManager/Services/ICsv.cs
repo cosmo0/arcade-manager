@@ -1,5 +1,4 @@
 ﻿using ArcadeManager.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Services {
@@ -64,8 +63,7 @@ namespace ArcadeManager.Services {
 		/// <returns>
 		/// The list of games in the CSV file
 		/// </returns>
-		Task<IEnumerable<GameEntry>> ReadFile(string filepath, bool getOtherValues);
-
+		Task<CsvGamesList> ReadFile(string filepath, bool getOtherValues);
 
 		/// <summary>
 		/// Removes entries in the main file that are in the secondary

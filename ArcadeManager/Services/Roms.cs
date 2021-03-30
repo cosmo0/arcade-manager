@@ -38,18 +38,18 @@ namespace ArcadeManager.Services {
 				// read CSV file
 				var content = await csvService.ReadFile(args.main, false);
 
-				var total = content.Count();
+				var total = content.Games.Count();
 				var i = 0;
 				var copied = 0;
 
 				// copy each file found in CSV
-				foreach (var f in content) {
+				foreach (var f in content.Games) {
 					if (messageHandler.MustCancel) { break; }
 
 					i++;
 
 					// build vars
-					var game = f.name;
+					var game = f.Name;
 					var zip = $"{game}.zip";
 					var sourceRom = Path.Join(args.romset, zip);
 					var destRom = Path.Join(args.selection, zip);
@@ -103,16 +103,16 @@ namespace ArcadeManager.Services {
 				// read CSV file
 				var content = await csvService.ReadFile(args.main, false);
 
-				var total = content.Count();
+				var total = content.Games.Count();
 				var i = 0;
 				var deleted = 0;
 
-				foreach (var f in content) {
+				foreach (var f in content.Games) {
 					if (messageHandler.MustCancel) { break; }
 					i++;
 
 					// build vars
-					var game = f.name;
+					var game = f.Name;
 					var zip = $"{game}.zip";
 					var filePath = Path.Join(args.selection, zip);
 
@@ -152,7 +152,7 @@ namespace ArcadeManager.Services {
 				// get list of files
 				var files = (new DirectoryInfo(args.selection)).GetFiles("*.zip");
 
-				var total = content.Count();
+				var total = content.Games.Count();
 				var i = 0;
 				var deleted = 0;
 
@@ -163,7 +163,7 @@ namespace ArcadeManager.Services {
 
 					messageHandler.Progress(f.Name, total, i);
 
-					if (!content.Any(c => $"{c.name}.zip" == f.Name)) {
+					if (!content.Games.Any(c => $"{c.Name}.zip" == f.Name)) {
 						File.Delete(f.FullName);
 						deleted++;
 					}
