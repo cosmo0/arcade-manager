@@ -1,6 +1,8 @@
 # Arcade manager for Retropie & Recalbox
 
-[![Windows/Linux Build status](https://ci.appveyor.com/api/projects/status/npgiar9ncapx2al4?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager)
+[Windows: ![Windows Build status](https://ci.appveyor.com/api/projects/status/80a8164snm8dxqb5?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-win)
+[Linux: ![Windows Build status](https://ci.appveyor.com/api/projects/status/ltp88yfy8b22y8sv?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-linux)
+[MacOS: ![Windows Build status](https://ci.appveyor.com/api/projects/status/jxkja8m43yjjcdo8?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-mac)
 
 This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox.  
 It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  

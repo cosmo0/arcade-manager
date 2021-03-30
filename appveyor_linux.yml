@@ -10,8 +10,6 @@ init:
     dotnet tool install --global ElectronNET.CLI
     
     sudo snap install snapcraft --classic
-    
-    nvm install snapcraft
 build_script:
 - sh: >-
     dotnet build ArcadeManager.sln
