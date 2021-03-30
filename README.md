@@ -56,6 +56,8 @@ dotnet build
 electronize start
 ````
 
+Then attach Visual Studio to the `ArcadeManager` process.
+
 Generate a fake romset in `tmp\roms` (empty zip files with the right names):
 
 ````powershell

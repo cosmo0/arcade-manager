@@ -36,6 +36,9 @@
         <!-- roms folder -->
         <div id="romFoldersContainer">
             <div class="input-group mb-0">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Roms folder</span>
+                </div>
                 <input type="text" class="form-control" id="romFolder" placeholder="Roms folder (ex: \\retropie\roms\arcade)">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary browse folder" type="button" data-input="romFolder">Browse</button>
@@ -46,6 +49,9 @@
         <div id="configFolderContainer">
             <hr>
             <div class="input-group mb-0">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Config folder</span>
+                </div>
                 <input type="text" class="form-control" id="configFolder" placeholder="Config folder (ex: \\retropie\configs)">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary browse folder" type="button" data-input="configFolder">Browse</button>
@@ -121,7 +127,7 @@
                 // check that the configs share can be accessed
                 ipc('fs-exists', configShare, (exists) => {
                     if (exists) {
-                        $('#configFolderContainer input').prop('disabled', true);
+                        $('#configFolderContainer').hide();
                         $('#configFolder').val(configShare)
                     }
                 });
@@ -130,17 +136,21 @@
                 const folderTemplate = $('#folderTemplate').html();
                 ipc('fs-exists', romShare, (exists) => {
                     if (exists) {
-                        $('#romFoldersContainer').empty();
+                        $('#romFoldersContainer')
+                            .empty()
+                            .append($('<label>Roms folders</label>'));
                         for (let folder of appData.defaults.romFolders[os]) {
-                            const romFolder = path.join(romShare, folder);
-                            if (fs.existsSync(romFolder)) {
-                                const li = $(folderTemplate);
+                            const romFolder = romShare + "/" + folder;
+                            ipc('fs-exists', romFolder, (exists) => {
+                                if (exists) {
+                                    const li = $(folderTemplate);
 
-                                li.find('.form-check-input').val(romFolder).attr('id', 'romFolder' + folder);
-                                li.find('.form-check-label').text(folder).attr('for', 'romFolder' + folder);
+                                    li.find('.form-check-input').val(romFolder).attr('id', 'romFolder' + folder);
+                                    li.find('.form-check-label').text(folder).attr('for', 'romFolder' + folder);
 
-                                $('#romFoldersContainer').append(li);
-                            }
+                                    $('#romFoldersContainer').append(li);
+                                }
+                            });
                         }
                     }
                 });

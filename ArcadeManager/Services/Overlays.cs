@@ -49,7 +49,7 @@ namespace ArcadeManager.Services {
 					await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, messageHandler, 100, 1);
 				}
 
-				if (messageHandler.MustCancel) { return; }
+				if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
 
 				// check that thvere is a matching game in any of the roms folders
 				messageHandler.Progress("games list to process", 1, 100);
@@ -60,19 +60,19 @@ namespace ArcadeManager.Services {
 				var current = 0;
 				var installed = 0;
 
-				foreach (var r in romsToProcess) {
-					if (messageHandler.MustCancel) { return; }
+				foreach (var r in romsToProcess.OrderBy(r => r.Game)) {
+					if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
 
 					current++;
 
 					var game = r.Game;
 
-					messageHandler.Progress(game, total, current);
+					messageHandler.Progress($"{game}: download overlay (rom config)", total, current);
 
 					// download the rom config and extract the overlay file name
 					var romConfigContent = string.Empty;
 					foreach (var romFolder in r.TargetFolder) {
-						if (messageHandler.MustCancel) { return; }
+						if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
 
 						var romConfigFile = Path.Join(romFolder, $"{game}.zip.cfg");
 
@@ -94,12 +94,16 @@ namespace ArcadeManager.Services {
 
 						// write rom config
 						if (data.overwrite || !File.Exists(romConfigFile)) {
-							if (messageHandler.MustCancel) { return; }
+							if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
 
 							await File.WriteAllTextAsync(romConfigFile, romConfigContent);
 							installed++;
 						}
 					}
+
+					if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+
+					messageHandler.Progress($"{game}: download overlay (config)", total, current);
 
 					// extract the overlay file name
 					var overlayPath = GetCfgData(romConfigContent, "input_overlay");
@@ -110,7 +114,7 @@ namespace ArcadeManager.Services {
 					// download the overlay file name and extract the image file name
 					var overlayConfigContent = string.Empty;
 					if (data.overwrite || !File.Exists(overlayConfigDest)) {
-						if (messageHandler.MustCancel) { return; }
+						if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
 
 						overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi.Name}");
 
@@ -123,6 +127,10 @@ namespace ArcadeManager.Services {
 						overlayConfigContent = File.ReadAllText(overlayConfigDest);
 					}
 
+					if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+
+					messageHandler.Progress($"{game}: download overlay (image)", total, current);
+
 					// extract the image file name
 					var imagePath = GetCfgData(overlayConfigContent, "overlay0_overlay");
 					if (string.IsNullOrWhiteSpace(imagePath)) { throw new FileNotFoundException($"Unable to parse overlay config {game} to find image (overlay0_overlay)"); }
@@ -131,8 +139,8 @@ namespace ArcadeManager.Services {
 
 					// download the image
 					if (data.overwrite || !File.Exists(imageDest)) {
-						if (messageHandler.MustCancel) { return; }
-
+						if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+						
 						await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi.Name}", imageDest);
 					}
 				}
