@@ -4,13 +4,16 @@
 [![Linux Build status](https://ci.appveyor.com/api/projects/status/ltp88yfy8b22y8sv?svg=true&passingText=Linux&pendingText=Linux&failingText=Linux)](https://ci.appveyor.com/project/cosmo0/arcade-manager-linux)
 [![MacOS Build status](https://ci.appveyor.com/api/projects/status/jxkja8m43yjjcdo8?svg=true&passingText=MacOS&pendingText=MacOS&failingText=MacOS)](https://ci.appveyor.com/project/cosmo0/arcade-manager-mac)
 
-This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox.  
-It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.  
+This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox.
+
+It helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.
+
 It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
 
 ## Features
 
-**THIS TOOL DOES NOT CHANGE THE ROMSET VERSION!!!**  
+**THIS TOOL DOES NOT CHANGE THE ROMSET VERSION!!!**
+
 Copying files assumes you have a working, **non-merged** romset corresponding to the MAME/FBA version you're using.  
 If you ever need to change your romset version, use a tool like [ClrMamePro](https://mamedev.emulab.it/clrmamepro/).
 
@@ -28,6 +31,14 @@ If you ever need to change your romset version, use a tool like [ClrMamePro](htt
   * Create games list from folder
 
 Obviously, this tool does not download roms.
+
+## Usage
+
+Launch ArcadeManager on a computer running Windows, MacOS or Linux. If you're using a Rapsberry Pi for emulation (or another computer), it will connect to it using network shares.
+
+ArcadeManager includes help pages: click on the "help" link at the bottom of the main screen. Let me know if you have any trouble using it.
+
+## External help
 
 If you are new to arcade emulation, please read these resources:
 
