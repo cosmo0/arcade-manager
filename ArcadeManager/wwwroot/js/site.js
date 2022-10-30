@@ -1,6 +1,6 @@
 ﻿const { ipcRenderer } = require("electron");
 
-var selectedOs,
+let selectedOs,
     appData;
 
 $(() => {
