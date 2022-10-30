@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ArcadeManager.Services {
 
-	public class FileSystem {
+	public static class FileSystem {
 
 		/// <summary>
 		/// Copies a directory

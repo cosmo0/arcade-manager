@@ -31,8 +31,8 @@ namespace ArcadeManager.Services {
 				var releases = Serializer.Deserialize<IEnumerable<Models.GithubRelease>>(await this.downloaderService.DownloadApiUrl("cosmo0/arcade-manager", "releases"));
 				if (releases != null && releases.Any()) {
 					// get latest version
-					var release = releases.Where(r => !r.Draft && !r.Prerelease).First();
-					
+					var release = releases.First(r => !r.Draft && !r.Prerelease);
+
 					// version is ignored
 					if (ArcadeManagerEnvironment.SettingsIgnoredVersionHas(release.TagName)) {
 						return null;

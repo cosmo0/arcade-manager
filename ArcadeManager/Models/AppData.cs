@@ -209,8 +209,7 @@ namespace ArcadeManager.Models {
 				get {
 					var prop = this.GetType()
 						.GetProperties()
-						.Where(p => p.Name.Equals(distribution, StringComparison.InvariantCultureIgnoreCase))
-						.FirstOrDefault();
+						.FirstOrDefault(p => p.Name.Equals(distribution, StringComparison.InvariantCultureIgnoreCase));
 
 					if (prop != null) {
 						return prop.GetValue(this).ToString();

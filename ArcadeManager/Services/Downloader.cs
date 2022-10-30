@@ -114,13 +114,13 @@ namespace ArcadeManager.Services {
 				if (item.IsFile) {
 					var target = Path.Join(targetFolder, item.Path);
 					if (overwrite || !File.Exists(target)) {
-						await DownloadFile(repository, folder + "/" + item.Path, target);
+						await DownloadFile(repository, $"{folder}/{item.Path}", target);
 					}
 
 					result.Add(target);
 				}
 				else {
-					result.AddRange(await DownloadFolder(repository, folder + "/" + item.Path, Path.Join(targetFolder, item.Path), overwrite, progress));
+					result.AddRange(await DownloadFolder(repository, $"{folder}/{item.Path}", Path.Join(targetFolder, item.Path), overwrite, progress));
 				}
 			}
 
@@ -175,7 +175,7 @@ namespace ArcadeManager.Services {
 		/// <remarks>
 		/// Copied from stackoverflow.com/a/18516970/6776
 		/// </remarks>
-		private class ArcadeManagerWebClient : WebClient {
+		private sealed class ArcadeManagerWebClient : WebClient {
 			private const string userAgent = "arcade-manager (cosmo0/arcade-manager)";
 
 			/// <summary>

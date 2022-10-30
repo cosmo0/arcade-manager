@@ -32,7 +32,7 @@ namespace ArcadeManager.Services {
 
 			try {
 				var os = ArcadeManagerEnvironment.SettingsOs;
-				var pack = ArcadeManagerEnvironment.AppData.Overlays.Where(o => o.Name == data.pack).First();
+				var pack = ArcadeManagerEnvironment.AppData.Overlays.First(o => o.Name == data.pack);
 
 				// check if the destination of rom cfg is the rom folder
 				var romCfgFolder = pack.Roms.Dest[os] == "roms"
@@ -49,11 +49,10 @@ namespace ArcadeManager.Services {
 					await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, messageHandler, 100, 1);
 				}
 
-				if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+				if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-				// check that thvere is a matching game in any of the roms folders
+				// check that there is a matching game in any of the roms folders
 				messageHandler.Progress("games list to process", 1, 100);
-				var processedOverlays = new List<string>();
 				var romsToProcess = GetRomsToProcess(data.romFolders, romConfigs.Tree);
 
 				var total = romConfigs.Tree.Count;
@@ -61,7 +60,7 @@ namespace ArcadeManager.Services {
 				var installed = 0;
 
 				foreach (var r in romsToProcess.OrderBy(r => r.Game)) {
-					if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+					if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
 					current++;
 
@@ -72,9 +71,9 @@ namespace ArcadeManager.Services {
 					// download the rom config and extract the overlay file name
 					var romConfigContent = string.Empty;
 					foreach (var romFolder in r.TargetFolder) {
-						if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+						if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-						var romConfigFile = Path.Join(romFolder, $"{game}.zip.cfg");
+						var romConfigFile = Path.Join(romCfgFolder ?? romFolder, $"{game}.zip.cfg");
 
 						// get rom config content
 						if (string.IsNullOrEmpty(romConfigContent)) {
@@ -94,14 +93,14 @@ namespace ArcadeManager.Services {
 
 						// write rom config
 						if (data.overwrite || !File.Exists(romConfigFile)) {
-							if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+							if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
 							await File.WriteAllTextAsync(romConfigFile, romConfigContent);
 							installed++;
 						}
 					}
 
-					if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+					if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
 					messageHandler.Progress($"{game}: download overlay (config)", total, current);
 
@@ -114,7 +113,7 @@ namespace ArcadeManager.Services {
 					// download the overlay file name and extract the image file name
 					var overlayConfigContent = string.Empty;
 					if (data.overwrite || !File.Exists(overlayConfigDest)) {
-						if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+						if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
 						overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi.Name}");
 
@@ -127,7 +126,7 @@ namespace ArcadeManager.Services {
 						overlayConfigContent = File.ReadAllText(overlayConfigDest);
 					}
 
-					if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
+					if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
 					messageHandler.Progress($"{game}: download overlay (image)", total, current);
 
@@ -139,8 +138,8 @@ namespace ArcadeManager.Services {
 
 					// download the image
 					if (data.overwrite || !File.Exists(imageDest)) {
-						if (messageHandler.MustCancel) { throw new Exception("Operation cancelled"); }
-						
+						if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+
 						await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi.Name}", imageDest);
 					}
 				}
@@ -249,7 +248,7 @@ namespace ArcadeManager.Services {
 
 					// only process files that are in the overlays pack
 					if (entries.Any(e => e.Path.EndsWith($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
-						var existing = result.Where(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+						var existing = result.FirstOrDefault(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase));
 						if (existing != null) {
 							existing.TargetFolder.Add(fi.DirectoryName);
 						}
@@ -293,14 +292,14 @@ namespace ArcadeManager.Services {
 
 						await File.WriteAllTextAsync(f, content);
 					}
-				};
+				}
 			}
 		}
 
 		/// <summary>
 		/// A rom to process
 		/// </summary>
-		private class RomToProcess {
+		private sealed class RomToProcess {
 
 			/// <summary>
 			/// Gets or sets the name of the game.

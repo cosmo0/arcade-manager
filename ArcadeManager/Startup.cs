@@ -19,7 +19,6 @@ namespace ArcadeManager {
 		private readonly Container container = new Container();
 
 		private IWebHostEnvironment env;
-		private IMessageHandler msgHandler;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Startup"/> class.
@@ -117,8 +116,8 @@ namespace ArcadeManager {
 			});
 
 			// initializes RPC message handling
-			this.msgHandler = container.GetInstance<IMessageHandler>();
-			this.msgHandler.Handle(mainWindow);
+			var msgHandler = container.GetInstance<IMessageHandler>();
+			msgHandler?.Handle(mainWindow);
 		}
 
 		/// <summary>
@@ -151,15 +150,15 @@ namespace ArcadeManager {
 						}
 					};
 				}
-			};
+			}
 
 			var menu = new MenuItem[]
 			{
-                // App name/file menu
-                firstMenu(),
+				// App name/file menu
+				firstMenu(),
 
-                // Edit
-                new MenuItem {
+				// Edit
+				new MenuItem {
 					Label = "Edit",
 					Type = MenuType.submenu,
 					Submenu = new MenuItem[] {
@@ -172,8 +171,8 @@ namespace ArcadeManager {
 					}
 				},
 
-                // View
-                new MenuItem {
+				// View
+				new MenuItem {
 					Label = "View",
 					Type = MenuType.submenu,
 					Submenu = new MenuItem[] {
@@ -183,9 +182,9 @@ namespace ArcadeManager {
 							Accelerator = "CmdOrCtrl+R",
 							Click = () =>
 							{
-                                // on reload, start fresh and close any old
-                                // open secondary windows
-                                Electron.WindowManager.BrowserWindows.ToList().ForEach(browserWindow => {
+								// on reload, start fresh and close any old
+								// open secondary windows
+								Electron.WindowManager.BrowserWindows.ToList().ForEach(browserWindow => {
 									if(browserWindow.Id != 1)
 									{
 										browserWindow.Close();
@@ -206,8 +205,8 @@ namespace ArcadeManager {
 					}
 				},
 
-                // Window
-                new MenuItem {
+				// Window
+				new MenuItem {
 					Label = "Window",
 					Role = MenuRole.window,
 					Type = MenuType.submenu,
@@ -217,8 +216,8 @@ namespace ArcadeManager {
 					}
 				},
 
-                // Help
-                new MenuItem {
+				// Help
+				new MenuItem {
 					Label = "Help",
 					Role = MenuRole.help,
 					Type = MenuType.submenu,

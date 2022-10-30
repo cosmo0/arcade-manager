@@ -162,7 +162,7 @@ namespace ArcadeManager.Services {
 						}
 
 						// we're in a section data
-						if (line.IndexOf("=") > 0) {
+						if (line.Contains("=", StringComparison.InvariantCultureIgnoreCase)) {
 							// game=value
 							var split = line.Split("=", StringSplitOptions.TrimEntries);
 							data[currentSection].Add(new IniEntry { game = split[0], value = split[1] });
@@ -222,11 +222,9 @@ namespace ArcadeManager.Services {
 			await WorkOnTwoFiles(main, secondary, target, messageHandler, "Filter entries in a CSV files", (main, sec) => {
 				var result = new CsvGamesList();
 
-				foreach (var me in main.Games) {
-					// keep entries from the main file that also exist in the secondary
-					if (sec.Games.Any(se => se.Name == me.Name)) {
-						result.Add(me);
-					}
+				// keep entries from the main file that also exist in the secondary
+				foreach (var me in main.Games.Where(me => sec.Games.Any(se => se.Name == me.Name))) {
+					result.Add(me);
 				}
 
 				return result;
@@ -255,11 +253,11 @@ namespace ArcadeManager.Services {
 					var total = files.Length;
 					var i = 0;
 
-					foreach (var f in files) {
+					foreach (var n in files.Select(f => f.Name)) {
 						i++;
-						messageHandler.Progress($"Listing file {f.Name}", total, i);
+						messageHandler.Progress($"Listing file {n}", total, i);
 
-						await output.WriteLineAsync(f.Name.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase) + defaultDelimiter);
+						await output.WriteLineAsync(n.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase) + defaultDelimiter);
 					}
 				}
 
@@ -282,7 +280,7 @@ namespace ArcadeManager.Services {
 				var result = new CsvGamesList(main.Games);
 
 				foreach (var secg in sec.Games) {
-					var maing = main.Games.Where(me => me.Name == secg.Name).FirstOrDefault();
+					var maing = main.Games.FirstOrDefault(me => me.Name == secg.Name);
 					if (maing == null) {
 						// entry is in secondary but not main file: copy to result
 						result.Add(secg);
@@ -393,7 +391,7 @@ namespace ArcadeManager.Services {
 					return (false, d.Replace("\\", ""));
 				}
 
-				hasDelimiter |= line.IndexOf(d.Replace("\\", "")) > 0;
+				hasDelimiter |= line.Contains(d.Replace("\\", ""), StringComparison.InvariantCultureIgnoreCase);
 			}
 
 			// no header column found, and no delimiter either
@@ -470,7 +468,7 @@ namespace ArcadeManager.Services {
 				messageHandler.Progress($"save to file {fiTarget.Name}", steps, ++current);
 				await WriteFile(result, target);
 
-				messageHandler.Done($"Done! Result has {result.Games.Count} entries", target);
+				messageHandler.Done($"{current}/{steps} - Done! Result has {result.Games.Count} entries", target);
 			}
 			catch (Exception ex) {
 				messageHandler.Error(ex);

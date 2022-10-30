@@ -7,7 +7,7 @@ namespace ArcadeManager {
 	/// <summary>
 	/// Base program entry point
 	/// </summary>
-	public class Program {
+	public static class Program {
 
 		/// <summary>
 		/// Creates the host builder.

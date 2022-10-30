@@ -80,8 +80,6 @@ namespace ArcadeManager.Models.DatFile {
 
 	[XmlRoot(ElementName = "machine")]
 	public class Machine : BaseEntry {
-		//[XmlElement(ElementName = "device_ref")]
-		//public List<DeviceRef> DeviceRef { get; set; }
 
 		[XmlAttribute(AttributeName = "isdevice")]
 		public string Isdevice { get; set; }

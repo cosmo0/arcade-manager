@@ -51,22 +51,6 @@ namespace ArcadeManager.Models {
 				this.Headers.Add(h); // SortedList won't add a duplicate key
 			}
 
-			//// change all existing entries
-			//foreach (var e in this.entries) {
-			//	foreach (var h in this.Headers) {
-			//		if (!e.Values.ContainsKey(h)) {
-			//			e.Values.Add(h, null);
-			//		}
-			//	}
-			//}
-
-			//// make sure new entry has all headers
-			//foreach (var h in this.Headers) {
-			//	if (!entry.Values.ContainsKey(h)) {
-			//		entry.Values.Add(h, null);
-			//	}
-			//}
-
 			// add entry
 			this.entries.Add(new GameEntry(this, entry));
 		}
@@ -102,7 +86,7 @@ namespace ArcadeManager.Models {
 		/// </summary>
 		/// <param name="copyFrom">The entry to copy data from.</param>
 		public void CopyEntry(GameEntry copyFrom) {
-			var entry = entries.Where(e => e.Name.Equals(copyFrom.Name, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+			var entry = entries.FirstOrDefault(e => e.Name.Equals(copyFrom.Name, StringComparison.InvariantCultureIgnoreCase));
 			if (entry != null) {
 				entry.CopyFrom(copyFrom);
 			}

@@ -8,17 +8,11 @@ namespace ArcadeManager.Services {
 	/// Serializer provider
 	/// </summary>
 	public static class Serializer {
-		private static readonly JsonSerializerOptions options;
 
-		/// <summary>
-		/// Initializes the <see cref="Serializer"/> class.
-		/// </summary>
-		static Serializer() {
-			options = new() {
-				PropertyNamingPolicy = new LowerCaseNamingPolicy(),
-				PropertyNameCaseInsensitive = true
-			};
-		}
+		private static readonly JsonSerializerOptions options = new() {
+			PropertyNamingPolicy = new LowerCaseNamingPolicy(),
+			PropertyNameCaseInsensitive = true
+		};
 
 		/// <summary>
 		/// Deserializes the provided input

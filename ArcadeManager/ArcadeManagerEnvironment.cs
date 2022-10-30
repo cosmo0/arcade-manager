@@ -11,19 +11,11 @@ namespace ArcadeManager {
 	/// Provides environment values relative to ArcadeManager
 	/// </summary>
 	public static class ArcadeManagerEnvironment {
-		private readonly static SettingsManager mgr;
-		private readonly static Settings settings;
+		private static readonly SettingsManager mgr = new(@"ArcadeManager\userSettings.json");
+		private static readonly Settings settings = mgr.LoadSettings() ?? new Settings();
 		private static AppData _appData;
 		private static string _basePath;
 		private static string _platform;
-
-		/// <summary>
-		/// Initializes the ArcadeManager environment
-		/// </summary>
-		static ArcadeManagerEnvironment() {
-			mgr = new SettingsManager(@"ArcadeManager\userSettings.json");
-			settings = mgr.LoadSettings() ?? new Settings();
-		}
 
 		/// <summary>
 		/// Gets the current AppData values
@@ -45,8 +37,6 @@ namespace ArcadeManager {
 		public static string BasePath {
 			get {
 				if (!string.IsNullOrEmpty(_basePath)) { return _basePath; }
-
-				//_basePath = AppContext.BaseDirectory;
 
 				// See stackoverflow.com/a/58307732/6776
 				using var processModule = System.Diagnostics.Process.GetCurrentProcess().MainModule;

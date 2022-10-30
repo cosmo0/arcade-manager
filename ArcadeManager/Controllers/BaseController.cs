@@ -17,7 +17,7 @@ namespace ArcadeManager.Controllers {
 		/// Initializes a new instance of the <see cref="BaseController"/> class.
 		/// </summary>
 		/// <param name="logger">The logger.</param>
-		public BaseController(ILogger logger) {
+		protected BaseController(ILogger logger) {
 			this.logger = logger;
 		}
 	}
