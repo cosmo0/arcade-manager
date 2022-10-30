@@ -249,15 +249,17 @@ namespace ArcadeManager.Services {
 				using (var output = new StreamWriter(target, false)) {
 					await output.WriteLineAsync($"{nameColumn}{defaultDelimiter}");
 
-					var files = di.GetFiles("*.zip", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive });
-					var total = files.Length;
+					var files = di.GetFiles("*.zip", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive }).ToList();
+					files.AddRange(di.GetFiles("*.7z", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive }).ToList());
+					var total = files.Count;
 					var i = 0;
 
 					foreach (var n in files.Select(f => f.Name)) {
 						i++;
 						messageHandler.Progress($"Listing file {n}", total, i);
 
-						await output.WriteLineAsync(n.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase) + defaultDelimiter);
+						var fileName = n.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase).Replace(".7z", "", StringComparison.InvariantCultureIgnoreCase);
+						await output.WriteLineAsync(fileName + defaultDelimiter);
 					}
 				}
 

@@ -73,13 +73,13 @@ namespace ArcadeManager.Services {
 					foreach (var romFolder in r.TargetFolder) {
 						if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-						var romConfigFile = Path.Join(romCfgFolder ?? romFolder, $"{game}.zip.cfg");
+						var romConfigFile = Path.Join(romCfgFolder ?? romFolder, $"{game}.{r.Extension}.cfg");
 
 						// get rom config content
 						if (string.IsNullOrEmpty(romConfigContent)) {
 							if (data.overwrite || !File.Exists(romConfigFile)) {
 								// file doesn't exist or we'll overwrite it
-								romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.zip.cfg");
+								romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.{r.Extension}.cfg");
 
 								// fix resolution and paths
 								romConfigContent = ChangeResolution(romConfigContent, data.ratio);
@@ -243,8 +243,11 @@ namespace ArcadeManager.Services {
 			foreach (var folder in romFolders) {
 				var di = new DirectoryInfo(folder);
 				// get all rom files
-				foreach (var fi in di.GetFiles("*.zip")) {
-					var game = fi.Name.Replace(".zip", "");
+				var files = di.GetFiles("*.zip").ToList();
+				files.AddRange(di.GetFiles("*.7z"));
+				foreach (var fi in files) {
+					var game = fi.Name.Substring(0, fi.Name.LastIndexOf("."));
+					var extension = fi.Extension;
 
 					// only process files that are in the overlays pack
 					if (entries.Any(e => e.Path.EndsWith($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
@@ -253,7 +256,11 @@ namespace ArcadeManager.Services {
 							existing.TargetFolder.Add(fi.DirectoryName);
 						}
 						else {
-							result.Add(new RomToProcess { Game = game, TargetFolder = new List<string> { fi.DirectoryName } });
+							result.Add(new RomToProcess {
+								Game = game, 
+								TargetFolder = new List<string> { fi.DirectoryName },
+								Extension = extension
+							});
 						}
 					}
 				}
@@ -305,6 +312,11 @@ namespace ArcadeManager.Services {
 			/// Gets or sets the name of the game.
 			/// </summary>
 			public string Game { get; set; }
+
+			/// <summary>
+			/// Gets or sets the rom file extension.
+			/// </summary>
+			public string Extension { get; set; }
 
 			/// <summary>
 			/// Gets or sets the folders in which the game is present.

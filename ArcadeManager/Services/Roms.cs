@@ -51,29 +51,42 @@ namespace ArcadeManager.Services {
 					// build vars
 					var zip = $"{game}.zip";
 					var sourceRom = Path.Join(args.romset, zip);
+
+					// always display progress
+					messageHandler.Progress(game, total, i);
+
+					// check that source rom exists
+					if (!File.Exists(sourceRom)) {
+						zip = $"{game}.7z";
+						sourceRom = Path.Join(args.romset, zip);
+					}
+
+					// still not found: next
+					if (!File.Exists(sourceRom)) {
+						break;
+					}
+
 					var destRom = Path.Join(args.selection, zip);
+					var fi = new FileInfo(sourceRom);
 
-					if (File.Exists(sourceRom)) {
-						var fi = new FileInfo(sourceRom);
+					// replace progress with file size (so the user knows when a file is large)
+					messageHandler.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
 
-						messageHandler.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
+					// copy rom
+					if (!File.Exists(destRom) || args.overwrite) {
+						File.Copy(sourceRom, destRom, true);
+						copied++;
+					}
 
-						// copy rom
-						if (!File.Exists(destRom) || args.overwrite) {
-							File.Copy(sourceRom, destRom, true);
-							copied++;
-						}
+					// try to copy chd if it can be found
+					var sourceChd = Path.Join(args.romset, game);
+					var targetChd = Path.Join(args.selection, game);
+					if (Directory.Exists(sourceChd)) {
+						if (messageHandler.MustCancel) { break; }
 
-						// try to copy chd if it can be found
-						var sourceChd = Path.Join(args.romset, game);
-						var targetChd = Path.Join(args.selection, game);
-						if (Directory.Exists(sourceChd)) {
-							if (messageHandler.MustCancel) { break; }
+						messageHandler.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
 
-							messageHandler.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
-
-							FileSystem.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
-						}
+						FileSystem.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
 					}
 				}
 
@@ -116,10 +129,19 @@ namespace ArcadeManager.Services {
 
 					messageHandler.Progress(game, total, i);
 
-					if (File.Exists(filePath)) {
-						File.Delete(filePath);
-						deleted++;
+					// check that source rom exists
+					if (!File.Exists(filePath)) {
+						zip = $"{game}.7z";
+						filePath = Path.Join(args.romset, zip);
 					}
+
+					// still not found: next
+					if (!File.Exists(filePath)) {
+						break;
+					}
+
+					File.Delete(filePath);
+					deleted++;
 				}
 
 				messageHandler.Done($"Deleted {deleted} file(s)", args.selection);
@@ -148,7 +170,9 @@ namespace ArcadeManager.Services {
 				var content = await csvService.ReadFile(args.main, false);
 
 				// get list of files
-				var files = (new DirectoryInfo(args.selection)).GetFiles("*.zip");
+				var di = new DirectoryInfo(args.selection);
+				var files = di.GetFiles("*.zip").ToList();
+				files.AddRange(di.GetFiles("*.7z"));
 
 				var total = content.Games.Count;
 				var i = 0;
@@ -161,7 +185,7 @@ namespace ArcadeManager.Services {
 
 					messageHandler.Progress(f.Name, total, i);
 
-					if (!content.Games.Any(c => $"{c.Name}.zip" == f.Name)) {
+					if (!content.Games.Any(c => $"{c.Name}.zip" == f.Name || $"{c.Name}.7z" == f.Name)) {
 						File.Delete(f.FullName);
 						deleted++;
 					}
