@@ -2,7 +2,7 @@ version: 1.0.{build}
 branches:
   only:
   - dotnet
-image: Visual Studio 2019
+image: Visual Studio 2022
 init:
 - cmd: dotnet tool install --global ElectronNET.CLI
 build_script:
