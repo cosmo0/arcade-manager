@@ -63,7 +63,7 @@ namespace ArcadeManager.Services {
 
 					// still not found: next
 					if (!File.Exists(sourceRom)) {
-						break;
+						continue;
 					}
 
 					var destRom = Path.Join(args.selection, zip);
@@ -137,7 +137,7 @@ namespace ArcadeManager.Services {
 
 					// still not found: next
 					if (!File.Exists(filePath)) {
-						break;
+						continue;
 					}
 
 					File.Delete(filePath);
