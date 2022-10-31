@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Services {
@@ -26,7 +25,7 @@ namespace ArcadeManager.Services {
 			var url = $"{protocol}//{api}/repos/{repository}/{path}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
-				return await wc.DownloadStringTaskAsync(url);
+				return await wc.GetString(url);
 			}
 		}
 
@@ -40,7 +39,7 @@ namespace ArcadeManager.Services {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
-				await wc.DownloadFileTaskAsync(url, localPath);
+				await wc.DownloadFile(url, localPath);
 			}
 		}
 
@@ -56,7 +55,7 @@ namespace ArcadeManager.Services {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
-				return await wc.DownloadDataTaskAsync(url);
+				return await wc.GetBytes(url);
 			}
 		}
 
@@ -73,7 +72,7 @@ namespace ArcadeManager.Services {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
-				return Serializer.Deserialize<T>(await wc.DownloadStringTaskAsync(url));
+				return Serializer.Deserialize<T>(await wc.GetString(url));
 			}
 		}
 
@@ -89,7 +88,7 @@ namespace ArcadeManager.Services {
 			var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
-				return await wc.DownloadStringTaskAsync(url);
+				return await wc.GetString(url);
 			}
 		}
 
@@ -158,44 +157,14 @@ namespace ArcadeManager.Services {
 			var urlUpFolders = $"{protocol}//{api}/repos/{repository}/contents/{folder.Substring(0, folder.LastIndexOf("/"))}";
 
 			using (var wc = new ArcadeManagerWebClient()) {
-				var data = Serializer.Deserialize<IEnumerable<GithubContent>>(await wc.DownloadStringTaskAsync(urlUpFolders));
+				var data = Serializer.Deserialize<IEnumerable<GithubContent>>(await wc.GetString(urlUpFolders));
 
 				// get SHA of the folder we're insterested in
 				var sha = data.Where(d => d.path == folder).Select(d => d.sha).First();
 
 				// get files list through git/tree, which has a much higher limit of items - docs.github.com/en/rest/reference/git#get-a-tree
 				var filesListUrl = $"{protocol}//{api}/repos/{repository}/git/trees/{sha}";
-				return Serializer.Deserialize<GithubTree>(await wc.DownloadStringTaskAsync(filesListUrl));
-			}
-		}
-
-		/// <summary>
-		/// Custom webclient to set the useragent at each request
-		/// </summary>
-		/// <remarks>
-		/// Copied from stackoverflow.com/a/18516970/6776
-		/// </remarks>
-		private sealed class ArcadeManagerWebClient : WebClient {
-			private const string userAgent = "arcade-manager (cosmo0/arcade-manager)";
-
-			/// <summary>
-			/// Initializes a new instance of the <see cref="ArcadeManagerWebClient"/> class.
-			/// </summary>
-			public ArcadeManagerWebClient() {
-			}
-
-			/// <summary>
-			/// Returns a <see cref="T:System.Net.WebRequest" /> object for the specified resource.
-			/// </summary>
-			/// <param name="address">A <see cref="T:System.Uri" /> that identifies the resource to request.</param>
-			/// <returns>
-			/// A new <see cref="T:System.Net.WebRequest" /> object for the specified resource.
-			/// </returns>
-			protected override WebRequest GetWebRequest(Uri address) {
-				var request = base.GetWebRequest(address) as HttpWebRequest;
-				request.UserAgent = userAgent;
-
-				return request;
+				return Serializer.Deserialize<GithubTree>(await wc.GetString(filesListUrl));
 			}
 		}
 	}
