@@ -2,13 +2,14 @@ version: 1.0.{build}
 branches:
   only:
   - dotnet
-image: macOS
+image: macos-catalina
 init:
-- sh: dotnet tool install --global ElectronNET.CLI
+- sh: >-
+    nvm use 17.6.0
+    dotnet tool install --global ElectronNET.CLI
 build_script:
 - sh: >-
     dotnet build ArcadeManager.sln
-    
     /Users/appveyor/.dotnet/tools/electronize build /target osx
 artifacts:
 - path: bin/Desktop/*.zip
