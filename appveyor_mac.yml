@@ -6,10 +6,12 @@ image: macos-catalina
 init:
 - sh: >-
     nvm use 17.6.0
+    
     dotnet tool install --global ElectronNET.CLI
 build_script:
 - sh: >-
     dotnet build ArcadeManager.sln
+    
     /Users/appveyor/.dotnet/tools/electronize build /target osx
 artifacts:
 - path: bin/Desktop/*.zip

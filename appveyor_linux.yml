@@ -6,11 +6,14 @@ image: Ubuntu2004
 init:
 - sh: >-
     nvm use 18.8.0
+    
     dotnet tool install --global ElectronNET.CLI
+    
     sudo snap install snapcraft --classic
 build_script:
 - sh: >-
     dotnet build ArcadeManager.sln
+    
     electronize build /target linux
 artifacts:
 - path: bin/Desktop/*.zip
