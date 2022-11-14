@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace ArcadeManager.Services {
@@ -30,8 +31,9 @@ namespace ArcadeManager.Services {
 		/// <typeparam name="T">The type to deserialize into</typeparam>
 		/// <param name="reader">The reader.</param>
 		/// <returns>The deserialized file</returns>
-		public static T DeserializeXml<T>(FileStream reader) {
-			XmlSerializer serializer = new XmlSerializer(typeof(T));
+		public static T DeserializeXml<T>(XmlReader reader) {
+			XmlSerializer serializer = new(typeof(T));
+
 			return (T)serializer.Deserialize(reader);
 		}
 
