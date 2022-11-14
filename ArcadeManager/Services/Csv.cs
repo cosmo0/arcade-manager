@@ -8,14 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
-namespace ArcadeManager.Services {
-
+namespace ArcadeManager.Services
+{
 	/// <summary>
 	/// CSV files management
 	/// </summary>
-	public class Csv : ICsv {
-
+	public class Csv : ICsv
+	{
 		/// <summary>
 		/// The default delimiter
 		/// </summary>
@@ -24,9 +25,7 @@ namespace ArcadeManager.Services {
 		/// <summary>
 		/// The accepted delimiters
 		/// </summary>
-		/// <remarks>
-		/// Pipe is escaped because it'll be used in a regex
-		/// </remarks>
+		/// <remarks>Pipe is escaped because it'll be used in a regex</remarks>
 		private static readonly string[] delimiters = { ";", ",", "\t", "\\|" };
 
 		/// <summary>
@@ -50,59 +49,57 @@ namespace ArcadeManager.Services {
 		/// <param name="main">The main file.</param>
 		/// <param name="target">The target file.</param>
 		/// <param name="messageHandler">The message handler.</param>
-		public async Task ConvertDat(string main, string target, IMessageHandler messageHandler) {
+		public async Task ConvertDat(string main, string target, IMessageHandler messageHandler)
+		{
 			messageHandler.Init("DAT conversion");
 
-			try {
-				// read input file
-				using (var reader = File.OpenRead(main)) {
-					// deserialize file
-					var datFile = Serializer.DeserializeXml<Models.DatFile.Datafile>(reader);
+			try
+			{
+				XmlReaderSettings settings = new()
+				{
+					DtdProcessing = DtdProcessing.Ignore
+				};
 
-					// output stream
-					using (var outStream = new FileStream(target, FileMode.Create, FileAccess.Write)) {
-						using (var outStreamWriter = new StreamWriter(outStream)) {
-							await outStreamWriter.WriteLineAsync(headerDatRow);
+				// input file
+				using var streamReader = File.OpenRead(main);
+				using var xmlReader = XmlReader.Create(streamReader, settings);
 
-							// list entries depending on if it's a list of machines or games
-							IEnumerable<Models.DatFile.BaseEntry> entries = datFile.Game != null && datFile.Game.Any()
-								? datFile.Game
-								: datFile.Machine;
+				// output file
+				using var outStream = new FileStream(target, FileMode.Create, FileAccess.Write);
+				using var outStreamWriter = new StreamWriter(outStream);
 
-							int total = entries.Count();
-							int i = 0;
-							foreach (var e in entries) {
-								i++;
-								messageHandler.Progress($"Converting {e.Name}", total, i);
+				// deserialize DAT file
+				var datFile = Serializer.DeserializeXml<Models.DatFile.Datafile>(xmlReader);
 
-								var sb = new StringBuilder();
-								sb.Append($"{e.Name}{defaultDelimiter}");
-								sb.Append($"{e.Description ?? "-"}{defaultDelimiter}");
-								sb.Append($"{e.Year ?? "-"}{defaultDelimiter}");
-								sb.Append($"{e.Manufacturer ?? "-"}{defaultDelimiter}");
+				// output stream
+				await outStreamWriter.WriteLineAsync(headerDatRow);
 
-								if (e is Models.DatFile.Game) {
-									var eg = e as Models.DatFile.Game;
+				int total = datFile.Entries.Count;
+				int i = 0;
+				foreach (var e in datFile.Entries)
+				{
+					i++;
+					messageHandler.Progress($"Converting {e.Name}", total, i);
 
-									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "NO" : "YES").Append(defaultDelimiter); // is_parent
-									sb.Append(eg.Romof ?? "-").Append(defaultDelimiter); // romof
-									sb.Append(string.IsNullOrEmpty(eg.Cloneof) ? "YES" : "NO").Append(defaultDelimiter); // is_clone
-									sb.Append(eg.Cloneof ?? "-").Append(defaultDelimiter); // cloneof
-									sb.Append(eg.Sampleof ?? "-").Append(defaultDelimiter); // sampleof
-								}
-								else {
-									sb.Append("-;-;-;-;-;");
-								}
+					var sb = new StringBuilder();
+					sb.Append($"{e.Name}{defaultDelimiter}");
+					sb.Append($"{e.Description ?? "-"}{defaultDelimiter}");
+					sb.Append($"{e.Year ?? "-"}{defaultDelimiter}");
+					sb.Append($"{e.Manufacturer ?? "-"}{defaultDelimiter}");
 
-								await outStreamWriter.WriteLineAsync(sb.ToString());
-							}
-						}
-					}
-
-					messageHandler.Done("DAT file converted", target);
+					sb.Append(string.IsNullOrEmpty(e.Cloneof) ? "NO" : "YES").Append(defaultDelimiter); // is_parent
+					sb.Append(e.Romof ?? "-").Append(defaultDelimiter); // romof
+					sb.Append(string.IsNullOrEmpty(e.Cloneof) ? "YES" : "NO").Append(defaultDelimiter); // is_clone
+					sb.Append(e.Cloneof ?? "-").Append(defaultDelimiter); // cloneof
+					sb.Append(e.Sampleof ?? "-").Append(defaultDelimiter); // sampleof
+					
+					await outStreamWriter.WriteLineAsync(sb.ToString());
 				}
+
+				messageHandler.Done("DAT file converted", target);
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				messageHandler.Error(ex);
 			}
 		}
@@ -113,36 +110,43 @@ namespace ArcadeManager.Services {
 		/// <param name="main">The main file</param>
 		/// <param name="target">The target folder to create files into</param>
 		/// <param name="messageHandler">The message handler.</param>
-		public async Task ConvertIni(string main, string target, IMessageHandler messageHandler) {
+		public async Task ConvertIni(string main, string target, IMessageHandler messageHandler)
+		{
 			messageHandler.Init("INI conversion");
 
-			try {
+			try
+			{
 				var data = new Dictionary<string, List<IniEntry>>();
 
 				var mainInfo = new FileInfo(main);
 
-				using (var source = new StreamReader(main)) {
+				using (var source = new StreamReader(main))
+				{
 					var isFolderSetting = false;
 					var currentSection = "";
 
-					while (!source.EndOfStream) {
+					while (!source.EndOfStream)
+					{
 						var line = (await source.ReadLineAsync()).Trim();
 
 						// progress up to 50%
 						messageHandler.Progress("Reading source file", 100, (int)(source.BaseStream.Position / mainInfo.Length * 50));
 
 						// ignore empty lines and comments
-						if (string.IsNullOrWhiteSpace(line) || line.StartsWith(";")) {
+						if (string.IsNullOrWhiteSpace(line) || line.StartsWith(";"))
+						{
 							continue;
 						}
 
 						// ignore folder settings
-						if (line == "[FOLDER_SETTINGS]") {
+						if (line == "[FOLDER_SETTINGS]")
+						{
 							isFolderSetting = true;
 							continue;
 						}
 
-						if (isFolderSetting && !line.StartsWith("[")) {
+						if (isFolderSetting && !line.StartsWith("["))
+						{
 							continue;
 						}
 
@@ -150,11 +154,13 @@ namespace ArcadeManager.Services {
 						isFolderSetting = false;
 
 						// found a section
-						if (line.StartsWith("[")) {
+						if (line.StartsWith("["))
+						{
 							currentSection = line;
 
 							// add to data
-							if (!data.ContainsKey(currentSection)) {
+							if (!data.ContainsKey(currentSection))
+							{
 								data.Add(currentSection, new List<IniEntry>());
 							}
 
@@ -162,12 +168,14 @@ namespace ArcadeManager.Services {
 						}
 
 						// we're in a section data
-						if (line.Contains("=", StringComparison.InvariantCultureIgnoreCase)) {
+						if (line.Contains('=', StringComparison.InvariantCultureIgnoreCase))
+						{
 							// game=value
 							var split = line.Split("=", StringSplitOptions.TrimEntries);
 							data[currentSection].Add(new IniEntry { game = split[0], value = split[1] });
 						}
-						else {
+						else
+						{
 							// simple games list
 							data[currentSection].Add(new IniEntry { game = line });
 						}
@@ -176,7 +184,8 @@ namespace ArcadeManager.Services {
 
 				// create a file for each non-empty section
 				var i = 0;
-				foreach (var entry in data.Where(d => d.Value.Any())) {
+				foreach (var entry in data.Where(d => d.Value.Any()))
+				{
 					i++;
 
 					// file name = sanitized section name, or source name if there's only one section
@@ -195,10 +204,12 @@ namespace ArcadeManager.Services {
 					messageHandler.Progress($"Creating file {name}", 100, 50 + (i / data.Count * 50));
 
 					// write into file
-					using (var output = new StreamWriter(path)) {
+					using (var output = new StreamWriter(path))
+					{
 						await output.WriteLineAsync(headerIniRow);
 
-						foreach (var iniEntry in entry.Value) {
+						foreach (var iniEntry in entry.Value)
+						{
 							await output.WriteLineAsync($"{iniEntry.game}{defaultDelimiter}{iniEntry.value}{defaultDelimiter}");
 						}
 					}
@@ -206,7 +217,8 @@ namespace ArcadeManager.Services {
 
 				messageHandler.Done("INI file converted", target);
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				messageHandler.Error(ex);
 			}
 		}
@@ -218,12 +230,15 @@ namespace ArcadeManager.Services {
 		/// <param name="secondary">The path to the secondary file.</param>
 		/// <param name="target">The path to the target file.</param>
 		/// <param name="messageHandler">The message handler.</param>
-		public async Task Keep(string main, string secondary, string target, IMessageHandler messageHandler) {
-			await WorkOnTwoFiles(main, secondary, target, messageHandler, "Filter entries in a CSV files", (main, sec) => {
+		public async Task Keep(string main, string secondary, string target, IMessageHandler messageHandler)
+		{
+			await WorkOnTwoFiles(main, secondary, target, messageHandler, "Filter entries in a CSV files", (main, sec) =>
+			{
 				var result = new CsvGamesList();
 
 				// keep entries from the main file that also exist in the secondary
-				foreach (var me in main.Games.Where(me => sec.Games.Any(se => se.Name == me.Name))) {
+				foreach (var me in main.Games.Where(me => sec.Games.Any(se => se.Name == me.Name)))
+				{
 					result.Add(me);
 				}
 
@@ -238,15 +253,18 @@ namespace ArcadeManager.Services {
 		/// <param name="target">The target CSV file.</param>
 		/// <param name="messageHandler">The message handler.</param>
 		/// <exception cref="DirectoryNotFoundException">Unable to find the folder {main}</exception>
-		public async Task ListFiles(string main, string target, IMessageHandler messageHandler) {
+		public async Task ListFiles(string main, string target, IMessageHandler messageHandler)
+		{
 			messageHandler.Init("List files to a CSV");
 
-			try {
+			try
+			{
 				if (!Directory.Exists(main)) { throw new DirectoryNotFoundException($"Unable to find the folder {main}"); }
 
 				var di = new DirectoryInfo(main);
 
-				using (var output = new StreamWriter(target, false)) {
+				using (var output = new StreamWriter(target, false))
+				{
 					await output.WriteLineAsync($"{nameColumn}{defaultDelimiter}");
 
 					var files = di.GetFiles("*.zip", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive }).ToList();
@@ -254,7 +272,8 @@ namespace ArcadeManager.Services {
 					var total = files.Count;
 					var i = 0;
 
-					foreach (var n in files.Select(f => f.Name)) {
+					foreach (var n in files.Select(f => f.Name))
+					{
 						i++;
 						messageHandler.Progress($"Listing file {n}", total, i);
 
@@ -265,7 +284,8 @@ namespace ArcadeManager.Services {
 
 				messageHandler.Done("Files listed", target);
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				messageHandler.Error(ex);
 			}
 		}
@@ -277,17 +297,22 @@ namespace ArcadeManager.Services {
 		/// <param name="secondary">The path to the secondary file.</param>
 		/// <param name="target">The path to the target file.</param>
 		/// <param name="messageHandler">The message handler.</param>
-		public async Task Merge(string main, string secondary, string target, IMessageHandler messageHandler) {
-			await WorkOnTwoFiles(main, secondary, target, messageHandler, "Merge two CSV files", (main, sec) => {
+		public async Task Merge(string main, string secondary, string target, IMessageHandler messageHandler)
+		{
+			await WorkOnTwoFiles(main, secondary, target, messageHandler, "Merge two CSV files", (main, sec) =>
+			{
 				var result = new CsvGamesList(main.Games);
 
-				foreach (var secg in sec.Games) {
+				foreach (var secg in sec.Games)
+				{
 					var maing = main.Games.FirstOrDefault(me => me.Name == secg.Name);
-					if (maing == null) {
+					if (maing == null)
+					{
 						// entry is in secondary but not main file: copy to result
 						result.Add(secg);
 					}
-					else {
+					else
+					{
 						// entry is already in main: copy additional data
 						result.CopyEntry(secg);
 					}
@@ -302,11 +327,11 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		/// <param name="filepath">The path to the file</param>
 		/// <param name="getOtherValues">if set to <c>true</c> get the values other than the name.</param>
-		/// <returns>
-		/// The list of games in the CSV file
-		/// </returns>
-		public async Task<CsvGamesList> ReadFile(string filepath, bool getOtherValues) {
-			using (var reader = new StreamReader(filepath)) {
+		/// <returns>The list of games in the CSV file</returns>
+		public async Task<CsvGamesList> ReadFile(string filepath, bool getOtherValues)
+		{
+			using (var reader = new StreamReader(filepath))
+			{
 				// check that the first line has a header
 				var firstLine = reader.ReadLine();
 				var (hasHeader, delimiter) = HasHeader(firstLine);
@@ -316,7 +341,8 @@ namespace ArcadeManager.Services {
 				reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
 				// build CSV read options
-				var conf = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture) {
+				var conf = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+				{
 					Delimiter = delimiter,
 					HasHeaderRecord = hasHeader,
 					IgnoreBlankLines = true
@@ -324,13 +350,17 @@ namespace ArcadeManager.Services {
 
 				// read the file
 				CsvGamesList result = new();
-				using (var csv = new CsvReader(reader, conf)) {
+				using (var csv = new CsvReader(reader, conf))
+				{
 					var entries = csv.GetRecordsAsync<dynamic>();
 
-					if (hasHeader) {
-						await foreach (var e in entries) {
+					if (hasHeader)
+					{
+						await foreach (var e in entries)
+						{
 							Dictionary<string, string> values = new();
-							if (getOtherValues) {
+							if (getOtherValues)
+							{
 								// get all other columns ; see visualstudiomagazine.com/articles/2019/04/01/working-with-dynamic-objects.aspx
 								values = ((IDictionary<string, object>)e)
 									.Where(elem => !elem.Key.Equals(nameColumn, StringComparison.InvariantCultureIgnoreCase))
@@ -340,7 +370,8 @@ namespace ArcadeManager.Services {
 							result.Add(e.name, values);
 						}
 					}
-					else {
+					else
+					{
 						// Without headers, CsvReader names the fields Field1, Field2, etc
 						result.AddRange((await entries.ToListAsync()).Select(e => new string(e.Field1)));
 					}
@@ -358,12 +389,16 @@ namespace ArcadeManager.Services {
 		/// <param name="target">The path to the target file.</param>
 		/// <param name="messageHandler">The message handler.</param>
 		/// <returns></returns>
-		public async Task Remove(string main, string secondary, string target, IMessageHandler messageHandler) {
-			await WorkOnTwoFiles(main, secondary, target, messageHandler, "", (main, sec) => {
+		public async Task Remove(string main, string secondary, string target, IMessageHandler messageHandler)
+		{
+			await WorkOnTwoFiles(main, secondary, target, messageHandler, "", (main, sec) =>
+			{
 				var result = new CsvGamesList();
 
-				foreach (var me in main.Games) {
-					if (!sec.Games.Any(se => se.Name.Equals(me.Name, StringComparison.InvariantCultureIgnoreCase))) {
+				foreach (var me in main.Games)
+				{
+					if (!sec.Games.Any(se => se.Name.Equals(me.Name, StringComparison.InvariantCultureIgnoreCase)))
+					{
 						result.Add(me);
 					}
 				}
@@ -377,19 +412,23 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		/// <param name="line">The line to check</param>
 		/// <returns>Whether a header has been found, and the delimiter, if any</returns>
-		private static (bool, string) HasHeader(string line) {
+		private static (bool, string) HasHeader(string line)
+		{
 			bool hasDelimiter = false;
-			foreach (var d in delimiters) {
+			foreach (var d in delimiters)
+			{
 				// ",name," OR "name," OR ",name"
 				var hasKeyword = new Regex($"{d}{nameColumn}{d}|^{nameColumn}{d}|{d}{nameColumn}$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 				// single column with just "name" and nothing else
 				var hasKeywordAlone = new Regex($"^{d}$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
-				if (hasKeyword.IsMatch(line)) {
+				if (hasKeyword.IsMatch(line))
+				{
 					return (true, d.Replace("\\", ""));
 				}
 
-				if (hasKeywordAlone.IsMatch(line)) {
+				if (hasKeywordAlone.IsMatch(line))
+				{
 					return (false, d.Replace("\\", ""));
 				}
 
@@ -397,7 +436,8 @@ namespace ArcadeManager.Services {
 			}
 
 			// no header column found, and no delimiter either
-			if (!hasDelimiter) {
+			if (!hasDelimiter)
+			{
 				return (false, delimiters[0]);
 			}
 
@@ -409,10 +449,9 @@ namespace ArcadeManager.Services {
 		/// </summary>
 		/// <param name="name">The file name</param>
 		/// <returns>The sanitized file name</returns>
-		/// <remarks>
-		/// Copied from stackoverflow.com/a/847251/6776
-		/// </remarks>
-		private static string Sanitize(string name) {
+		/// <remarks>Copied from stackoverflow.com/a/847251/6776</remarks>
+		private static string Sanitize(string name)
+		{
 			string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
 			string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
@@ -425,13 +464,16 @@ namespace ArcadeManager.Services {
 		/// <param name="entries">The entries to write.</param>
 		/// <param name="target">The target to write to.</param>
 		/// <exception cref="NotImplementedException"></exception>
-		private static async Task WriteFile(CsvGamesList entries, string target) {
-			using (var output = new StreamWriter(target, false)) {
+		private static async Task WriteFile(CsvGamesList entries, string target)
+		{
+			using (var output = new StreamWriter(target, false))
+			{
 				// header line
 				await output.WriteLineAsync(entries.GetHeaderLine(nameColumn, defaultDelimiter));
 
 				// entries
-				foreach (var entry in entries.Games) {
+				foreach (var entry in entries.Games)
+				{
 					await output.WriteLineAsync(entry.ToCSVString(defaultDelimiter));
 				}
 			}
@@ -447,10 +489,12 @@ namespace ArcadeManager.Services {
 		/// <param name="init">The initialization label.</param>
 		/// <param name="action">The action to process.</param>
 		/// <returns></returns>
-		private async Task WorkOnTwoFiles(string main, string secondary, string target, IMessageHandler messageHandler, string init, Func<CsvGamesList, CsvGamesList, CsvGamesList> action) {
+		private async Task WorkOnTwoFiles(string main, string secondary, string target, IMessageHandler messageHandler, string init, Func<CsvGamesList, CsvGamesList, CsvGamesList> action)
+		{
 			messageHandler.Init(init);
 
-			try {
+			try
+			{
 				var steps = 5;
 				var current = 0;
 
@@ -472,7 +516,8 @@ namespace ArcadeManager.Services {
 
 				messageHandler.Done($"{current}/{steps} - Done! Result has {result.Games.Count} entries", target);
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				messageHandler.Error(ex);
 			}
 		}
@@ -480,8 +525,8 @@ namespace ArcadeManager.Services {
 		/// <summary>
 		/// Represents an INI file entry
 		/// </summary>
-		private struct IniEntry {
-
+		private struct IniEntry
+		{
 			/// <summary>
 			/// The game name
 			/// </summary>
