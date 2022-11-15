@@ -10,7 +10,7 @@
 		"appId": "com.ArcadeManager.app",
 		"productName": "ArcadeManager",
 		"copyright": "Copyright © 2021",
-		"buildVersion": "6.1.0",
+		"buildVersion": "6.2.0",
 		"compression": "maximum",
 		"win": {
 			"target": [
@@ -20,7 +20,7 @@
 				},
 				{
 					"target": "zip",
-					"arch": [ "x64", "arm64" ]
+					"arch": [ "x64", "arm", "arm64" ]
 				}
 			],
 			"icon": "bin/Assets/electron.ico"
@@ -29,15 +29,15 @@
 			"target": [
 				{
 					"target": "AppImage",
-					"arch": [ "x64", "arm64" ]
+					"arch": [ "x64", "arm", "arm64" ]
 				},
 				{
 					"target": "snap",
-					"arch": [ "x64", "arm64" ]
+					"arch": [ "x64", "arm", "arm64" ]
 				},
 				{
 					"target": "zip",
-					"arch": [ "x64", "arm64" ]
+					"arch": [ "x64", "arm", "arm64" ]
 				}
 			],
 			"icon": "bin/Assets/electron_256x256.png"
