@@ -10,23 +10,23 @@
         },
         {
             "name": "FinalBurn Neo",
-            "description": "FinalBurn Neo (0.2.97.44)",
+            "description": "FinalBurn Neo (1.0.0.2)",
             "image": "",
             "repository": "cosmo0/arcade-manager-data",
-            "folder": "csv/fbneo-0.2.97.44",
+            "folder": "csv/fbneo-1.0.0.2",
             "details": "csv/files.json"
         },
         {
-            "name": "FBA 2017",
-            "description": "Final Burn Alpha 2017 (0.2.97.42)",
+            "name": "MAME 2003+",
+            "description": "MAME 2003 Plus, an improved version of MAME 2003",
             "image": "",
             "repository": "cosmo0/arcade-manager-data",
-            "folder": "csv/fba-0.2.97.42",
+            "folder": "csv/mame2003-plus",
             "details": "csv/files.json"
         },
         {
-            "name": "MAME 2003",
-            "description": "MAME 2003 (0.78)",
+            "name": "MAME 2003 only",
+            "description": "Games that work in MAME 2003 but not in FBA",
             "image": "",
             "repository": "cosmo0/arcade-manager-data",
             "folder": "csv/mame2003",
@@ -38,22 +38,6 @@
             "image": "",
             "repository": "cosmo0/arcade-manager-data",
             "folder": "csv/mame2010",
-            "details": "csv/files.json"
-        },
-        {
-            "name": "Advance MAME",
-            "description": "Advance MAME 1.4 and 3.7 (MAME 0.106)",
-            "image": "",
-            "repository": "cosmo0/arcade-manager-data",
-            "folder": "csv/advancemame",
-            "details": "csv/files.json"
-        },
-        {
-            "name": "MAME 2003 only",
-            "description": "Games that work in MAME 2003 but not in FBA",
-            "image": "",
-            "repository": "cosmo0/arcade-manager-data",
-            "folder": "csv/mame2003",
             "details": "csv/files.json"
         },
         {
