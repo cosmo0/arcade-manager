@@ -73,13 +73,13 @@ namespace ArcadeManager.Services {
 					foreach (var romFolder in r.TargetFolder) {
 						if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-						var romConfigFile = Path.Join(romCfgFolder ?? romFolder, $"{game}.{r.Extension}.cfg");
+						var romConfigFile = Path.Join(romCfgFolder ?? romFolder, $"{game}{r.Extension}.cfg");
 
 						// get rom config content
 						if (string.IsNullOrEmpty(romConfigContent)) {
 							if (data.overwrite || !File.Exists(romConfigFile)) {
 								// file doesn't exist or we'll overwrite it
-								romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}.{r.Extension}.cfg");
+								romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}{r.Extension}.cfg");
 
 								// fix resolution and paths
 								romConfigContent = ChangeResolution(romConfigContent, data.ratio);
