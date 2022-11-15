@@ -4,6 +4,8 @@
 		"imageFile": "/wwwroot/img/splash.png"
 	},
 	"name": "ArcadeManager",
+	"description": "A rom management tool to help you manage your arcade (MAME/FBNeo) rom collection.",
+	"homepage": "https://github.com/cosmo0/arcade-manager",
 	"author": "cosmo0",
 	"singleInstance": true,
 	"build": {
@@ -20,7 +22,7 @@
 				},
 				{
 					"target": "zip",
-					"arch": [ "x64", "arm", "arm64" ]
+					"arch": [ "x64", "arm64" ]
 				}
 			],
 			"icon": "bin/Assets/electron.ico"
@@ -29,15 +31,15 @@
 			"target": [
 				{
 					"target": "AppImage",
-					"arch": [ "x64", "arm", "arm64" ]
+					"arch": [ "x64", "armv7l", "arm64" ]
 				},
 				{
 					"target": "snap",
-					"arch": [ "x64", "arm", "arm64" ]
+					"arch": [ "x64", "armv7l", "arm64" ]
 				},
 				{
 					"target": "zip",
-					"arch": [ "x64", "arm", "arm64" ]
+					"arch": [ "x64", "armv7l", "arm64" ]
 				}
 			],
 			"icon": "bin/Assets/electron_256x256.png"
