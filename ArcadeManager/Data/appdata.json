@@ -47,6 +47,14 @@
             "repository": "cosmo0/arcade-manager-data",
             "folder": "csv/mame2010-only",
             "details": "csv/files.json"
+        },
+        {
+            "name": "MAME latest",
+            "description": "The latest version of MAME",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/mame-latest",
+            "details": "csv/files.json"
         }
     ],
     "overlays": [
