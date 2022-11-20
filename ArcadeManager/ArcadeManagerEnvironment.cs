@@ -24,7 +24,7 @@ namespace ArcadeManager {
 			get {
 				if (_appData != null) { return _appData; }
 
-				string content = File.ReadAllText(Path.Join(BasePath, Path.Join("Data", "appdata.json")));
+				string content = File.ReadAllText(Path.Join(BasePath, "Data", "appdata.json"));
 				_appData = Services.Serializer.Deserialize<AppData>(content);
 
 				return _appData;

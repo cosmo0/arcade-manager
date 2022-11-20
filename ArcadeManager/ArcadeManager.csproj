@@ -27,6 +27,8 @@
     <None Remove="Assets\electron_256x256.png" />
     <None Remove="Assets\electron_32x32.png" />
     <None Remove="Assets\icon.icns" />
+    <None Remove="Data\bioslist.txt" />
+    <None Remove="Data\biosmatch.csv" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\electron.ico">
@@ -39,6 +41,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\icon.icns">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\bioslist.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\biosmatch.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

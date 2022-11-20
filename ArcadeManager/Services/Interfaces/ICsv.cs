@@ -1,4 +1,5 @@
 ﻿using ArcadeManager.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Services {
