@@ -102,7 +102,7 @@ namespace ArcadeManager.Services
                     {
                         var sourcebios = Path.Join(args.romset, $"{bios}.{ext}");
                         var destbios = Path.Join(args.selection, $"{bios}.{ext}");
-                        if (!File.Exists(destbios))
+                        if (File.Exists(sourcebios) && !File.Exists(destbios))
                         {
                             File.Copy(sourcebios, destbios);
                             copied++;
