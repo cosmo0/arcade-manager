@@ -5,93 +5,89 @@ using System.Xml.Serialization;
 /// <summary>
 /// Conversion of DAT files using json2csharp.com/xml-to-csharp
 /// </summary>
-namespace ArcadeManager.Models.DatFile
-{
-	[XmlRoot(ElementName = "datafile")]
-	public class Datafile
-	{
-		[XmlIgnore]
-		public List<Entry> Entries
-		{
-			get
-			{
-				if (Game != null && Game.Any())
-				{
-					return Game;
-				}
+namespace ArcadeManager.Models.DatFile;
 
-				return Machine;
-			}
-		}
+[XmlRoot(ElementName = "datafile")]
+public class Datafile {
 
-		[XmlElement(ElementName = "game")]
-		public List<Entry> Game { get; set; }
+    [XmlIgnore]
+    public List<Entry> Entries {
+        get {
+            if (Game != null && Game.Any()) {
+                return Game;
+            }
 
-		[XmlElement(ElementName = "header")]
-		public Header Header { get; set; }
+            return Machine;
+        }
+    }
 
-		[XmlElement(ElementName = "machine")]
-		public List<Entry> Machine { get; set; }
-	}
+    [XmlElement(ElementName = "game")]
+    public List<Entry> Game { get; set; }
 
-	public class Entry
-	{
-		[XmlElement(ElementName = "category")]
-		public string Category { get; set; }
+    [XmlElement(ElementName = "header")]
+    public Header Header { get; set; }
 
-		[XmlAttribute(AttributeName = "cloneof")]
-		public string Cloneof { get; set; }
+    [XmlElement(ElementName = "machine")]
+    public List<Entry> Machine { get; set; }
+}
 
-		[XmlElement(ElementName = "description")]
-		public string Description { get; set; }
+public class Entry {
 
-		[XmlAttribute(AttributeName = "isdevice")]
-		public string Isdevice { get; set; }
+    [XmlElement(ElementName = "category")]
+    public string Category { get; set; }
 
-		[XmlElement(ElementName = "manufacturer")]
-		public string Manufacturer { get; set; }
+    [XmlAttribute(AttributeName = "cloneof")]
+    public string Cloneof { get; set; }
 
-		[XmlAttribute(AttributeName = "name")]
-		public string Name { get; set; }
+    [XmlElement(ElementName = "description")]
+    public string Description { get; set; }
 
-		[XmlAttribute(AttributeName = "romof")]
-		public string Romof { get; set; }
+    [XmlAttribute(AttributeName = "isdevice")]
+    public string Isdevice { get; set; }
 
-		[XmlAttribute(AttributeName = "runnable")]
-		public string Runnable { get; set; }
+    [XmlElement(ElementName = "manufacturer")]
+    public string Manufacturer { get; set; }
 
-		[XmlAttribute(AttributeName = "sampleof")]
-		public string Sampleof { get; set; }
+    [XmlAttribute(AttributeName = "name")]
+    public string Name { get; set; }
 
-		[XmlAttribute(AttributeName = "sourcefile")]
-		public string Sourcefile { get; set; }
+    [XmlAttribute(AttributeName = "romof")]
+    public string Romof { get; set; }
 
-		[XmlText]
-		public string Text { get; set; }
+    [XmlAttribute(AttributeName = "runnable")]
+    public string Runnable { get; set; }
 
-		[XmlElement(ElementName = "year")]
-		public string Year { get; set; }
-	}
+    [XmlAttribute(AttributeName = "sampleof")]
+    public string Sampleof { get; set; }
 
-	[XmlRoot(ElementName = "header")]
-	public class Header
-	{
-		[XmlElement(ElementName = "author")]
-		public string Author { get; set; }
+    [XmlAttribute(AttributeName = "sourcefile")]
+    public string Sourcefile { get; set; }
 
-		[XmlElement(ElementName = "category")]
-		public string Category { get; set; }
+    [XmlText]
+    public string Text { get; set; }
 
-		[XmlElement(ElementName = "comment")]
-		public string Comment { get; set; }
+    [XmlElement(ElementName = "year")]
+    public string Year { get; set; }
+}
 
-		[XmlElement(ElementName = "description")]
-		public string Description { get; set; }
+[XmlRoot(ElementName = "header")]
+public class Header {
 
-		[XmlElement(ElementName = "name")]
-		public string Name { get; set; }
+    [XmlElement(ElementName = "author")]
+    public string Author { get; set; }
 
-		[XmlElement(ElementName = "version")]
-		public string Version { get; set; }
-	}
+    [XmlElement(ElementName = "category")]
+    public string Category { get; set; }
+
+    [XmlElement(ElementName = "comment")]
+    public string Comment { get; set; }
+
+    [XmlElement(ElementName = "description")]
+    public string Description { get; set; }
+
+    [XmlElement(ElementName = "name")]
+    public string Name { get; set; }
+
+    [XmlElement(ElementName = "version")]
+    public string Version { get; set; }
 }
