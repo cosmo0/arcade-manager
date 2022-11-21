@@ -17,7 +17,18 @@
 </h2>
 
 <div class="row mainmenu">
-    <div class="col-4">
+    <div class="col-3">
+        <a asp-controller="Wizard" asp-action="Index" class="navmenu">
+            <div class="card text-center border-primary">
+                <img class="card-img-top" src="img/wizard.png">
+                <div class="card-footer">
+                    Automatic installation
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-3">
         <a asp-controller="Overlays" asp-action="Index" class="navmenu overlays">
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/overlays.png">
@@ -28,7 +39,7 @@
         </a>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
         <a asp-controller="Roms" asp-action="Index" class="navmenu">
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/roms.png">
@@ -39,7 +50,7 @@
         </a>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
         <a asp-controller="Csv" asp-action="Index" class="navmenu">
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/csv.png">

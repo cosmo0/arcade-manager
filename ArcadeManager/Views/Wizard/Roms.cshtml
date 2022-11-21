@@ -1,0 +1,52 @@
+﻿@model Wizard
+@{
+    ViewData["title"] = "Wizard";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Wizard</li>
+    </ol>
+</nav>
+
+<h2>Automatic installation: roms</h2>
+
+<p>
+    What do you want to do with your roms?
+</p>
+
+<form asp-controller="Wizard" asp-action="Index" method="post">
+
+<input type="hidden" asp-for="DoOverlays" />
+
+<div class="mb-3">
+    <p>
+        <label><input type="radio" name="romaction" value="copyauto" /> Help me build a manageable romset</label>
+    </p>
+
+    <p>
+        <label><input type="radio" name="romaction" value="copymanual" /> Copy a selection of roms from a full romset to my installation using my own list</label>
+    </p>
+
+    <p>
+        <label><input type="radio" name="romaction" value="cleanauto" /> Help me clean an installed full romset: remove duplicates, mahjong games, etc</label>
+    </p>
+
+    <p>
+        <label><input type="radio" name="romaction" value="cleanmanual" /> Clean a full romset using my own list</label>
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
+    </div>
+    <div class="col-6 text-right">
+        <button type="submit" class="btn btn-primary px-3" id="submitButton">
+            Next - choose system
+        </button>
+    </div>
+</div>
+
+</form>

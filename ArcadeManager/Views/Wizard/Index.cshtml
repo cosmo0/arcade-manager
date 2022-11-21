@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["title"] = "Wizard";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Wizard</li>
+    </ol>
+</nav>
+
+<h2>Automatic installation</h2>
+
+<p>
+    This wizard will help you to manage your games. Use this if you want something that "just works" and don't want to fiddle with all the details.
+</p>
+<p>
+    To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose later in the wizard.
+</p>
+<p>
+    To install overlays, you will need a Retropie or Recalbox installation.
+</p>
+
+<form asp-controller="Wizard" asp-action="Index" method="post">
+
+<div class="border rounded d-flex p-3 mb-3 option-container">
+    <input type="checkbox" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" id="roms" name="roms" checked="checked" value="true">
+    <div class="flex-fill">
+        <h5 class="mb-1 name">Install roms</h5>
+        <p class="mb-0 desc">Trim your romset to a manageable number of games.</p>
+    </div>
+</div>
+
+<div class="border rounded d-flex p-3 mb-3 option-container">
+    <input type="checkbox" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" id="overlays" name="overlays" checked="checked" value="true">
+    <div class="flex-fill">
+        <h5 class="mb-1 name">Install overlays</h5>
+        <p class="mb-0 desc">Add nice borders around the game screen.</p>
+    </div>
+</div>
+
+<div class="row justify-content-end">
+    <div class="col-4 text-right">
+        <button type="submit" class="btn btn-primary px-5" id="submitButton">
+            Start
+        </button>
+    </div>
+</div>
+
+</form>
+
+@section Scripts {
+<script type="text/javascript">
+    // toggle checkbox on click anywhere in the box
+    $('.option-container').on('click', (e) => {
+        const container = $(e.currentTarget),
+            check = container.find('input:checkbox');
+        check.prop('checked', !check.prop('checked'));
+
+        $('#submitButton').prop('disabled', $(':checkbox:checked').length === 0);
+    });
+</script>
+}
