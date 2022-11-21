@@ -2,11 +2,19 @@
     "csv": [
         {
             "name": "Best games",
-            "description": "Which games work best on which emulator",
+            "description": "The best games for each emulator",
             "image": "",
             "repository": "cosmo0/arcade-manager-data",
             "folder": "csv/best",
             "details": "csv/best/files.json"
+        },
+		{
+            "name": "All killer, no filler",
+            "description": "The 'All Killer, No Filler' list from forum.arcadecontrols.com",
+            "image": "",
+            "repository": "cosmo0/arcade-manager-data",
+            "folder": "csv/all-killer-no-filler",
+            "details": "csv/all-killer-no-filler/files.json"
         },
         {
             "name": "FinalBurn Neo",
