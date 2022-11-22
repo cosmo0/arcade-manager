@@ -1,0 +1,110 @@
+﻿@model Wizard
+@{
+    ViewData["title"] = "Wizard";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Wizard</li>
+    </ol>
+</nav>
+
+<h2>Automatic installation: choose lists</h2>
+
+<p>
+    Please choose the games selection(s) you want.
+</p>
+<p>
+   Note that the various "tops" have duplicates: selecting the top200 and the top50 will only result in 200 games, since the top50 is a sub-selection of the top200.
+</p>
+<p>
+   Obviously the "tops" are highly subjective. This tool also easily lets you <a asp-controller="Csv" asp-action="Index">define your own lists</a>.
+</p>
+
+<form asp-controller="Wizard" asp-action="PostListSelection" method="post">
+
+    <input type="hidden" asp-for="DoOverlays" />
+
+    <p>
+        <label><input type="checkbox" /> All the games, including duplicates (clones)</label>
+    </p>
+    <p>
+        <label><input type="checkbox" /> All the games, excluding duplicates</label>
+    </p>
+    <p>
+        <label><input type="checkbox" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc</label>
+    </p>
+    
+    <hr />
+
+    <p>
+        <label><input type="checkbox" checked="true" /> The top 200, all the classics and a few hidden gems (+X FBNeo)</label>
+    </p>
+    <p>
+        <label><input type="checkbox" /> The top 50, only the very best (+X FBNeo)</label>
+    </p>
+    <p>
+        <label><input type="checkbox" /> The top 50 games from the 70's and 80's: from Space Invaders to Final Fight (+X FBNeo)</label>
+    </p>
+    <p>
+        <label><input type="checkbox" /> The top 50 games from the 90's and '00s: from Smash TV to Street Fighter III (+X FBNeo)</label>
+    </p>
+
+    <hr />
+
+    <p>
+        "All Killer, No Filler" list from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+    </p>
+
+    <div class="row">
+        <div class="col-4">
+            <label><input type="checkbox" /> Shooting (horizontal screen) - X games</label>
+        </div>
+        <div class="col-4">
+            <label><input type="checkbox" /> Shooting (vertical screen) - X games</label>
+        </div>
+        <div class="col-4">
+            <label><input type="checkbox" /> Run and gun - X games</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <label><input type="checkbox" /> Fighting - X games</label>
+        </div>
+        <div class="col-4">
+            <label><input type="checkbox" /> Beat'em up and hack &amp; slash - X games</label>
+        </div>
+        <div class="col-4">
+            <label><input type="checkbox" /> Platform - X games</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <label><input type="checkbox" /> Old school classics (horizontal screen) - X games</label>
+        </div>
+        <div class="col-4">
+            <label><input type="checkbox" /> Old school classics (vertical screen) - X games</label>
+        </div>
+        <div class="col-4">
+            <label><input type="checkbox" /> Puzzle - X games</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <label><input type="checkbox" /> Sports and racing - X games</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
+        </div>
+        <div class="col-6 text-right">
+            <button type="submit" class="btn btn-primary px-3" id="submitButton">
+                Next - set paths
+            </button>
+        </div>
+    </div>
+
+</form>

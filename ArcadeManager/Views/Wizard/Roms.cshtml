@@ -16,13 +16,13 @@
     What do you want to do with your roms?
 </p>
 
-<form asp-controller="Wizard" asp-action="Index" method="post">
+<form asp-controller="Wizard" asp-action="PostRoms" method="post">
 
 <input type="hidden" asp-for="DoOverlays" />
 
 <div class="mb-3">
     <p>
-        <label><input type="radio" name="romaction" value="copyauto" /> Help me build a manageable romset</label>
+        <label class="font-weight-bold"><input type="radio" name="romaction" value="copyauto" checked="checked" /> Help me build a manageable romset</label>
     </p>
 
     <p>

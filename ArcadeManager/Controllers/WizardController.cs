@@ -1,7 +1,6 @@
 ﻿using ArcadeManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace ArcadeManager.Controllers;
 
@@ -23,14 +22,16 @@ public class WizardController : BaseController {
     /// <returns>The view</returns>
     public IActionResult Index() => View();
 
+    public IActionResult ListSelection(Wizard model) => View(model);
+
     /// <summary>
-    /// Postback to index - 
+    /// Postback to index -
     /// </summary>
     /// <param name="roms">The roms.</param>
     /// <param name="overlays">The overlays.</param>
     /// <returns>Redirects to an action</returns>
     [HttpPost]
-    public IActionResult Index(string roms, string overlays) {
+    public IActionResult PostIndex(string roms, string overlays) {
         var model = new Wizard {
             DoRoms = !string.IsNullOrEmpty(roms),
             DoOverlays = !string.IsNullOrEmpty(overlays)
@@ -38,10 +39,28 @@ public class WizardController : BaseController {
 
         if (model.DoRoms) {
             return RedirectToAction("Roms", model);
-        } else {
+        }
+        else {
             return RedirectToAction("Overlays", model);
         }
     }
 
+    [HttpPost]
+    public IActionResult PostListSelection(Wizard model) {
+        return RedirectToAction("Paths", model);
+    }
+
+    [HttpPost]
+    public IActionResult PostRoms(Wizard model) {
+        return RedirectToAction("System", model);
+    }
+
+    [HttpPost]
+    public IActionResult PostSystem(Wizard model) {
+        return RedirectToAction("ListSelection", model);
+    }
+
     public IActionResult Roms(Wizard model) => View(model);
+
+    public IActionResult System(Wizard model) => View(model);
 }
