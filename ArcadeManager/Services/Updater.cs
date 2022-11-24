@@ -32,7 +32,7 @@ public class Updater : IUpdater {
                 var release = releases.First(r => !r.Draft && !r.Prerelease);
 
                 // version is ignored
-                if (ArcadeManagerEnvironment.SettingsIgnoredVersionHas(release.TagName)) {
+                if (release.Draft || ArcadeManagerEnvironment.SettingsIgnoredVersionHas(release.TagName)) {
                     return null;
                 }
 
