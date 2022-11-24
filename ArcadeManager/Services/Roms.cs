@@ -24,7 +24,7 @@ public class Roms : IRoms {
         this.bioslist = File.ReadAllLines(Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "bioslist.txt")).ToList();
         this.biosmatch.AddRange(File.ReadAllLines(Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "biosmatch.csv"))
             .Select(l => l.Split(";".ToCharArray()))
-            .Select(l => new BiosMatch(l[0], l[1])));
+            .Select(l => new BiosMatch(l[0], l[1], l[2])));
     }
 
     /// <summary>
@@ -237,15 +237,22 @@ public class Roms : IRoms {
         /// </summary>
         /// <param name="game">The game.</param>
         /// <param name="bios">The bios.</param>
-        public BiosMatch(string game, string bios) {
+        /// <param name="clone">The clone.</param>
+        public BiosMatch(string game, string bios, string clone) {
             this.Game = game;
             this.Bios = bios;
+            this.Clone = clone;
         }
 
         /// <summary>
         /// Gets or sets the bios name.
         /// </summary>
         public string Bios { get; set; }
+
+        /// <summary>
+        /// Gets or sets the clone.
+        /// </summary>
+        public string Clone { get; set; }
 
         /// <summary>
         /// Gets or sets the game name.
