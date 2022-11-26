@@ -17,19 +17,41 @@ public class WizardController : BaseController {
     }
 
     /// <summary>
-    /// Index view: selection of actions
+    /// Emulator view: choose the emulator
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <returns>THe view</returns>
+    public IActionResult Emulator(Wizard model) => View(model);
+
+    /// <summary>
+    /// Index view: selection of actions (install roms/install overlays)
     /// </summary>
     /// <returns>The view</returns>
     public IActionResult Index() => View();
 
+    /// <summary>
+    /// List selection view: selection of games list
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <returns>The view</returns>
     public IActionResult ListSelection(Wizard model) => View(model);
 
     /// <summary>
-    /// Postback to index -
+    /// Postback for the emulator
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <returns>Redirects to the next page</returns>
+    [HttpPost]
+    public IActionResult PostEmulator(Wizard model) {
+        return RedirectToAction("ListSelection", model);
+    }
+
+    /// <summary>
+    /// Postback for index
     /// </summary>
     /// <param name="roms">The roms.</param>
     /// <param name="overlays">The overlays.</param>
-    /// <returns>Redirects to an action</returns>
+    /// <returns>Redirects to the next page</returns>
     [HttpPost]
     public IActionResult PostIndex(string roms, string overlays) {
         var model = new Wizard {
@@ -38,29 +60,38 @@ public class WizardController : BaseController {
         };
 
         if (model.DoRoms) {
-            return RedirectToAction("Roms", model);
+            return RedirectToAction("RomsAction", model);
         }
         else {
             return RedirectToAction("Overlays", model);
         }
     }
 
+    /// <summary>
+    /// Postback for the list selection view
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <returns>Redirects to the next page</returns>
     [HttpPost]
-    public IActionResult PostListSelection(Wizard model) {
+    public IActionResult PostListSelection(string[] list, Wizard model) {
+        model.Lists = list;
         return RedirectToAction("Paths", model);
     }
 
+    /// <summary>
+    /// Postback for the rom action selection
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <returns>Redirects to the next page</returns>
     [HttpPost]
-    public IActionResult PostRoms(Wizard model) {
-        return RedirectToAction("System", model);
+    public IActionResult PostRomsAction(Wizard model) {
+        return RedirectToAction("Emulator", model);
     }
 
-    [HttpPost]
-    public IActionResult PostSystem(Wizard model) {
-        return RedirectToAction("ListSelection", model);
-    }
-
-    public IActionResult Roms(Wizard model) => View(model);
-
-    public IActionResult System(Wizard model) => View(model);
+    /// <summary>
+    /// Roms action view: choose the action to make with the roms
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <returns>The view</returns>
+    public IActionResult RomsAction(Wizard model) => View(model);
 }

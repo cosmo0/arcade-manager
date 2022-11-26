@@ -1,0 +1,96 @@
+﻿@model Wizard
+@{
+    ViewData["title"] = "Wizard";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item">Wizard</li>
+        <li class="breadcrumb-item active">Roms action</li>
+        <li class="breadcrumb-item active" aria-current="page">Emulator</li>
+    </ol>
+</nav>
+
+<h2>Automatic installation: emulator</h2>
+
+<p>
+    Please choose the emulator you want to use.<br />
+    If you're not sure, pick "MAME latest" if you're on PC, or "MAME 2003+" if you're on Raspberry Pi.
+</p>
+
+<form asp-controller="Wizard" asp-action="PostEmulator" method="post">
+
+    <input type="hidden" asp-for="DoOverlays" />
+    <input type="hidden" asp-for="RomAction" />
+
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" checked="checked" value="mame-latest">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">MAME - latest version (0.249)</h5>
+            <p class="mb-0 desc">
+                Has the largest games list (3500+ unique games) and highest emulation accuracy, but also requires the most power.<br />
+                Prefer this if you play on PC.<br />
+                <a href="https://archive.org/details/mame-chds-roms-extras-complete" class="blank">Get romset</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame-2003">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">MAME 2003 Plus</h5>
+            <p class="mb-0 desc">
+                Has the worst accuracy (bugs, etc), but performance is good, and the games list is pretty large (2300+).<br />
+                Prefer this if you play on Raspberry Pi and you want the largest games selection.<br />
+                <a href="https://archive.org/details/MAME_2003-Plus_Reference_Set_2018" class="blank">Get romset</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="fbneo">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">FBNeo (1.0.0.2)</h5>
+            <p class="mb-0 desc">
+                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+).<br />
+                Prefer this if you play on Raspberry Pi and you want the best accuracy.<br />
+                <a href="https://archive.org/details/2020_01_06_fbn" class="blank">Get romset</a>
+            </p>
+        </div>
+    </div>
+
+    @*<div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame-fbneo">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">MAME 2003+ with FBNeo completion</h5>
+            <p class="mb-0 desc">
+                Uses MAME 2003+ as a base, and adds a few missing games using FBNeo.<br />
+                Prefer this if you play on Raspberry Pi and you don't mind having 2 "arcade" lists.
+            </p>
+        </div>
+    </div>*@
+
+    <div class="row">
+        <div class="col-6">
+            <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
+        </div>
+        <div class="col-6 text-right">
+            <button type="submit" class="btn btn-primary px-3" id="submitButton">
+                Next - choose lists
+            </button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        // toggle radio on click anywhere in the box
+        $('.option-container').on('click', (e) => {
+            const container = $(e.currentTarget),
+                check = container.find('input:radio');
+            check.prop('checked', true);
+        });
+    </script>
+}

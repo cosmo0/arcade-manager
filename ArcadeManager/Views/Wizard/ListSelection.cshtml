@@ -6,104 +6,100 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Wizard</li>
+        <li class="breadcrumb-item">Wizard</li>
+        <li class="breadcrumb-item active">Roms action</li>
+        <li class="breadcrumb-item active">Emulator</li>
+        <li class="breadcrumb-item active" aria-current="page">List selection</li>
     </ol>
 </nav>
 
-<h2>Automatic installation: choose lists</h2>
+<h2>Wizard: choose lists</h2>
 
 <p>
     Please choose the games selection(s) you want.
 </p>
 <p>
-    All the games have been tested and work with a retro pad (SNES-like) or an arcade stick.<br />
-    Sometimes gameplay is possible but not ideal without a dedicated control (ex: spinners).
+    All the games have been tested and work with a retro pad (SNES-like) or an arcade stick. Sometimes gameplay is possible but not ideal
+    without a dedicated control (ex: racing games).
 </p>
 <p>
-   Note that the various "tops" have duplicates: selecting the top200 and the top50 will only result in 200 games, since the top50 is a sub-selection of the top200.
-</p>
-<p>
+   Note that the various "tops" have duplicates: selecting the top200 and the top50 will only result in 200 games, since the top50 is a sub-selection
+   of the top200.<br />
    Obviously the "tops" are highly subjective. This tool also easily lets you <a asp-controller="Csv" asp-action="Index">define your own lists</a>.
 </p>
 
 <form asp-controller="Wizard" asp-action="PostListSelection" method="post">
 
     <input type="hidden" asp-for="DoOverlays" />
+    <input type="hidden" asp-for="Emulator" />
+    <input type="hidden" asp-for="RomAction" />
 
-    <p>
-        <label><input type="checkbox" /> All the games, including duplicates (clones)</label>
-    </p>
-    <p>
-        <label><input type="checkbox" /> All the games, excluding duplicates</label>
-    </p>
-    <p>
-        <label><input type="checkbox" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc</label>
-    </p>
-    
-    <hr />
-
-    <p>
-        <label><input type="checkbox" checked="checked" /> <strong>The top 200</strong>, all the classics and a few hidden gems (+X FBNeo)</label>
-    </p>
-    <p>
-        <label><input type="checkbox" /> <strong>The top 50</strong>, only the very best (+X FBNeo)</label>
-    </p>
-    <p>
-        <label><input type="checkbox" /> <strong>The top 50 games of the 70's and 80's</strong>: from Space Invaders to Final Fight (+X FBNeo)</label>
-    </p>
-    <p>
-        <label><input type="checkbox" /> <strong>The top 50 games of the 90's and 00's</strong>: from Smash TV to Street Fighter III (+X FBNeo)</label>
-    </p>
-    <p>
+    <div class="border rounded p-3 mb-3">
+        <label><input type="checkbox" name="list" value="top200" checked="checked" /> <strong>The top 200</strong>: all the great games, and a few hidden gems.</label>
+        <br />
+        <label><input type="checkbox" name="list" value="top50" /> <strong>The top 50</strong>: only the very best.</label>
+        <br />
+        <label><input type="checkbox" name="list" value="top50-80" /> <strong>The top 50 games of the 70's and 80's</strong>: from Space Invaders to Final Fight.</label>
+        <br />
+        <label><input type="checkbox" name="list" value="top50-90" /> <strong>The top 50 games of the 90's and 00's</strong>: from Smash TV to Street Fighter III.</label>
+        <br />
         <label>
             <input type="checkbox" />
             <strong>100 icons</strong>: groundbreaking, revolutionary, unique, or just very popular. Many are not very good by today's standards.<br />
-            <strong>Warning:</strong> some games here will not work well with a simple arcade stick, and will need a spinner, double stick, etc.
+            <strong>Warning:</strong> some games in this list will not work well with a simple retro pad or arcade stick, and you might need a spinner,
+            double stick, racing wheel, etc.
         </label>
-    </p>
-
-    <hr />
-
-    <p>
-        "All Killer, No Filler" list from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
-    </p>
-
-    <div class="row">
-        <div class="col-4">
-            <label><input type="checkbox" /> Shooting (horizontal screen) - X games</label>
-        </div>
-        <div class="col-4">
-            <label><input type="checkbox" /> Shooting (vertical screen) - X games</label>
-        </div>
-        <div class="col-4">
-            <label><input type="checkbox" /> Run and gun - X games</label>
-        </div>
     </div>
-    <div class="row">
-        <div class="col-4">
-            <label><input type="checkbox" /> Fighting - X games</label>
-        </div>
-        <div class="col-4">
-            <label><input type="checkbox" /> Beat'em up and hack &amp; slash - X games</label>
-        </div>
-        <div class="col-4">
-            <label><input type="checkbox" /> Platform - X games</label>
-        </div>
+
+    <div class="border rounded p-3 mb-3">
+        <label><input type="checkbox" name="list" value="noclones" /> All the games, excluding duplicates</label>
+        <br />
+        <label><input type="checkbox" name="list" value="clean" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc</label>
     </div>
-    <div class="row">
-        <div class="col-4">
-            <label><input type="checkbox" /> Old school classics (horizontal screen) - X games</label>
+
+    <div class="border rounded p-3 mb-3">
+        <p>
+            <strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, tested and validated by the community.<br />
+            Lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+        </p>
+
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-shooting-hori" /> Shooting (horizontal screen) &sim; 80 games</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-shooting-vert" /> Shooting (vertical screen) &sim; 85 games</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-run-gun" /> Run and gun &sim; 50 games</label>
+            </div>
         </div>
-        <div class="col-4">
-            <label><input type="checkbox" /> Old school classics (vertical screen) - X games</label>
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-fighting" /> Fighting &sim; 80 games</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-beat-hack" /> Beat'em up and hack &amp; slash &sim; 90 games</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-platform" /> Platform &sim; 70 games</label>
+            </div>
         </div>
-        <div class="col-4">
-            <label><input type="checkbox" /> Puzzle - X games</label>
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-classics-hori" /> Old school classics (horizontal screen) &sim; 30 games</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-classics-vert" /> Old school classics (vertical screen) &sim; 60 games</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-puzzle" /> Puzzle &sim; 55 games</label>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
-            <label><input type="checkbox" /> Sports and racing - X games</label>
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-sports" /> Sports and racing &sim; 80 games</label>
+            </div>
         </div>
     </div>
 
@@ -119,3 +115,11 @@
     </div>
 
 </form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(':checkbox').on('change', (e) => {
+            $('#submitButton').prop('disabled', $(':checkbox:checked').length === 0);
+        });
+    </script>
+}
