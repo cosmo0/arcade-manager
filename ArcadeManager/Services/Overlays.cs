@@ -1,6 +1,7 @@
 ﻿using ArcadeManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -248,7 +249,7 @@ public class Overlays : IOverlays {
                 var extension = fi.Extension;
 
                 // only process files that are in the overlays pack
-                if (entries.Any(e => e.Path.EndsWith($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
+                if (entries.Any(e => e.Path.Equals($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
                     var existing = result.FirstOrDefault(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase));
                     if (existing != null) {
                         existing.TargetFolder.Add(fi.DirectoryName);
@@ -304,6 +305,7 @@ public class Overlays : IOverlays {
     /// <summary>
     /// A rom to process
     /// </summary>
+    [DebuggerDisplay("{Game} -> {TargetFolder}")]
     private sealed class RomToProcess {
 
         /// <summary>

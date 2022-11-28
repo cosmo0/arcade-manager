@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace ArcadeManager.Models;
@@ -6,6 +7,7 @@ namespace ArcadeManager.Models;
 /// <summary>
 /// Represents a list of entries in a Github folder
 /// </summary>
+[DebuggerDisplay("{URL}")]
 public class GithubTree {
 
     /// <summary>
@@ -35,6 +37,7 @@ public class GithubTree {
     /// <summary>
     /// Represents a file
     /// </summary>
+    [DebuggerDisplay("{Path}")]
     public class Entry {
 
         /// <summary>
