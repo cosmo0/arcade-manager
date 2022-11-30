@@ -15,22 +15,20 @@
 <p>
     MAME is an old project, dating back to the end of the 90's. As with many popular open source
     emulators, over the years there have been many competitors, forks and splits.
-    Among others, these forks include the various Libretro versions, MAME4ALL, and AdvanceMAME. Each of these
-    have patched the original fork to improve some buggy or non-working games.
+    Among others, these forks include MAME4ALL, AdvanceMAME, and the Libretro ports. Each of these
+    have specific improvements over the base MAME.
 </p>
 
 <ul>
     <li>
-        The "lr-" versions have been modified to use Libretro, the library used by most emulators in Retropie
-        and Recalbox, allowing all emulators to have a common control configuration, shaders, overlays, menu, etc.
+        The "lr-" versions have been modified to use Libretro, a library unifying emulators, used in RetroArch,
+        Retropie, Recalbox, and others.
     </li>
     <li>
-        <a href="https://github.com/squidrpi/mame4all-pi" class="blank">MAME4ALL</a> is a fork of an old version (2000)
-        that aims to run games as fast as possible, even on weaker hardware.
+        MAME4ALL> is a fork of an old version (2000) that aims to run games as fast as possible, even on weaker hardware.
     </li>
     <li>
-        <a href="https://www.advancemame.it" class="blank">AdvanceMAME</a> is a fork of a not-quite-as-old MAME version
-        (2005 or 2006), optimized to run inside actual arcade cabinets, notably with CRT screens.
+        AdvanceMAME is a fork of another old version (2006), optimized to be displayed on CRT screens.
     </li>
 </ul>
 
@@ -38,16 +36,15 @@
 
 <p>
     MAME has a stated goal of accuracy over anything else, to reference exactly how the hardware works.
-    This kind of precise emulation comes at a cost: it requires a powerful computer to run at full speed.
+    This kind of precise emulation comes at a cost: it requires a quite powerful computer to run at full speed.
     Older version of MAME were less precise in their emulation, and so, are faster. However, they (obviously)
-    <a href="http://mamedev.org/history.html" class="blank">run fewer games</a> and have more bugs. So, choosing
-    a Libretro MAME version is always a tradeoff between speed, accuracy and compatibility.
+    run fewer games and have more bugs. So, choosing a Libretro MAME version is always a tradeoff between speed,
+    accuracy and compatibility.
 </p>
-
 <p>
-    There's a special case with MAME 2003+ (yes that's a "plus"): based on MAME 2003 (old but fast), driven users
-    have patched a few buggy systems, and integrated a few missing ones from the main MAME branch. As a result, it
-    runs more games than the base version, but is still quite fast.
+    Basically, the latest MAME version is quite stable and runs pretty well on a PC, but some games (especially
+    since the mid-90's) are slow on weaker hardware like a Raspberry Pi ; whereas MAME2003+ is overall faster, but
+    has quite a lot of bugs : for instance, most Toaplan games don't have sound.
 </p>
 
 <h3>What about Final Burn Alpha (FBA) and Final Burn Neo (FBNeo)?</h3>
@@ -55,36 +52,32 @@
 <p>
     FBA has started life as an emulator of After Burner only (hence the name).
     <a href="https://www.fbalpha.com/history/" class="blank">Over time</a>, games and systems have been added,
-    and it emulated a very large number of games, although still smaller than MAME.<br>
-    After some problem with the FBA repository owner, most of the team split to create their own fork: Final Burn Neo.
+    and it now emulates a very large number of games, although still smaller than MAME.<br>
+    After some problem with the FBA "owner", most of the dev team split to create their own fork: Final Burn Neo.
     Alpha is basically dead at this point.
 </p>
 <p>
     The goal of FBNeo is not accuracy, and as a result, games generally run much faster on recent FBNeo
-    versions than on recent MAME versions.
+    versions than on recent MAME versions ; it also has more user features than MAME, and is easier to use.
+    However, FBNeo doesn't emulate a single 3D system, so you won't be able to play Tekken or Ridge Racer with it.
 </p>
 
 <h3>So, which one should I choose?</h3>
 
 <p>
     Unfortunately, there is no easy answer, and it varies from game to game, and on your personal preferences.<br>
-    The generally agreed-upon consensus on a Raspberry Pi seems to be this one:
+    The generally agreed-upon consensus is this one:
 </p>
 <ul>
-    <li>By default, use FBNeo because it's fast, and emulates many games quite well</li>
-    <li>For all the games that FBNeo do not emulate, use MAME 2003+ because it's faster than newer versions</li>
-    <li>For the rest, use MAME 2010 because it's still mostly fast enough</li>
-    <li>
-        For vector games (like Asteroids) use AdvanceMAME, because it makes them prettier (although recent
-        versions of MAME have catched up)
-    </li>
+    <li>By default, use FBNeo because it's fast, and emulates most games quite well</li>
+    <li>For all the games that FBNeo do not emulate, use MAME</li>
 </ul>
 
 <p>
-    Other MAME versions are generally too old (2000) or too slow (2014, 2016), but again, it's a matter of
-    personal preference, games launched, and hardware.
+    I personnaly do not recommend to use MAME2003+ by default, even on Raspberry Pi, except on some specific games
+    that are too slow using FBNeo.
 </p>
 
 <p>
-    If you have a Pi 1 or Pi Zero, prefer MAME4ALL because it's much faster (even though it doesn't run a lot of games).
+    If you have a Pi 1 or Pi Zero, prefer MAME4ALL because it's much faster.
 </p>

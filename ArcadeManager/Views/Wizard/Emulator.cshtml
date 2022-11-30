@@ -15,8 +15,7 @@
 <h2>Automatic installation: emulator</h2>
 
 <p>
-    Please choose the emulator you want to use.<br />
-    If you're not sure, pick "MAME latest" if you're on PC, or "MAME 2003+" if you're on Raspberry Pi.
+    Please choose the emulator you want to use.
 </p>
 
 <form asp-controller="Wizard" asp-action="PostEmulator" method="post">
@@ -25,7 +24,19 @@
     <input type="hidden" asp-for="RomAction" />
 
     <div class="border rounded d-flex p-3 mb-3 option-container">
-        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" checked="checked" value="mame-latest">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" checked="checked" value="fbneo">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">FBNeo (1.0.0.2)</h5>
+            <p class="mb-0 desc">
+                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game).<br />
+                Prefer this if you play on Raspberry Pi.<br />
+                <a href="https://archive.org/details/2020_01_06_fbn" class="blank">Get romset</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame">
         <div class="flex-fill">
             <h5 class="mb-1 name">MAME - latest version (0.249)</h5>
             <p class="mb-0 desc">
@@ -35,41 +46,6 @@
             </p>
         </div>
     </div>
-
-    <div class="border rounded d-flex p-3 mb-3 option-container">
-        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame-2003">
-        <div class="flex-fill">
-            <h5 class="mb-1 name">MAME 2003 Plus</h5>
-            <p class="mb-0 desc">
-                Has the worst accuracy (bugs, etc), but performance is good, and the games list is pretty large (2300+).<br />
-                Prefer this if you play on Raspberry Pi and you want the largest games selection.<br />
-                <a href="https://archive.org/details/MAME_2003-Plus_Reference_Set_2018" class="blank">Get romset</a>
-            </p>
-        </div>
-    </div>
-
-    <div class="border rounded d-flex p-3 mb-3 option-container">
-        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="fbneo">
-        <div class="flex-fill">
-            <h5 class="mb-1 name">FBNeo (1.0.0.2)</h5>
-            <p class="mb-0 desc">
-                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+).<br />
-                Prefer this if you play on Raspberry Pi and you want the best accuracy.<br />
-                <a href="https://archive.org/details/2020_01_06_fbn" class="blank">Get romset</a>
-            </p>
-        </div>
-    </div>
-
-    @*<div class="border rounded d-flex p-3 mb-3 option-container">
-        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame-fbneo">
-        <div class="flex-fill">
-            <h5 class="mb-1 name">MAME 2003+ with FBNeo completion</h5>
-            <p class="mb-0 desc">
-                Uses MAME 2003+ as a base, and adds a few missing games using FBNeo.<br />
-                Prefer this if you play on Raspberry Pi and you don't mind having 2 "arcade" lists.
-            </p>
-        </div>
-    </div>*@
 
     <div class="row">
         <div class="col-6">
