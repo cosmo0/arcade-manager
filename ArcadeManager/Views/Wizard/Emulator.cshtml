@@ -7,7 +7,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
         <li class="breadcrumb-item">Wizard</li>
-        <li class="breadcrumb-item active">Roms action</li>
+        <li class="breadcrumb-item">Roms action</li>
         <li class="breadcrumb-item active" aria-current="page">Emulator</li>
     </ol>
 </nav>
@@ -29,7 +29,8 @@
             <h5 class="mb-1 name">FBNeo (1.0.0.2)</h5>
             <p class="mb-0 desc">
                 Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game).<br />
-                Prefer this if you play on Raspberry Pi.<br />
+                Prefer this if you play on Raspberry Pi (3 or 4).<br />
+                <a href="@(Context.Request.Scheme)://@(Context.Request.Host)/Wizard/MissingFbneo" class="popup">Missing games and alternatives</a><br />
                 <a href="https://archive.org/details/2020_01_06_fbn" class="blank">Get romset</a>
             </p>
         </div>

@@ -1,0 +1,115 @@
+﻿@model Wizard
+@{
+    ViewData["title"] = "Wizard";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item">Wizard</li>
+        <li class="breadcrumb-item active">Roms action</li>
+        <li class="breadcrumb-item active">Emulator</li>
+        <li class="breadcrumb-item active">List selection</li>
+        <li class="breadcrumb-item active" aria-current="page">Paths</li>
+    </ol>
+</nav>
+
+<h2>Wizard: choose paths</h2>
+
+<p>
+    Please select the paths of the source romset, and the target selection.
+</p>
+
+<form asp-controller="Wizard" asp-action="PostListSelection" method="post">
+
+    <input type="hidden" asp-for="DoOverlays" />
+    <input type="hidden" asp-for="Emulator" />
+    <input type="hidden" asp-for="RomAction" />
+    <input type="hidden" asp-for="Lists" />
+
+    <!-- Full romset location -->
+    <div class="input-group mb-0">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Full romset</span>
+        </div>
+        <input type="text" class="form-control" id="fileRomset">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomset">Browse</button>
+        </div>
+    </div>
+    <p class="mt-0 mb-3">
+        <small class="form-text text-muted">The folder containing all the files of the romset</small>
+    </p>
+
+    <!-- Selection romset location -->
+    <div class="input-group mb-0">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Rom selection</span>
+        </div>
+        <input type="text" class="form-control" id="fileRomSelection">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomSelection">Browse</button>
+        </div>
+    </div>
+    <p class="mt-0 mb-3">
+        <small class="form-text text-muted">The folder containing the subset of the roms you want</small>
+    </p>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
+        <label class="form-check-label" for="overwriteYes">Overwrite existing files</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
+        <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
+        </div>
+        <div class="col-6 text-right">
+            <button type="submit" class="btn btn-primary px-3" id="submitButton">
+                @if (Model.RomAction == "copy") {
+                    @:Copy
+                } else {
+                    @:Clean
+                }
+            </button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+<script>
+    $(() => {
+        getOs((os) => {
+            if (!os) { return; }
+            getAppData((data) => {
+                if (!data) { return; }
+                $('#fileRomSelection').attr("placeholder", data.defaults.roms[os][platform]);
+            });
+        });
+
+        // run copy
+        $('#buttonOk').on('click', () => {
+            alert('TODO');
+            return;
+
+            // get paths from file inputs
+            let main = $('#fileMainCsv').val(),
+                romset = $('#fileRomset').val(),
+                selection = $('#fileRomSelection').val(),
+                overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
+
+            // check every path is filled
+            if (main === '') { window.alert('Please choose a main CSV file'); return; }
+            if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
+            if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
+
+            ipc("roms-add", { main, romset, selection, overwrite });
+        });
+    });
+</script>
+}

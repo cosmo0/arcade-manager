@@ -37,6 +37,19 @@ public class WizardController : BaseController {
     public IActionResult ListSelection(Wizard model) => View(model);
 
     /// <summary>
+    /// Missing FBNeo view
+    /// </summary>
+    /// <returns>The view</returns>
+    public IActionResult MissingFbneo() => View();
+
+    /// <summary>
+    /// Path view: selection of the source and target paths
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <returns>The view</returns>
+    public IActionResult Paths(Wizard model) => View(model);
+
+    /// <summary>
     /// Postback for the emulator
     /// </summary>
     /// <param name="model">The model.</param>
