@@ -73,7 +73,7 @@ public class WizardController : BaseController {
         };
 
         if (model.DoRoms) {
-            return RedirectToAction("RomsAction", model);
+            return RedirectToAction("Emulator", model);
         }
         else {
             return RedirectToAction("Overlays", model);
@@ -90,21 +90,4 @@ public class WizardController : BaseController {
         model.Lists = list;
         return RedirectToAction("Paths", model);
     }
-
-    /// <summary>
-    /// Postback for the rom action selection
-    /// </summary>
-    /// <param name="model">The model.</param>
-    /// <returns>Redirects to the next page</returns>
-    [HttpPost]
-    public IActionResult PostRomsAction(Wizard model) {
-        return RedirectToAction("Emulator", model);
-    }
-
-    /// <summary>
-    /// Roms action view: choose the action to make with the roms
-    /// </summary>
-    /// <param name="model">The model.</param>
-    /// <returns>The view</returns>
-    public IActionResult RomsAction(Wizard model) => View(model);
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArcadeManager.Actions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ArcadeManager.Services;
 /// Roms management
 /// </summary>
 public class Roms : IRoms {
-    private readonly List<string> bioslist = new();
+    private readonly List<string> bioslist;
     private readonly BiosMatchList biosmatch = new();
     private readonly ICsv csvService;
 
@@ -46,70 +47,45 @@ public class Roms : IRoms {
             // read CSV file
             var content = await csvService.ReadFile(args.main, false);
 
-            var total = content.Games.Count;
-            var i = 0;
-            var copied = 0;
+            // copy the games
+            var copied = CopyGamesList(args, content, messageHandler);
 
-            // copy each file found in CSV
-            foreach (var game in content.Games.Select(g => g.Name)) {
-                if (messageHandler.MustCancel) { break; }
+            messageHandler.Done($"Copied {copied} file(s)", args.selection);
+        }
+        catch (Exception ex) {
+            messageHandler.Error(ex);
+        }
+    }
 
-                i++;
+    /// <summary>
+    /// Copies roms from a folder to another, from the wizard
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    /// <param name="messageHandler">The message handler.</param>
+    public async Task AddFromWizard(RomsAction args, IMessageHandler messageHandler) {
+        // the csv is just a list name, we need to match it to the selected path
+        string[] emulatorFiles = args.main.Split("/", StringSplitOptions.RemoveEmptyEntries);
+        string emulator = emulatorFiles[0];
+        string[] files = emulatorFiles[1].Split(",", StringSplitOptions.RemoveEmptyEntries);
 
-                // build vars
-                var zip = $"{game}.zip";
-                var sourceRom = Path.Join(args.romset, zip);
-                var ext = "zip";
+        messageHandler.Init("Copying roms");
 
-                // always display progress
-                messageHandler.Progress(game, total, i);
+        try {
+            // check files and folders
+            if (!Directory.Exists(args.romset)) { throw new DirectoryNotFoundException($"Unable to find romset folder {args.romset}"); }
+            if (!Directory.Exists(args.selection)) { Directory.CreateDirectory(args.selection); }
 
-                // check that source rom exists
-                if (!File.Exists(sourceRom)) {
-                    zip = $"{game}.7z";
-                    sourceRom = Path.Join(args.romset, zip);
-                    ext = "7z";
-                }
-
-                // still not found: next
-                if (!File.Exists(sourceRom)) {
-                    continue;
-                }
-
-                var destRom = Path.Join(args.selection, zip);
-                var fi = new FileInfo(sourceRom);
-
-                // replace progress with file size (so the user knows when a file is large)
-                messageHandler.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
-
-                // copy rom
-                if (!File.Exists(destRom) || args.overwrite) {
-                    File.Copy(sourceRom, destRom, true);
-                    copied++;
-                }
-
-                // try to copy bios if it's used and can be found
-                var biosesforgame = this.biosmatch.GetBiosesForGame(game);
-                foreach (var bios in biosesforgame) {
-                    var sourcebios = Path.Join(args.romset, $"{bios}.{ext}");
-                    var destbios = Path.Join(args.selection, $"{bios}.{ext}");
-                    if (File.Exists(sourcebios) && !File.Exists(destbios)) {
-                        File.Copy(sourcebios, destbios);
-                        copied++;
-                    }
-                }
-
-                // try to copy chd if it can be found
-                var sourceChd = Path.Join(args.romset, game);
-                var targetChd = Path.Join(args.selection, game);
-                if (Directory.Exists(sourceChd)) {
-                    if (messageHandler.MustCancel) { break; }
-
-                    messageHandler.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
-
-                    copied += FileSystem.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
-                }
+            // read CSV files
+            Models.CsvGamesList content = new Models.CsvGamesList();
+            foreach (var file in files) {
+                string filepath = Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "csv", emulator, $"{file}.csv");
+                content.AddRange(await csvService.ReadFile(filepath, false));
             }
+
+            content.DeDuplicate();
+
+            // copy the games
+            var copied = CopyGamesList(args, content, messageHandler);
 
             messageHandler.Done($"Copied {copied} file(s)", args.selection);
         }
@@ -225,6 +201,75 @@ public class Roms : IRoms {
         catch (Exception ex) {
             messageHandler.Error(ex);
         }
+    }
+
+    private int CopyGamesList(Actions.RomsAction args, Models.CsvGamesList content, IMessageHandler messageHandler) {
+        var total = content.Games.Count;
+        var i = 0;
+        var copied = 0;
+
+        // copy each file found in CSV
+        foreach (var game in content.Games.Select(g => g.Name)) {
+            if (messageHandler.MustCancel) { break; }
+
+            i++;
+
+            // build vars
+            var zip = $"{game}.zip";
+            var sourceRom = Path.Join(args.romset, zip);
+            var ext = "zip";
+
+            // always display progress
+            messageHandler.Progress(game, total, i);
+
+            // check that source rom exists
+            if (!File.Exists(sourceRom)) {
+                zip = $"{game}.7z";
+                sourceRom = Path.Join(args.romset, zip);
+                ext = "7z";
+            }
+
+            // still not found: next
+            if (!File.Exists(sourceRom)) {
+                continue;
+            }
+
+            var destRom = Path.Join(args.selection, zip);
+            var fi = new FileInfo(sourceRom);
+
+            // replace progress with file size (so the user knows when a file is large)
+            messageHandler.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
+
+            // copy rom
+            if (!File.Exists(destRom) || args.overwrite) {
+                File.Copy(sourceRom, destRom, true);
+                copied++;
+            }
+
+            // try to copy bios if it's used and can be found
+            var biosesforgame = this.biosmatch.GetBiosesForGame(game);
+            foreach (var bios in biosesforgame) {
+                var sourcebios = Path.Join(args.romset, $"{bios}.{ext}");
+                var destbios = Path.Join(args.selection, $"{bios}.{ext}");
+                if (File.Exists(sourcebios) && !File.Exists(destbios)) {
+                    File.Copy(sourcebios, destbios);
+                    copied++;
+                }
+            }
+
+            // try to copy chd if it can be found
+            var sourceChd = Path.Join(args.romset, game);
+            var targetChd = Path.Join(args.selection, game);
+            if (Directory.Exists(sourceChd)) {
+                if (messageHandler.MustCancel) { break; }
+
+                messageHandler.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
+
+                copied += FileSystem.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
+            }
+        }
+
+        return copied;
     }
 
     /// <summary>

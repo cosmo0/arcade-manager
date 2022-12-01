@@ -94,6 +94,7 @@ public partial class MessageHandler : IMessageHandler {
 
             // Roms actions
             Electron.IpcMain.On("roms-add", RomsAdd);
+            Electron.IpcMain.On("roms-addfromwizard", RomsAddFromWizard);
             Electron.IpcMain.On("roms-delete", RomsDelete);
             Electron.IpcMain.On("roms-keep", RomsKeep);
 
@@ -354,8 +355,8 @@ public partial class MessageHandler : IMessageHandler {
         if (url != null) {
             Console.WriteLine("open popup link to: " + url.ToString());
             var options = new BrowserWindowOptions {
-                Height = 600,
-                Width = 800
+                Width = 1024,
+                Height = 768
             };
             await Electron.WindowManager.CreateWindowAsync(options, url.ToString());
         }
@@ -386,6 +387,17 @@ public partial class MessageHandler : IMessageHandler {
         MustCancel = false;
 
         await romsService.Add(data, this);
+    }
+
+    /// <summary>
+    /// Copies roms from a folder to another, from the wizard
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    private async void RomsAddFromWizard(object args) {
+        var data = ConvertArgs<RomsAction>(args);
+        MustCancel = false;
+
+        await romsService.AddFromWizard(data, this);
     }
 
     /// <summary>

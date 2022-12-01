@@ -85,6 +85,14 @@ public class CsvGamesList {
     }
 
     /// <summary>
+    /// Adds a list of entries.
+    /// </summary>
+    /// <param name="list">The list of entries.</param>
+    public void AddRange(CsvGamesList list) {
+        AddRange(list.entries.Select(e => e.Name));
+    }
+
+    /// <summary>
     /// Copies data from the specified entry.
     /// </summary>
     /// <param name="copyFrom">The entry to copy data from.</param>
@@ -96,6 +104,16 @@ public class CsvGamesList {
         else {
             this.Add(copyFrom);
         }
+    }
+
+    /// <summary>
+    /// De-duplicates the list by name
+    /// </summary>
+    public void DeDuplicate() {
+        var items = this.entries.DistinctBy(entry => entry.Name).ToList();
+
+        this.entries.Clear();
+        this.entries.AddRange(items);
     }
 
     /// <summary>

@@ -7,7 +7,6 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
         <li class="breadcrumb-item">Wizard</li>
-        <li class="breadcrumb-item">Roms action</li>
         <li class="breadcrumb-item">Emulator</li>
         <li class="breadcrumb-item active" aria-current="page">List selection</li>
     </ol>
@@ -33,29 +32,22 @@
 
     <input type="hidden" asp-for="DoOverlays" />
     <input type="hidden" asp-for="Emulator" />
-    <input type="hidden" asp-for="RomAction" />
 
     <div class="border rounded p-3 mb-3">
         <label><input type="checkbox" name="list" value="top200" checked="checked" /> <strong>The top 200</strong>: all the great games, and a few hidden gems.</label>
         <br />
         <label><input type="checkbox" name="list" value="top50" /> <strong>The top 50</strong>: only the very best.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top50-80" /> <strong>The top 50 games of the 70's and 80's</strong>: from Space Invaders to Final Fight.</label>
+        <label><input type="checkbox" name="list" value="top80s" /> <strong>The top 50 games of the 70's and 80's</strong>: from Space Invaders to Final Fight.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top50-90" /> <strong>The top 50 games of the 90's and 00's</strong>: from Smash TV to Street Fighter III.</label>
+        <label><input type="checkbox" name="list" value="top90s" /> <strong>The top 50 games of the 90's and 00's</strong>: from Smash TV to Street Fighter III.</label>
         <br />
         <label>
-            <input type="checkbox" />
+            <input type="checkbox" name="list" value="icons" />
             <strong>100 icons</strong>: groundbreaking, revolutionary, unique, or just very popular. Many are not very good by today's standards.<br />
             <strong>Warning:</strong> some games in this list will not work well with a simple retro pad or arcade stick, and you might need a spinner,
             double stick, racing wheel, etc.
         </label>
-    </div>
-
-    <div class="border rounded p-3 mb-3">
-        <label><input type="checkbox" name="list" value="noclones" /> All the games, excluding duplicates</label>
-        <br />
-        <label><input type="checkbox" name="list" value="clean" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc</label>
     </div>
 
     <div class="border rounded p-3 mb-3">
@@ -102,6 +94,12 @@
                 <label><input type="checkbox" name="list" value="aknf-sports" /> Sports and racing &sim; 80 games</label>
             </div>
         </div>
+    </div>
+
+    <div class="border rounded p-3 mb-3">
+        <label><input type="checkbox" name="list" value="noclones" /> All the games, excluding duplicates</label>
+        <br />
+        <label><input type="checkbox" name="list" value="clean" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc</label>
     </div>
 
     <div class="row">

@@ -16,6 +16,13 @@ public interface IRoms {
     Task Add(RomsAction args, IMessageHandler messageHandler);
 
     /// <summary>
+    /// Copies roms from a folder to another, from the wizard
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    /// <param name="messageHandler">The message handler.</param>
+    Task AddFromWizard(RomsAction args, IMessageHandler messageHandler);
+
+    /// <summary>
     /// Deletes roms from a folder
     /// </summary>
     /// <param name="args">The arguments</param>

@@ -2,10 +2,17 @@
     ViewData["title"] = "Wizard";
 }
 
-<h2>Which are the top games missing in FBNeo?</h2>
+@section Head {
+    @* THis is much easier to do than create a whole page template without this title *@
+    <style type="text/css">
+        h1, hr { display: none; }
+    </style>
+}
+
+<h2>Games missing in FBNeo</h2>
 
 <p>
-    This is a list of some "good" games missing from FBNeo, and alternatives. They are rarely exactly identical,
+    This is a list of some "good" games missing from FBNeo, and alternatives on other platforms. They are rarely exactly identical,
     but they are often just as good.
 </p>
 

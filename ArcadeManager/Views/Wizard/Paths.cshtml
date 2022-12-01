@@ -7,9 +7,8 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
         <li class="breadcrumb-item">Wizard</li>
-        <li class="breadcrumb-item active">Roms action</li>
-        <li class="breadcrumb-item active">Emulator</li>
-        <li class="breadcrumb-item active">List selection</li>
+        <li class="breadcrumb-item">Emulator</li>
+        <li class="breadcrumb-item">List selection</li>
         <li class="breadcrumb-item active" aria-current="page">Paths</li>
     </ol>
 </nav>
@@ -24,8 +23,7 @@
 
     <input type="hidden" asp-for="DoOverlays" />
     <input type="hidden" asp-for="Emulator" />
-    <input type="hidden" asp-for="RomAction" />
-    <input type="hidden" asp-for="Lists" />
+    <input type="hidden" id="lists" value="@(string.Join(",", Model.Lists ?? new string[] {}))" />
 
     <!-- Full romset location -->
     <div class="input-group mb-0">
@@ -64,17 +62,13 @@
         <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
     </div>
 
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-6">
             <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
         </div>
         <div class="col-6 text-right">
             <button type="submit" class="btn btn-primary px-3" id="submitButton">
-                @if (Model.RomAction == "copy") {
-                    @:Copy
-                } else {
-                    @:Clean
-                }
+                Start copy
             </button>
         </div>
     </div>
@@ -93,23 +87,27 @@
         });
 
         // run copy
-        $('#buttonOk').on('click', () => {
-            alert('TODO');
-            return;
-
+        $('#submitButton').on('click', () => {
             // get paths from file inputs
-            let main = $('#fileMainCsv').val(),
+            const csvs = $('#lists').val(),
+                path = '@(Model.Emulator)/' + csvs,
                 romset = $('#fileRomset').val(),
                 selection = $('#fileRomSelection').val(),
                 overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
 
-            // check every path is filled
-            if (main === '') { window.alert('Please choose a main CSV file'); return; }
+            // check that every path is filled
             if (romset === '') { window.alert('Please choose the path to the full romset'); return; }
             if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
 
-            ipc("roms-add", { main, romset, selection, overwrite });
+            ipc("roms-addfromwizard", { main: path, romset, selection, overwrite });
         });
+
+        function copyDone() {
+            let btnlabel = @Model.DoOverlays === 'true' ? 'Next - copy overlays' : 'Finish';
+            $('#submitButton').text(btnlabel).off('click').on('click', () => {
+                window.location.href = '/';
+            });
+        }
     });
 </script>
 }

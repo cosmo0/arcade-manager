@@ -24,9 +24,4 @@ public class Wizard {
     /// Gets or sets the roms lists.
     /// </summary>
     public string[] Lists { get; set; }
-
-    /// <summary>
-    /// Gets or sets the rom action (copy/clean).
-    /// </summary>
-    public string RomAction { get; set; }
 }
