@@ -110,7 +110,9 @@ public class CsvGamesList {
     /// De-duplicates the list by name
     /// </summary>
     public void DeDuplicate() {
-        var items = this.entries.DistinctBy(entry => entry.Name).ToList();
+        // make sure to keep the ToList to copy the list now (otherwise during AddRange the source
+        // will be empty when the expression is evaluated)
+        var items = this.entries.DistinctBy(entry => entry.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
 
         this.entries.Clear();
         this.entries.AddRange(items);

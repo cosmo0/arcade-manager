@@ -76,7 +76,7 @@ public class Roms : IRoms {
             if (!Directory.Exists(args.selection)) { Directory.CreateDirectory(args.selection); }
 
             // read CSV files
-            Models.CsvGamesList content = new Models.CsvGamesList();
+            Models.CsvGamesList content = new();
             foreach (var file in files) {
                 string filepath = Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "csv", emulator, $"{file}.csv");
                 content.AddRange(await csvService.ReadFile(filepath, false));
