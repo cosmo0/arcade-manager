@@ -1,6 +1,7 @@
 ﻿using ArcadeManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace ArcadeManager.Controllers;
 
@@ -34,7 +35,18 @@ public class WizardController : BaseController {
     /// </summary>
     /// <param name="model">The model.</param>
     /// <returns>The view</returns>
-    public IActionResult ListSelection(Wizard model) => View(model);
+    public IActionResult ListSelection(Wizard model) {
+        // get number of games in each csv file
+        var files = Directory.GetFiles(Path.Combine(ArcadeManagerEnvironment.BasePath, "Data", "csv", model.Emulator), "*.csv");
+        foreach (var f in files) {
+            var lines = System.IO.File.ReadAllLines(f);
+            var filename = Path.GetFileName(f);
+            filename = filename.Substring(0, filename.IndexOf("."));
+            model.GameNumbers.Add(filename, lines.Length - 1);
+        }
+
+        return View(model);
+    }
 
     /// <summary>
     /// Missing FBNeo view

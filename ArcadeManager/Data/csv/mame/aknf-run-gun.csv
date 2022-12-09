@@ -1,60 +1,73 @@
-name;
-aliens;
-aliensyn;
-avspirit;
-battlera;
-bayroute;
-biomtoy;
-bionicc;
-bucky;
-coh1002m;
-commando;
-contra;
-crimec;
-crkdown;
-cyberlip;
-demonwld;
-dmnfrnt;
-elvactr;
-eprom;
-eswat;
-flamegun;
-gberet;
-gbusters;
-ghostb;
-gundhara;
-gunforc2;
-gunforce;
-gunsmoke;
-ikari3;
-mercs;
-moomesa;
-mslug2;
-mslug3;
-mslug4;
-mslug5;
-mslug;
-mslugx;
-mystwarr;
-nam1975;
-narc;
-ncommand;
-neogeo;
-oscar;
-outzone;
-pgm;
-rambo3;
-robocop2;
-robocop;
-rthun2;
-rthunder;
-scontra;
-secretag;
-shocktr2;
-shocktro;
-ssriders;
-ssridersubc;
-suratk;
-thndzone;
-tps;
-xsleena;
+name;description;sample;bios;selection;fbneo
+quartet;Quartet;;;run-gun;quartet
+aliensyn;Alien Syndrome;;;run-gun;aliensyn
+battlera;Battle Rangers;;;run-gun;#N/A
+bayroute;Bay Route;;;run-gun;bayroute
+berzerk;Berzerk;;;run-gun;berzerk
+biomtoy;Biomechanical Toy;;;run-gun;biomtoy
+bionicc;Bionic Commando;;;run-gun;bionicc
+bucky;Bucky O'Hare;;;run-gun;bucky
+cninja;Caveman Ninja;;;run-gun;cninja
+commando;Commando;;;run-gun;commando
+contra;Contra;;;run-gun;contra
+crkdown;Crack Down;;;run-gun;crkdown
+crimec;Crime City;;;run-gun;crimec
+cyberlip;Cyber-Lip;;neogeo;run-gun;cyberlip
+dmnfrnt;Demon Front / Moyu Zhanxian;;pgm;run-gun;dmnfrnt
+demonwld;Demon's World / Horror Story;;;run-gun;demonwld
+eswat;E-Swat - Cyber Police;;;run-gun;eswat
+elevator;Elevator Action;;;run-gun;elevator
+elvactr;Elevator Action Returns;;;run-gun;elvactr
+eprom;Escape from the Planet of the Robot Monsters;;;run-gun;eprom
+gground;Gain Ground (World, 3 Players, Floppy Based, FD1094 317-0058-03d Rev A);;;run-gun;gground
+gbusters;Gang Busters;;;run-gun;gbusters
+gauntlet;Gauntlet;;;run-gun;gauntlet
+gauntdl;Gauntlet Dark Legacy;;;run-gun;#N/A
+gauntleg;Gauntlet Legends;;;run-gun;#N/A
+gberet;Green Beret;;;run-gun;gberet
+gunforc2;Gun Force II;;;run-gun;gunforc2
+gunsmoke;Gun.Smoke;;;run-gun;gunsmoke
+gundhara;Gundhara;;;run-gun;gundhara
+gunforce;Gunforce - Battle Fire Engulfed Terror Island;;;run-gun;gunforce
+guwange;Guwange;;;run-gun;guwange
+ikari3;Ikari III - The Rescue;;;run-gun;ikari3
+karnov;Karnov;;;run-gun;karnov
+kikikai;KiKi KaiKai;;;run-gun;kikikai
+mcatadv;Magical Cat Adventure;;;run-gun;mcatadv
+maglord;Magician Lord;;neogeo;run-gun;maglord
+mercs;Mercs;;;run-gun;mercs
+mslug;Metal Slug;;neogeo;run-gun;mslug
+mslug3;Metal Slug 3;;neogeo;run-gun;mslug3
+mslug4;Metal Slug 4;;neogeo;run-gun;mslug4
+mslug5;Metal Slug 5;;neogeo;run-gun;mslug5
+mslugx;Metal Slug X - Super Vehicle-001;;neogeo;run-gun;mslugx
+narc;Narc;;;run-gun;narc
+ncommand;Ninja Commando;;neogeo;run-gun;ncommand
+outzone;Out Zone;;;run-gun;outzone
+oscar;Psycho-Nics Oscar;;;run-gun;oscar
+robocop;Robocop;;;run-gun;robocop
+rohga;Rohga Armor Force;;;run-gun;rohga
+rthunder;Rolling Thunder;;;run-gun;rthunder
+rthun2;Rolling Thunder 2;;;run-gun;rthun2
+secretag;Secret Agent;;;run-gun;secretag
+shocktro;Shock Troopers;;neogeo;run-gun;shocktro
+shocktr2;Shock Troopers - 2nd Squad;;neogeo;run-gun;shocktr2
+ssriders;Sunset Riders;;;run-gun;ssriders
+scontra;Super Contra;;;run-gun;scontra
+suratk;Surprise Attack;;;run-gun;suratk
+teddybb;TeddyBoy Blues;;;run-gun;teddybb
+ghostb;The Real Ghostbusters;;;run-gun;ghostb
+thoop;Thunder Hoop;;;run-gun;thoop
+thndzone;Thunder Zone;;;run-gun;thndzone
+toki;Toki;;;run-gun;toki
+moomesa;Wild West C.O.W.-Boys of Moo Mesa;;;run-gun;moomesa
+willow;Willow;;;run-gun;willow
+wiz;Wiz;;;run-gun;wiz
+wboy;Wonder Boy;;;run-gun;wboy
+wbml;Wonder Boy - Monster Land;;;run-gun;wbml
+wb3;Wonder Boy III - Monster Lair;;;run-gun;wb3
+xsleena;Xain'd Sleena;;;run-gun;xsleena
+chelnov;Chelnov - Atomic Runner;;;run-gun;chelnov
+desertbr;Desert Breaker;;;run-gun;desertbr
+seganinj;Sega Ninja;;;run-gun;seganinj
+valkyrie;Valkyrie no Densetsu;;;run-gun;valkyrie

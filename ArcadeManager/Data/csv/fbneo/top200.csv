@@ -1,315 +1,201 @@
-name
-1941
-1944
-19xx
-20pacgal
-25pacman
-3countb
-aburner2
-agallet
-akatana
-aliens
-aliensyn
-alpham2
-altbeast
-aof3
-aoh
-archrivl
-armwar
-astdelux
-asterix
-astorm
-athena
-avsp
-batrider
-batsugun
-bbakraid
-berzerk
-bgaregga
-bionicc
-bjourney
-blazstar
-blktiger
-bloodwar
-bnzabros
-bombjack
-bouldash
-breakrev
-brubber
-bstars2
-btime
-btoads
-bublbob2
-bublbobl
-buckrog
-cabal
-cadash
-cairblad
-captaven
-captcomm
-cawing
-centiped
-chasehq
-choplift
-clshroad
-crkdown
-crsword
-csclub
-cybots
-darius
-darius2
-dariusg
-ddonpach
-ddp2
-ddp3
-ddpdfk
-ddpsdoj
-ddragon
-ddragon2
-ddsom
-ddtod
-deathsml
-defender
-dfkbl
-digdug
-digdug2
-dino
-dkong
-dkongjr
-dogyuun
-dragnblz
-drgnbstr
-dsmbl
-elevator
-elvactr
-espgal
-espgal2
-esprade
-eswat
-extdwnhl
-f1dream
-fantzone
-fatfury3
-ffight
-flicky
-foodf
-footchmp
-frogger
-fshark
-futari15
-futaribl
-ga2
-galaga
-galaga88
-gametngk
-garou
-gauntlet
-gberet
-ghouls
-gigawing
-gnbarich
-gng
-goldnaxe
-gradius3
-grindstm
-gtmr
-gtmr2
-gunbird2
-gundamex
-gunnail
-hook
-hsf2
-ibarablk
-ichir
-inthunt
-joemacr
-jojo
-jojoba
-joust
-joyjoy
-junglek
-kbash
-killbldp
-kingdmgp
-kizuna
-klax
-knights
-kod
-kof2000
-kof2002
-kof96
-kof98
-kov
-kov2
-kovshp
-lastbld2
-ldrun
-legendoh
-lightbr
-liquidk
-locomotn
-lresort
-madgear
-magdrop3
-mappy
-megaman2
-metmqstr
-miexchng
-milliped
-mk2
-mmatrix
-moomesa
-msgundam
-msh
-mslug
-mslug3
-mslug4
-mslug5
-mslugx
-mspacman
-msword
-mtwins
-mushisam
-mvsc
-mwalk
-mystwarr
-nam1975
-nbahangt
-nbajam
-nbajamte
-nbbatman
-nemesis
-nemo
-neodrift
-nslasher
-nspirit
-nwarr
-openice
-orlegend
-osman
-outrun
-outzone
-overtop
-pacland
-pacmania
-parodius
-pbobble4
-pdrift
-pkunwar
-popeye
-prehisle
-progear
-pulstar
-punchout
-punisher
-puyopuy2
-puzzledp
-puzzloop
-pwrgoal
-pwrinst2
-pzloop2
-qbert
-qix
-raiden2
-rallyx
-rambo3
-rampage
-rastan
-rbff2
-rbisland
-rdft
-rdft2
-redearth
-rfjet
-rmpgwt
-roadf
-robocop
-robocop2
-robotron
-rodland
-rthun2
-rthunder
-rtype
-rtypeleo
-s1945ii
-sailormn
-salamand
-samsh5sp
-scramble
-scross
-sdodgeb
-secretag
-sengoku3
-sf2hf
-sfa3
-sfiii3
-sgemf
-shadfrce
-shadoww
-shangon
-sharrier
-shdancer
-shinobi
-shocktr2
-sidearms
-simpsons
-slammast
-slapshot
-solomon
-sonicwi2
-spcinv95
-spelunkr
-spf2t
-spidman
-splatter
-ssf2t
-ssi
-ssideki3
-ssriders
-sstriker
-strider
-svc
-tapper
-tbowl
-tdragon2
-teddybb
-tempest
-tetrisp2
-tfrceac
-tgm2
-tigeroad
-timeplt
-tmnt
-tmnt2
-tnzs
-toki
-toutrun
-trally
-travrusa
-trojan
-trstar
-truxton
-truxton2
-turbo
-turfmast
-twcup90
-twinspri
-uccops
-ultennis
-umk3
-unsquad
-varth
-vasara2
-viostorm
-vsav
-vulcan
-wb3
-wboy
-wh2j
-whp
-wjammers
-wof
-wrally
-xmen
-zaxxon
-zerowing
+name;description;year;category;genre;Top200;score;Top50;Icons;Top50 80s;Top50 90s;bios;sample
+gtmr;1000 Miglia: Great 1000 Miles Rally;1994;Driving / Race;Driving;ok;4;x;;;x;;
+1941;1941 - Counter Attack;1990;Shooter / Flying Vertical;Shooter;ok;5;x;;;x;;
+1944;1944 - the loop master;2000;Shooter / Flying Vertical;Shooter;ok;3;;;;fbneo;;
+19xx;19XX - the war against destiny;1995;Shooter / Flying Vertical;Shooter;ok;4;;;;x;;
+openice;2 On 2 Open Ice Challenge;1995;Sports / Hockey;Sports;ok;3;;;;x;;
+3countb;3 Count Bout / Fire Suplex;1993;Sports / Wrestling;Sports;ok;3;;;;x;neogeo;
+aburner2;After Burner II;1987;Shooter / Flying (chase view);Shooter;ok;3;;x;x;;;
+astorm;Alien Storm;1990;Platform / Shooter Scrolling;Platform;ok;3;;;;x;;
+aliensyn;Alien Syndrome;1987;Maze / Shooter Large;Maze;ok;3;;;x;;;
+avsp;Alien vs Predator;1994;Fighter / 2.5D;Fighter;ok;5;x;;;x;;
+aliens;Aliens;1990;Platform / Shooter Scrolling;Platform;ok;3;;;;x;;
+alpham2;Alpha Mission II / ASO II - Last Guardian;1991;Shooter / Flying Vertical;Shooter;ok;4;;;;;neogeo;
+altbeast;Altered Beast;1988;Platform / Fighter Scrolling;Platform;ok;3;;fbneo;x;;;
+arabian;Arabian;1983;Platform / Run Jump;Platform;ok;3;;;x;;;
+batrider;Armed Police Batrider;1998;Shooter / Flying Vertical;Shooter;ok;5;x;;;x;;
+armwar;Armored Warriors;1994;Fighter / 2.5D;Fighter;ok;5;x;;;x;;
+aof3;Art of Fighting 3 - The Path of the Warrior / Art of Fighting - Ryuuko no Ken Gaiden;1996;Fighter / Versus;Fighter;ok;4;;;;x;neogeo;
+asterix;Asterix;1992;Fighter / 2.5D;Fighter;ok;3;;;;x;;
+asurabus;Asura Buster - Eternal Warriors;2000;Fighter / Versus;Fighter;ok;4;;;;;;
+bssoccer;Back Street Soccer;1996;Sports / Soccer;Sports;ok;3;;;;;;
+bstars2;Baseball Stars 2;1992;Sports / Baseball;Sports;ok;3;;;;;neogeo;
+batsugun;Batsugun;1993;Shooter / Flying Vertical;Shooter;ok;4;;;;x;;
+bgaregga;Battle Garegga;1996;Shooter / Flying Vertical;Shooter;ok;4;;;;x;;
+berzerk;Berzerk;1980;Maze / Shooter Small;Maze;ok;3;;x;x;;;
+blktiger;Black Tiger;1987;Platform / Fighter Scrolling;Platform;ok;4;;;x;;;
+blazstar;Blazing Star;1998;Shooter / Flying Horizontal;Shooter;ok;4;x;;;x;neogeo;
+bloodwar;Blood Warrior;1994;Fighter / Versus;Fighter;ok;4;;;;;;
+bjourney;Blue's Journey / Raguy;1990;Platform / Fighter Scrolling;Platform;ok;3;;;;x;neogeo;
+bombjack;Bomb Jack;1984;Platform / Run Jump;Platform;ok;3;;fbneo;x;;;
+bnzabros;Bonanza Bros;1990;Platform / Shooter;Platform;ok;4;;;;x;;
+bouldash;Boulder Dash / Boulder Dash Part 2;1990;Maze / Digging;Maze;ok;3;;x;;x;;
+breakrev;Breakers Revenge;1998;Fighter / Versus;Fighter;ok;3;;;;;neogeo;
+bublbob2;Bubble Bobble II;1994;Platform / Run Jump;Platform;ok;5;x;;;x;;
+btime;Burger Time;1982;Platform / Run Jump;Platform;ok;3;;x;x;;;
+cabal;Cabal;1988;Shooter / 3rd Person;Shooter;ok;4;;x;x;;;
+cadash;Cadash;1989;Platform / Fighter Scrolling;Platform;ok;3;;;x;;;
+dino;Cadillacs & Dinosaurs;1993;Fighter / 2.5D;Fighter;ok;4;;;;x;;
+csclub;Capcom Sports Club;1997;Sports / Multiplay;Sports;ok;4;;;;x;;
+cairblad;Change Air Blade;1999;Shooter / Flying Vertical;Shooter;ok;5;fbneo;;;x;;
+chasehq;Chase H.Q.;1988;Driving / Race (chase view);Driving;ok;4;;x;x;;;
+citycon;City Connection;1985;Platform / Run Jump;Platform;ok;;;;x;;;
+clshroad;Clash-Road;1986;Driving / Race Bike;Driving;ok;3;;;x;;;
+crkdown;Crack Down;1989;Maze / Shooter Large;Maze;ok;3;;;x;;;
+crospang;Cross Pang;1998;Puzzle / Misc.;Puzzle;ok;3;;;;;;
+crsword;Crossed Swords;1991;Fighter / Misc.;Fighter;ok;4;;;;;neogeo;
+cybots;Cyberbots - fullmetal madness;1995;Fighter / Versus;Fighter;ok;5;;;;;;
+dariusg;Darius Gaiden - Silver Hawk;1994;Shooter / Flying Horizontal;Shooter;ok;5;x;;;x;;
+deathsml;Deathsmiles;2007;Shooter / Flying Horizontal;Shooter;ok;4;x;;;x;;
+defender;Defender;1980;Shooter / Flying Horizontal;Shooter;ok;3;x;x;x;;;
+digdug;Dig Dug;1982;Maze / Digging;Maze;ok;3;;x;x;;;
+ddonpach;DoDonPachi;1997;Shooter / Flying Vertical;Shooter;ok;5;x;;;x;;
+dogyuun;Dogyuun;1992;Shooter / Flying Vertical;Shooter;ok;4;;;;;;
+dkong;Donkey Kong;1981;Platform / Run Jump;Platform;ok;3;;x;x;;;
+dkongjr;Donkey Kong Junior;1982;Platform / Run Jump;Platform;ok;4;;;x;;;
+ddragon;Double Dragon;1987;Fighter / 2.5D;Fighter;ok;4;x;x;x;;;
+dragnblz;Dragon Blaze;2000;Shooter / Flying Vertical;Shooter;ok;5;x;;;x;;
+dbz2;Dragonball Z 2 - Super Battle;1994;Fighter / Versus;Fighter;ok;3;;;;;;
+ddsom;Dungeons & Dragons - shadow over mystara;1996;Fighter / 2.5D;Fighter;ok;5;x;;;x;;
+elvactr;Elevator Action Returns;1994;Platform / Shooter;Platform;ok;5;x;;;x;;
+esprade;ESP Ra.De. - A.D.2018 Tokyo;1998;Shooter / Flying Vertical;Shooter;ok;4;;;;;;
+espgal2;Espgaluda II;2005;Shooter / Flying Vertical;Shooter;ok;5;x;;;x;;
+extdwnhl;Extreme Downhill;1995;Sports / Skiing;Sports;ok;3;;;;fbneo;;
+fantzone;Fantasy Zone;1986;Shooter / Flying Horizontal;Shooter;ok;3;;x;x;;;
+fatfury3;Fatal Fury 3 - Road to the Final Victory / Garou Densetsu 3 - haruka-naru tatakai;1995;Fighter / Versus;Fighter;ok;4;;;;x;neogeo;
+ffight;Final Fight;1989;Fighter / 2.5D;Fighter;ok;5;x;x;x;;;
+flicky;Flicky;1984;Platform / Run Jump;Platform;ok;5;x;x;x;;;
+fshark;Flying Shark;1987;Shooter / Flying Vertical;Shooter;ok;3;;;x;;;
+frogger;Frogger;1981;Maze / Cross;Maze;ok;3;;x;x;;;
+galaga88;Galaga '88;1987;Shooter / Gallery;Shooter;ok;3;;;x;;;
+garou;Garou - Mark of the Wolves;1999;Fighter / Versus;Fighter;ok;5;x;x;;x;neogeo;
+ghouls;Ghouls'n Ghosts;1988;Platform / Fighter Scrolling;Platform;ok;4;x;;x;;;
+gigawing;Giga Wing;1999;Shooter / Flying Vertical;Shooter;ok;5;;;;x;;
+goldnaxe;Golden Axe;1989;Fighter / 2.5D;Fighter;ok;3;;x;x;;;
+gberet;Green Beret;1985;Platform / Shooter Scrolling;Platform;ok;3;;;x;;;
+grdians;Guardians;1995;Fighter / 2.5D;Fighter;ok;3;;;;;;
+gnbarich;Gunbarich;2001;Ball & Paddle / Breakout;Ball & Paddle;ok;4;;;;;;
+gunbird2;Gunbird 2;1998;Shooter / Flying Vertical;Shooter;ok;5;x;;;x;;
+gundhara;Gundhara;1995;Shooter / Walking;Shooter;ok;4;;;;;;
+gunlock;Gunlock / RayForce;1993;Shooter / Flying Vertical;Shooter;ok;4;;;;x;;
+gyruss;Gyruss;1983;Shooter / Flying (chase view);Shooter;ok;3;;;x;;;
+hook;Hook;1992;Fighter / 2.5D;Fighter;ok;3;;;;;;
+hsf2;Hyper Street Fighter II: The Anniversary Edition;2004;Fighter / Versus;Fighter;ok;5;x;;;;;
+joemacr;Joe & Mac Returns;1994;Platform / Run Jump;Platform;ok;4;;;;x;;
+jojoba;JoJo's Bizarre Adventure: Heritage for the Future / JoJo no Kimyou na Bouken: Mirai e no Isan;1999;Fighter / Versus;Fighter;ok;5;;;;;;
+joust;Joust;1982;Platform / Run Jump;Platform;ok;4;;x;x;;;
+kingdmgp;Kingdom Grandprix;1994;Shooter / Flying Vertical;Shooter;ok;4;;;;;;
+kizuna;Kizuna Encounter - Super Tag Battle / Fu'un Super Tag Battle;1996;Fighter / Versus;Fighter;ok;3;;;;;neogeo;
+klax;Klax;1989;Puzzle / Drop;Puzzle;ok;3;;x;x;;;
+knights;Knights of the Round;1991;Fighter / 2.5D;Fighter;ok;3;;;;;;
+lightbr;Light Bringer;1993;Maze / Fighter;Maze;ok;4;;;;x;;
+liquidk;Liquid Kids;1990;Platform / Fighter Scrolling;Platform;ok;3;;;;;;
+locomotn;Loco-Motion;1982;Puzzle / Sliding;Puzzle;ok;4;;;x;;;
+ldrun;Lode Runner;1984;Platform / Run Jump;Platform;ok;4;;x;x;;;
+macrossp;Macross Plus;1996;Shooter / Flying Vertical;Shooter;ok;3;;;;fbneo;;
+msword;Magic Sword - heroic fantasy;1990;Platform / Fighter Scrolling;Platform;ok;4;x;;;x;;
+magdrop3;Magical Drop III;1997;Puzzle / Toss;Puzzle;ok;5;;;;x;neogeo;
+mappy;Mappy;1983;Platform / Run Jump;Platform;ok;3;;x;x;;;
+mvsc;Marvel vs Capcom - clash of super heroes;1998;Fighter / Versus;Fighter;ok;5;x;;;x;;
+mazinger;Mazinger Z;1994;Shooter / Flying Vertical;Shooter;ok;4;;;;x;;
+megaman2;Mega Man 2 - the power fighters;1996;Fighter / Versus Co-op;Fighter;ok;3;;;;x;;
+mtwins;Mega Twins;1990;Platform / Fighter Scrolling;Platform;ok;4;;;;fbneo;;
+mslug4;Metal Slug 4;2002;Platform / Shooter Scrolling;Platform;ok;4;;;;x;neogeo;
+mwalk;Michael Jackson's Moonwalker;1990;Platform / Fighter Scrolling;Platform;ok;3;;;;x;;
+milliped;Millipede;1982;Shooter / Gallery;Shooter;ok;3;;;x;;;
+gundamex;Mobile Suit Gundam EX Revue;1994;Fighter / Versus;Fighter;ok;4;;;;;;
+miexchng;Money Puzzle Exchanger / Money Idol Exchanger;1997;Puzzle / Toss;Puzzle;ok;3;;;;x;neogeo;
+docastle;Mr. Do's Castle;1983;Platform / Run Jump;Platform;ok;3;;;x;;;
+mspacman;MS Pacman;1980;Maze / Collect;Maze;ok;3;x;;x;;;
+futari15;Mushihime-Sama Futari Ver 1.5;2006;Shooter / Flying Vertical;Shooter;ok;5;x;;;x;;
+mystwarr;Mystic Warriors;1993;Fighter / 2D;Fighter;ok;4;;;;;;
+nam1975;NAM-1975;1990;Shooter / 3rd Person;Shooter;ok;3;;;;;neogeo;
+nbahangt;NBA Hangtime;1996;Sports / Basketball;Sports;ok;3;x;;;x;;
+nemesis;Nemesis;1985;Shooter / Flying Horizontal;Shooter;ok;3;;x;x;;;
+neodrift;Neo Drift Out - New Technology;1996;Driving / Race;Driving;ok;3;;;;;neogeo;
+turfmast;Neo Turf Masters / Big Tournament Golf;1996;Sports / Golf;Sports;ok;4;x;;;x;neogeo;
+nslasher;Night Slashers;1994;Fighter / 2.5D;Fighter;ok;4;;;;;;
+nbbatman;Ninja Baseball Batman;1993;Fighter / 2.5D;Fighter;ok;4;;;;x;;
+nspirit;Ninja Spirit;1988;Fighter / 2D;Fighter;ok;5;x;;x;;;
+osman;Osman;1996;Platform / Fighter Scrolling;Platform;ok;4;;;;fbneo;;
+outrun;Out Run;1986;Driving / Race (chase view);Driving;ok;5;x;x;x;;;
+outzone;Out Zone;1990;Shooter / Walking;Shooter;ok;3;;;;x;;
+overtop;Over Top;1996;Driving / Race;Driving;ok;3;;;;;neogeo;
+pacmania;Pac-Mania;1987;Maze / Collect;Maze;ok;4;;;x;;;
+parodius;Parodius DA!;1990;Shooter / Flying Horizontal;Shooter;ok;5;fbneo;x;;x;;
+pengo;Pengo;1982;Maze / Move and Sort;Maze;ok;3;;;;;;
+pdrift;Power Drift;1988;Driving / Race (chase view);Driving;ok;4;fbneo;;x;;;
+pwrinst2;Power Instinct 2;1994;Fighter / Versus;Fighter;ok;4;;;;;;
+pspikes;Power Spikes;1991;Sports / Volleyball;Sports;ok;3;;;;x;;
+sailormn;Pretty Soldier Sailor Moon;1995;Fighter / 2.5D;Fighter;ok;4;;;;x;;
+progear;Progear;2001;Shooter / Flying Horizontal;Shooter;ok;5;;;;x;;
+pulstar;Pulstar;1995;Shooter / Flying Horizontal;Shooter;ok;3;;;;x;neogeo;
+punchout;Punch-Out!!;1984;Sports / Boxing;Sports;ok;4;;x;x;;;
+puyopuy2;Puyo Puyo 2;1994;Puzzle / Drop;Puzzle;ok;3;x;;;x;;
+puzzloop;Puzz Loop;1998;Puzzle / Toss;Puzzle;ok;4;;;;x;skns;
+ichir;Puzzle & Action: Ichidant-R;1994;Multiplay / Mini-Games;Multiplay;ok;4;;;;x;;
+pbobbl2n;Puzzle Bobble 2 / Bust-A-Move Again;1999;Puzzle / Toss;Puzzle;ok;;x;;;x;neogeo;
+puzzledp;Puzzle De Pon!;1995;Puzzle / Toss;Puzzle;ok;3;;;;;neogeo;
+qix;Qix;1981;Puzzle / Outline;Puzzle;ok;4;;x;x;;;
+rtypeleo;R-Type Leo;1992;Shooter / Flying Horizontal;Shooter;ok;4;x;;;x;;
+rdft;Raiden Fighters;1996;Shooter / Flying Vertical;Shooter;ok;4;;;;fbneo;;
+rmpgwt;Rampage: World Tour;1997;Platform / Fighter;Platform;ok;4;;;;x;;
+rastan;Rastan;1987;Platform / Fighter Scrolling;Platform;ok;4;;;x;;;
+rbffspec;Real Bout Fatal Fury Special / Real Bout Garou Densetsu Special;1996;Fighter / Versus;Fighter;ok;5;x;;;x;neogeo;
+redearth;Red Earth / War-Zard;1996;Fighter / Versus Co-op;Fighter;ok;5;;;;x;;
+robocop;Robocop;1988;Platform / Shooter Scrolling;Platform;ok;3;;;x;;;
+rthun2;Rolling Thunder 2;1990;Platform / Shooter Scrolling;Platform;ok;4;;;;x;;
+rygar;Rygar;1986;Platform / Fighter Scrolling;Platform;ok;3;;x;x;;;
+salamand;Salamander;1986;Shooter / Flying;Shooter;ok;3;;;x;;;
+samsho4;Samurai Shodown IV - Amakusa's Revenge / Samurai Spirits - Amakusa Kourin;1996;Fighter / Versus;Fighter;ok;5;x;;;x;neogeo;
+slammast;Saturday Night Slam Masters;1993;Sports / Wrestling;Sports;ok;3;;;;x;;
+secretag;Secret Agent;1989;Platform / Shooter Scrolling;Platform;ok;4;;;x;;;
+sengoku3;Sengoku 3 / Sengoku Densho 2001;2001;Fighter / 2.5D;Fighter;ok;5;;;;;neogeo;
+shdancer;Shadow Dancer;1989;Platform / Fighter Scrolling;Platform;ok;4;x;;x;;;
+shadfrce;Shadow Force;1993;Fighter / 2.5D;Fighter;ok;4;;;;;;
+shocktr2;Shock Troopers - 2nd Squad;1998;Shooter / Walking;Shooter;ok;4;;;;x;neogeo;
+svc;SNK vs. Capcom - SVC Chaos;2003;Fighter / Versus;Fighter;ok;4;;;;fbneo;neogeo;
+solomon;Solomon's Key;1986;Puzzle / Maze;Puzzle;ok;4;;;x;;;
+sharrier;Space Harrier;1985;Shooter / Flying (chase view);Shooter;ok;3;;x;x;;;
+spcinv95;Space Invaders '95: The Attack Of Lunar Loonies;1995;Shooter / Gallery;Shooter;ok;4;;;;x;;
+spelunkr;Spelunker;1985;Platform / Run, Jump & Scrolling;Platform;ok;3;;;x;;;tr606drumkit
+splatter;Splatter House;1988;Fighter / 2D;Fighter;ok;3;;x;x;;;
+sfa3;Street Fighter Alpha 3;1998;Fighter / Versus;Fighter;ok;5;x;;;x;;
+sfiii3;Street Fighter III 3rd Strike: Fight for the Future;1999;Fighter / Versus;Fighter;ok;5;x;;;x;;
+strider;Strider;1989;Platform / Fighter Scrolling;Platform;ok;3;x;x;x;;;
+s1945ii;Strikers 1945 II;1997;Shooter / Flying Vertical;Shooter;ok;3;;;;x;;
+ssriders;Sunset Riders;1991;Platform / Shooter Scrolling;Platform;ok;4;;;;x;;
+sdodgeb;Super Dodge Ball / Kunio no Nekketsu Toukyuu Densetsu;1996;Sports / Dodgeball;Sports;ok;4;;;;x;neogeo;
+spang;Super Pang;1990;Shooter / 3rd Person;Shooter;ok;3;;;;x;;
+spf2t;Super Puzzle Fighter II Turbo;1996;Puzzle / Drop;Puzzle;ok;4;x;;;x;;
+ssideki2;Super Sidekicks 2 - The World Championship / Tokuten Ou 2 - real fight football;1994;Sports / Soccer;Sports;ok;;x;;;x;neogeo;
+ssf2t;Super Street Fighter II Turbo;1994;Fighter / Versus;Fighter;ok;5;;x;;x;;
+pwrgoal;Taito Power Goal;1994;Sports / Soccer;Sports;ok;3;;;;;;
+tapper;Tapper;1983;Platform / Run Jump;Platform;ok;4;;;x;;midssio;
+tbowl;Tecmo Bowl;1987;Sports / Football;Sports;ok;3;;;x;;;
+tmnt2;Teenage Mutant Ninja Turtles - Turtles in Time;1991;Fighter / 2.5D;Fighter;ok;4;;;;x;;
+tetrisp2;Tetris Plus 2;1997;Puzzle / Drop;Puzzle;ok;4;;;;x;;
+tgm2;Tetris the Absolute The Grand Master 2;2000;Puzzle / Drop;Puzzle;ok;4;x;;;x;;
+kof98;The King of Fighters '98 - The Slugfest / King of Fighters '98 - dream match never ends;1998;Fighter / Versus;Fighter;ok;5;x;x;;x;neogeo;
+kof2002;The King of Fighters 2002;2002;Fighter / Versus;Fighter;ok;5;;;;;neogeo;
+lastbld2;The Last Blade 2 / Bakumatsu Roman - Dai Ni Maku Gekka no Kenshi;1998;Fighter / Versus;Fighter;ok;4;;;;x;neogeo;
+tnzs;The NewZealand Story;1988;Platform / Run, Jump & Scrolling;Platform;ok;4;;;x;;;
+punisher;The Punisher;1993;Fighter / 2.5D;Fighter;ok;5;;;;x;;
+tdragon2;Thunder Dragon 2;1993;Shooter / Flying Vertical;Shooter;ok;4;;;;;;
+timeplt;Time Pilot;1982;Shooter / Field;Shooter;ok;3;;;x;;;
+toki;Toki;1989;Platform / Shooter Scrolling;Platform;ok;3;;;x;;;
+trstar;Top Ranking Stars;1993;Sports / Boxing;Sports;ok;4;;;;x;;
+travrusa;Traverse USA / Zippy Race;1983;Driving / Motorbike;Driving;ok;3;;;x;;;
+truxton2;Truxton II;1992;Shooter / Flying Vertical;Shooter;ok;4;;;;x;;
+toutrun;Turbo Out Run;1989;Driving / Race (chase view);Driving;ok;4;;;x;;;
+twinspri;Twinkle Star Sprites;1996;Shooter / Flying Vertical;Shooter;ok;5;;;;x;neogeo;
+umk3;Ultimate Mortal Kombat 3;1994;Fighter / Versus;Fighter;ok;3;;;;x;;
+ultennis;Ultimate Tennis;1993;Sports / Tennis;Sports;ok;3;;;;x;;
+vsav;Vampire Savior - the lord of vampire;1997;Fighter / Versus;Fighter;ok;4;x;;;x;;
+vasara2;Vasara 2;2001;Shooter / Flying Vertical;Shooter;ok;4;;;;x;;
+viostorm;Violent Storm;1993;Fighter / 2.5D;Fighter;ok;4;;;;;;
+wof;Warriors of Fate;1992;Fighter / 2.5D;Fighter;ok;4;;;;;;
+wjammers;Windjammers / Flying Power Disc;1994;Sports / Misc.;Sports;ok;4;x;x;;x;neogeo;
+wh2j;World Heroes 2 Jet;1994;Fighter / Versus;Fighter;ok;3;;;;x;neogeo;
+wrally;World Rally;1993;Driving / Race;Driving;ok;5;fbneo;;;x;;
+zaxxon;Zaxxon;1982;Shooter / Flying Diagonal;Shooter;ok;4;x;x;x;;;

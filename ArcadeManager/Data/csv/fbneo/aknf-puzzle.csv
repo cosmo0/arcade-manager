@@ -1,58 +1,45 @@
-name;
-aquarush;
-ar_bios;
-ar_spot;
-bakubaku;
-bangball;
-blockhl;
-blockout;
-coh3002t;
-columns;
-crospang;
-cshift;
-deroon;
-dharma;
-drmario;
-emeralda;
-ghostlop;
-htchctch;
-joyjoy;
-klax;
-konamigx;
-landmakr;
-locomotn;
-magdrop3;
-magerror;
-miexchng;
-mosaicf2;
-motos;
-mrdrillr;
-msgogo;
-mushitam;
-namcoc70;
-neogeo;
-ohmygod;
-pbobble2;
-pbobble4;
-plotting;
-pururun;
-puyopuy2;
-puzzledp;
-puzzli2;
-puzzli2s;
-puzzloop;
-pzloop2;
-qix;
-qsound;
-riskchal;
-senkyu;
-skns;
-spang;
-spf2t;
-stvbios;
-taitogn;
-tetrisp2;
-tgm2;
-tokkae;
-uopoko;
-watrball;
+name;description;sample;bios;selection;fbneo
+bangball;Bang Bang Ball;;;puzzle;bangball
+blockhl;Block Hole;;;puzzle;blockhl
+blockout;Block Out;;;puzzle;blockout
+columns;Columns;;;puzzle;columns
+columns2;Columns II: The Voyage Through Time;;;puzzle;columns2
+crospang;Cross Pang;;;puzzle;crospang
+deroon;Deroon DeroDero;;;puzzle;deroon
+dharma;Dharma Doujou;;;puzzle;dharma
+emeralda;Emeraldia;;;puzzle;emeralda
+ghostlop;Ghostlop;;neogeo;puzzle;ghostlop
+htchctch;Hatch Catch;;;puzzle;htchctch
+klax;Klax;;;puzzle;klax
+landmakr;Land Maker;;;puzzle;landmakr
+locomotn;Loco-Motion;;;puzzle;locomotn
+magdrop3;Magical Drop III;;neogeo;puzzle;magdrop3
+magerror;Magical Error wo Sagase;;;puzzle;magerror
+miexchng;Money Puzzle Exchanger / Money Idol Exchanger;;neogeo;puzzle;miexchng
+mosaicf2;Mosaic;;;puzzle;mosaicf2
+motos;Motos;;;puzzle;motos
+msgogo;Mouse Shooter GoGo;;;puzzle;msgogo
+ohmygod;Oh My God!;;;puzzle;ohmygod
+plotting;Plotting;;;puzzle;plotting
+pururun;Pururun;;;puzzle;pururun
+puyopuy2;Puyo Puyo 2;;;puzzle;puyopuy2
+puzzloop;Puzz Loop;;skns;puzzle;puzzloop
+pzloop2;Puzz Loop 2;;;puzzle;pzloop2
+ichir;Puzzle & Action: Ichidant-R (World);;;puzzle;ichir
+pbobble2;Puzzle Bobble 2;;;puzzle;pbobble2
+pbobbl2n;Puzzle Bobble 2 / Bust-A-Move Again;;neogeo;puzzle;pbobbl2n
+pbobble4;Puzzle Bobble 4;;;puzzle;pbobble4
+puzzledp;Puzzle De Pon!;;neogeo;puzzle;puzzledp
+uopoko;Puzzle Uo Poko;;;puzzle;uopoko
+mushitam;Puzzle! Mushihime-Tama;;;puzzle;mushitam
+joyjoy;Puzzled / Joy Joy Kid;;neogeo;puzzle;joyjoy
+puzzli2;Puzzli 2 / Pao Pao Yu;;pgm;puzzle;puzzli2
+qix;Qix;;;puzzle;qix
+riskchal;Risky Challenge;;;puzzle;riskchal
+senkyu;Senkyu;;;puzzle;senkyu
+suprloco;Super Locomotive;;;puzzle;suprloco
+spf2t;Super Puzzle Fighter II Turbo;;;puzzle;spf2t
+atetris;Tetris;;;puzzle;atetris
+tetrisp2;Tetris Plus 2;;;puzzle;tetrisp2
+tgm2;Tetris: The Absolute - The Grand Master 2;;;puzzle;tgm2
+watrball;Water Balls;;;puzzle;watrball

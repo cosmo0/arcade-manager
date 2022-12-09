@@ -1,74 +1,90 @@
-name;
-alexkidd;
-arabian;
-atarisy1;
-athena;
-bigkarnk;
-bjourney;
-blktiger;
-bnzabros;
-bombjack;
-bonkadv;
-bubblem;
-bublbob2;
-bublbobl;
-cadash;
-chinagat;
-cninja;
-dondokod;
-drgnbstr;
-dynagear;
-ghouls;
-gng;
-hcastle;
-hharry;
-indytemp;
-jjsquawk;
-joemacr;
-karnov;
-keith;
-kicker;
-kidniki;
-liquidk;
-maglord;
-marvland;
-mcatadv;
-megaplay;
-momoko;
-msword;
-mtwins;
-mystwarr;
-nemo;
-neogeo;
-nitd;
-nspirit;
-osman;
-pacland;
-penbros;
-pigout;
-rastan;
-recalh ;
-rodland;
-sabotenb;
-shdancer;
-shinobi;
-snowbro2;
-snowbros;
-spelunkr;
-spinmast;
-strider;
-suprmrio;
-teddybb;
-thoop;
-tigeroad;
-tnzs;
-toki;
-tophuntr;
-trojan;
-tumblep;
-wardner;
-wb3;
-wbml;
-wboy;
-willow;
-wiz;
+name;description;sample;bios;selection;fbneo
+chinagat;China Gate;;;platform;chinagat
+kicker;Kicker;;;platform;kicker
+rampage;Rampage;;;platform;rampage
+rmpgwt;Rampage: World Tour;;;platform;rmpgwt
+outfxies;The Outfoxies;;;platform;outfxies
+athena;Athena;;;platform;athena
+avspirit;Avenging Spirit;;;platform;avspirit
+baddudes;Bad Dudes vs. Dragonninja;;;platform;baddudes
+bigkarnk;Big Karnak;;;platform;bigkarnk
+blktiger;Black Tiger;;;platform;blktiger
+bjourney;Blue's Journey / Raguy;;neogeo;platform;bjourney
+cadash;Cadash;;;platform;cadash
+drgnbstr;Dragon Buster;;;platform;drgnbstr
+eightman;Eight Man;;neogeo;platform;eightman
+ganryu;Ganryu / Musashi Ganryuki;;neogeo;platform;ganryu
+gng;Ghosts'n Goblins;;;platform;gng
+ghouls;Ghouls'n Ghosts;;;platform;ghouls
+hharry;Hammerin' Harry;;;platform;hharry
+hcastle;Haunted Castle;;;platform;hcastle
+kidniki;Kid Niki - Radical Ninja;;;platform;kidniki
+liquidk;Liquid Kids;;;platform;liquidk
+msword;Magic Sword: Heroic Fantasy;;;platform;msword
+marvland;Marvel Land;;;platform;marvland
+mtwins;Mega Twins;;;platform;mtwins
+mwalk;Michael Jackson's Moonwalker;;;platform;mwalk
+nemo;Nemo;;;platform;nemo
+osman;Osman;;;platform;osman
+rastan;Rastan;;;platform;rastan
+rygar;Rygar;;;platform;rygar
+shdancer;Shadow Dancer;;;platform;shdancer
+shinobi;Shinobi;;;platform;shinobi
+spidman;Spider-Man: The Videogame;;;platform;spidman
+spinmast;Spin Master / Miracle Adventure;;neogeo;platform;spinmast
+strider;Strider;;;platform;strider
+tigeroad;Tiger Road;;;platform;tigeroad
+tophuntr;Top Hunter - Roddy & Cathy;;neogeo;platform;tophuntr
+trojan;Trojan;;;platform;trojan
+vigilant;Vigilante;;;platform;vigilant
+wardner;Wardner;;;platform;wardner
+arabian;Arabian;;;platform;arabian
+bagman;Bagman;;;platform;bagman
+bombjack;Bomb Jack;;;platform;bombjack
+bublbobl;Bubble Bobble;;;platform;bublbobl
+bublbob2;Bubble Bobble II;;;platform;bublbob2
+bubblem;Bubble Memories: The Story Of Bubble Bobble III;;;platform;bubblem
+btime;Burger Time;;;platform;btime
+citycon;City Connection (set 1);;;platform;citycon
+congo;Congo Bongo;congo;;platform;congo
+dondokod;Don Doko Don;;;platform;dondokod
+dkong;Donkey Kong;;;platform;dkong
+dkong3;Donkey Kong 3;;;platform;dkong3
+dkongjr;Donkey Kong Junior;;;platform;dkongjr
+drmicro;Dr. Micro;;;platform;drmicro
+flicky;Flicky (128k Version, 315-5051);;;platform;flicky
+joemacr;Joe & Mac Returns;;;platform;joemacr
+joust;Joust;;;platform;joust
+jjack;Jumping Jack;;;platform;jjack
+kangaroo;Kangaroo;;;platform;kangaroo
+ldrun;Lode Runner;;;platform;ldrun
+loderndf;Lode Runner - The Dig Fight (ver. B);;;platform;loderndf
+mappy;Mappy;;;platform;mappy
+mario;Mario Bros. (US, Revision G);;;platform;mario
+momoko;Momoko 120%;;;platform;momoko
+docastle;Mr. Do's Castle;;;platform;docastle
+dowild;Mr. Do's Wild Ride;;;platform;dowild
+nitd;Nightmare in the Dark;;neogeo;platform;nitd
+pandoras;Pandora's Palace;;;platform;pandoras
+penbros;Penguin Brothers;;;platform;penbros
+popeye;Popeye;;;platform;popeye
+qbert;Q*bert;qbert;;platform;qbert
+rbisland;Rainbow Islands (new version);;;platform;rbisland
+rocnrope;Roc'n Rope;;;platform;rocnrope
+rodland;Rod-Land;;;platform;rodland
+sabotenb;Saboten Bombers;;;platform;sabotenb
+snowbros;Snow Bros. - Nick & Tom;;;platform;snowbros
+snowbro2;Snow Bros. 2 - With New Elves / Otenki Paradise;;;platform;snowbro2
+sbagman;Super Bagman;;;platform;sbagman
+tapper;Tapper;;;platform;tapper
+timber;Timber;;;platform;timber
+tumblep;Tumble Pop;;;platform;tumblep
+zookeep;Zoo Keeper;;;platform;zookeep
+bonkadv;B.C. Kid / Bonk's Adventure / Kyukyoku!! PC Genjin;;;platform;bonkadv
+circusc;Circus Charlie;;;platform;circusc
+junglek;Jungle King;;;platform;junglek
+pacland;Pac-Land;;;platform;pacland
+spelunkr;Spelunker;;;platform;spelunkr
+tnzs;The NewZealand Story;;;platform;tnzs
+bnzabros;Bonanza Bros;;;platform;bnzabros
+solomon;Solomon's Key (US);;;platform;solomon

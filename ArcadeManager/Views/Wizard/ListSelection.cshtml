@@ -34,72 +34,72 @@
     <input type="hidden" asp-for="Emulator" />
 
     <div class="border rounded p-3 mb-3">
-        <label><input type="checkbox" name="list" value="top200" checked="checked" /> <strong>The top 200</strong>: all the great games, and a few hidden gems.</label>
+        <label><input type="checkbox" name="list" value="top200" checked="checked" /> <strong>The top 200</strong>: a balanced selection of all the great games, and a few hidden gems.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top50" /> <strong>The top 50</strong>: only the very best.</label>
+        <label><input type="checkbox" name="list" value="top50" /> <strong>The top 50</strong>: only the very best, a tight but balanced selection of all-time classics.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top80s" /> <strong>The top 50 games of the 70's and 80's</strong>: from Space Invaders to Final Fight.</label>
+        <label><input type="checkbox" name="list" value="top80s" /> <strong>The top 100 of the 80's</strong>: from Asteroids to Final Fight, the best old-school games.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top90s" /> <strong>The top 50 games of the 90's and 00's</strong>: from Smash TV to Street Fighter III.</label>
+        <label><input type="checkbox" name="list" value="top90s" /> <strong>The top 100 of the 90's and 00's</strong>: from Smash TV to Deathsmiles, the best modern games.</label>
         <br />
+        <label><input type="checkbox" name="list" value="neogeo" /> <strong>The top 100 NeoGeo</strong>: the 100 best games on NeoGeo.</label>
+    </div>
+
+    <div class="border rounded p-3 mb-3">
         <label>
             <input type="checkbox" name="list" value="icons" />
-            <strong>100 icons</strong>: groundbreaking, revolutionary, unique, or just very popular. Many are not very good by today's standards.<br />
+            <strong>100 icons</strong>: groundbreaking, revolutionary, unique, or just very popular. May not be very good by today's standards.<br />
+            <br />
             <strong>Warning:</strong> some games in this list will not work well with a simple retro pad or arcade stick, and you might need a spinner,
-            double stick, racing wheel, etc.
+            double stick, racing wheel, etc. You can sometimes get good results by changing the control bindings in the options.
         </label>
     </div>
 
     <div class="border rounded p-3 mb-3">
         <p>
             <strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, tested and validated by the community.<br />
-            Lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+            Lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a> and customized.
         </p>
 
         <div class="row">
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-shooting-hori" /> Shooting (horizontal screen) &sim; 80 games</label>
+                <label><input type="checkbox" name="list" value="aknf-shooting" /> Shooting (@(Model.GameNumbers["aknf-shooting"]) games)</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-shooting-vert" /> Shooting (vertical screen) &sim; 85 games</label>
+                <label><input type="checkbox" name="list" value="aknf-run-gun" /> Run and gun (@(Model.GameNumbers["aknf-run-gun"]) games)</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-run-gun" /> Run and gun &sim; 50 games</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-fighting" /> Fighting &sim; 80 games</label>
-            </div>
-            <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-beat-hack" /> Beat'em up and hack &amp; slash &sim; 90 games</label>
-            </div>
-            <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-platform" /> Platform &sim; 70 games</label>
+                <label><input type="checkbox" name="list" value="aknf-platform" /> Platform (@(Model.GameNumbers["aknf-platform"]) games)</label>
             </div>
         </div>
         <div class="row">
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-classics-hori" /> Old school classics (horizontal screen) &sim; 30 games</label>
+                <label><input type="checkbox" name="list" value="aknf-fighting" /> Fighting (@(Model.GameNumbers["aknf-fighting"]) games)</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-classics-vert" /> Old school classics (vertical screen) &sim; 60 games</label>
+                <label><input type="checkbox" name="list" value="aknf-beat-hack" /> Beat'em up and hack &amp; slash (@(Model.GameNumbers["aknf-beat-hack"]) games)</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-puzzle" /> Puzzle &sim; 55 games</label>
+                <label><input type="checkbox" name="list" value="aknf-puzzle" /> Puzzle (@(Model.GameNumbers["aknf-puzzle"]) games)</label>
             </div>
         </div>
         <div class="row">
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-sports" /> Sports and racing &sim; 80 games</label>
+                <label><input type="checkbox" name="list" value="aknf-sports" /> Sports (@(Model.GameNumbers["aknf-sports"]) games)</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-racing" /> Racing (@(Model.GameNumbers["aknf-racing"]) games)</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-classics" /> Old school classics (@(Model.GameNumbers["aknf-classics"]) games)</label>
             </div>
         </div>
     </div>
 
     <div class="border rounded p-3 mb-3">
-        <label><input type="checkbox" name="list" value="noclones" /> All the games, excluding duplicates</label>
+        <label><input type="checkbox" name="list" value="noclones" /> All the games, excluding duplicates (@(Model.GameNumbers["noclones"]) games)</label>
         <br />
-        <label><input type="checkbox" name="list" value="clean" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc</label>
+        <label><input type="checkbox" name="list" value="clean" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc  (@(Model.GameNumbers["clean"]) games)</label>
     </div>
 
     <div class="row">

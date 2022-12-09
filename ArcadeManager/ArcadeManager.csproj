@@ -33,15 +33,19 @@
     <None Remove="Data\csv\fbneo\aknf-beat-hack.csv" />
     <None Remove="Data\csv\fbneo\aknf-classics-hori.csv" />
     <None Remove="Data\csv\fbneo\aknf-classics-vert.csv" />
+    <None Remove="Data\csv\fbneo\aknf-classics.csv" />
     <None Remove="Data\csv\fbneo\aknf-fighting.csv" />
     <None Remove="Data\csv\fbneo\aknf-platform.csv" />
     <None Remove="Data\csv\fbneo\aknf-puzzle.csv" />
+    <None Remove="Data\csv\fbneo\aknf-racing.csv" />
     <None Remove="Data\csv\fbneo\aknf-run-gun.csv" />
     <None Remove="Data\csv\fbneo\aknf-shooting-hori.csv" />
     <None Remove="Data\csv\fbneo\aknf-shooting-vert.csv" />
+    <None Remove="Data\csv\fbneo\aknf-shooting.csv" />
     <None Remove="Data\csv\fbneo\aknf-sports.csv" />
     <None Remove="Data\csv\fbneo\clean.csv" />
     <None Remove="Data\csv\fbneo\icons.csv" />
+    <None Remove="Data\csv\fbneo\neogeo.csv" />
     <None Remove="Data\csv\fbneo\noclones.csv" />
     <None Remove="Data\csv\fbneo\top200.csv" />
     <None Remove="Data\csv\fbneo\top50.csv" />
@@ -50,15 +54,19 @@
     <None Remove="Data\csv\mame\aknf-beat-hack.csv" />
     <None Remove="Data\csv\mame\aknf-classics-hori.csv" />
     <None Remove="Data\csv\mame\aknf-classics-vert.csv" />
+    <None Remove="Data\csv\mame\aknf-classics.csv" />
     <None Remove="Data\csv\mame\aknf-fighting.csv" />
     <None Remove="Data\csv\mame\aknf-platform.csv" />
     <None Remove="Data\csv\mame\aknf-puzzle.csv" />
+    <None Remove="Data\csv\mame\aknf-racing.csv" />
     <None Remove="Data\csv\mame\aknf-run-gun.csv" />
     <None Remove="Data\csv\mame\aknf-shooting-hori.csv" />
     <None Remove="Data\csv\mame\aknf-shooting-vert.csv" />
+    <None Remove="Data\csv\mame\aknf-shooting.csv" />
     <None Remove="Data\csv\mame\aknf-sports.csv" />
     <None Remove="Data\csv\mame\clean.csv" />
     <None Remove="Data\csv\mame\icons.csv" />
+    <None Remove="Data\csv\mame\neogeo.csv" />
     <None Remove="Data\csv\mame\noclones.csv" />
     <None Remove="Data\csv\mame\top200.csv" />
     <None Remove="Data\csv\mame\top50.csv" />
@@ -85,106 +93,106 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\aknf-beat-hack.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\csv\fbneo\aknf-classics-hori.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\csv\fbneo\aknf-classics-vert.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Data\csv\fbneo\aknf-classics.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\aknf-fighting.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\aknf-platform.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\aknf-puzzle.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\csv\fbneo\aknf-racing.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\aknf-run-gun.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\csv\fbneo\aknf-shooting-hori.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\csv\fbneo\aknf-shooting-vert.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Data\csv\fbneo\aknf-shooting.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\aknf-sports.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\clean.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\icons.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\csv\fbneo\neogeo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\noclones.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\top200.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\top50.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\top80s.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\fbneo\top90s.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\aknf-beat-hack.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\csv\mame\aknf-classics-hori.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\csv\mame\aknf-classics-vert.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Data\csv\mame\aknf-classics.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\aknf-fighting.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\aknf-platform.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\aknf-puzzle.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\csv\mame\aknf-racing.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\aknf-run-gun.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\csv\mame\aknf-shooting-hori.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\csv\mame\aknf-shooting-vert.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="Data\csv\mame\aknf-shooting.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\aknf-sports.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\clean.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\icons.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\csv\mame\neogeo.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\noclones.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\top200.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\top50.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\top80s.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\top90s.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
