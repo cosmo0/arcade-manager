@@ -1,86 +1,86 @@
-name;description;sample;bios;selection;fbneo
-64street;64th. Street - A Detective Story;;;beat-hack;64street
-aoh;Age Of Heroes - Silkroad 2;;;beat-hack;aoh
-astorm;Alien Storm;;;beat-hack;astorm
-avsp;Alien vs. Predator;;;beat-hack;avsp
-aliens;Aliens;;;beat-hack;aliens
-altbeast;Altered Beast;;;beat-hack;altbeast
-arabfgt;Arabian Fight;;;beat-hack;arabfgt
-arabianm;Arabian Magic;;;beat-hack;arabianm
-armwar;Armored Warriors;;;beat-hack;armwar
-asterix;Asterix (ver EAD);;;beat-hack;asterix
-avengers;Avengers;;;beat-hack;avengers
-brapboys;B.Rap Boys;;;beat-hack;brapboys
-batcir;Battle Circuit;;;beat-hack;batcir
-btoads;Battletoads;;;beat-hack;btoads
-bigfight;Big Fight - Big Trouble In The Atlantic Ocean;;;beat-hack;#N/A
-bmaster;Blade Master;;;beat-hack;bmaster
-burningf;Burning Fight;;neogeo;beat-hack;burningf
-dino;Cadillacs and Dinosaurs;;;beat-hack;dino
-captaven;Captain America and The Avengers;;;beat-hack;captaven
-captcomm;Captain Commando;;;beat-hack;captcomm
-crimfght;Crime Fighters;;;beat-hack;crimfght
-crsword;Crossed Swords (ALM-002)(ALH-002);;neogeo;beat-hack;crsword
-cbuster;Crude Buster;;;beat-hack;cbuster
-denjinmk;Denjin Makai;;;beat-hack;denjinmk
-ddragon;Double Dragon;;;beat-hack;ddragon
-doubledr;Double Dragon;;neogeo;beat-hack;doubledr
-ddragon2;Double Dragon II - The Revenge;;;beat-hack;ddragon2
-ddsom;Dungeons & Dragons: Shadow over Mystara;;;beat-hack;ddsom
-ddtod;Dungeons & Dragons: Tower of Doom;;;beat-hack;ddtod
-dynwar;Dynasty Wars;;;beat-hack;dynwar
-ffight;Final Fight;;;beat-hack;ffight
-gaia;Gaia Crusaders;;;beat-hack;gaia
-gaiapols;Gaiapolis;;;beat-hack;gaiapols
-goldnaxe;Golden Axe;;;beat-hack;goldnaxe
-ga2;Golden Axe: The Revenge of Death Adder;;;beat-hack;ga2
-growl;Growl;;;beat-hack;growl
-grdians;Guardians / Denjin Makai II;;;beat-hack;grdians
-hook;Hook;;;beat-hack;hook
-kotm2;King of the Monsters 2 - The Next Thing;;neogeo;beat-hack;kotm2
-knights;Knights of the Round;;;beat-hack;knights
-kov;Knights of Valour / Sanguo Zhan Ji / Sangoku Senki;;pgm;beat-hack;kov
-kov2;Knights of Valour 2 / Sanguo Zhan Ji 2 / Sangoku Senki 2;;pgm;beat-hack;kov2
-kungfum;Kung-Fu Master (World);;;beat-hack;kungfum
-kurikint;Kuri Kinton;;;beat-hack;kurikint
-legendoh;Legend of Heroes;;;beat-hack;legendoh
-metamrph;Metamorphic Force;;;beat-hack;metamrph
-mutnat;Mutation Nation;;neogeo;beat-hack;mutnat
-myhero;My Hero (US, not encrypted);;;beat-hack;myhero
-mystwarr;Mystic Warriors;;;beat-hack;mystwarr
-nslasher;Night Slashers;;;beat-hack;nslasher
-nbbatman;Ninja Baseball Bat Man;;;beat-hack;nbbatman
-nspirit;Ninja Spirit;;;beat-hack;nspirit
-orlegend;Oriental Legend / Xiyou Shi E Chuan;;pgm;beat-hack;orlegend
-pow;P.O.W. - Prisoners of War;;;beat-hack;pow
-sailormn;Pretty Soldier Sailor Moon;;;beat-hack;sailormn
-pulirula;PuLiRuLa;;;beat-hack;pulirula
-riotcity;Riot City;;;beat-hack;riotcity
-roboarmy;Robo Army;;neogeo;beat-hack;roboarmy
-robocop2;Robocop 2;;;beat-hack;robocop2
-sengoku;Sengoku / Sengoku Denshou;;neogeo;beat-hack;sengoku
-sengoku3;Sengoku 3 / Sengoku Densho 2001;;neogeo;beat-hack;sengoku3
-shadfrce;Shadow Force;;;beat-hack;shadfrce
-silentd;Silent Dragon;;;beat-hack;silentd
-splatter;Splatter House;;;beat-hack;splatter
-tmnt;Teenage Mutant Ninja Turtles;;;beat-hack;tmnt
-tmnt2;Teenage Mutant Ninja Turtles - Turtles in Time;;;beat-hack;tmnt2
-edrandy;The Cliffhanger - Edward Randy;;;beat-hack;edrandy
-ctribe;The Combatribes;;;beat-hack;ctribe
-crysking;The Crystal of Kings;;crysbios;beat-hack;#N/A
-kod;The King of Dragons;;;beat-hack;kod
-silkroad;The Legend of Silkroad;;;beat-hack;silkroad
-ninjak;The Ninja Kids;;;beat-hack;ninjak
-ninjaw;The Ninja Warriors;;;beat-hack;ninjaw
-punisher;The Punisher;;;beat-hack;punisher
-simpsons;The Simpsons;;;beat-hack;simpsons
-theroes;Thunder Heroes;;;beat-hack;theroes
-uccops;Undercover Cops;;;beat-hack;uccops
-vamphalf;Vamf x1/2;;;beat-hack;vamphalf
-vendetta;Vendetta;;;beat-hack;vendetta
-viostorm;Violent Storm;;;beat-hack;viostorm
-warriorb;Warrior Blade - Rastan Saga Episode III;;;beat-hack;warriorb
-wof;Warriors of Fate;;;beat-hack;wof
-wizdfire;Wizard Fire;;;beat-hack;wizdfire
-xmen;X-Men;;;beat-hack;xmen
-zeroteam;Zero Team USA;;;beat-hack;zeroteam
+name
+64street
+aoh
+astorm
+avsp
+aliens
+altbeast
+arabfgt
+arabianm
+armwar
+asterix
+avengers
+brapboys
+batcir
+btoads
+bigfight
+bmaster
+burningf
+dino
+captaven
+captcomm
+crimfght
+crsword
+cbuster
+denjinmk
+ddragon
+doubledr
+ddragon2
+ddsom
+ddtod
+dynwar
+ffight
+gaia
+gaiapols
+goldnaxe
+ga2
+growl
+grdians
+hook
+kotm2
+knights
+kov
+kov2
+kungfum
+kurikint
+legendoh
+metamrph
+mutnat
+myhero
+mystwarr
+nslasher
+nbbatman
+nspirit
+orlegend
+pow
+sailormn
+pulirula
+riotcity
+roboarmy
+robocop2
+sengoku
+sengoku3
+shadfrce
+silentd
+splatter
+tmnt
+tmnt2
+edrandy
+ctribe
+crysking
+kod
+silkroad
+ninjak
+ninjaw
+punisher
+simpsons
+theroes
+uccops
+vamphalf
+vendetta
+viostorm
+warriorb
+wof
+wizdfire
+xmen
+zeroteam

@@ -1,51 +1,51 @@
-name;description;year;category;genre;Top200;Top50;Icons;Top 80s;Top 90s;multiplayer;bios;sample
-gtmr;1000 Miglia: Great 1000 Miles Rally;1994;Driving / Race;Driving;x;x;;;x;;;
-1941;1941: Counter Attack;1990;Shooter / Flying Vertical;Shooter;x;x;;;x;x;;
-avsp;Alien vs. Predator;1994;Fighter / 2.5D;Fighter;x;x;;;x;x;;
-batrider;Armed Police Batrider;1998;Shooter / Flying Vertical;Shooter;x;x;;;x;x;;
-armwar;Armored Warriors;1994;Fighter / 2.5D;Fighter;x;x;;;x;x;;
-blazstar;Blazing Star;1998;Shooter / Flying Horizontal;Shooter;x;x;;;x;x;neogeo;
-bublbob2;Bubble Bobble II;1994;Platform / Run Jump;Platform;x;x;;;x;x;;
-dariusg;Darius Gaiden - Silver Hawk;1994;Shooter / Flying Horizontal;Shooter;x;x;;;x;x;;
-deathsml;Deathsmiles;2007;Shooter / Flying Horizontal;Shooter;x;x;;;x;x;;
-defender;Defender;1980;Shooter / Flying Horizontal;Shooter;x;x;x;x;;;;
-ddonpach;DoDonPachi;1997;Shooter / Flying Vertical;Shooter;x;x;;;x;x;;
-ddragon;Double Dragon;1987;Fighter / 2.5D;Fighter;x;x;x;x;;x;;
-dragnblz;Dragon Blaze;2000;Shooter / Flying Vertical;Shooter;x;x;;;x;x;;
-ddsom;Dungeons & Dragons: Shadow over Mystara;1996;Fighter / 2.5D;Fighter;x;x;;;x;x;;
-elvactr;Elevator Action Returns;1994;Platform / Shooter;Platform;x;x;;;x;x;;
-espgal2;Espgaluda II;2005;Shooter / Flying Vertical;Shooter;x;x;;;x;x;;
-ffight;Final Fight;1989;Fighter / 2.5D;Fighter;x;x;x;x;;x;;
-flicky;Flicky;1984;Platform / Run Jump;Platform;x;x;x;x;;;;
-garou;Garou - Mark of the Wolves;1999;Fighter / Versus;Fighter;x;x;x;;x;x;neogeo;
-ghouls;Ghouls'n Ghosts;1988;Platform / Fighter Scrolling;Platform;x;x;;x;;;;
-gunbird2;Gunbird 2;1998;Shooter / Flying Vertical;Shooter;x;x;;;x;x;;
-hsf2;Hyper Street Fighter II: The Anniversary Edition;2004;Fighter / Versus;Fighter;x;x;;;;x;;
-msword;Magic Sword: Heroic Fantasy;1990;Platform / Fighter Scrolling;Platform;x;x;;;x;x;;
-mvsc;Marvel Vs. Capcom: Clash of Super Heroes;1998;Fighter / Versus;Fighter;x;x;;;x;x;;
-mspacman;Ms. Pac-Man;1981;Maze / Collect;Maze;x;x;;x;;;;
-futari15;Mushihime-Sama Futari Ver 1.5;2006;Shooter / Flying Vertical;Shooter;x;x;;;x;x;;
-nbahangt;NBA Hangtime;1996;Sports / Basketball;Sports;x;x;;;x;x;;
-turfmast;Neo Turf Masters / Big Tournament Golf;1996;Sports / Golf;Sports;x;x;;;x;;neogeo;
-nspirit;Ninja Spirit;1988;Fighter / 2D;Fighter;x;x;;x;;;;
-outrun;Out Run;1986;Driving / Race (chase view);Driving;x;x;x;x;;;;
-puyopuy2;Puyo Puyo 2;1994;Puzzle / Drop;Puzzle;x;x;;;x;x;;
-pbobbl2n;Puzzle Bobble 2 / Bust-A-Move Again;1999;Puzzle / Toss;Puzzle;x;x;;;x;x;neogeo;
-rtypeleo;R-Type Leo;1992;Shooter / Flying Horizontal;Shooter;x;x;;;x;x;;
-rbffspec;Real Bout Fatal Fury Special / Real Bout Garou Densetsu Special;1996;Fighter / Versus;Fighter;x;x;;;x;x;neogeo;
-ridgerac;Ridge Racer;1993;Driving / 1st Person;Driving;mame;x;mame;;mame;;;
-rvschool;Rival Schools: United By Fate;1997;Fighter / Versus;Fighter;mame;x;;;mame;x;coh3002c;
-samsho4;Samurai Shodown IV - Amakusa's Revenge / Samurai Spirits - Amakusa Kourin;1996;Fighter / Versus;Fighter;x;x;;;x;x;neogeo;
-sexyparo;Sexy Parodius;1996;Shooter / Flying Horizontal;Shooter;mame;x;;;mame;x;konamigx;
-shdancer;Shadow Dancer;1989;Platform / Fighter Scrolling;Platform;x;x;;x;;;;
-sfa3;Street Fighter Alpha 3;1998;Fighter / Versus;Fighter;x;x;;;x;x;;
-sfiii3;Street Fighter III 3rd Strike: Fight for the Future;1999;Fighter / Versus;Fighter;x;x;;;x;x;;
-strider;Strider;1989;Platform / Fighter Scrolling;Platform;x;x;x;x;;;;
-spf2t;Super Puzzle Fighter II Turbo;1996;Puzzle / Drop;Puzzle;x;x;;;x;x;;
-ssideki2;Super Sidekicks 2 - The World Championship / Tokuten Ou 2 - Real Fight Football;1994;Sports / Soccer;Sports;x;x;;;x;x;neogeo;
-tekken3;Tekken 3;1996;Fighter / Versus;Fighter;mame;x;;;mame;x;;
-tgm2;Tetris: The Absolute - The Grand Master 2;2000;Puzzle / Drop;Puzzle;x;x;;;x;x;;
-kof98;The King of Fighters '98 - The Slugfest / King of Fighters '98 - Dream Match Never Ends;1998;Fighter / Versus;Fighter;x;x;x;;x;x;neogeo;
-vsav;Vampire Savior: The Lord of Vampire;1997;Fighter / Versus;Fighter;x;x;;;x;x;;
-wjammers;Windjammers / Flying Power Disc;1994;Sports / Misc.;Sports;x;x;x;;x;x;neogeo;
-zaxxon;Zaxxon;1982;Shooter / Flying Diagonal;Shooter;x;x;x;x;;;;zaxxon
+name
+gtmr
+1941
+avsp
+batrider
+armwar
+blazstar
+bublbob2
+dariusg
+deathsml
+defender
+ddonpach
+ddragon
+dragnblz
+ddsom
+elvactr
+espgal2
+ffight
+flicky
+garou
+ghouls
+gunbird2
+hsf2
+msword
+mvsc
+mspacman
+futari15
+nbahangt
+turfmast
+nspirit
+outrun
+puyopuy2
+pbobbl2n
+rtypeleo
+rbffspec
+ridgerac
+rvschool
+samsho4
+sexyparo
+shdancer
+sfa3
+sfiii3
+strider
+spf2t
+ssideki2
+tekken3
+tgm2
+kof98
+vsav
+wjammers
+zaxxon
