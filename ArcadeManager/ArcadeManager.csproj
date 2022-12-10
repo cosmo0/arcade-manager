@@ -45,6 +45,7 @@
     <None Remove="Data\csv\fbneo\aknf-sports.csv" />
     <None Remove="Data\csv\fbneo\clean.csv" />
     <None Remove="Data\csv\fbneo\icons.csv" />
+    <None Remove="Data\csv\fbneo\multiplayer.csv" />
     <None Remove="Data\csv\fbneo\neogeo.csv" />
     <None Remove="Data\csv\fbneo\noclones.csv" />
     <None Remove="Data\csv\fbneo\top200.csv" />
@@ -66,6 +67,7 @@
     <None Remove="Data\csv\mame\aknf-sports.csv" />
     <None Remove="Data\csv\mame\clean.csv" />
     <None Remove="Data\csv\mame\icons.csv" />
+    <None Remove="Data\csv\mame\multiplayer.csv" />
     <None Remove="Data\csv\mame\neogeo.csv" />
     <None Remove="Data\csv\mame\noclones.csv" />
     <None Remove="Data\csv\mame\top200.csv" />
@@ -125,6 +127,9 @@
     <Content Include="Data\csv\fbneo\icons.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\csv\fbneo\multiplayer.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Data\csv\fbneo\neogeo.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -174,6 +179,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\icons.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\csv\mame\multiplayer.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\csv\mame\neogeo.csv">

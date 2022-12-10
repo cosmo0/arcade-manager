@@ -16,6 +16,10 @@
 <p>
     Please choose the emulator you want to use.
 </p>
+<p>
+    FBNeo is missing 3D games (or 2D games developed on 3D systems), and even MAME is missing more recent games (Naomi, Atomiswave, etc).<br />
+    Here is a <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">list of alternatives</a>.
+</p>
 
 <form asp-controller="Wizard" asp-action="PostEmulator" method="post">
 
@@ -26,8 +30,7 @@
         <div class="flex-fill">
             <h5 class="mb-1 name">FBNeo (1.0.0.2)</h5>
             <p class="mb-0 desc">
-                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game)
-                - <a href="@(Context.Request.Scheme)://@(Context.Request.Host)/Wizard/MissingFbneo" class="popup">Missing games and alternatives</a>.<br />
+                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game)<br />
                 Prefer this if you play on Raspberry Pi (3 or 4).<br />
                 <a href="https://archive.org/details/2020_01_06_fbn" class="blank">Get romset</a>
             </p>

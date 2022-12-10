@@ -34,31 +34,33 @@
     <input type="hidden" asp-for="Emulator" />
 
     <div class="border rounded p-3 mb-3">
-        <label><input type="checkbox" name="list" value="top200" checked="checked" /> <strong>The top 200</strong>: a balanced selection of all the great games, and a few hidden gems.</label>
+        <label><input type="checkbox" name="list" value="top200" checked="checked" /> <strong>Top 200</strong>: a balanced selection of all the great games, and a few hidden gems : a great trip down memory lane, finding new things along the ride.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top50" /> <strong>The top 50</strong>: only the very best, a tight but balanced selection of all-time classics.</label>
+        <label><input type="checkbox" name="list" value="top50" /> <strong>Top 50</strong>: only the very best, a tight but balanced selection of all-time classics : the best way to see what the arcades were about.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top80s" /> <strong>The top 100 of the 80's</strong>: from Asteroids to Final Fight, the best old-school games.</label>
+        <label><input type="checkbox" name="list" value="top80s" /> <strong>Top of the 80's</strong>: from Asteroids to Final Fight, the @(Model.GameNumbers["top80s"]) best old-school games.</label>
         <br />
-        <label><input type="checkbox" name="list" value="top90s" /> <strong>The top 100 of the 90's and 00's</strong>: from Smash TV to Deathsmiles, the best modern games.</label>
-        <br />
-        <label><input type="checkbox" name="list" value="neogeo" /> <strong>The top 100 NeoGeo</strong>: the 100 best games on NeoGeo.</label>
+        <label><input type="checkbox" name="list" value="top90s" /> <strong>Top of the 90's and 00's</strong>: from Smash TV to Deathsmiles, the @(Model.GameNumbers["top90s"]) best modern games.</label>
     </div>
 
     <div class="border rounded p-3 mb-3">
         <label>
             <input type="checkbox" name="list" value="icons" />
-            <strong>100 icons</strong>: groundbreaking, revolutionary, unique, or just very popular. May not be very good by today's standards.<br />
+            <strong>Icons</strong>: @(Model.GameNumbers["icons"]) groundbreaking, revolutionary, unique, or just very popular games. May not be very good by today's standards.
             <br />
             <strong>Warning:</strong> some games in this list will not work well with a simple retro pad or arcade stick, and you might need a spinner,
-            double stick, racing wheel, etc. You can sometimes get good results by changing the control bindings in the options.
+            double stick, racing wheel, etc. You can sometimes get good results by changing the control settings in the options.
         </label>
+        <br />
+        <label><input type="checkbox" name="list" value="multiplayer" /> <strong>Multiplayer</strong>: @(Model.GameNumbers["multiplayer"]) great games to play with two players or more, in coop or versus.</label>
+        <br />
+        <label><input type="checkbox" name="list" value="neogeo" /> <strong>NeoGeo</strong>: the @(Model.GameNumbers["neogeo"]) best games on NeoGeo, the most popular and enduring arcade system.</label>
     </div>
 
     <div class="border rounded p-3 mb-3">
         <p>
             <strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, tested and validated by the community.<br />
-            Lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a> and customized.
+            Original lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
         </p>
 
         <div class="row">

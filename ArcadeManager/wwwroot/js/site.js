@@ -10,12 +10,6 @@ $(() => {
         e.preventDefault();
     });
 
-    // bind popup navigation
-    $(document).on('click', 'a.popup', (e) => {
-        ipc('open-popup', $(e.currentTarget).attr('href'));
-        e.preventDefault();
-    });
-
     // bind browse buttons
     $(document).on('click', '.browse', (e) => {
         const btn = $(e.target);

@@ -103,7 +103,10 @@
             function copyDone() {
                 const doOverlays = '@(Model.DoOverlays.ToString().ToLower())' === 'true',
                     btnlabel = doOverlays ? 'Next - copy overlays' : 'Finish';
-                $('#submitButton').text(btnlabel).off('click').on('click', () => {
+
+                $('#progress .modal-footer .btn-success')
+                .text(btnlabel)
+                .one('click', () => {
                     if (doOverlays) {
                         window.location.href = '@(Url.Action("Index", "Overlays"))';
                     } else {

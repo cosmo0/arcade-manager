@@ -74,7 +74,6 @@ public partial class MessageHandler : IMessageHandler {
 
             // Navigation
             Electron.IpcMain.On("open-blank", OpenNewWindow);
-            Electron.IpcMain.On("open-popup", OpenPopup);
             Electron.IpcMain.On("open-folder", OpenFolder);
 
             // Get AppData
@@ -341,24 +340,6 @@ public partial class MessageHandler : IMessageHandler {
         if (url != null) {
             Console.WriteLine("open blank link to: " + url.ToString());
             await Electron.Shell.OpenExternalAsync(url.ToString());
-        }
-        else {
-            Console.WriteLine("Unable to open a blank link: no URL provided");
-        }
-    }
-
-    /// <summary>
-    /// Opens a popup to the specified URL
-    /// </summary>
-    /// <param name="url">The URL.</param>
-    private async void OpenPopup(object url) {
-        if (url != null) {
-            Console.WriteLine("open popup link to: " + url.ToString());
-            var options = new BrowserWindowOptions {
-                Width = 1024,
-                Height = 768
-            };
-            await Electron.WindowManager.CreateWindowAsync(options, url.ToString());
         }
         else {
             Console.WriteLine("Unable to open a blank link: no URL provided");
