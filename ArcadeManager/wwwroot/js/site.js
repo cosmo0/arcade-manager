@@ -16,10 +16,15 @@ $(() => {
         const input = $('#' + btn.data('input'));
         const existingPath = input.val();
 
+        // disable button to prevent multiple clicks when the explorer takes some time to respond
+        btn.prop('disabled', true).addClass('disabled');
+
         if (btn.hasClass('folder')) {
             // select a folder
             getFolder(existingPath, (folder) => {
                 if (folder && folder.length !== 0) { input.val(folder); }
+
+                btn.prop('disabled', false).removeClass('disabled');
             });
         }
         else if (btn.hasClass('new')) {
@@ -29,12 +34,16 @@ $(() => {
                     if (!filename.endsWith('.csv')) { filename += '.csv'; }
                     input.val(filename);
                 }
+
+                btn.prop('disabled', false).removeClass('disabled');
             });
         }
         else {
             // select a file
             selectFile(existingPath, (file) => {
                 if (file && file.length !== 0) { input.val(file); }
+
+                btn.prop('disabled', false).removeClass('disabled');
             });
         }
     });
