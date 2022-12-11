@@ -366,9 +366,14 @@ public class Csv : ICsv {
     /// Checks if the specified line has a header field
     /// </summary>
     /// <param name="line">The line to check</param>
-    /// <returns>Whether a header has been found, and the delimiter, if any</returns>
-    private static (bool, string) HasHeader(string line) {
+    /// <returns>Whether a delimiter has been found, and the delimiter, or the default one</returns>
+    private static (bool hasDelimiter, string delimiter) HasHeader(string line) {
         bool hasDelimiter = false;
+
+        // remove quotes, just to simplify this check
+        line = line.Replace("\"", string.Empty);
+        line = line.Replace("'", string.Empty);
+
         foreach (var d in delimiters) {
             // ",name," OR "name," OR ",name"
             var hasKeyword = new Regex($"{d}{nameColumn}{d}|^{nameColumn}{d}|{d}{nameColumn}$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
