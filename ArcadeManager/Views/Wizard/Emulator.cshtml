@@ -30,9 +30,8 @@
         <div class="flex-fill">
             <h5 class="mb-1 name">FBNeo (1.0.0.2)</h5>
             <p class="mb-0 desc">
-                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game)<br />
-                Prefer this if you play on Raspberry Pi (3 or 4).<br />
-                <a href="https://archive.org/details/2020_01_06_fbn" class="blank">Get romset</a>
+                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game).<br />
+                <strong>Prefer this if you play on Raspberry Pi 4</strong>.
             </p>
         </div>
     </div>
@@ -42,9 +41,19 @@
         <div class="flex-fill">
             <h5 class="mb-1 name">MAME - latest version (0.249)</h5>
             <p class="mb-0 desc">
-                Has the largest games list (3500+ unique games) and highest emulation accuracy, but also requires the most power.<br />
-                Prefer this if you play on PC.<br />
-                <a href="https://archive.org/details/mame-chds-roms-extras-complete" class="blank">Get romset</a>
+                Has the largest games list (3500+ games) and highest emulation accuracy, but also requires the most power, even for older games.<br />
+                <strong>Prefer this if you play on PC</strong>.
+            </p>
+        </div>
+    </div>
+    
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" checked="checked" value="mame2003">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">MAME 2003+</h5>
+            <p class="mb-0 desc">
+                Has the best performance, but has quite a lot of bugs (a lot of Toaplan shooters don't have sound) and other problems.<br />
+                <strong>Prefer this if you play on Raspberry Pi 3</strong>.
             </p>
         </div>
     </div>
