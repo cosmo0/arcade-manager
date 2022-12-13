@@ -1,52 +1,43 @@
 ﻿@{
-    ViewData["title"] = "Wizard";
+    ViewData["title"] = Localizer["WIZARD_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Wizard</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_WIZARD"]</li>
     </ol>
 </nav>
 
-<h2>Wizard</h2>
+<h2>@Localizer["WIZARD_TITLE"]</h2>
 
-<p>
-    This wizard will help you to manage your games. Use this if you're not sure what games you want to play exactly,
-    or just want "the best games" but don't know what they are. You will still be able to add more games later.
-</p>
-<p>
-    To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose later in the wizard.
-</p>
-<p>
-    To install overlays, you will need a Retropie or Recalbox installation.
-</p>
+@Html.Raw(Localizer["WIZARD_INTRO"])
 
 <form asp-controller="Wizard" asp-action="PostIndex" method="post">
 
 <div class="border rounded d-flex p-3 mb-3 option-container">
     <input type="checkbox" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" id="roms" name="roms" checked="checked" value="true">
     <div class="flex-fill">
-        <h5 class="mb-1 name">Install roms</h5>
-        <p class="mb-0 desc">Copy games from a full romset to your installation folder.</p>
+        <h5 class="mb-1 name">@Localizer["WIZARD_ACTION_ROMS"]</h5>
+        <p class="mb-0 desc">@Localizer["WIZARD_ACTION_ROMS_DESC"]</p>
     </div>
 </div>
 
-<div class="border rounded d-flex p-3 mb-3 option-container">
+<div class="border rounded d-flex p-3 mb-3 option-container option-overlays">
     <input type="checkbox" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" id="overlays" name="overlays" checked="checked" value="true">
     <div class="flex-fill">
-        <h5 class="mb-1 name">Install overlays</h5>
-        <p class="mb-0 desc">Add nice borders around the game screen.</p>
+        <h5 class="mb-1 name">@Localizer["WIZARD_ACTION_OVERLAYS"]</h5>
+        <p class="mb-0 desc">@Localizer["WIZARD_ACTION_OVERLAYS_DESC"]</p>
     </div>
 </div>
 
 <div class="row justify-content-end">
     <div class="col-6">
-        <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
+        <a href="/" class="btn btn-outline-secondary px-3">@Localizer["CANCEL"]</a>
     </div>
     <div class="col-6 text-right">
         <button type="submit" class="btn btn-primary px-5" id="submitButton">
-            Start
+            @Localizer["WIZARD_START"]
         </button>
     </div>
 </div>
@@ -55,6 +46,20 @@
 
 @section Scripts {
 <script type="text/javascript">
+    $(() => {
+        getOs((os) => {
+            if (os === 'none') {
+                // disable overlays entry if no OS has been selected
+                $('.option-overlays')
+                    .addClass('disabled text-muted')
+                    .off('click')
+                    .find('input')
+                        .prop('disabled', true)
+                        .prop('checked', false);
+            }
+        });
+    });
+
     // toggle checkbox on click anywhere in the box
     $('.option-container').on('click', (e) => {
         const container = $(e.currentTarget),

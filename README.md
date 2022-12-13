@@ -56,6 +56,12 @@ If you are new to arcade emulation, please read these resources:
 ![Download CSV](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-csv-download.png)
 ![Copy roms](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-rom-copy.png)
 
+## Help with translations
+
+Anyone can help with translations: they're simple text files (INI style) located in `Data\translations`.
+
+If you think you can help, please create a pull request!
+
 ## Development
 
 Build and run:

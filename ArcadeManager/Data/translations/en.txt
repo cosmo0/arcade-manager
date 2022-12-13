@@ -3,6 +3,7 @@ HELP=Help
 HOME=Home
 BROWSE=Browse
 DONE=Done
+CANCEL=Cancel
 ERROR_DOWNLOAD=An error has occurred during file download.
 
 OVERWRITE_YES=Overwrite existing files
@@ -11,6 +12,8 @@ OVERWRITE_NO=Do not overwrite existing files
 BREADCRUMB_CSV=Manage games list
 BREADCRUMB_CSV_DOWNLOAD=Download
 BREADCRUMB_OVERLAYS=Install overlays
+BREADCRUMB_WIZARD=Wizard
+BREADCRUMB_WIZARD_EMULATOR=Emulator
 
 HOME_ACTION_CSV=Manage games lists
 HOME_ACTION_OVERLAYS=Install overlays
@@ -90,3 +93,21 @@ OVERLAYS_PACK_REALISTIC_NAME=Realistic
 OVERLAYS_PACK_REALISTIC_DESC=Realistic-looking overlays, with scratches, reflections, and CRT shader
 OVERLAYS_PACK_ARTWORK_NAME=Artworks
 OVERLAYS_PACK_ARTWORK_DESC=Artwork-style overlays, as clean as possible, with a large screen area
+
+WIZARD_TITLE=Wizard
+WIZARD_INTRO=<p> This wizard will help you to manage your games. Use this if you're not sure what games you want to play exactly, or just want "the best games" but don't know what they are. You will still be able to add more games later.</p><p>To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose in the next step.</p><p>To install overlays, you will need a Retropie or Recalbox installation.</p>
+WIZARD_ACTION_ROMS=Copy roms
+WIZARD_ACTION_ROMS_DESC=Copy games from a full romset to your installation folder.
+WIZARD_ACTION_OVERLAYS=Install overlays
+WIZARD_ACTION_OVERLAYS_DESC=Add nice borders around the game screen.
+WIZARD_START=Start
+
+WIZARD_EMULATOR_TITLE=Automatic installation: emulator
+WIZARD_EMULATOR_INTRO=<p>Please choose the emulator you want to use.</p><p>FBNeo is missing 3D games (or 2D games developed on 3D systems), and even MAME isn't great on more recent games (Naomi, Atomiswave, etc).<br />Here is a <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">list of alternatives</a>.</p>
+WIZARD_EMULATOR_FBNEO_NAME=FBNeo (1.0.0.2)
+WIZARD_EMULATOR_FBNEO_DESC=Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game).<br /><strong>Prefer this if you play on Raspberry Pi 4</strong>.
+WIZARD_EMULATOR_MAME_NAME=MAME - latest version (0.249)
+WIZARD_EMULATOR_MAME_DESC=Has the largest games list (3500+ games) and highest emulation accuracy, but also requires the most power, even for older games.<br /><strong>Prefer this if you play on PC</strong>.
+WIZARD_EMULATOR_MAME2003_NAME=MAME 2003+
+WIZARD_EMULATOR_MAME2003_DESC=Has the best performance, but has quite a lot of bugs (ex: a lot of Toaplan shooters don't have sound) and other problems.<br /><strong>Prefer this if you play on Raspberry Pi 3</strong>.
+WIZARD_EMULATOR_NEXT=Next - choose lists

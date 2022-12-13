@@ -3,6 +3,7 @@ HELP=Aide
 HOME=Accueil
 BROWSE=Parcourir
 DONE=Terminé
+CANCEL=Annuler
 ERROR_DOWNLOAD=Une erreur est survenue pendant le téléchargement du fichier.
 
 OVERWRITE_YES=Ecraser les fichiers existants
@@ -11,6 +12,8 @@ OVERWRITE_NO=Ne pas écraser les fichiers existants
 BREADCRUMB_CSV=Listes de jeux
 BREADCRUMB_CSV_DOWNLOAD=Télécharger
 BREADCRUMB_OVERLAYS=Installer des overlays
+BREADCRUMB_WIZARD=Assistant
+BREADCRUMB_WIZARD_EMULATOR=Emulateur
 
 HOME_ACTION_CSV=Gérer ses listes de jeux
 HOME_ACTION_OVERLAYS=Installer des overlays
@@ -90,3 +93,21 @@ OVERLAYS_PACK_REALISTIC_NAME=Réaliste
 OVERLAYS_PACK_REALISTIC_DESC=Overlays de style réalistes, avec des rayures, des réflexions, et un shader CRT
 OVERLAYS_PACK_ARTWORK_NAME=Artworks
 OVERLAYS_PACK_ARTWORK_DESC=Overlays de style "artistique", aussi propres que possible, avec une large zone de jeu
+
+WIZARD_TITLE=Assistant
+WIZARD_INTRO=<p>Cet assistant vous permet de gérer vos jeux. Utilisez-le si vous n'êtes pas sûr de savoir à quels jeux vous voulez jouer, ou que vous voulez juste les "meilleurs jeux" mais ne savez pas lesquels ils sont. Vous pourrez toujours ajouter d'autres jeux plus tard.</p><p>Pour installer des jeux, vous aurez besoin d'un romset complet et fonctionnel. Vous choisirez l'émulateur et les versions dans la prochaine étape de l'assistant.</p><p>Pour installer des overlays, vous aurez besoin d'une installation de Retropie ou Recalbox fonctionnelle.</p>
+WIZARD_ACTION_ROMS=Copier des roms
+WIZARD_ACTION_ROMS_DESC=Copier des jeux depuis un romset complet vers un répertoire de sélection.
+WIZARD_ACTION_OVERLAYS=Installer des overlays
+WIZARD_ACTION_OVERLAYS_DESC=Ajouter de jolies bordures autour de l'écran du jeu.
+WIZARD_START=Démarrer
+
+WIZARD_EMULATOR_TITLE=Assistant : émulateur
+WIZARD_EMULATOR_INTRO=<p>Veuillez sélectionner l'émulateur que vous utilisez.</p><p>FBNeo n'a pas de jeu en 3D (ou en 2D développés sur des systèmes 3D), et même MAME n'est pas très bon sur les jeux les plus récents (Naomi, Atomiswave, etc).<br />Voici <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">une liste d'alternatives</a>.</p>
+WIZARD_EMULATOR_FBNEO_NAME=FBNeo (1.0.0.2)
+WIZARD_EMULATOR_FBNEO_DESC=A le meiller équilibre entre performances et précision, mais la liste de jeux est plus restreinte (1900+, pas de 3D).<br /><strong>Préférez ceci si vous jouez sur Raspberry Pi 4</strong>.
+WIZARD_EMULATOR_MAME_NAME=MAME - dernière version (0.249)
+WIZARD_EMULATOR_MAME_DESC=A la plus large sélection de jeux (3500+) et la plus grande précision, mais demande le plus de puissance, même pour certains vieux jeux.<br /><strong>Préférez ceci si vous jouez sur PC</strong>.
+WIZARD_EMULATOR_MAME2003_NAME=MAME 2003+
+WIZARD_EMULATOR_MAME2003_DESC=A les meilleures performances, mais un bon nombre de bugs (ex : beaucoup de shooters Toaplan n'ont pas de son) et autres problèmes.<br /><strong>Préférez ceci si vous jouez sur Rasbperry Pi 3</strong>.
+WIZARD_EMULATOR_NEXT=Suivant - choix des listes

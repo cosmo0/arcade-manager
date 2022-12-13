@@ -28,9 +28,9 @@ public class Localizer : ILocalizer {
             var words = new Dictionary<string, string>();
 
             var translationContent = fs.ReadAllLines(translationFile);
-            foreach (var l in translationContent.Where(l => !string.IsNullOrWhiteSpace(l) && l.Contains("=", StringComparison.InvariantCultureIgnoreCase))) {
+            foreach (var l in translationContent.Where(l => !string.IsNullOrWhiteSpace(l) && l.Contains('=', StringComparison.InvariantCultureIgnoreCase))) {
                 var equal = l.IndexOf("=");
-                var code = l.Substring(0, equal).Trim();
+                var code = l.Substring(0, equal).Trim().ToUpperInvariant();
                 var text = l.Substring(equal + 1).Trim();
                 words.Add(code, text);
             }
@@ -125,6 +125,8 @@ public class Localizer : ILocalizer {
 
     private string GetTranslationForLanguage(string code, string language) {
         try {
+            code = code.ToUpperInvariant();
+
             if (!translations.ContainsKey(language)) {
                 return $"{code}_NO_LANGUAGE";
             }
