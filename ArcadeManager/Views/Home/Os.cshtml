@@ -1,22 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "Choose your distribution";
+    ViewData["Title"] = Localizer["HOME_OS_TITLE"];
 }
 
-<p>
-    Hello, and welcome to the arcade manager, where you will be able to
-    manage and filter your rom collection by removing unwanted, bad, and
-    unplayable games.
-</p>
-
-<p>
-    Before doing anything, I will need to know which system you're using,
-    because some things are slightly different depending on your system.
-</p>
-
-<p>
-    Don't worry, you will be able to change it later: look in the bottom
-    right corner of the main menu.
-</p>
+@Html.Raw(Localizer["HOME_OS_INTRO"])
 
 <div class="row mainmenu">
     <div class="col-4">
@@ -46,7 +32,7 @@
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="/img/unknown.png">
                 <div class="card-footer">
-                    Other / not sure
+                    @Localizer["HOME_OS_NOTSURE"]
                 </div>
             </div>
         </a>
@@ -55,9 +41,9 @@
 
 @section Scripts {
     <script>$(() => {
-            $('.mainmenu a.os').on('click', (e) => {
-                const link = $(e.currentTarget);
-                setOs(link.data('os'));
-            });
-        });</script>
+        $('.mainmenu a.os').on('click', (e) => {
+            const link = $(e.currentTarget);
+            setOs(link.data('os'));
+        });
+    });</script>
 }

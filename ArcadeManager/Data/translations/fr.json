@@ -20,7 +20,7 @@
 	"GAMES_LIST_ADD": "Fusionner deux listes",
 	"GAMES_LIST_ADD_INTRO": "<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>",
 	"GAMES_LIST_ADD_TITLE": "Add games to a CSV file",
-	
+
 	"HOME_ACTION_CSV": "Gérer ses listes de jeux",
 	"HOME_ACTION_OVERLAYS": "Installer des overlays",
 	"HOME_ACTION_ROMS": "Gérer ses roms",
@@ -31,5 +31,13 @@
 	"HOME_UPDATE_CURRENTVERSION": "version actuelle :",
 	"HOME_UPDATE_DONOTNOTIFY": "Ne me prévenez plus pour cette version",
 	"HOME_UPDATE_MOREINFOS": "plus d'informations",
-	"HOME_UPDATE_PUBLISHEDON": "Publiée le"
+	"HOME_UPDATE_PUBLISHEDON": "Publiée le",
+
+	"HOME_OS_TITLE": "Choisissez votre système",
+	"HOME_OS_INTRO": "<p> Bonjour, et bienvenue sur ArcadeManager, l'outil qui vous permet de gérer et filtrer vos collections de roms d'arcade, en retirant les mauvais jeux, les injouables, ou tout simplement ceux que vous ne voulez pas. </p> <p>Avant de faire quoi que ce soit, j'ai besoin de savoir quel système vous utilisez, car certaines choses peuvent changer. </p> <p>Ne vous inquiétez pas, vous pourrez le changer plus tard, à l'aide d'un bouton en bas à droite de l'écran principal. </p>",
+	"HOME_OS_NOTSURE": "Autre / je ne sais pas",
+
+	"PROGRESS_PLEASEWAIT": "Veuillez patienter...",
+	"PROGRESS_STOP": "Arrêter",
+	"PROGRESS_OPENRESULTS": "Ouvrir le résultat"
 }

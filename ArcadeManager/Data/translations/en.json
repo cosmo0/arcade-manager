@@ -31,5 +31,13 @@
 	"HOME_UPDATE_CURRENTVERSION": "current version:",
 	"HOME_UPDATE_DONOTNOTIFY": "Do not notify me again for this version",
 	"HOME_UPDATE_MOREINFOS": "more informations",
-	"HOME_UPDATE_PUBLISHEDON": "Published on"
+	"HOME_UPDATE_PUBLISHEDON": "Published on",
+
+	"HOME_OS_TITLE": "Choose your distribution",
+	"HOME_OS_INTRO": "<p> Hello, and welcome to ArcadeManager, where you will be able to manage and filter your rom collection by removing unwanted, bad, and unplayable games. </p> <p> Before doing anything, I will need to know which system you're using, because some things are slightly different depending on your system. </p> <p> Don't worry, you will be able to change it later: look in the bottom right corner of the main menu. </p>",
+	"HOME_OS_NOTSURE": "Other / not sure",
+
+	"PROGRESS_PLEASEWAIT": "Please wait...",
+	"PROGRESS_STOP": "Stop",
+	"PROGRESS_OPENRESULTS": "Open the result"
 }
