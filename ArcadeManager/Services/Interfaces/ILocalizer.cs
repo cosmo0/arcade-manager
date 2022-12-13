@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace ArcadeManager.Services;
 
@@ -20,10 +21,11 @@ public interface ILocalizer {
     string this[string code] { get; }
 
     /// <summary>
-    /// Changes the locale.
+    /// Changes the current culture.
     /// </summary>
     /// <param name="locale">The locale (en, fr...).</param>
-    void ChangeLocale(string locale);
+    /// <returns>The new culture</returns>
+    CultureInfo ChangeCulture(string locale);
 
     /// <summary>
     /// Gets the culture name

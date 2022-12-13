@@ -21,7 +21,11 @@ public class Localizer : ILocalizer {
         var translationsFolder = Path.Combine(ArcadeManagerEnvironment.BasePath, "Data", "translations");
 
         foreach (var loc in _locales) {
-            var words = ReadTranslationFile(translationsFolder, loc);
+            // reads the JSON file
+            var translationFile = Path.Combine(translationsFolder, $"{loc}.json");
+            var translationContent = File.ReadAllText(translationFile);
+
+            var words = Serializer.Deserialize<JsonElement>(translationContent);
 
             translations.Add(loc, words);
         }
@@ -52,7 +56,7 @@ public class Localizer : ILocalizer {
                 var result = t.GetProperty(code).GetString();
 
                 if (string.IsNullOrEmpty(result)) {
-                    return $"{code}_NO_TRANSLATION";
+                    return $"{code}_NOT_FOUND";
                 }
 
                 return result;
@@ -64,17 +68,28 @@ public class Localizer : ILocalizer {
     }
 
     /// <summary>
-    /// Changes the locale.
+    /// Changes the current culture.
     /// </summary>
     /// <param name="locale">The locale (en, fr...).</param>
-    public void ChangeLocale(string locale) {
+    /// <returns>The new culture</returns>
+    public CultureInfo ChangeCulture(string locale) {
         CultureInfo culture = new("en");
         if (_locales.Contains(locale)) {
             culture = new CultureInfo(locale);
         }
 
+        // this is stupid but it works and I've already spent too much time on that
+
         Thread.CurrentThread.CurrentCulture = culture;
         Thread.CurrentThread.CurrentUICulture = culture;
+
+        CultureInfo.CurrentCulture = culture;
+        CultureInfo.CurrentUICulture = culture;
+
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
+
+        return culture;
     }
 
     /// <summary>
@@ -93,7 +108,7 @@ public class Localizer : ILocalizer {
     /// </summary>
     /// <returns>The current locale (en, fr...)</returns>
     public string CurrentLocale() {
-        return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant();
+        return CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant();
     }
 
     /// <summary>
@@ -102,14 +117,6 @@ public class Localizer : ILocalizer {
     /// <param name="locale">The locale.</param>
     /// <returns><c>true</c> if it is the current locale; otherwise, <c>false</c>.</returns>
     public bool IsCurrentLocale(string locale) {
-        return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals(locale, System.StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    private static JsonElement ReadTranslationFile(string translationsFolder, string loc) {
-        // reads the JSON file
-        var translationFile = Path.Combine(translationsFolder, $"{loc}.json");
-        var translationContent = File.ReadAllText(translationFile);
-
-        return Serializer.Deserialize<JsonElement>(translationContent);
+        return CurrentLocale().Equals(locale, System.StringComparison.InvariantCultureIgnoreCase);
     }
 }

@@ -1,8 +1,13 @@
 ﻿using ArcadeManager.Models;
 using ArcadeManager.Services;
+using ElectronNET.API;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace ArcadeManager.Controllers;
 
@@ -35,7 +40,7 @@ public class HomeController : BaseController {
     /// <returns>The view</returns>
     public IActionResult Index(string lang) {
         if (!string.IsNullOrEmpty(lang)) {
-            localizer.ChangeLocale(lang);
+            localizer.ChangeCulture(lang);
         }
 
         return View();
