@@ -97,7 +97,7 @@
          * @@param {string} name The name of the repository to load
          */
         function listFiles(repository, folder, details, name) {
-            $('#files').empty().html('Loading ' + name + ', please wait...');
+            $('#files').empty().html(`@Localizer["CSV_DOWNLOAD_LOADING"]`);
             const template = $('#fileItemTemplate').html();
 
             getRemoteList(repository, details, folder, (data) => {
@@ -115,13 +115,13 @@
                     fileItem.on('click', (e) => {
                         newFile(filedetail.filename, (filename) => {
                             if (typeof filename !== 'undefined' && filename !== '') {
-                                progressInit('Download file');
+                                progressInit('@Localizer["CSV_DOWNLOAD_PROGRESSINIT"]');
 
                                 downloadFile(repository, folder + '/' + filedetail.filename, filename, (success) => {
                                     if (success) {
-                                        progressDone('Done.');
+                                        progressDone('@Localizer["DONE"]');
                                     } else {
-                                        progressDone('An error has occurred during file download.');
+                                        progressDone('@Localizer["ERROR_DOWNLOAD"]');
                                     }
                                 });
                             }

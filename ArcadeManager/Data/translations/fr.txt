@@ -2,6 +2,9 @@ CLOSE=Fermer
 HELP=Aide
 HOME=Accueil
 BROWSE=Parcourir
+DONE=Terminé
+ERROR_DOWNLOAD=Une erreur est survenue pendant le téléchargement du fichier.
+
 OVERWRITE_YES=Ecraser les fichiers existants
 OVERWRITE_NO=Ne pas écraser les fichiers existants
 
@@ -42,8 +45,11 @@ CSV_INDEX_EXISTING_FOLDER=Lister les roms d'un dossier
 CSV_INDEX_EXISTING_INI=Convertir un fichier INI
 
 CSV_DOWNLOAD_TITLE=Télécharger une liste de jeux
-CSV_DOWNLOAD_INTRO=Vous trouverez <a href="https://github.com/cosmo0/arcade-manager-data" class="blank">dans le repository arcade-manager-data</a> un grand choix de listes pré-construites ; ceci n'est qu'une sélection des listes les plus utiles.
+CSV_DOWNLOAD_INTRO=Vous trouverez <a href="https://github.com/cosmo0/arcade-manager-data" class="blank">dans le dépôt arcade-manager-data</a> un grand choix de listes pré-construites ; ceci n'est qu'une sélection des listes les plus utiles.
 CSV_DOWNLOAD_SELECTEMULATOR=Veuillez sélectionner un émulateur dans le menu de gauche.
+CSV_DOWNLOAD_LOADING=Chargement de ${name}, veuillez patienter...
+CSV_DOWNLOAD_PROGRESSINIT=Téléchargement de fichier
+
 CSV_DOWNLOAD_LIST_BEST_NAME=Les meilleurs jeux
 CSV_DOWNLOAD_LIST_BEST_DESC=Les meilleurs jeux pour chaque émulateur
 CSV_DOWNLOAD_LIST_AKNF_NAME=All killer, no filler
@@ -52,10 +58,10 @@ CSV_DOWNLOAD_LIST_FBNEO_NAME=FinalBurn Neo
 CSV_DOWNLOAD_LIST_FBNEO_DESC=FinalBurn Neo (1.0.0.2)
 CSV_DOWNLOAD_LIST_MAME_NAME=MAME (dernière)
 CSV_DOWNLOAD_LIST_MAME_DESC=La dernière version de MAME
-"CSV_DOWNLOAD_LIST_MAME2003_NAME": "MAME 2003+",
-"CSV_DOWNLOAD_LIST_MAME2003_DESC": "MAME 2003 Plus, une version améliorée de MAME 2003",
-"CSV_DOWNLOAD_LIST_MAME2010_NAME": "MAME 2010",
-"CSV_DOWNLOAD_LIST_MAME2010_DESC": "MAME 2010 (0.139)",
+CSV_DOWNLOAD_LIST_MAME2003_NAME=MAME 2003+
+CSV_DOWNLOAD_LIST_MAME2003_DESC=MAME 2003 Plus, une version améliorée de MAME 2003
+CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
+CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 
 GAMES_LIST_ADD=Fusionner deux listes
 GAMES_LIST_ADD_INTRO=<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>

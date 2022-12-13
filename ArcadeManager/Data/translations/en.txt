@@ -2,6 +2,9 @@ CLOSE=Close
 HELP=Help
 HOME=Home
 BROWSE=Browse
+DONE=Done
+ERROR_DOWNLOAD=An error has occurred during file download.
+
 OVERWRITE_YES=Overwrite existing files
 OVERWRITE_NO=Do not overwrite existing files
 
@@ -44,6 +47,9 @@ CSV_INDEX_EXISTING_INI=Convert a INI file
 CSV_DOWNLOAD_TITLE=Download a pre-built games list
 CSV_DOWNLOAD_INTRO=You can find quite a lot of various pre-built CSV, DAT and INI files in <a href="https://github.com/cosmo0/arcade-manager-data" class="blank">the arcade-manager-data repository</a>.<br />This is only a selection of the most useful lists.
 CSV_DOWNLOAD_SELECTEMULATOR=Please select an emulator version on the left.
+CSV_DOWNLOAD_LOADING=Loading ${name}, please wait...
+CSV_DOWNLOAD_PROGRESSINIT=Download file
+
 CSV_DOWNLOAD_LIST_BEST_NAME=Best games
 CSV_DOWNLOAD_LIST_BEST_DESC=The best games for each emulator
 CSV_DOWNLOAD_LIST_AKNF_NAME=All killer, no filler
@@ -52,10 +58,10 @@ CSV_DOWNLOAD_LIST_FBNEO_NAME=FinalBurn Neo
 CSV_DOWNLOAD_LIST_FBNEO_DESC=FinalBurn Neo (1.0.0.2)
 CSV_DOWNLOAD_LIST_MAME_NAME=MAME (latest)
 CSV_DOWNLOAD_LIST_MAME_DESC=The latest version of MAME
-"CSV_DOWNLOAD_LIST_MAME2003_NAME": "MAME 2003+",
-"CSV_DOWNLOAD_LIST_MAME2003_DESC": "MAME 2003 Plus, an improved version of MAME 2003",
-"CSV_DOWNLOAD_LIST_MAME2010_NAME": "MAME 2010",
-"CSV_DOWNLOAD_LIST_MAME2010_DESC": "MAME 2010 (0.139)",
+CSV_DOWNLOAD_LIST_MAME2003_NAME=MAME 2003+
+CSV_DOWNLOAD_LIST_MAME2003_DESC=MAME 2003 Plus, an improved version of MAME 2003
+CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
+CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 
 GAMES_LIST_ADD=Add games to a CSV file
 GAMES_LIST_ADD_INTRO=<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>
