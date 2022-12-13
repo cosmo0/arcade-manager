@@ -1,7 +1,8 @@
 ﻿using ArcadeManager.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text.Json;
+using System.Linq;
 using System.Threading;
 
 namespace ArcadeManager.Services;
@@ -12,7 +13,7 @@ namespace ArcadeManager.Services;
 public class Localizer : ILocalizer {
     private readonly List<string> _locales = new() { "en", "fr" };
 
-    private readonly Dictionary<string, JsonElement> translations = new();
+    private readonly Dictionary<string, Dictionary<string, string>> translations = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Localizer"/> class.
@@ -23,10 +24,16 @@ public class Localizer : ILocalizer {
 
         foreach (var loc in _locales) {
             // reads the JSON file
-            var translationFile = fs.PathJoin(translationsFolder, $"{loc}.json");
-            var translationContent = fs.FileRead(translationFile);
+            var translationFile = fs.PathJoin(translationsFolder, $"{loc}.txt");
+            var words = new Dictionary<string, string>();
 
-            var words = Serializer.Deserialize<JsonElement>(translationContent);
+            var translationContent = fs.ReadAllLines(translationFile);
+            foreach (var l in translationContent.Where(l => !string.IsNullOrWhiteSpace(l) && l.Contains("=", StringComparison.InvariantCultureIgnoreCase))) {
+                var equal = l.IndexOf("=");
+                var code = l.Substring(0, equal).Trim();
+                var text = l.Substring(equal + 1).Trim();
+                words.Add(code, text);
+            }
 
             translations.Add(loc, words);
         }
@@ -124,17 +131,12 @@ public class Localizer : ILocalizer {
 
             var t = translations[language];
 
-            try {
-                return t.GetProperty(code).GetString();
+            // fallback on english
+            if (!t.ContainsKey(code) && !language.Equals("en", System.StringComparison.InvariantCultureIgnoreCase)) {
+                return GetTranslationForLanguage(code, "en");
             }
-            catch (KeyNotFoundException) {
-                // fallback on english
-                if (!language.Equals("en", System.StringComparison.InvariantCultureIgnoreCase)) {
-                    return GetTranslationForLanguage(code, "en");
-                }
 
-                return $"{code}_NOT_FOUND";
-            }
+            return t[code];
         }
         catch {
             return $"{code}_ERROR";
