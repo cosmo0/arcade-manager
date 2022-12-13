@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Text.Json;
 using System.Threading;
 
 namespace ArcadeManager.Services;
@@ -8,7 +10,22 @@ namespace ArcadeManager.Services;
 /// Localization management
 /// </summary>
 public class Localizer : ILocalizer {
-    private static readonly List<string> _locales = new() { "en", "fr" };
+    private readonly List<string> _locales = new() { "en", "fr" };
+
+    private readonly Dictionary<string, JsonElement> translations = new();
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Localizer"/> class.
+    /// </summary>
+    public Localizer() {
+        var translationsFolder = Path.Combine(ArcadeManagerEnvironment.BasePath, "Data", "translations");
+
+        foreach (var loc in _locales) {
+            var words = ReadTranslationFile(translationsFolder, loc);
+
+            translations.Add(loc, words);
+        }
+    }
 
     /// <summary>
     /// Gets the supported locales.
@@ -26,7 +43,23 @@ public class Localizer : ILocalizer {
     /// <returns>The translated string</returns>
     public string this[string code] {
         get {
-            return code;
+            try {
+                if (!translations.ContainsKey(CurrentLocale())) {
+                    return $"{code}_NO_LANGUAGE";
+                }
+
+                var t = translations[CurrentLocale()];
+                var result = t.GetProperty(code).GetString();
+
+                if (string.IsNullOrEmpty(result)) {
+                    return $"{code}_NO_TRANSLATION";
+                }
+
+                return result;
+            }
+            catch {
+                return $"{code}_ERROR";
+            }
         }
     }
 
@@ -70,5 +103,13 @@ public class Localizer : ILocalizer {
     /// <returns><c>true</c> if it is the current locale; otherwise, <c>false</c>.</returns>
     public bool IsCurrentLocale(string locale) {
         return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals(locale, System.StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    private static JsonElement ReadTranslationFile(string translationsFolder, string loc) {
+        // reads the JSON file
+        var translationFile = Path.Combine(translationsFolder, $"{loc}.json");
+        var translationContent = File.ReadAllText(translationFile);
+
+        return Serializer.Deserialize<JsonElement>(translationContent);
     }
 }

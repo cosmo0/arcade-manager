@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleInjector;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -65,7 +66,13 @@ public class Startup {
                 pattern: "{controller=Home}/{action=Index}/{id?}");
         });
 
-        container.Verify();
+        try {
+            container.Verify();
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"An error has occurred during injection: {ex.Message}");
+            Environment.Exit(1);
+        }
 
         if (HybridSupport.IsElectronActive) {
             ElectronBootstrap();
@@ -255,18 +262,24 @@ public class Startup {
     /// Configures the dependency injection.
     /// </summary>
     private void InitializeInjection(IServiceCollection services) {
-        // services
-        container.Register<Services.ICsv, Services.Csv>(Lifestyle.Singleton);
-        container.Register<Services.IDownloader, Services.Downloader>(Lifestyle.Singleton);
-        container.Register<Services.IOverlays, Services.Overlays>(Lifestyle.Singleton);
-        container.Register<Services.IRoms, Services.Roms>(Lifestyle.Singleton);
-        container.Register<Services.IUpdater, Services.Updater>(Lifestyle.Singleton);
-        container.Register<Services.ILocalizer, Services.Localizer>(Lifestyle.Singleton);
+        try {
+            // services
+            container.Register<Services.ICsv, Services.Csv>(Lifestyle.Singleton);
+            container.Register<Services.IDownloader, Services.Downloader>(Lifestyle.Singleton);
+            container.Register<Services.IOverlays, Services.Overlays>(Lifestyle.Singleton);
+            container.Register<Services.IRoms, Services.Roms>(Lifestyle.Singleton);
+            container.Register<Services.IUpdater, Services.Updater>(Lifestyle.Singleton);
+            container.Register<Services.ILocalizer, Services.Localizer>(Lifestyle.Singleton);
 
-        // message handler
-        container.Register<IMessageHandler, MessageHandler>(Lifestyle.Singleton);
+            // message handler
+            container.Register<IMessageHandler, MessageHandler>(Lifestyle.Singleton);
 
-        // view localization uses dotnet tooling
-        services.AddSingleton(provider => container.GetInstance<Services.ILocalizer>());
+            // view localization uses dotnet tooling
+            services.AddSingleton(provider => container.GetInstance<Services.ILocalizer>());
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"An error has occurred during injection: {ex.Message}");
+            Environment.Exit(1);
+        }
     }
 }
