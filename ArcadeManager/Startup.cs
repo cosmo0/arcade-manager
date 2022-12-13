@@ -263,13 +263,18 @@ public class Startup {
     /// </summary>
     private void InitializeInjection(IServiceCollection services) {
         try {
+            // infrastructure
+            container.Register<Infrastructure.IWebClientFactory, Infrastructure.WebClientFactory>(Lifestyle.Singleton);
+            container.Register<Infrastructure.IFileSystem, Infrastructure.FileSystem>(Lifestyle.Singleton);
+
             // services
-            container.Register<Services.ICsv, Services.Csv>(Lifestyle.Singleton);
             container.Register<Services.IDownloader, Services.Downloader>(Lifestyle.Singleton);
+            container.Register<Services.ICsv, Services.Csv>(Lifestyle.Singleton);
             container.Register<Services.IOverlays, Services.Overlays>(Lifestyle.Singleton);
             container.Register<Services.IRoms, Services.Roms>(Lifestyle.Singleton);
             container.Register<Services.IUpdater, Services.Updater>(Lifestyle.Singleton);
             container.Register<Services.ILocalizer, Services.Localizer>(Lifestyle.Singleton);
+            container.Register<Services.IWizard, Services.Wizard>(Lifestyle.Singleton);
 
             // message handler
             container.Register<IMessageHandler, MessageHandler>(Lifestyle.Singleton);

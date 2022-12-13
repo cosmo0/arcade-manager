@@ -1,4 +1,5 @@
 ﻿using ArcadeManager.Actions;
+using ArcadeManager.Infrastructure;
 using ArcadeManager.Models;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,18 @@ public class Downloader : IDownloader {
     private const string api = "api.github.com";
     private const string protocol = "https:";
     private const string raw = "raw.githubusercontent.com";
+    private readonly IFileSystem fs;
+    private readonly IWebClientFactory webclientfactory;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Downloader"/> class.
+    /// </summary>
+    /// <param name="webclientfactory">The webclient factory.</param>
+    /// <param name="fs">The file system infrastructure.</param>
+    public Downloader(IWebClientFactory webclientfactory, IFileSystem fs) {
+        this.webclientfactory = webclientfactory;
+        this.fs = fs;
+    }
 
     /// <summary>
     /// Downloads the specified URL in the Github API.
@@ -26,7 +39,7 @@ public class Downloader : IDownloader {
     public async Task<string> DownloadApiUrl(string repository, string path) {
         var url = $"{protocol}//{api}/repos/{repository}/{path}";
 
-        using (var wc = new ArcadeManagerWebClient()) {
+        using (var wc = webclientfactory.GetWebClient()) {
             return await wc.GetString(url);
         }
     }
@@ -40,7 +53,7 @@ public class Downloader : IDownloader {
     public async Task DownloadFile(string repository, string filePath, string localPath) {
         var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
-        using (var wc = new ArcadeManagerWebClient()) {
+        using (var wc = webclientfactory.GetWebClient()) {
             await wc.DownloadFile(url, localPath);
         }
     }
@@ -54,7 +67,7 @@ public class Downloader : IDownloader {
     public async Task<byte[]> DownloadFile(string repository, string filePath) {
         var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
-        using (var wc = new ArcadeManagerWebClient()) {
+        using (var wc = webclientfactory.GetWebClient()) {
             return await wc.GetBytes(url);
         }
     }
@@ -69,7 +82,7 @@ public class Downloader : IDownloader {
     public async Task<T> DownloadFile<T>(string repository, string filePath) {
         var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
-        using (var wc = new ArcadeManagerWebClient()) {
+        using (var wc = webclientfactory.GetWebClient()) {
             return Serializer.Deserialize<T>(await wc.GetString(url));
         }
     }
@@ -83,7 +96,7 @@ public class Downloader : IDownloader {
     public async Task<string> DownloadFileText(string repository, string filePath) {
         var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
-        using (var wc = new ArcadeManagerWebClient()) {
+        using (var wc = webclientfactory.GetWebClient()) {
             return await wc.GetString(url);
         }
     }
@@ -98,7 +111,7 @@ public class Downloader : IDownloader {
     /// <param name="progress">A method called when a file is downloaded.</param>
     /// <returns></returns>
     public async Task<IEnumerable<string>> DownloadFolder(string repository, string folder, string targetFolder, bool overwrite, Action<GithubTree.Entry> progress) {
-        FileSystem.EnsureDirectory(targetFolder);
+        fs.EnsureDirectory(targetFolder);
 
         var result = new List<string>();
 
@@ -149,7 +162,7 @@ public class Downloader : IDownloader {
         // files docs.github.com/en/rest/reference/repos#get-repository-content
         var urlUpFolders = $"{protocol}//{api}/repos/{repository}/contents/{folder.Substring(0, folder.LastIndexOf("/"))}";
 
-        using (var wc = new ArcadeManagerWebClient()) {
+        using (var wc = webclientfactory.GetWebClient()) {
             var data = Serializer.Deserialize<IEnumerable<GithubContent>>(await wc.GetString(urlUpFolders));
 
             // get SHA of the folder we're insterested in

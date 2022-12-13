@@ -3,12 +3,12 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Infrastructure;
 
 /// <summary>
 /// Custom web client
 /// </summary>
-public class ArcadeManagerWebClient : IDisposable {
+public class ArcadeManagerWebClient : IArcadeManagerWebClient {
     private readonly HttpClient client;
     private bool disposedValue;
 
@@ -16,12 +16,12 @@ public class ArcadeManagerWebClient : IDisposable {
     /// Initializes a new instance of the <see cref="ArcadeManagerWebClient"/> class.
     /// </summary>
     public ArcadeManagerWebClient() {
-        this.client = new HttpClient();
+        client = new HttpClient();
 
         var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        this.client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("arcade-manager", version));
-        this.client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/cosmo0/arcade-manager)"));
+        client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("arcade-manager", version));
+        client.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/cosmo0/arcade-manager)"));
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class ArcadeManagerWebClient : IDisposable {
     /// <param name="url">The file URL.</param>
     /// <param name="localPath">The local download path.</param>
     public async Task DownloadFile(string url, string localPath) {
-        var bytes = await this.client.GetByteArrayAsync(url);
+        var bytes = await client.GetByteArrayAsync(url);
         File.WriteAllBytes(localPath, bytes);
     }
 
@@ -49,7 +49,7 @@ public class ArcadeManagerWebClient : IDisposable {
     /// <param name="url">The URL.</param>
     /// <returns>The URL bytes</returns>
     public async Task<byte[]> GetBytes(string url) {
-        return await this.client.GetByteArrayAsync(url);
+        return await client.GetByteArrayAsync(url);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class ArcadeManagerWebClient : IDisposable {
     /// <param name="url">The URL.</param>
     /// <returns>The URL string</returns>
     public async Task<string> GetString(string url) {
-        return await this.client.GetStringAsync(url);
+        return await client.GetStringAsync(url);
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class ArcadeManagerWebClient : IDisposable {
     protected virtual void Dispose(bool disposing) {
         if (!disposedValue) {
             if (disposing) {
-                this.client.Dispose();
+                client.Dispose();
             }
 
             disposedValue = true;

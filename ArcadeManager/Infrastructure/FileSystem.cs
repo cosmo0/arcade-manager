@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Infrastructure;
 
 /// <summary>
 /// File system utilities
 /// </summary>
-public static class FileSystem {
+public class FileSystem : IFileSystem {
 
     /// <summary>
     /// Copies a directory
@@ -19,7 +21,7 @@ public static class FileSystem {
     /// Source directory does not exist or could not be found
     /// </exception>
     /// <remarks>From docs.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories</remarks>
-    public static int DirectoryCopy(string sourceDirName, string destDirName, bool overwrite, bool copySubDirs) {
+    public int DirectoryCopy(string sourceDirName, string destDirName, bool overwrite, bool copySubDirs) {
         // Get the subdirectories for the specified directory.
         DirectoryInfo dir = new(sourceDirName);
 
@@ -63,7 +65,7 @@ public static class FileSystem {
     /// <param name="directory">The path to the directory</param>
     /// <returns>The directory size</returns>
     /// <remarks>From stackoverflow.com/a/468131/6776</remarks>
-    public static long DirectorySize(string directory) {
+    public long DirectorySize(string directory) {
         var d = new DirectoryInfo(directory);
 
         long size = 0;
@@ -86,7 +88,7 @@ public static class FileSystem {
     /// Makes sure that a folder exists
     /// </summary>
     /// <param name="targetFolder">The target folder.</param>
-    public static void EnsureDirectory(string targetFolder) {
+    public void EnsureDirectory(string targetFolder) {
         if (!Directory.Exists(targetFolder)) {
             Directory.CreateDirectory(targetFolder);
         }
@@ -97,7 +99,7 @@ public static class FileSystem {
     /// </summary>
     /// <param name="path">The path to check</param>
     /// <returns>Whether the path exists</returns>
-    public static bool Exists(string path) {
+    public bool Exists(string path) {
         if (string.IsNullOrWhiteSpace(path)) {
             return false;
         }
@@ -108,12 +110,43 @@ public static class FileSystem {
     }
 
     /// <summary>
+    /// Gets the file name without extension
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>The file name</returns>
+    public string FileNameWithoutExtension(string path) {
+        var filename = Path.GetFileName(path);
+        filename = filename.Substring(0, filename.IndexOf("."));
+        return filename;
+    }
+
+    /// <summary>
+    /// Gets the path to a file or folder in the Data folder.
+    /// </summary>
+    /// <param name="paths">The paths parts.</param>
+    /// <returns>The path to the file or folder</returns>
+    public string GetDataPath(params string[] paths) {
+        paths = (new string[] { ArcadeManagerEnvironment.BasePath, "Data" }).Concat(paths).ToArray();
+        return Path.Combine(paths);
+    }
+
+    /// <summary>
+    /// Gets the files in a directory.
+    /// </summary>
+    /// <param name="path">The directory path.</param>
+    /// <param name="pattern">The file matching pattern.</param>
+    /// <returns>The list of files</returns>
+    public List<string> GetFiles(string path, string pattern) {
+        return Directory.GetFiles(path, pattern).ToList();
+    }
+
+    /// <summary>
     /// Makes a file size human-readable
     /// </summary>
     /// <param name="size">The source file size</param>
     /// <returns>The human-readable file size</returns>
     /// <remarks>From stackoverflow.com/a/4975942/6776</remarks>
-    public static string HumanSize(long size) {
+    public string HumanSize(long size) {
         string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
         if (size == 0)
             return $"0 {suf[0]}";
@@ -128,7 +161,7 @@ public static class FileSystem {
     /// </summary>
     /// <param name="path">The path to check</param>
     /// <returns>true if the path is a directory ; otherwise, false</returns>
-    public static bool IsDirectory(string path) {
+    public bool IsDirectory(string path) {
         if (string.IsNullOrWhiteSpace(path)) {
             return false;
         }
@@ -139,5 +172,14 @@ public static class FileSystem {
         catch (Exception) {
             return false;
         }
+    }
+
+    /// <summary>
+    /// Reads all the lines in a file.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>The file content</returns>
+    public string[] ReadAllLines(string path) {
+        return File.ReadAllLines(path);
     }
 }

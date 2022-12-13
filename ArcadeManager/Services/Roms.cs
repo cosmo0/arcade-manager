@@ -1,4 +1,5 @@
 ﻿using ArcadeManager.Actions;
+using ArcadeManager.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,13 +15,16 @@ public class Roms : IRoms {
     private readonly List<string> bioslist;
     private readonly BiosMatchList biosmatch = new();
     private readonly ICsv csvService;
+    private readonly IFileSystem fs;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Roms"/> class.
     /// </summary>
     /// <param name="csvService">The CSV service.</param>
-    public Roms(ICsv csvService) {
+    /// <param name="fs">The filesystem infrastructure.</param>
+    public Roms(ICsv csvService, IFileSystem fs) {
         this.csvService = csvService;
+        this.fs = fs;
 
         this.bioslist = File.ReadAllLines(Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "bioslist.txt")).ToList();
         this.biosmatch.AddRange(File.ReadAllLines(Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "biosmatch.csv"))
@@ -238,7 +242,7 @@ public class Roms : IRoms {
             var fi = new FileInfo(sourceRom);
 
             // replace progress with file size (so the user knows when a file is large)
-            messageHandler.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
+            messageHandler.Progress($"{game} ({fs.HumanSize(fi.Length)})", total, i);
 
             // copy rom
             if (!File.Exists(destRom) || args.overwrite) {
@@ -263,9 +267,9 @@ public class Roms : IRoms {
             if (Directory.Exists(sourceChd)) {
                 if (messageHandler.MustCancel) { break; }
 
-                messageHandler.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
+                messageHandler.Progress($"Copying {game} CHD ({fs.HumanSize(fs.DirectorySize(sourceChd))})", total, i);
 
-                copied += FileSystem.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
+                copied += fs.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
             }
         }
 

@@ -24,8 +24,7 @@ public interface ILocalizer {
     /// Changes the current culture.
     /// </summary>
     /// <param name="locale">The locale (en, fr...).</param>
-    /// <returns>The new culture</returns>
-    CultureInfo ChangeCulture(string locale);
+    void ChangeCulture(string locale);
 
     /// <summary>
     /// Gets the culture name

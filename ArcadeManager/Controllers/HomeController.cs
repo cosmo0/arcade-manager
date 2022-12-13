@@ -39,9 +39,7 @@ public class HomeController : BaseController {
     /// </summary>
     /// <returns>The view</returns>
     public IActionResult Index(string lang) {
-        if (!string.IsNullOrEmpty(lang)) {
-            localizer.ChangeCulture(lang);
-        }
+        localizer.ChangeCulture(lang);
 
         return View();
     }

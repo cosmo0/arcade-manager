@@ -1,4 +1,5 @@
 ﻿using ArcadeManager.Actions;
+using ArcadeManager.Infrastructure;
 using ArcadeManager.Services;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
@@ -12,6 +13,7 @@ namespace ArcadeManager;
 public partial class MessageHandler : IMessageHandler {
     private readonly ICsv csvService;
     private readonly IDownloader downloaderService;
+    private readonly IFileSystem fs;
     private readonly IOverlays overlaysService;
     private readonly IRoms romsService;
     private readonly IUpdater updaterService;
@@ -25,12 +27,13 @@ public partial class MessageHandler : IMessageHandler {
     /// <param name="overlaysService">The overlays service.</param>
     /// <param name="romsService">The roms service.</param>
     /// <param name="updaterService">The updater service.</param>
-    public MessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService, IUpdater updaterService) {
+    public MessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService, IUpdater updaterService, IFileSystem fs) {
         this.csvService = csvService;
         this.downloaderService = downloaderService;
         this.overlaysService = overlaysService;
         this.romsService = romsService;
         this.updaterService = updaterService;
+        this.fs = fs;
     }
 
     /// <summary>
@@ -274,7 +277,7 @@ public partial class MessageHandler : IMessageHandler {
     private void FsExists(object args) {
         var path = args as string;
 
-        Electron.IpcMain.Send(window, "fs-exists-reply", FileSystem.Exists(path));
+        Electron.IpcMain.Send(window, "fs-exists-reply", fs.Exists(path));
     }
 
     /// <summary>

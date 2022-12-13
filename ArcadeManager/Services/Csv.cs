@@ -1,4 +1,5 @@
-﻿using ArcadeManager.Models;
+﻿using ArcadeManager.Infrastructure;
+using ArcadeManager.Models;
 using CsvHelper;
 using System;
 using System.Collections.Generic;

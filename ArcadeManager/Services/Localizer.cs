@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ArcadeManager.Infrastructure;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
@@ -72,7 +73,11 @@ public class Localizer : ILocalizer {
     /// </summary>
     /// <param name="locale">The locale (en, fr...).</param>
     /// <returns>The new culture</returns>
-    public CultureInfo ChangeCulture(string locale) {
+    public void ChangeCulture(string locale) {
+        if (string.IsNullOrEmpty(locale)) {
+            return;
+        }
+
         CultureInfo culture = new("en");
         if (_locales.Contains(locale)) {
             culture = new CultureInfo(locale);
@@ -88,8 +93,6 @@ public class Localizer : ILocalizer {
 
         CultureInfo.DefaultThreadCurrentCulture = culture;
         CultureInfo.DefaultThreadCurrentUICulture = culture;
-
-        return culture;
     }
 
     /// <summary>
