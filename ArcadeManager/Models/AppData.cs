@@ -115,16 +115,6 @@ public class OverlayBundle {
     public SourceDest Common { get; set; }
 
     /// <summary>
-    /// Gets or sets the description.
-    /// </summary>
-    public string Description { get; set; }
-
-    /// <summary>
-    /// Gets or sets the image.
-    /// </summary>
-    public string Image { get; set; }
-
-    /// <summary>
     /// Gets or sets the name.
     /// </summary>
     public string Name { get; set; }

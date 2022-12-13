@@ -74,8 +74,8 @@
     <None Remove="Data\csv\mame\top50.csv" />
     <None Remove="Data\csv\mame\top80s.csv" />
     <None Remove="Data\csv\mame\top90s.csv" />
-    <None Remove="Data\translations\en.ini" />
-    <None Remove="Data\translations\fr.ini" />
+    <None Remove="Data\translations\en.txt" />
+    <None Remove="Data\translations\fr.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\electron.ico">
@@ -204,10 +204,10 @@
     <Content Include="Data\csv\mame\top90s.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\translations\en.ini">
+    <Content Include="Data\translations\en.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\translations\fr.ini">
+    <Content Include="Data\translations\fr.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -2,8 +2,6 @@
     "overlays": [
         {
             "name": "Realistic",
-            "description": "Realistic-looking overlays, with scratches, reflections, and CRT shader",
-            "image": "img/overlays-realistic.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-realistic",
             "baseOs":  "retropie",
             "roms": {
@@ -34,8 +32,6 @@
         },
         {
             "name": "Artworks",
-            "description": "Artwork-style overlays, as clean as possible, with a large screen area",
-            "image": "img/overlays-artwork.jpg",
             "repository": "cosmo0/retropie-overlays-arcade-artwork",
             "baseOs": "retropie",
             "roms": {

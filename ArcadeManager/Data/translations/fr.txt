@@ -78,4 +78,9 @@ OVERLAYS_RATIO_ERROR=La résolution n'est pas correcte. Ces packs ne fonctionnen
 OVERLAYS_INSTALL=Télécharger et installer
 OVERLAYS_ERROR_NOOVERLAY=Veuillez sélectionner un pack d'overlays
 OVERLAYS_ERROR_NOROMS=Veuillez sélectionner un dossier de roms
-OVERLAYS_ERROR_NOCONFIG= "Veuillez sélectionner un dossier de configs"
+OVERLAYS_ERROR_NOCONFIG=Veuillez sélectionner un dossier de configs
+
+OVERLAYS_PACK_REALISTIC_NAME=Réaliste
+OVERLAYS_PACK_REALISTIC_DESC=Overlays de style réalistes, avec des rayures, des réflexions, et un shader CRT
+OVERLAYS_PACK_ARTWORK_NAME=Artworks
+OVERLAYS_PACK_ARTWORK_DESC=Overlays de style "artistique", aussi propres que possible, avec une large zone de jeu
