@@ -1,0 +1,35 @@
+{
+	"CLOSE": "Close",
+	"HELP": "Help",
+	"HOME": "Home",
+
+	"BREADCRUMB_CSV": "Manage games list",
+
+	"CSV_INDEX_CREATE_KEEP": "Keep only games listed in another file",
+	"CSV_INDEX_CREATE_MERGE": "Add games from a file to another file (merge)",
+	"CSV_INDEX_CREATE_REMOVE": "Remove games in a file that are listed in another file",
+	"CSV_INDEX_CREATE_TITLE": "Create your own files",
+	"CSV_INDEX_EXISTING_DAT": "Convert a DAT file",
+	"CSV_INDEX_EXISTING_DOWNLOAD": "Download a pre-built games list",
+	"CSV_INDEX_EXISTING_FOLDER": "List the roms in a folder",
+	"CSV_INDEX_EXISTING_INI": "Convert a INI file",
+	"CSV_INDEX_EXISTING_TITLE": "From an existing source",
+	"CSV_INDEX_INTRO": "<p>This tool uses CSV files for the games list. Why? Because it's easier to use, and you can easily toy with the files using Excel to <a href=\"/Help/CustomCsv\" class=\"navmenu\">create your own custom lists</a> or edit the provided ones.</p>",
+	"CSV_INDEX_TITLE": "Manage games lists",
+
+	"GAMES_LIST_ADD": "Add games to a CSV file",
+	"GAMES_LIST_ADD_INTRO": "<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>",
+	"GAMES_LIST_ADD_TITLE": "Add games to a CSV file",
+
+	"HOME_ACTION_CSV": "Manage games lists",
+	"HOME_ACTION_OVERLAYS": "Install overlays",
+	"HOME_ACTION_ROMS": "Manage roms",
+	"HOME_ACTION_SYSTEM": "Change system",
+	"HOME_ACTION_TITLE": "Select an action <a href=\"Help/What\" class=\"navmenu\">What should I do?</a>",
+	"HOME_ACTION_WIZARD": "Wizard",
+	"HOME_INTRO": "<p>This tool helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.<br>It assumes you have a working romset corresponding to the MAME/FBA/FBNeo version you're using.<br>It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.</p><div class=\"alert alert-info\">If you have no idea what a \"romset\" is, or why the MAME version is important, check out <a href=\"/Help\" class=\"navmenu\">the help section</a> first.</div>",
+	"HOME_UPDATE_CURRENTVERSION": "current version:",
+	"HOME_UPDATE_DONOTNOTIFY": "Do not notify me again for this version",
+	"HOME_UPDATE_MOREINFOS": "more informations",
+	"HOME_UPDATE_PUBLISHEDON": "Published on"
+}

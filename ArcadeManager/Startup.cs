@@ -2,10 +2,12 @@ using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SimpleInjector;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -75,6 +77,19 @@ public class Startup {
     /// </summary>
     /// <param name="services">The services.</param>
     public void ConfigureServices(IServiceCollection services) {
+        services.AddLocalization();
+        services.Configure<RequestLocalizationOptions>(options => {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en"),
+                new CultureInfo("fr")
+            };
+
+            options.DefaultRequestCulture = new RequestCulture("en", "en");
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+        });
+
         services.AddControllersWithViews();
 
         services.AddLogging();
@@ -82,11 +97,11 @@ public class Startup {
         // bind SimpleInjector to .Net injection
         services.AddSimpleInjector(container, options => {
             options.AddAspNetCore().AddControllerActivation();
-
+            options.AddLocalization();
             options.AddLogging();
         });
 
-        this.InitializeInjection();
+        this.InitializeInjection(services);
     }
 
     /// <summary>
@@ -130,6 +145,13 @@ public class Startup {
                     {
                         new MenuItem { Role = MenuRole.about },
                         new MenuItem { Type = MenuType.separator },
+                        new MenuItem
+                        {
+                            Label = "Open Developer Tools",
+                            Accelerator = "CmdOrCtrl+I",
+                            Click = () => Electron.WindowManager.BrowserWindows.First().WebContents.OpenDevTools()
+                        },
+                        new MenuItem { Type = MenuType.separator },
                         new MenuItem { Role = MenuRole.hide },
                         new MenuItem { Role = MenuRole.hideothers },
                         new MenuItem { Type = MenuType.separator },
@@ -143,6 +165,13 @@ public class Startup {
                     Submenu = new MenuItem[]
                     {
                         new MenuItem { Role = MenuRole.about },
+                        new MenuItem { Type = MenuType.separator },
+                        new MenuItem
+                        {
+                            Label = "Open Developer Tools",
+                            Accelerator = "CmdOrCtrl+I",
+                            Click = () => Electron.WindowManager.BrowserWindows.First().WebContents.OpenDevTools()
+                        },
                         new MenuItem { Type = MenuType.separator },
                         new MenuItem { Role = MenuRole.quit }
                     }
@@ -166,39 +195,6 @@ public class Startup {
                     new MenuItem { Label = "Cut", Accelerator = "CmdOrCtrl+X", Role = MenuRole.cut },
                     new MenuItem { Label = "Copy", Accelerator = "CmdOrCtrl+C", Role = MenuRole.copy },
                     new MenuItem { Label = "Paste", Accelerator = "CmdOrCtrl+V", Role = MenuRole.paste },
-                }
-            },
-
-			// View
-			new MenuItem {
-                Label = "View",
-                Type = MenuType.submenu,
-                Submenu = new MenuItem[] {
-                    new MenuItem
-                    {
-                        Label = "Reload",
-                        Accelerator = "CmdOrCtrl+R",
-                        Click = () =>
-                        {
-							// on reload, start fresh and close any old open secondary windows
-							Electron.WindowManager.BrowserWindows.ToList().ForEach(browserWindow => {
-                                if(browserWindow.Id != 1)
-                                {
-                                    browserWindow.Close();
-                                }
-                                else
-                                {
-                                    browserWindow.Reload();
-                                }
-                            });
-                        }
-                    },
-                    new MenuItem
-                    {
-                        Label = "Open Developer Tools",
-                        Accelerator = "CmdOrCtrl+I",
-                        Click = () => Electron.WindowManager.BrowserWindows.First().WebContents.OpenDevTools()
-                    }
                 }
             },
 
@@ -258,15 +254,19 @@ public class Startup {
     /// <summary>
     /// Configures the dependency injection.
     /// </summary>
-    private void InitializeInjection() {
+    private void InitializeInjection(IServiceCollection services) {
         // services
         container.Register<Services.ICsv, Services.Csv>(Lifestyle.Singleton);
         container.Register<Services.IDownloader, Services.Downloader>(Lifestyle.Singleton);
         container.Register<Services.IOverlays, Services.Overlays>(Lifestyle.Singleton);
         container.Register<Services.IRoms, Services.Roms>(Lifestyle.Singleton);
         container.Register<Services.IUpdater, Services.Updater>(Lifestyle.Singleton);
+        container.Register<Services.ILocalizer, Services.Localizer>(Lifestyle.Singleton);
 
         // message handler
         container.Register<IMessageHandler, MessageHandler>(Lifestyle.Singleton);
+
+        // view localization uses dotnet tooling
+        services.AddSingleton(provider => container.GetInstance<Services.ILocalizer>());
     }
 }

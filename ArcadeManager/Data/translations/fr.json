@@ -1,0 +1,35 @@
+{
+	"CLOSE": "Fermer",
+	"HELP": "Aide",
+	"HOME": "Accueil",
+
+	"BREADCRUMB_CSV": "Listes de jeux",
+
+	"CSV_INDEX_CREATE_KEEP": "Ne conserver que les jeux listés dans un autre fichier",
+	"CSV_INDEX_CREATE_MERGE": "Fusionner deux listes",
+	"CSV_INDEX_CREATE_REMOVE": "Supprimer les jeux listés dans un autre fichier",
+	"CSV_INDEX_CREATE_TITLE": "Créez vos propres fichiers",
+	"CSV_INDEX_EXISTING_DAT": "Convertir un fichier DAT",
+	"CSV_INDEX_EXISTING_DOWNLOAD": "Télécharger un fichier pré-conçu",
+	"CSV_INDEX_EXISTING_FOLDER": "Lister les roms d'un dossier",
+	"CSV_INDEX_EXISTING_INI": "Convertir un fichier INI",
+	"CSV_INDEX_EXISTING_TITLE": "Depuis une source existante",
+	"CSV_INDEX_INTRO": "<p>Cet outil utilise des fichiers CSV pour les listes de jeux. Pourquoi ? Parce que c'est plus facile à utiliser, et vous pouvez utiliser n'importe quel outil pour <a href=\"/Help/CustomCsv\" class=\"navmenu\">créer les votres</a> ou manipuler les listes fournies à votre guise.</p>",
+	"CSV_INDEX_TITLE": "Gérer ses listes de jeux",
+
+	"GAMES_LIST_ADD": "Fusionner deux listes",
+	"GAMES_LIST_ADD_INTRO": "<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>",
+	"GAMES_LIST_ADD_TITLE": "Add games to a CSV file",
+	
+	"HOME_ACTION_CSV": "Gérer ses listes de jeux",
+	"HOME_ACTION_OVERLAYS": "Installer des overlays",
+	"HOME_ACTION_ROMS": "Gérer ses roms",
+	"HOME_ACTION_SYSTEM": "Changer de système",
+	"HOME_ACTION_TITLE": "Sélectionnez une action <a href=\"Help/What\" class=\"navmenu\">Que devrais-je faire ?</a>",
+	"HOME_ACTION_WIZARD": "Assistant",
+	"HOME_INTRO": "<p>Cet outil vous aidera à filtrer votre collection de roms en retirant les jeux injouables, mauvais, etc.<br> Il suppose que vous avez un romset fonctionnel, correspondant à l'émulateur que vous utilisez.<br> Il est aussi utile si vous êtes perdu au milieu des milliers de jeux qui forment un romset MAME, et que vous ne voulez que le meilleur, sans vous prendre la tête.</p><div class=\"alert alert-info\">Si vous ne savez pas ce qu'est un \"romset\", ou pourquoi la version de MAME est importante, direction <a href=\"/Help\" class=\"navmenu\">l'aide</a>.</div>",
+	"HOME_UPDATE_CURRENTVERSION": "version actuelle :",
+	"HOME_UPDATE_DONOTNOTIFY": "Ne me prévenez plus pour cette version",
+	"HOME_UPDATE_MOREINFOS": "plus d'informations",
+	"HOME_UPDATE_PUBLISHEDON": "Publiée le"
+}
