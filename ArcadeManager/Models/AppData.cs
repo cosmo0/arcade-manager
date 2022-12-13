@@ -10,11 +10,6 @@ namespace ArcadeManager.Models;
 public class AppData {
 
     /// <summary>
-    /// The list of CSV categories
-    /// </summary>
-    public IEnumerable<CsvCategory> Csv { get; set; }
-
-    /// <summary>
     /// The default values
     /// </summary>
     public DefaultValues Defaults { get; set; }
@@ -23,42 +18,6 @@ public class AppData {
     /// The list of overlay packages
     /// </summary>
     public IEnumerable<OverlayBundle> Overlays { get; set; }
-
-    /// <summary>
-    /// Represents a CSV category
-    /// </summary>
-    public class CsvCategory {
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the details.
-        /// </summary>
-        public string Details { get; set; }
-
-        /// <summary>
-        /// Gets or sets the folder.
-        /// </summary>
-        public string Folder { get; set; }
-
-        /// <summary>
-        /// Gets or sets the image.
-        /// </summary>
-        public string Image { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the repository URL.
-        /// </summary>
-        public string Repository { get; set; }
-    }
 
     /// <summary>
     /// Represents the default values for
