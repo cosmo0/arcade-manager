@@ -1,13 +1,12 @@
 ﻿using ArcadeManager.Infrastructure;
 using System.Collections.Generic;
-using System.IO;
 
 namespace ArcadeManager.Services;
 
 /// <summary>
 /// The wizard service
 /// </summary>
-/// <seealso cref="ArcadeManager.Services.IWizard" />
+/// <seealso cref="ArcadeManager.Services.IWizard"/>
 public class Wizard : IWizard {
     private readonly IFileSystem fs;
 
@@ -23,9 +22,7 @@ public class Wizard : IWizard {
     /// Counts the games in the lists.
     /// </summary>
     /// <param name="emulator">The emulator.</param>
-    /// <returns>
-    /// The games in each list
-    /// </returns>
+    /// <returns>The games in each list</returns>
     public Dictionary<string, int> CountGamesInLists(string emulator) {
         var files = fs.GetFiles(fs.GetDataPath("csv", emulator), "*.csv");
         var result = new Dictionary<string, int>();

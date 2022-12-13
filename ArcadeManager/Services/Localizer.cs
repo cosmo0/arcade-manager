@@ -1,7 +1,6 @@
 ﻿using ArcadeManager.Infrastructure;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text.Json;
 using System.Threading;
 
@@ -18,13 +17,14 @@ public class Localizer : ILocalizer {
     /// <summary>
     /// Initializes a new instance of the <see cref="Localizer"/> class.
     /// </summary>
-    public Localizer() {
-        var translationsFolder = Path.Combine(ArcadeManagerEnvironment.BasePath, "Data", "translations");
+    /// <param name="fs">The file system.</param>
+    public Localizer(IFileSystem fs) {
+        var translationsFolder = fs.GetDataPath("translations");
 
         foreach (var loc in _locales) {
             // reads the JSON file
-            var translationFile = Path.Combine(translationsFolder, $"{loc}.json");
-            var translationContent = File.ReadAllText(translationFile);
+            var translationFile = fs.PathJoin(translationsFolder, $"{loc}.json");
+            var translationContent = fs.FileRead(translationFile);
 
             var words = Serializer.Deserialize<JsonElement>(translationContent);
 

@@ -3,7 +3,6 @@ using ArcadeManager.Infrastructure;
 using ArcadeManager.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -120,15 +119,15 @@ public class Downloader : IDownloader {
             progress?.Invoke(item);
 
             if (item.IsFile) {
-                var target = Path.Join(targetFolder, item.Path);
-                if (overwrite || !File.Exists(target)) {
+                var target = fs.PathJoin(targetFolder, item.Path);
+                if (overwrite || !fs.FileExists(target)) {
                     await DownloadFile(repository, $"{folder}/{item.Path}", target);
                 }
 
                 result.Add(target);
             }
             else {
-                result.AddRange(await DownloadFolder(repository, $"{folder}/{item.Path}", Path.Join(targetFolder, item.Path), overwrite, progress));
+                result.AddRange(await DownloadFolder(repository, $"{folder}/{item.Path}", fs.PathJoin(targetFolder, item.Path), overwrite, progress));
             }
         }
 

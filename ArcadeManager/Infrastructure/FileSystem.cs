@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Infrastructure;
 
@@ -9,6 +10,14 @@ namespace ArcadeManager.Infrastructure;
 /// File system utilities
 /// </summary>
 public class FileSystem : IFileSystem {
+
+    /// <summary>
+    /// Creates the specified directory.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    public void CreateDirectory(string path) {
+        Directory.CreateDirectory(path);
+    }
 
     /// <summary>
     /// Copies a directory
@@ -57,6 +66,24 @@ public class FileSystem : IFileSystem {
         }
 
         return nbCopied;
+    }
+
+    /// <summary>
+    /// Checks if a directory exists
+    /// </summary>
+    /// <param name="path">The directory path.</param>
+    /// <returns>Whether the directory exists</returns>
+    public bool DirectoryExists(string path) {
+        return Directory.Exists(path);
+    }
+
+    /// <summary>
+    /// Gets the directory name
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The directory name</returns>
+    public string DirectoryName(string path) {
+        return new FileInfo(path).DirectoryName;
     }
 
     /// <summary>
@@ -110,6 +137,51 @@ public class FileSystem : IFileSystem {
     }
 
     /// <summary>
+    /// Copies a file
+    /// </summary>
+    /// <param name="source">The source path.</param>
+    /// <param name="dest">The destination path.</param>
+    /// <param name="overwrite">if set to <c>true</c> overwrite existing file.</param>
+    public void FileCopy(string source, string dest, bool overwrite) {
+        File.Copy(source, dest, overwrite);
+    }
+
+    /// <summary>
+    /// Deletes a file.
+    /// </summary>
+    /// <param name="filePath">The file path.</param>
+    public void FileDelete(string filePath) {
+        File.Delete(filePath);
+    }
+
+    /// <summary>
+    /// Checks if a file exists
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>Whether the file exists</returns>
+    public bool FileExists(string path) {
+        return File.Exists(path);
+    }
+
+    /// <summary>
+    /// Gets the file extension
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The file extension</returns>
+    public string FileExtension(string path) {
+        return new FileInfo(path).Extension;
+    }
+
+    /// <summary>
+    /// Gets a file name
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The file name</returns>
+    public string FileName(string path) {
+        return Path.GetFileName(path);
+    }
+
+    /// <summary>
     /// Gets the file name without extension
     /// </summary>
     /// <param name="path">The file path.</param>
@@ -118,6 +190,43 @@ public class FileSystem : IFileSystem {
         var filename = Path.GetFileName(path);
         filename = filename.Substring(0, filename.IndexOf("."));
         return filename;
+    }
+
+    /// <summary>
+    /// Reads a file content
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The file content</returns>
+    public string FileRead(string path) {
+        return File.ReadAllText(path);
+    }
+
+    /// <summary>
+    /// Reads a file content asynchronously.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The file content</returns>
+    public async Task<string> FileReadAsync(string path) {
+        return await File.ReadAllTextAsync(path);
+    }
+
+    /// <summary>
+    /// Gets the file size
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <returns>The file size, in bytes</returns>
+    public long FileSize(string path) {
+        return new FileInfo(path).Length;
+    }
+
+    /// <summary>
+    /// Writes a file content asynchronously
+    /// </summary>
+    /// <param name="path">The path.</param>
+    /// <param name="content">The content.</param>
+    /// <returns></returns>
+    public async Task FileWriteAsync(string path, string content) {
+        await File.WriteAllTextAsync(path, content);
     }
 
     /// <summary>
@@ -172,6 +281,15 @@ public class FileSystem : IFileSystem {
         catch (Exception) {
             return false;
         }
+    }
+
+    /// <summary>
+    /// Joins paths
+    /// </summary>
+    /// <param name="paths">The paths parts to join.</param>
+    /// <returns>The joined path</returns>
+    public string PathJoin(params string[] paths) {
+        return Path.Join(paths);
     }
 
     /// <summary>
