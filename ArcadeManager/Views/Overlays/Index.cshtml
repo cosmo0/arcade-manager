@@ -1,47 +1,43 @@
 ﻿@{
-    ViewData["title"] = "Overlays";
+    ViewData["title"] = Localizer["OVERLAYS_PAGETITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Install overlays</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_OVERLAYS"]</li>
     </ol>
 </nav>
 
 <h2>
-    Download and install an overlays pack
-    <a asp-controller="Help" asp-action="Shares" class="navmenu">How to access my Retropie/Recabox shares</a>
+    @Html.Raw(Localizer["OVERLAYS_TITLE"])
 </h2>
 
 <p>
-    Select the overlays pack you want, and the arcade roms folder(s) to install overlays in.
-    This will download and install only the files you need.<br>
-    Note that <strong>it will only work with Libretro emulators</strong> (mame-libretro and fba-libretro),
-    not AdvanceMAME, MAME4All, FBA2x, PiFBA, etc.
+    @Html.Raw(Localizer["OVERLAYS_INTRO"])
 </p>
 
 <div class="alert alert-info">
-    These overlays are made for a 16:9 resolution (like 1080p or 720p for example). They won't work with another aspect ratio.
+    @Localizer["OVERLAYS_ALERT"]
 </div>
 
 <div class="row">
     <div class="col-6">
-        <h3>Overlay pack</h3>
+        <h3>@Localizer["OVERLAYS_PACK_TITLE"]</h3>
         <!-- selection of pack -->
         <div id="packs"></div>
     </div>
     <div class="col-6">
-        <h3>Settings</h3>
+        <h3>@Localizer["OVERLAYS_SETTINGS_TITLE"]</h3>
         <!-- roms folder -->
         <div id="romFoldersContainer">
             <div class="input-group mb-0">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Roms folder</span>
+                    <span class="input-group-text">@Localizer["OVERLAYS_SETTINGS_ROMSFOLDER"]</span>
                 </div>
-                <input type="text" class="form-control" id="romFolder" placeholder="Roms folder (ex: \\retropie\roms\arcade)">
+                <input type="text" class="form-control" id="romFolder" placeholder="@Localizer["OVERLAYS_SETTINGS_ROMSFOLDER_PLACEHOLDER"]">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary browse folder" type="button" data-input="romFolder">Browse</button>
+                    <button class="btn btn-outline-secondary browse folder" type="button" data-input="romFolder">@Localizer["BROWSE"]</button>
                 </div>
             </div>
         </div>
@@ -50,11 +46,11 @@
             <hr>
             <div class="input-group mb-0">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Config folder</span>
+                    <span class="input-group-text">@Localizer["OVERLAYS_SETTINGS_CONFIGFOLDER"]</span>
                 </div>
-                <input type="text" class="form-control" id="configFolder" placeholder="Config folder (ex: \\retropie\configs)">
+                <input type="text" class="form-control" id="configFolder" placeholder="@Localizer["OVERLAYS_SETTINGS_CONFIGFOLDER_PLACEHOLDER"]">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary browse folder" type="button" data-input="configFolder">Browse</button>
+                    <button class="btn btn-outline-secondary browse folder" type="button" data-input="configFolder">@Localizer["BROWSE"]</button>
                 </div>
             </div>
         </div>
@@ -63,11 +59,11 @@
             <!-- resize -->
             <div class="col-6">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Width" id="width" value="1920">
+                    <input type="text" class="form-control" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920">
                     <div class="input-group-append input-group-prepend">
                         <span class="input-group-text">&times;</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Height" id="height" value="1080">
+                    <input type="text" class="form-control" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080">
                 </div>
                 <small>
                     <a href="#" class="setsize" data-width="2560" data-height="1440">1440p</a>
@@ -81,11 +77,11 @@
             <div class="col-6">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
-                    <label class="form-check-label" for="overwriteYes">Overwrite existing files</label>
+                    <label class="form-check-label" for="overwriteYes">@Localizer["OVERWRITE_YES"]</label>
                 </div>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
-                    <label class="form-check-label" for="overwriteNo">Do not overwrite existing files</label>
+                    <label class="form-check-label" for="overwriteNo">@Localizer["OVERWRITE_YES"]</label>
                 </div>
             </div>
         </div>
@@ -93,7 +89,7 @@
 </div>
 
 <p class="mt-3">
-    <button type="button" id="buttonInstall" class="btn btn-primary btn-lg btn-block">Download and install</button>
+    <button type="button" id="buttonInstall" class="btn btn-primary btn-lg btn-block">@Localizer["OVERLAYS_INSTALL"]</button>
 </p>
 
 <script type="text/template" id="overlayTemplate">
@@ -138,7 +134,7 @@
                     if (exists) {
                         $('#romFoldersContainer')
                             .empty()
-                            .append($('<label>Roms folders</label>'));
+                            .append($('<label>@Localizer.Js("OVERLAYS_SETTINGS_ROMSFOLDERS")</label>'));
                         for (let folder of appData.defaults.romFolders[os]) {
                             const romFolder = romShare + "/" + folder;
                             ipc('fs-exists', romFolder, (exists) => {
@@ -204,14 +200,14 @@
 
                     // check the width/height aspect ratio is OK
                     if (width / height !== 16 / 9) {
-                        window.alert('Resolution is not correct. These packs will only work with 16:9 screens.');
+                        window.alert('@Localizer.Js("OVERLAYS_RATIO_ERROR")');
                         return;
                     }
 
                     // check inputs and paths
-                    if (pack.length === 0) { window.alert('Please select an overlay pack'); return; }
-                    if (romFolders.length === 0) { window.alert('Please select the roms folder'); return; }
-                    if (!configFolder || configFolder === '') { window.alert('Please fill the path to the config share'); return; }
+                    if (pack.length === 0) { window.alert('@Localizer.Js("OVERLAYS_ERROR_NOOVERLAY")'); return; }
+                    if (romFolders.length === 0) { window.alert('@Localizer.Js("OVERLAYS_ERROR_NOROMS")'); return; }
+                    if (!configFolder || configFolder === '') { window.alert('@Localizer.Js("OVERLAYS_ERROR_NOCONFIG")'); return; }
 
                     // download and install pack
                     ipc('overlays-download', { romFolders, configFolder, pack: pack.data('pack'), overwrite, ratio: (height / 1080) });

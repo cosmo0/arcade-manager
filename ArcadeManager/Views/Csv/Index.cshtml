@@ -1,55 +1,52 @@
 ﻿@{
-    ViewData["title"] = "Games lists";
+    ViewData["title"] = Localizer["CSV_INDEX_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Manage games lists</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_CSV"]</li>
     </ol>
 </nav>
 
-<h2>Manage games lists</h2>
+<h2>@Localizer["CSV_INDEX_TITLE"]</h2>
 
 <p>
-    This tool uses CSV files for the games list. Why? Because it's easier to use, and
-    you can easily toy with the files using Excel to
-    <a asp-controller="Help" asp-action="CustomCsv" class="navmenu">create your own custom lists</a> or edit
-    the provided ones.
+    @Html.Raw(Localizer["CSV_INDEX_INTRO"])
 </p>
 
 <div class="row">
     <div class="col-6">
-        <p class="font-weight-bold">From an existing source</p>
+        <p class="font-weight-bold">@Localizer["CSV_INDEX_EXISTING_TITLE"]</p>
 
         <div class="list-group">
             <a asp-controller="Csv" asp-action="Download" class="navmenu list-group-item list-group-item-action text-primary">
-                <i class="icon-download"></i> Download a pre-built games list
+                <i class="icon-download"></i> @Localizer["CSV_INDEX_EXISTING_DOWNLOAD"]
             </a>
             <a asp-controller="Csv" asp-action="ConvertDat" class="navmenu list-group-item list-group-item-action text-primary">
-                <i class="icon-file-excel"></i> Convert a DAT file
+                <i class="icon-file-excel"></i> @Localizer["CSV_INDEX_EXISTING_DAT"]
             </a>
             <a asp-controller="Csv" asp-action="ConvertIni" class="navmenu list-group-item list-group-item-action text-primary">
-                <i class="icon-file-excel"></i> Convert a INI file
+                <i class="icon-file-excel"></i> @Localizer["CSV_INDEX_EXISTING_INI"]
             </a>
             <a asp-controller="Csv" asp-action="ListFiles" class="navmenu list-group-item list-group-item-action text-primary">
-                <i class="icon-folder-open"></i> List the roms in a folder
+                <i class="icon-folder-open"></i> @Localizer["CSV_INDEX_EXISTING_FOLDER"]
             </a>
         </div>
     </div>
 
     <div class="col-6">
-        <p class="font-weight-bold">Create your own files</p>
+        <p class="font-weight-bold">@Localizer["CSV_INDEX_CREATE_TITLE"]</p>
 
         <div class="list-group">
             <a asp-controller="Csv" asp-action="Add" class="navmenu list-group-item list-group-item-action text-primary">
-                <i class="icon-merge"></i> Add games from a file to another file (merge)
+                <i class="icon-merge"></i> @Localizer["CSV_INDEX_CREATE_MERGE"]
             </a>
             <a asp-controller="Csv" asp-action="Delete" class="navmenu list-group-item list-group-item-action text-primary">
-                <i class="icon-split"></i> Remove games in a file that are listed in another file
+                <i class="icon-split"></i> @Localizer["CSV_INDEX_CREATE_REMOVE"]
             </a>
             <a asp-controller="Csv" asp-action="Keep" class="navmenu list-group-item list-group-item-action text-primary">
-                <i class="icon-shuffle"></i> Keep only games listed in another file
+                <i class="icon-shuffle"></i> @Localizer["CSV_INDEX_CREATE_KEEP"]
             </a>
         </div>
     </div>

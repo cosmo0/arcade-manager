@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 
 namespace ArcadeManager.Services;
 
@@ -45,4 +44,11 @@ public interface ILocalizer {
     /// <param name="locale">The locale.</param>
     /// <returns><c>true</c> if it is the current locale; otherwise, <c>false</c>.</returns>
     bool IsCurrentLocale(string locale);
+
+    /// <summary>
+    /// Gets a string escaped for JS inclusion
+    /// </summary>
+    /// <param name="code">The translation code.</param>
+    /// <returns>The JS-escaped translation</returns>
+    string Js(string code);
 }

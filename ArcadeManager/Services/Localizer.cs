@@ -48,23 +48,7 @@ public class Localizer : ILocalizer {
     /// <returns>The translated string</returns>
     public string this[string code] {
         get {
-            try {
-                if (!translations.ContainsKey(CurrentLocale())) {
-                    return $"{code}_NO_LANGUAGE";
-                }
-
-                var t = translations[CurrentLocale()];
-                var result = t.GetProperty(code).GetString();
-
-                if (string.IsNullOrEmpty(result)) {
-                    return $"{code}_NOT_FOUND";
-                }
-
-                return result;
-            }
-            catch {
-                return $"{code}_ERROR";
-            }
+            return GetTranslationForLanguage(code, CurrentLocale());
         }
     }
 
@@ -121,5 +105,39 @@ public class Localizer : ILocalizer {
     /// <returns><c>true</c> if it is the current locale; otherwise, <c>false</c>.</returns>
     public bool IsCurrentLocale(string locale) {
         return CurrentLocale().Equals(locale, System.StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    /// <summary>
+    /// Gets a string escaped for JS inclusion
+    /// </summary>
+    /// <param name="code">The translation code.</param>
+    /// <returns>The JS-escaped translation</returns>
+    public string Js(string code) {
+        return this[code]?.Replace("'", "\\'");
+    }
+
+    private string GetTranslationForLanguage(string code, string language) {
+        try {
+            if (!translations.ContainsKey(language)) {
+                return $"{code}_NO_LANGUAGE";
+            }
+
+            var t = translations[language];
+
+            try {
+                return t.GetProperty(code).GetString();
+            }
+            catch (KeyNotFoundException) {
+                // fallback on english
+                if (!language.Equals("en", System.StringComparison.InvariantCultureIgnoreCase)) {
+                    return GetTranslationForLanguage(code, "en");
+                }
+
+                return $"{code}_NOT_FOUND";
+            }
+        }
+        catch {
+            return $"{code}_ERROR";
+        }
     }
 }
