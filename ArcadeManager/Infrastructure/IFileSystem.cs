@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Infrastructure;
@@ -146,6 +148,12 @@ public interface IFileSystem {
     List<string> GetFiles(string path, string pattern);
 
     /// <summary>
+    /// Gets the invalid file name characters.
+    /// </summary>
+    /// <returns>The invalid file name characters</returns>
+    char[] GetInvalidFileNameChars();
+
+    /// <summary>
     /// Makes a file size human-readable
     /// </summary>
     /// <param name="size">The source file size</param>
@@ -172,4 +180,18 @@ public interface IFileSystem {
     /// <param name="path">The file path.</param>
     /// <returns>The file content</returns>
     string[] ReadAllLines(string path);
+
+    /// <summary>
+    /// Reads a file using a stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <param name="action">The action to execute on the file stream.</param>
+    Task ReadFileStream(string path, Func<StreamReader, Task> action);
+
+    /// <summary>
+    /// Writes in a file using a stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <param name="action">The action to execute on the stream writer.</param>
+    Task WriteFileStream(string path, Func<StreamWriter, Task> action);
 }

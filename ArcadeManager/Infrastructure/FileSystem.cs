@@ -246,7 +246,15 @@ public class FileSystem : IFileSystem {
     /// <param name="pattern">The file matching pattern.</param>
     /// <returns>The list of files</returns>
     public List<string> GetFiles(string path, string pattern) {
-        return Directory.GetFiles(path, pattern).ToList();
+        return Directory.GetFiles(path, pattern, new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive }).ToList();
+    }
+
+    /// <summary>
+    /// Gets the invalid file name characters.
+    /// </summary>
+    /// <returns>The invalid file name characters</returns>
+    public char[] GetInvalidFileNameChars() {
+        return Path.GetInvalidFileNameChars();
     }
 
     /// <summary>
@@ -299,5 +307,28 @@ public class FileSystem : IFileSystem {
     /// <returns>The file content</returns>
     public string[] ReadAllLines(string path) {
         return File.ReadAllLines(path);
+    }
+
+    /// <summary>
+    /// Reads a file using a stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <param name="action">The action to execute on the file stream.</param>
+    public async Task ReadFileStream(string path, Func<StreamReader, Task> action) {
+        using var stream = File.OpenText(path);
+
+        await action(stream);
+    }
+
+    /// <summary>
+    /// Writes in a file using a stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <param name="action">The action to execute on the stream writer.</param>
+    public async Task WriteFileStream(string path, Func<StreamWriter, Task> action) {
+        using var outStream = new FileStream(path, FileMode.Create, FileAccess.Write);
+        using var outStreamWriter = new StreamWriter(outStream);
+
+        await action(outStreamWriter);
     }
 }
