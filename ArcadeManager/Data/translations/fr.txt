@@ -66,11 +66,11 @@ CSV_DOWNLOAD_PROGRESSINIT=Téléchargement de fichier
 CSV_DOWNLOAD_LIST_BEST_NAME=Les meilleurs jeux
 CSV_DOWNLOAD_LIST_BEST_DESC=Les meilleurs jeux pour chaque émulateur
 CSV_DOWNLOAD_LIST_AKNF_NAME=All killer, no filler
-CSV_DOWNLOAD_LIST_AKNF_DESC=La liste 'Que du bon, pas de gras' de forum.arcadecontrols.com
+CSV_DOWNLOAD_LIST_AKNF_DESC=La liste 'Que du bon, pas de remplissage' de forum.arcadecontrols.com
 CSV_DOWNLOAD_LIST_FBNEO_NAME=FinalBurn Neo
 CSV_DOWNLOAD_LIST_FBNEO_DESC=FinalBurn Neo (1.0.0.2)
-CSV_DOWNLOAD_LIST_MAME_NAME=MAME (dernière)
-CSV_DOWNLOAD_LIST_MAME_DESC=La dernière version de MAME
+CSV_DOWNLOAD_LIST_MAME_NAME=MAME
+CSV_DOWNLOAD_LIST_MAME_DESC=La dernière version de MAME (0.249)
 CSV_DOWNLOAD_LIST_MAME2003_NAME=MAME 2003+
 CSV_DOWNLOAD_LIST_MAME2003_DESC=MAME 2003 Plus, une version améliorée de MAME 2003
 CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
@@ -140,7 +140,7 @@ WIZARD_ACTION_ROMS=Copier des roms
 WIZARD_ACTION_ROMS_DESC=Copier des jeux depuis un romset complet vers un répertoire de sélection.
 WIZARD_ACTION_OVERLAYS=Installer des overlays
 WIZARD_ACTION_OVERLAYS_DESC=Ajouter de jolies bordures autour de l'écran du jeu.
-WIZARD_START=Démarrer
+WIZARD_START=Démarrer - choisir l'émulateur
 
 WIZARD_EMULATOR_TITLE=Assistant : émulateur
 WIZARD_EMULATOR_INTRO=<p>Veuillez sélectionner l'émulateur que vous utilisez.</p><p>FBNeo n'a pas de jeu en 3D (ou en 2D développés sur des systèmes 3D), et même MAME n'est pas très bon sur les jeux les plus récents (Naomi, Atomiswave, etc).<br />Voici <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">une liste d'alternatives</a>.</p>
@@ -161,7 +161,7 @@ WIZARD_LIST_TOP90S=<strong>Top des années 90 et 2000</strong> : de Smash TV à 
 WIZARD_LIST_ICONS=<strong>Icônes</strong> : {0} jeux révolutionnaires, uniques, ou juste très populaires. Ne sont pas toujours très bons par rapport aux standards actuels, ou à leurs suites.<br /><strong>Attention:</strong> certains jeux de cette liste ne fonctionneront pas bien avec une simple manette rétro ou stick arcade, et vous aurez besoin d'un spinner, double stick, volant, etc. Vous pouvez parfois obtenir de bons résultats en réglant les contrôles dans les options.
 WIZARD_LIST_MULTIPLAYER=<strong>Multijoueur</strong> : {0} jeux à jouer à deux ou plus, en coopération ou en compétition.
 WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong> : les {0} meilleurs jeux de la NeoGeo, le système arcade le plus populaire et le plus endurant.
-WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong> ("que du bon, pas de gras") : des bons jeux, encore funs aujourd'hui, jouables avec un stick arcade, testés et validés par la communauté.<br />Listes originales prises sur <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong> ("que du bon, pas de remplissage") : des bons jeux, encore funs aujourd'hui, jouables avec un stick arcade, sans trop de doublons, testés et validés par la communauté.<br />Listes originales prises sur <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
 WIZARD_LIST_AKNF_SHOOTING=Shoot ({0} jeux)
 WIZARD_LIST_AKNF_RUNGUN=Run & gun ({0} jeux)
 WIZARD_LIST_AKNF_PLATFORM=Plate-forme ({0} jeux)

@@ -69,8 +69,8 @@ CSV_DOWNLOAD_LIST_AKNF_NAME=All killer, no filler
 CSV_DOWNLOAD_LIST_AKNF_DESC=The 'All Killer, No Filler' list from forum.arcadecontrols.com
 CSV_DOWNLOAD_LIST_FBNEO_NAME=FinalBurn Neo
 CSV_DOWNLOAD_LIST_FBNEO_DESC=FinalBurn Neo (1.0.0.2)
-CSV_DOWNLOAD_LIST_MAME_NAME=MAME (latest)
-CSV_DOWNLOAD_LIST_MAME_DESC=The latest version of MAME
+CSV_DOWNLOAD_LIST_MAME_NAME=MAME
+CSV_DOWNLOAD_LIST_MAME_DESC=The latest version of MAME (0.249)
 CSV_DOWNLOAD_LIST_MAME2003_NAME=MAME 2003+
 CSV_DOWNLOAD_LIST_MAME2003_DESC=MAME 2003 Plus, an improved version of MAME 2003
 CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
@@ -140,7 +140,7 @@ WIZARD_ACTION_ROMS=Copy roms
 WIZARD_ACTION_ROMS_DESC=Copy games from a full romset to your installation folder.
 WIZARD_ACTION_OVERLAYS=Install overlays
 WIZARD_ACTION_OVERLAYS_DESC=Add nice borders around the game screen.
-WIZARD_START=Start
+WIZARD_START=Start - choose emulator
 
 WIZARD_EMULATOR_TITLE=Automatic installation: emulator
 WIZARD_EMULATOR_INTRO=<p>Please choose the emulator you want to use.</p><p>FBNeo is missing 3D games (or 2D games developed on 3D systems), and even MAME isn't great on more recent games (Naomi, Atomiswave, etc).<br />Here is a <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">list of alternatives</a>.</p>
@@ -161,7 +161,7 @@ WIZARD_LIST_TOP90S=<strong>Top of the 90's and 00's</strong>: from Smash TV to D
 WIZARD_LIST_ICONS=<strong>Icons</strong>: {0} groundbreaking, revolutionary, unique, or just very popular games. May not be very good by today's standards, or compared to their follow-ups.<br /><strong>Warning:</strong> some games in this list will not work well with a simple retro pad or arcade stick, and you might need a spinner, double stick, racing wheel, etc. You can sometimes get good results by changing the control settings in the options.
 WIZARD_LIST_MULTIPLAYER=<strong>Multiplayer</strong>: {0} great games to play with two players or more, in coop or versus.
 WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong>: the {0} best games on NeoGeo, the most popular and enduring arcade system.
-WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, tested and validated by the community.<br />Original lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, without too many duplicates, tested and validated by the community.<br />Original lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
 WIZARD_LIST_AKNF_SHOOTING=Shooting ({0} games)
 WIZARD_LIST_AKNF_RUNGUN=Run and gun ({0} games)
 WIZARD_LIST_AKNF_PLATFORM=Platform ({0} games)
