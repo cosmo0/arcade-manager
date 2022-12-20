@@ -1,30 +1,28 @@
 ﻿@{
-    ViewData["title"] = "Roms management";
+    ViewData["title"] = Localizer["ROMS_INDEX_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Manage roms</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_ROMS"]</li>
     </ol>
 </nav>
 
-<h2>Manage roms</h2>
+<h2>@Localizer["ROMS_INDEX_TITLE"]</h2>
 
 <p>
-    Easily copy roms you want, or remove roms you don't want, based on a CSV file listing the
-    games you want to copy or remove.<br>
-    Copying from a romset assumes it matches your MAME version and is non-merged.
+    @Html.Raw(Localizer["ROMS_INDEX_INTRO"])
 </p>
 
 <div class="list-group">
     <a asp-controller="Roms" asp-action="Add" class="navmenu list-group-item list-group-item-action text-primary">
-        <i class="icon-folder-down"></i> Copy listed roms from a full romset to a selection folder
+        <i class="icon-folder-down"></i> @Localizer["ROMS_INDEX_COPY"]
     </a>
     <a asp-controller="Roms" asp-action="Delete" class="navmenu list-group-item list-group-item-action text-primary">
-        <i class="icon-folder-up"></i> Delete listed roms
+        <i class="icon-folder-up"></i> @Localizer["ROMS_INDEX_DELETE"]
     </a>
     <a asp-controller="Roms" asp-action="Keep" class="navmenu list-group-item list-group-item-action text-primary">
-        <i class="icon-folder-minus"></i> Keep only the roms listed
+        <i class="icon-folder-minus"></i> @Localizer["ROMS_INDEX_KEEP"]
     </a>
 </div>

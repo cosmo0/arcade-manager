@@ -12,9 +12,18 @@ OVERWRITE_NO=Ne pas écraser les fichiers existants
 BREADCRUMB_CSV=Listes de jeux
 BREADCRUMB_CSV_DOWNLOAD=Télécharger
 BREADCRUMB_OVERLAYS=Installer des overlays
+BREADCRUMB_ROMS=Gérer ses roms
+BREADCRUMB_ROMS_COPY=Copier
+BREADCRUMB_ROMS_DELETE=Supprimer
+BREADCRUMB_ROMS_KEEP=Conserver
 BREADCRUMB_WIZARD=Assistant
 BREADCRUMB_WIZARD_EMULATOR=Emulateur
 BREADCRUMB_WIZARD_LIST=Sélection de liste
+BREADCRUMB_WIZARD_PATHS=Chemins
+
+ERROR_NOCSV=Veuillez sélectionner un fichier CSV
+ERROR_NOFULLSET=Veuillez sélectionner le chemin du romset complet
+ERROR_NOSELECTION=Veuillez sélectionner le chemin de la sélection de roms
 
 HOME_ACTION_CSV=Gérer ses listes de jeux
 HOME_ACTION_OVERLAYS=Installer des overlays
@@ -70,6 +79,36 @@ CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 GAMES_LIST_ADD=Fusionner deux listes
 GAMES_LIST_ADD_INTRO=<p>Sélectionnez le fichier CSV principal, le fichier contenant les jeux que vous voulez ajouter, et le fichier cible.</p>
 GAMES_LIST_ADD_TITLE=Ajouter des jeux à un fichier CSV
+
+ROMS_INDEX_TITLE=Gérer ses roms
+ROMS_INDEX_INTRO=Copiez facilement les roms que vous voulez, ou retirez celles dont vous ne voulez pas, en vous basant sur un simple fichier CSV.<br>Copier depuis un romset part du principe que le fichier correspond à votre version de MAME, et est de préférence "non-merged".
+ROMS_INDEX_COPY=Copiez les roms listées depuis un romset complet jusqu'à un répertoire de sélection
+ROMS_INDEX_DELETE=Supprimez les roms listées
+ROMS_INDEX_KEEP=Conservez uniquement les roms listées
+
+ROMS_COPY_TITLE=Copier des roms
+ROMS_COPY_HOWTOACCESS=Comment accéder au partage réseau Retropie/Recalbox
+ROMS_COPY_INTRO=Sélectionnez un fichier CSV qui liste les roms que vous voulez copier, le chemin vers le romset complet, et le chemin vers une sélection<br>L'outil copiera ensuite les roms listées dans le CSV depuis le romset vers la sélection.<br>Par exemple, utiliser un CSV qui liste les "jeux classiques" ne copiera que les classiques au lieu des milliers de jeux de MAME.
+ROMS_COPY_CSVFILE=Fichier CSV
+ROMS_COPY_CSVFILE_DESC=Le fichier CSV qui liste les jeux que vous voulez copier
+ROMS_COPY_ROMSET=Romset complet
+ROMS_COPY_ROMSET_DESC=Le dossier contenant tous les fichiers du romset
+ROMS_COPY_ROMSELECT=Sélection de roms
+ROMS_COPY_ROMSELECT_DESC=Le dossier qui contiendra la sélection de roms que vous voulez
+ROMS_COPY_COPY=Copier les roms listées
+
+ROMS_DELETE_TITLE=Supprimer des roms
+ROMS_DELETE_INTRO=Sélectionnez un fichier CSV listant les roms que vous voulez supprimer, et le dossier contenant vos roms.<br>Cet outil supprimera du dossier les roms listées dans le CSV.<br>Par exemple, utiliser un fichier listant les "mauvais jeux" retirera les mauvais jeux.
+ROMS_DELETE_ALERT=Ne rentrez pas le chemin du romset complet ! La suppression est irréversible !
+ROMS_DELETE_FOLDER=Dossier des roms
+ROMS_DELETE_FOLDER_DESC=Le dossier contenant les roms à supprimer
+ROMS_DELETE_DELETE=Supprimer les roms listées
+
+ROMS_KEEP_TITLE=Ne conserver que les roms listées
+ROMS_KEEP_INTRO=Sélectionnez un fichier CSV contenant les roms que vous voulez conserver, et le dossier contenant les roms.<br>Cet outil ne conservera que les roms listées dans le fichier, et supprimera toutes les autres.<br>Par exemple, utilisez un fichier "jeux qui fonctionnent" supprimera tous les jeux qui ne marchent pas.
+ROMS_KEEP_FOLDER=Dossier des roms
+ROMS_KEEP_FOLDER_DESC=Le dossier contenant les roms à conserver
+ROMS_KEEP_KEEP=Supprimer les roms non listées
 
 OVERLAYS_PAGETITLE=Overlays
 OVERLAYS_TITLE=Téléchargez et installez un pack d'overlays <a href="/Help/Shares" class="navmenu">Comment accéder aux partages Retropie/Recabox</a>
@@ -135,3 +174,9 @@ WIZARD_LIST_AKNF_CLASSICS=Classiques à l'ancienne ({0} jeux)
 WIZARD_LIST_AKNF_NOCLONE=Tous les jeux, sans les clones ({0} jeux)
 WIZARD_LIST_AKNF_CLEAN=Tous les jeux, sans les clones, les portages console (Playchoice 10...), les jeux porno, de casino, de mahjong, etc ({0} jeux)
 WIZARD_LIST_NEXT=Suivant - définir les chemins
+
+WIZARD_PATHS_TITLE=Assistant : chemins
+WIZARD_PATHS_INTRO=Veuillez sélectionner les chemins vers le romset complet, et le répertoire de destination.
+WIZARD_PATHS_START=Démarrer la copie
+WIZARD_PATHS_NEXT=Suivant - installer les overlays
+WIZARD_PATHS_FINISH=Terminer
