@@ -1,6 +1,6 @@
 ﻿@model Wizard
 @{
-    ViewData["title"] = Localizer["WIZARD_TITLE"];
+    ViewData["title"] = Localizer["WIZARD_EMULATOR_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
@@ -15,7 +15,7 @@
 
 @Html.Raw(Localizer["WIZARD_EMULATOR_INTRO"])
 
-<form asp-controller="Wizard" asp-action="PostEmulator" method="post">
+<form asp-controller="Wizard" asp-action="PostEmulator" method="post" class="wizard">
 
     <input type="hidden" asp-for="DoOverlays" />
 
@@ -24,7 +24,7 @@
         <div class="flex-fill">
             <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_FBNEO_NAME"]</h5>
             <p class="mb-0 desc">
-                @Localizer["WIZARD_EMULATOR_FBNEO_DESC"]
+                @Html.Raw(Localizer["WIZARD_EMULATOR_FBNEO_DESC"])
             </p>
         </div>
     </div>
@@ -34,7 +34,7 @@
         <div class="flex-fill">
             <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_MAME_NAME"]</h5>
             <p class="mb-0 desc">
-                @Localizer["WIZARD_EMULATOR_MAME_DESC"]
+                @Html.Raw(Localizer["WIZARD_EMULATOR_MAME_DESC"])
             </p>
         </div>
     </div>
@@ -44,7 +44,7 @@
         <div class="flex-fill">
             <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_MAME2003_NAME"]</h5>
             <p class="mb-0 desc">
-                @Localizer["WIZARD_EMULATOR_MAME2003_DESC"]
+                @Html.Raw(Localizer["WIZARD_EMULATOR_MAME2003_DESC"])
             </p>
         </div>
     </div>

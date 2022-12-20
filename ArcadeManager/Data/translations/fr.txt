@@ -14,6 +14,7 @@ BREADCRUMB_CSV_DOWNLOAD=Télécharger
 BREADCRUMB_OVERLAYS=Installer des overlays
 BREADCRUMB_WIZARD=Assistant
 BREADCRUMB_WIZARD_EMULATOR=Emulateur
+BREADCRUMB_WIZARD_LIST=Sélection de liste
 
 HOME_ACTION_CSV=Gérer ses listes de jeux
 HOME_ACTION_OVERLAYS=Installer des overlays
@@ -67,8 +68,8 @@ CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
 CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 
 GAMES_LIST_ADD=Fusionner deux listes
-GAMES_LIST_ADD_INTRO=<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>
-GAMES_LIST_ADD_TITLE=Add games to a CSV file
+GAMES_LIST_ADD_INTRO=<p>Sélectionnez le fichier CSV principal, le fichier contenant les jeux que vous voulez ajouter, et le fichier cible.</p>
+GAMES_LIST_ADD_TITLE=Ajouter des jeux à un fichier CSV
 
 OVERLAYS_PAGETITLE=Overlays
 OVERLAYS_TITLE=Téléchargez et installez un pack d'overlays <a href="/Help/Shares" class="navmenu">Comment accéder aux partages Retropie/Recabox</a>
@@ -109,5 +110,28 @@ WIZARD_EMULATOR_FBNEO_DESC=A le meiller équilibre entre performances et précis
 WIZARD_EMULATOR_MAME_NAME=MAME - dernière version (0.249)
 WIZARD_EMULATOR_MAME_DESC=A la plus large sélection de jeux (3500+) et la plus grande précision, mais demande le plus de puissance, même pour certains vieux jeux.<br /><strong>Préférez ceci si vous jouez sur PC</strong>.
 WIZARD_EMULATOR_MAME2003_NAME=MAME 2003+
-WIZARD_EMULATOR_MAME2003_DESC=A les meilleures performances, mais un bon nombre de bugs (ex : beaucoup de shooters Toaplan n'ont pas de son) et autres problèmes.<br /><strong>Préférez ceci si vous jouez sur Rasbperry Pi 3</strong>.
+WIZARD_EMULATOR_MAME2003_DESC=A les meilleures performances, mais un bon nombre de bugs, de jeux qui ne marchent pas, et autres problèmes.<br /><strong>Préférez ceci si vous jouez sur Rasbperry Pi 3</strong>.
 WIZARD_EMULATOR_NEXT=Suivant - choix des listes
+
+WIZARD_LIST_TITLE=Assistant : listes de jeux
+WIZARD_LIST_INTRO=<p>Veuillez sélectionner les listes de jeux que vous souhaitez.</p><p>Tous les jeux ont été testés et fonctionnent avec une manette rétro (type SNES) ou un stick arcade. Parfois il est possible de jouer mais de manière non optimale sans des contrôles dédiés (par exemple les jeux de course).</p><p>Notez que les "tops" ont des doublons : sélectionner le top 200 et le top 50 vous donnera 200 jeux, puisque le top 50 est une sous-sélection du top 200.<br />Evidemment, ces "tops" sont très subjectifs, et plutôt destinés aux joueurs qui ne connaissent pas bien l'arcade. Cet outil vous permet également de <a href="/Csv">créer vos propres listes</a>.</p>
+WIZARD_LIST_TOP200=<strong>Top 200</strong> : une sélection équilibrée de grands jeux, et quelques perles cachées : une bonne dose de nostalgie, et quelques belles découvertes.
+WIZARD_LIST_TOP50=<strong>Top 50</strong> : la crème de la crème, une sélection restreinte mais équilibrée de classiques intemporels : la meilleure manière de découvrir ce qu'était l'arcade.
+WIZARD_LIST_TOP80S=<strong>Top des années 80</strong> : de Asteroids à Final Fight, les {0} meilleurs jeux à l'ancienne.
+WIZARD_LIST_TOP90S=<strong>Top des années 90 et 2000</strong> : de Smash TV à Deathsmiles, les {0} meilleurs jeux modernes.
+WIZARD_LIST_ICONS=<strong>Icônes</strong> : {0} jeux révolutionnaires, uniques, ou juste très populaires. Ne sont pas toujours très bons par rapport aux standards actuels, ou à leurs suites.<br /><strong>Attention:</strong> certains jeux de cette liste ne fonctionneront pas bien avec une simple manette rétro ou stick arcade, et vous aurez besoin d'un spinner, double stick, volant, etc. Vous pouvez parfois obtenir de bons résultats en réglant les contrôles dans les options.
+WIZARD_LIST_MULTIPLAYER=<strong>Multijoueur</strong> : {0} jeux à jouer à deux ou plus, en coopération ou en compétition.
+WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong> : les {0} meilleurs jeux de la NeoGeo, le système arcade le plus populaire et le plus endurant.
+WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong> ("que du bon, pas de gras") : des bons jeux, encore funs aujourd'hui, jouables avec un stick arcade, testés et validés par la communauté.<br />Listes originales prises sur <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+WIZARD_LIST_AKNF_SHOOTING=Shoot ({0} jeux)
+WIZARD_LIST_AKNF_RUNGUN=Run & gun ({0} jeux)
+WIZARD_LIST_AKNF_PLATFORM=Plate-forme ({0} jeux)
+WIZARD_LIST_AKNF_FIGHTING=Combat ({0} jeux)
+WIZARD_LIST_AKNF_BEATHACK=Beat'em up et hack & slash ({0} jeux)
+WIZARD_LIST_AKNF_PUZZLE=Puzzle ({0} jeux)
+WIZARD_LIST_AKNF_SPORTS=Sport ({0} jeux)
+WIZARD_LIST_AKNF_RACING=Course ({0} jeux)
+WIZARD_LIST_AKNF_CLASSICS=Classiques à l'ancienne ({0} jeux)
+WIZARD_LIST_AKNF_NOCLONE=Tous les jeux, sans les clones ({0} jeux)
+WIZARD_LIST_AKNF_CLEAN=Tous les jeux, sans les clones, les portages console (Playchoice 10...), les jeux porno, de casino, de mahjong, etc ({0} jeux)
+WIZARD_LIST_NEXT=Suivant - définir les chemins

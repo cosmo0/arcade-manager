@@ -107,3 +107,15 @@ h2 img {
     padding-bottom: 0.5rem;
     color: #007bff;
 }
+
+/*
+    Wizard
+*/
+.wizard .option-container {
+    transition: box-shadow 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.wizard .option-container:hover {
+    box-shadow: 0 0 5px 2px rgba(0,0,0,0.2);
+}
