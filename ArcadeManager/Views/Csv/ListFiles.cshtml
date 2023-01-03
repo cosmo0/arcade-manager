@@ -1,51 +1,47 @@
 ﻿@{
-    ViewData["title"] = "List roms in a folder";
+    ViewData["title"] = Localizer["CSV_LIST_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">Manage games lists</a></li>
-        <li class="breadcrumb-item active" aria-current="page">List roms</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">@Localizer["BREADCRUMB_CSV"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_CSV_LIST"]</li>
     </ol>
 </nav>
 
-<h2>List the roms in a folder</h2>
+<h2>@Localizer["CSV_LIST_TITLE"]</h2>
 
-<p>
-    Select the folder that contain your roms, and the target CSV file.<br>
-    If you want more informations for each, use the "<a asp-controller="Csv" asp-action="Keep" class="navmenu">keep games</a>"
-    filter, use a "complete romset" CSV as main, and your files list as secondary.
-</p>
+@Html.Raw(Localizer["CSV_LIST_INTRO"])
 
 <div class="input-group mb-0">
     <div class="input-group-prepend">
-        <span class="input-group-text">Roms folder</span>
+        <span class="input-group-text">@Localizer["CSV_LIST_FOLDER"]</span>
     </div>
     <input type="text" class="form-control" id="folderMain">
     <div class="input-group-append">
-        <button class="btn btn-outline-primary browse folder" type="button" data-input="folderMain">Browse</button>
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="folderMain">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The DAT file to convert</small>
+    <small class="form-text text-muted">@Localizer["CSV_LIST_FOLDER_DESC"]</small>
 </p>
 
 <div class="input-group mb-0">
     <div class="input-group-prepend">
-        <span class="input-group-text">Roms list file</span>
+        <span class="input-group-text">@Localizer["CSV_LIST_TARGET"]</span>
     </div>
     <input type="text" class="form-control" id="fileTarget">
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">Browse</button>
+        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The CSV file listing your roms to be saved</small>
+    <small class="form-text text-muted">@Localizer["CSV_LIST_TARGET_DESC"]</small>
 </p>
 
 <p class="mt-3">
-    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">List the files</button>
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["CSV_LIST_LIST"]</button>
 </p>
 
 @section Scripts {
@@ -56,8 +52,8 @@
 				target = $('#fileTarget').val();
 
 			// check every path is filled
-			if (main === '') { window.alert('Please choose a folder to list the files from'); return; }
-			if (target === '') { window.alert('Please choose the target CSV file'); return; }
+            if (main === '') { window.alert('@Localizer["CSV_LIST_ERROR_NOFOLDER"]'); return; }
+            if (target === '') { window.alert('@Localizer["ERROR_NOTARGETCSV"]'); return; }
 
 			// execute action
             ipc("csv-listfiles", { main, target });

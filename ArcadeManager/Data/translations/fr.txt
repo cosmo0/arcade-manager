@@ -11,6 +11,7 @@ OVERWRITE_NO=Ne pas écraser les fichiers existants
 
 BREADCRUMB_CSV=Listes de jeux
 BREADCRUMB_CSV_DOWNLOAD=Télécharger
+BREADCRUMB_CSV_ADD=Ajouter des jeux
 BREADCRUMB_OVERLAYS=Installer des overlays
 BREADCRUMB_ROMS=Gérer ses roms
 BREADCRUMB_ROMS_COPY=Copier
@@ -24,6 +25,8 @@ BREADCRUMB_WIZARD_PATHS=Chemins
 ERROR_NOCSV=Veuillez sélectionner un fichier CSV
 ERROR_NOFULLSET=Veuillez sélectionner le chemin du romset complet
 ERROR_NOSELECTION=Veuillez sélectionner le chemin de la sélection de roms
+ERROR_NOSECONDARYCSV=Veuillez sélectionner un fichier CSV secondaire
+ERROR_NOTARGETCSV=Veuillez sélectionner un fichier cible
 
 HOME_ACTION_CSV=Gérer ses listes de jeux
 HOME_ACTION_OVERLAYS=Installer des overlays
@@ -76,9 +79,15 @@ CSV_DOWNLOAD_LIST_MAME2003_DESC=MAME 2003 Plus, une version améliorée de MAME 
 CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
 CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 
-GAMES_LIST_ADD=Fusionner deux listes
-GAMES_LIST_ADD_INTRO=<p>Sélectionnez le fichier CSV principal, le fichier contenant les jeux que vous voulez ajouter, et le fichier cible.</p>
-GAMES_LIST_ADD_TITLE=Ajouter des jeux à un fichier CSV
+CSV_ADD_TITLE=Ajouter des jeux à un fichier CSV
+CSV_ADD_INTRO=Sélectionnez le fichier CSV principal, le fichier contenant les jeux à ajouter, et le fichier cible.
+CSV_ADD_MAINFILE=Fichier principal
+CSV_ADD_MAINFILE_DESC=Le fichier CSV auquel ajouter des jeux
+CSV_ADD_SECONDARY=Fichier secondaire
+CSV_ADD_SECONDARY_DESC=Le fichier CSV contenant les jeux à ajouter
+CSV_ADD_TARGET=Cible
+CSV_ADD_TARGET_DESC=Le fichier fusionné à sauvegarder
+CSV_ADD_ADD=Ajouter
 
 ROMS_INDEX_TITLE=Gérer ses roms
 ROMS_INDEX_INTRO=Copiez facilement les roms que vous voulez, ou retirez celles dont vous ne voulez pas, en vous basant sur un simple fichier CSV.<br>Copier depuis un romset part du principe que le fichier correspond à votre version de MAME, et est de préférence "non-merged".

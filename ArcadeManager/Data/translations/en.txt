@@ -11,6 +11,8 @@ OVERWRITE_NO=Do not overwrite existing files
 
 BREADCRUMB_CSV=Manage games list
 BREADCRUMB_CSV_DOWNLOAD=Download
+BREADCRUMB_CSV_ADD=Add games
+BREADCRUMB_CSV_LIST=List roms
 BREADCRUMB_OVERLAYS=Install overlays
 BREADCRUMB_ROMS=Manage roms
 BREADCRUMB_ROMS_COPY=Copy
@@ -24,6 +26,8 @@ BREADCRUMB_WIZARD_PATHS=Paths
 ERROR_NOCSV=Please choose a main CSV file
 ERROR_NOFULLSET=Please choose the path to the full romset
 ERROR_NOSELECTION=Please choose the path to the selection of roms
+ERROR_NOSECONDARYCSV=Please choose a secondary CSV file
+ERROR_NOTARGETCSV=Please choose the target CSV file
 
 HOME_ACTION_CSV=Manage games lists
 HOME_ACTION_OVERLAYS=Install overlays
@@ -76,9 +80,24 @@ CSV_DOWNLOAD_LIST_MAME2003_DESC=MAME 2003 Plus, an improved version of MAME 2003
 CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
 CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 
-GAMES_LIST_ADD=Add games to a CSV file
-GAMES_LIST_ADD_INTRO=<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>
-GAMES_LIST_ADD_TITLE=Add games to a CSV file
+CSV_ADD_TITLE=Add games to a CSV file
+CSV_ADD_INTRO=Select the main CSV file, the files containing the games you want to add, and the target file.
+CSV_ADD_MAINFILE=Main CSV file
+CSV_ADD_MAINFILE_DESC=The CSV file to add games to
+CSV_ADD_SECONDARY=Secondary CSV file
+CSV_ADD_SECONDARY_DESC=The CSV file with the games to add.
+CSV_ADD_TARGET=Target file
+CSV_ADD_TARGET_DESC=The merged file to be saved
+CSV_ADD_ADD=Add
+
+CSV_LIST_TITLE=List the roms in a folder
+CSV_LIST_INTRO=<p>Select the folder that contain your roms, and the target CSV file.<br>If you want more informations for each, use the "<a href="/Csv/Keep" class="navmenu">keep games</a>" filter, use a "complete romset" CSV as main, and your files list as secondary.</p>
+CSV_LIST_FOLDER=Roms folder
+CSV_LIST_FOLDER_DESC=The folder containing the roms to list
+CSV_LIST_TARGET=Roms list file
+CSV_LIST_TARGET_DESC=The CSV file listing your roms to be saved
+CSV_LIST_ERROR_NOFOLDER=Please choose a folder to list the files from
+CSV_LIST_LIST=List the files
 
 ROMS_INDEX_TITLE=Manage roms
 ROMS_INDEX_INTRO=Easily copy roms you want, or remove roms you don't want, based on a simple CSV file.<br>Copying from a romset assumes it matches your MAME version and is non-merged.
