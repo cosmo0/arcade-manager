@@ -89,6 +89,15 @@ CSV_ADD_TARGET=Cible
 CSV_ADD_TARGET_DESC=Le fichier fusionné à sauvegarder
 CSV_ADD_ADD=Ajouter
 
+CSV_LIST_TITLE=Lister les roms d'un dossier
+CSV_LIST_INTRO=<p>Sélectionnez le dossier qui contient vos roms, et le fichier CSV cible.<br>Si vous voulez plus d'informations sur vos jeux, utilisez le mode "<a href="/Csv/Keep" class="navmenu">filtrer les jeux</a>", utilisez un "romset complet" comme fichier principal, et votre liste de fichiers comme secondaire.</p>
+CSV_LIST_FOLDER=Dossier de roms
+CSV_LIST_FOLDER_DESC=Le dossier contenant les roms à lister
+CSV_LIST_TARGET=Fichier de liste de roms
+CSV_LIST_TARGET_DESC=Le fichier CSV listant les roms
+CSV_LIST_ERROR_NOFOLDER=Veuillez sélectionner un dossier de liste de roms
+CSV_LIST_LIST=Lister les fichiers
+
 ROMS_INDEX_TITLE=Gérer ses roms
 ROMS_INDEX_INTRO=Copiez facilement les roms que vous voulez, ou retirez celles dont vous ne voulez pas, en vous basant sur un simple fichier CSV.<br>Copier depuis un romset part du principe que le fichier correspond à votre version de MAME, et est de préférence "non-merged".
 ROMS_INDEX_COPY=Copiez les roms listées depuis un romset complet jusqu'à un répertoire de sélection
