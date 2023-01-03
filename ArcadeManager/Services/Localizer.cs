@@ -11,7 +11,7 @@ namespace ArcadeManager.Services;
 /// Localization management
 /// </summary>
 public class Localizer : ILocalizer {
-    private readonly List<string> _locales = new() { "en", "fr" };
+    private static readonly List<string> _locales = new() { "en", "fr" };
 
     private readonly Dictionary<string, Dictionary<string, string>> translations = new();
 
@@ -60,6 +60,18 @@ public class Localizer : ILocalizer {
     }
 
     /// <summary>
+    /// Ensures that the current locale has translations.
+    /// </summary>
+    public static void EnsureLocale() {
+        var locale = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLowerInvariant();
+
+        // fallback on english
+        if (!_locales.Contains(locale, StringComparer.InvariantCultureIgnoreCase)) {
+            ChangeCulture(new CultureInfo("en"));
+        }
+    }
+
+    /// <summary>
     /// Changes the current culture.
     /// </summary>
     /// <param name="locale">The locale (en, fr...).</param>
@@ -74,16 +86,7 @@ public class Localizer : ILocalizer {
             culture = new CultureInfo(locale);
         }
 
-        // this is stupid but it works and I've already spent too much time on that
-
-        Thread.CurrentThread.CurrentCulture = culture;
-        Thread.CurrentThread.CurrentUICulture = culture;
-
-        CultureInfo.CurrentCulture = culture;
-        CultureInfo.CurrentUICulture = culture;
-
-        CultureInfo.DefaultThreadCurrentCulture = culture;
-        CultureInfo.DefaultThreadCurrentUICulture = culture;
+        ChangeCulture(culture);
     }
 
     /// <summary>
@@ -121,6 +124,19 @@ public class Localizer : ILocalizer {
     /// <returns>The JS-escaped translation</returns>
     public string Js(string code) {
         return this[code]?.Replace("'", "\\'");
+    }
+
+    private static void ChangeCulture(CultureInfo culture) {
+        // this is stupid but it works and I've already spent too much time on that
+
+        Thread.CurrentThread.CurrentCulture = culture;
+        Thread.CurrentThread.CurrentUICulture = culture;
+
+        CultureInfo.CurrentCulture = culture;
+        CultureInfo.CurrentUICulture = culture;
+
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
     }
 
     private string GetTranslationForLanguage(string code, string language) {
