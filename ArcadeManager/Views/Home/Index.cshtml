@@ -2,18 +2,18 @@
     ViewData["Title"] = Localizer["HOME"];
 }
 
-<h1 class="display-4"><i class="icon-pacman"></i> ArcadeManager</h1>
+<h1 class="display-4"><i class="icustom-pacman"></i> ArcadeManager</h1>
 
 <hr>
 
 <div class="dropdown" id="flags">
     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-        <img src="img/flags/@(Localizer.CurrentLocale()).svg" alt="" />
+        <i class="icon-earth"></i>
+        @Localizer["HOME_ACTION_LANGUAGE"]
     </button>
     <div class="dropdown-menu dropdown-menu-right">
         @foreach (var l in Localizer.Locales) {
             <a class="dropdown-item @(Localizer.IsCurrentLocale(l) ? "active" : "")" href="?lang=@l">
-                <img src="img/flags/@(l).svg" alt="" />
                 @Localizer.CultureName(l)
             </a>
         }
@@ -76,7 +76,7 @@
     <div class="col-10 help">
         <div class="list-group">
             <a asp-controller="Help" asp-action="Index" class="navmenu list-group-item list-group-item-action text-primary border-primary">
-                <i class="icon-help"></i> @Localizer["HOME_ACTION_HELP"]
+                <i class="icustom-help"></i> @Localizer["HOME_ACTION_HELP"]
             </a>
         </div>
     </div>

@@ -32,6 +32,7 @@ ERROR_NOSELECTION=Please choose the path to the selection of roms
 ERROR_NOSECONDARYCSV=Please choose a secondary CSV file
 ERROR_NOTARGETCSV=Please choose the target CSV file
 
+HOME_ACTION_LANGUAGE=Language
 HOME_ACTION_CSV=Manage games lists
 HOME_ACTION_OVERLAYS=Install overlays
 HOME_ACTION_ROMS=Manage roms
