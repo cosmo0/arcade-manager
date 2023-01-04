@@ -1,19 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = Localizer["HOME"];
 }
 
-<p>
-    This tool helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.<br>
-    It assumes you have a working romset corresponding to the MAME/FBA/FBNeo version you're using.<br>
-    It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
-</p>
-<div class="alert alert-info">
-    If you have no idea what a "romset" is, or why the MAME version is important,
-    check out <a asp-controller="Help" asp-action="Index" class="navmenu">the help section</a> first.
+<h1 class="display-4"><i class="icustom-pacman"></i> ArcadeManager</h1>
+
+<hr>
+
+<div class="dropdown" id="flags">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+        <i class="icon-earth"></i>
+        @Localizer["HOME_ACTION_LANGUAGE"]
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        @foreach (var l in Localizer.Locales) {
+            <a class="dropdown-item @(Localizer.IsCurrentLocale(l) ? "active" : "")" href="?lang=@l">
+                @Localizer.CultureName(l)
+            </a>
+        }
+    </div>
 </div>
 
+@Html.Raw(Localizer["HOME_INTRO"])
+
 <h2>
-    Select an action <a asp-controller="Help" asp-action="What" class="navmenu">What should I do?</a>
+    @Html.Raw(Localizer["HOME_ACTION_TITLE"])
 </h2>
 
 <div class="row mainmenu">
@@ -22,7 +32,7 @@
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/wizard.png">
                 <div class="card-footer">
-                    Wizard
+                    @Localizer["HOME_ACTION_WIZARD"]
                 </div>
             </div>
         </a>
@@ -33,7 +43,7 @@
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/overlays.png">
                 <div class="card-footer">
-                    Install overlays
+                    @Localizer["HOME_ACTION_OVERLAYS"]
                 </div>
             </div>
         </a>
@@ -44,7 +54,7 @@
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/roms.png">
                 <div class="card-footer">
-                    Manage roms
+                    @Localizer["HOME_ACTION_ROMS"]
                 </div>
             </div>
         </a>
@@ -55,7 +65,7 @@
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="img/csv.png">
                 <div class="card-footer">
-                    Manage games lists
+                    @Localizer["HOME_ACTION_CSV"]
                 </div>
             </div>
         </a>
@@ -66,14 +76,14 @@
     <div class="col-10 help">
         <div class="list-group">
             <a asp-controller="Help" asp-action="Index" class="navmenu list-group-item list-group-item-action text-primary border-primary">
-                <i class="icon-help"></i> Help
+                <i class="icustom-help"></i> @Localizer["HOME_ACTION_HELP"]
             </a>
         </div>
     </div>
     <div class="col-2 system">
         <div class="list-group">
             <a asp-controller="Home" asp-action="Os" class="navmenu list-group-item list-group-item-action text-info border-info">
-                Change system
+                @Localizer["HOME_ACTION_SYSTEM"]
             </a>
         </div>
     </div>
@@ -86,11 +96,11 @@
 			<div class="modal-body">
 				<h1 class="display-4" id="versionName"></h1>
 				<p class="lead">
-					Published on
+                    @Localizer["HOME_UPDATE_PUBLISHEDON"]
                     <span id="versionDate"></span>
                     -
-					<a href="#" class="blank" id="versionLink">more informations</a>
-                    (current version: <span id="versionCurrent"></span>)
+                    <a href="#" class="blank" id="versionLink">@Localizer["HOME_UPDATE_MOREINFOS"]</a>
+                    (@Localizer["HOME_UPDATE_CURRENTVERSION"] <span id="versionCurrent"></span>)
 				</p>
 				<div id="versionDetails" class="card p-3" style="max-height: 200px; overflow: auto;"></div>
 				<div class="mt-3 list-group" id="versionAssets"></div>
@@ -98,9 +108,9 @@
 			<div class="modal-footer">
 				<div class="form-check">
 					<input class="form-check-input" type="checkbox" id="ignoreVersion" />
-					<label class="form-check-label" for="ignoreVersion">Do not notify me again for this version</label>
+                    <label class="form-check-label" for="ignoreVersion">@Localizer["HOME_UPDATE_DONOTNOTIFY"]</label>
                     </div>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal" id="ignoreVersionButton">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="ignoreVersionButton">@Localizer["CLOSE"]</button>
 			</div>
 		</div>
 	</div>

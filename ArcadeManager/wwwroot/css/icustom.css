@@ -9,7 +9,7 @@
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icustom-"], [class*=" icustom-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: none;
@@ -21,45 +21,44 @@
 
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-merge:before {
+.icustom-merge:before {
   content: "\e252";
 }
-.icon-split:before {
+.icustom-split:before {
   content: "\e0b6";
 }
-.icon-download:before {
+.icustom-download:before {
   content: "\e2c0";
 }
-.icon-help:before {
+.icustom-help:before {
   content: "\e887";
 }
-.icon-shuffle:before {
+.icustom-shuffle:before {
   content: "\e043";
 }
-.icon-pacman:before {
+.icustom-pacman:before {
   content: "\e916";
 }
-.icon-stack:before {
+.icustom-stack:before {
   content: "\e92e";
 }
-.icon-folder-open:before {
+.icustom-folder-open:before {
   content: "\e930";
 }
-.icon-folder-minus:before {
+.icustom-folder-minus:before {
   content: "\e932";
 }
-.icon-folder-down:before {
+.icustom-folder-down:before {
   content: "\e933";
 }
-.icon-folder-up:before {
+.icustom-folder-up:before {
   content: "\e934";
 }
-.icon-github:before {
+.icustom-github:before {
   content: "\eab0";
 }
-.icon-file-excel:before {
+.icustom-file-excel:before {
   content: "\eae2";
 }

@@ -1,9 +1,10 @@
-﻿using ArcadeManager.Models;
+﻿using ArcadeManager.Exceptions;
+using ArcadeManager.Infrastructure;
+using ArcadeManager.Models;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -43,6 +44,16 @@ public class Csv : ICsv {
     /// </summary>
     private static readonly string nameColumn = "name";
 
+    private readonly IFileSystem fs;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Csv"/> class.
+    /// </summary>
+    /// <param name="fs">The file system.</param>
+    public Csv(IFileSystem fs) {
+        this.fs = fs;
+    }
+
     /// <summary>
     /// Converts a DAT file.
     /// </summary>
@@ -58,41 +69,41 @@ public class Csv : ICsv {
             };
 
             // input file
-            using var streamReader = File.OpenRead(main);
-            using var xmlReader = XmlReader.Create(streamReader, settings);
+            await fs.ReadFileStream(main, async streamReader => {
+                using var xmlReader = XmlReader.Create(streamReader, settings);
 
-            // output file
-            using var outStream = new FileStream(target, FileMode.Create, FileAccess.Write);
-            using var outStreamWriter = new StreamWriter(outStream);
+                // output file
+                await fs.WriteFileStream(target, async outStreamWriter => {
+                    // deserialize DAT file
+                    var datFile = Serializer.DeserializeXml<Models.DatFile.Datafile>(xmlReader);
 
-            // deserialize DAT file
-            var datFile = Serializer.DeserializeXml<Models.DatFile.Datafile>(xmlReader);
+                    // output stream
+                    await outStreamWriter.WriteLineAsync(headerDatRow);
 
-            // output stream
-            await outStreamWriter.WriteLineAsync(headerDatRow);
+                    int total = datFile.Entries.Count;
+                    int i = 0;
+                    foreach (var e in datFile.Entries) {
+                        i++;
+                        messageHandler.Progress($"Converting {e.Name}", total, i);
 
-            int total = datFile.Entries.Count;
-            int i = 0;
-            foreach (var e in datFile.Entries) {
-                i++;
-                messageHandler.Progress($"Converting {e.Name}", total, i);
+                        var sb = new StringBuilder();
+                        sb.Append($"{e.Name}{defaultDelimiter}");
+                        sb.Append($"{e.Description ?? "-"}{defaultDelimiter}");
+                        sb.Append($"{e.Year ?? "-"}{defaultDelimiter}");
+                        sb.Append($"{e.Manufacturer ?? "-"}{defaultDelimiter}");
 
-                var sb = new StringBuilder();
-                sb.Append($"{e.Name}{defaultDelimiter}");
-                sb.Append($"{e.Description ?? "-"}{defaultDelimiter}");
-                sb.Append($"{e.Year ?? "-"}{defaultDelimiter}");
-                sb.Append($"{e.Manufacturer ?? "-"}{defaultDelimiter}");
+                        sb.Append(string.IsNullOrEmpty(e.Cloneof) ? "NO" : "YES").Append(defaultDelimiter); // is_parent
+                        sb.Append(e.Romof ?? "-").Append(defaultDelimiter); // romof
+                        sb.Append(string.IsNullOrEmpty(e.Cloneof) ? "YES" : "NO").Append(defaultDelimiter); // is_clone
+                        sb.Append(e.Cloneof ?? "-").Append(defaultDelimiter); // cloneof
+                        sb.Append(e.Sampleof ?? "-").Append(defaultDelimiter); // sampleof
 
-                sb.Append(string.IsNullOrEmpty(e.Cloneof) ? "NO" : "YES").Append(defaultDelimiter); // is_parent
-                sb.Append(e.Romof ?? "-").Append(defaultDelimiter); // romof
-                sb.Append(string.IsNullOrEmpty(e.Cloneof) ? "YES" : "NO").Append(defaultDelimiter); // is_clone
-                sb.Append(e.Cloneof ?? "-").Append(defaultDelimiter); // cloneof
-                sb.Append(e.Sampleof ?? "-").Append(defaultDelimiter); // sampleof
+                        await outStreamWriter.WriteLineAsync(sb.ToString());
+                    }
 
-                await outStreamWriter.WriteLineAsync(sb.ToString());
-            }
-
-            messageHandler.Done("DAT file converted", target);
+                    messageHandler.Done("DAT file converted", target);
+                });
+            });
         }
         catch (Exception ex) {
             messageHandler.Error(ex);
@@ -111,9 +122,10 @@ public class Csv : ICsv {
         try {
             var data = new Dictionary<string, List<IniEntry>>();
 
-            var mainInfo = new FileInfo(main);
+            var fileSize = fs.FileSize(main);
+            var fileName = fs.FileName(main);
 
-            using (var source = new StreamReader(main)) {
+            await fs.ReadFileStream(main, async source => {
                 var isFolderSetting = false;
                 var currentSection = "";
 
@@ -121,7 +133,7 @@ public class Csv : ICsv {
                     var line = (await source.ReadLineAsync()).Trim();
 
                     // progress up to 50%
-                    messageHandler.Progress("Reading source file", 100, (int)(source.BaseStream.Position / mainInfo.Length * 50));
+                    messageHandler.Progress("Reading source file", 100, (int)(source.BaseStream.Position / fileSize * 50));
 
                     // ignore empty lines and comments
                     if (string.IsNullOrWhiteSpace(line) || line.StartsWith(";")) {
@@ -164,7 +176,7 @@ public class Csv : ICsv {
                         data[currentSection].Add(new IniEntry { game = line });
                     }
                 }
-            }
+            });
 
             // create a file for each non-empty section
             var i = 0;
@@ -172,28 +184,28 @@ public class Csv : ICsv {
                 i++;
 
                 // file name = sanitized section name, or source name if there's only one section
-                var name = data.Count > 1 ? Sanitize(entry.Key.Trim("[]".ToCharArray())) : mainInfo.Name.Replace(".ini", "");
+                var name = data.Count > 1 ? Sanitize(entry.Key.Trim("[]".ToCharArray())) : fileName.Replace(".ini", "");
                 name += ".csv";
 
-                var path = Path.Join(target, name);
+                var path = fs.PathJoin(target, name);
 
                 // create increments to not overwrite existing conversions
                 var j = 0;
                 var finalPath = path;
-                while (File.Exists(finalPath)) { finalPath = path.Replace(".csv", $" ({++j}).csv"); }
+                while (fs.FileExists(finalPath)) { finalPath = path.Replace(".csv", $" ({++j}).csv"); }
                 path = finalPath;
 
                 // progress from 50%
                 messageHandler.Progress($"Creating file {name}", 100, 50 + (i / data.Count * 50));
 
                 // write into file
-                using (var output = new StreamWriter(path)) {
+                await fs.WriteFileStream(path, async output => {
                     await output.WriteLineAsync(headerIniRow);
 
                     foreach (var iniEntry in entry.Value) {
                         await output.WriteLineAsync($"{iniEntry.game}{defaultDelimiter}{iniEntry.value}{defaultDelimiter}");
                     }
-                }
+                });
             }
 
             messageHandler.Done("INI file converted", target);
@@ -234,26 +246,24 @@ public class Csv : ICsv {
         messageHandler.Init("List files to a CSV");
 
         try {
-            if (!Directory.Exists(main)) { throw new DirectoryNotFoundException($"Unable to find the folder {main}"); }
+            if (!fs.DirectoryExists(main)) { throw new PathNotFoundException($"Unable to find the folder {main}"); }
 
-            var di = new DirectoryInfo(main);
-
-            using (var output = new StreamWriter(target, false)) {
+            await fs.WriteFileStream(target, async output => {
                 await output.WriteLineAsync($"{nameColumn}{defaultDelimiter}");
 
-                var files = di.GetFiles("*.zip", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive }).ToList();
-                files.AddRange(di.GetFiles("*.7z", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive }).ToList());
+                var files = fs.GetFiles(main, "*.zip");
+                files.AddRange(fs.GetFiles(main, "*.7z"));
                 var total = files.Count;
                 var i = 0;
 
-                foreach (var n in files.Select(f => f.Name)) {
+                foreach (var n in files.Select(f => fs.FileName(f))) {
                     i++;
                     messageHandler.Progress($"Listing file {n}", total, i);
 
                     var fileName = n.Replace(".zip", "", StringComparison.InvariantCultureIgnoreCase).Replace(".7z", "", StringComparison.InvariantCultureIgnoreCase);
                     await output.WriteLineAsync(fileName + defaultDelimiter);
                 }
-            }
+            });
 
             messageHandler.Done("Files listed", target);
         }
@@ -296,14 +306,16 @@ public class Csv : ICsv {
     /// <param name="getOtherValues">if set to <c>true</c> get the values other than the name.</param>
     /// <returns>The list of games in the CSV file</returns>
     public async Task<CsvGamesList> ReadFile(string filepath, bool getOtherValues) {
-        using (var reader = new StreamReader(filepath)) {
+        CsvGamesList result = new();
+
+        await fs.ReadFileStream(filepath, async reader => {
             // check that the first line has a header
             var firstLine = reader.ReadLine();
             var (hasHeader, delimiter) = HasHeader(firstLine);
 
             // back to the beginning of the file
             reader.DiscardBufferedData();
-            reader.BaseStream.Seek(0, SeekOrigin.Begin);
+            reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
 
             // build CSV read options
             var conf = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture) {
@@ -313,7 +325,6 @@ public class Csv : ICsv {
             };
 
             // read the file
-            CsvGamesList result = new();
             using (var csv = new CsvReader(reader, conf)) {
                 var entries = csv.GetRecordsAsync<dynamic>();
 
@@ -335,9 +346,9 @@ public class Csv : ICsv {
                     result.AddRange((await entries.ToListAsync()).Select(e => new string(e.Field1)));
                 }
             }
+        });
 
-            return result;
-        }
+        return result;
     }
 
     /// <summary>
@@ -405,29 +416,11 @@ public class Csv : ICsv {
     /// <param name="name">The file name</param>
     /// <returns>The sanitized file name</returns>
     /// <remarks>Copied from stackoverflow.com/a/847251/6776</remarks>
-    private static string Sanitize(string name) {
-        string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+    private string Sanitize(string name) {
+        string invalidChars = Regex.Escape(new string(fs.GetInvalidFileNameChars()));
         string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
         return Regex.Replace(name, invalidRegStr, "_");
-    }
-
-    /// <summary>
-    /// Writes the file to the specified target.
-    /// </summary>
-    /// <param name="entries">The entries to write.</param>
-    /// <param name="target">The target to write to.</param>
-    /// <exception cref="NotImplementedException"></exception>
-    private static async Task WriteFile(CsvGamesList entries, string target) {
-        using (var output = new StreamWriter(target, false)) {
-            // header line
-            await output.WriteLineAsync(entries.GetHeaderLine(nameColumn, defaultDelimiter));
-
-            // entries
-            foreach (var entry in entries.Games) {
-                await output.WriteLineAsync(entry.ToCSVString(defaultDelimiter));
-            }
-        }
     }
 
     /// <summary>
@@ -447,20 +440,20 @@ public class Csv : ICsv {
             var steps = 5;
             var current = 0;
 
-            var fiMain = new FileInfo(main);
-            var fiSecondary = new FileInfo(secondary);
-            var fiTarget = new FileInfo(target);
+            var fiMain = fs.FileName(main);
+            var fiSecondary = fs.FileName(secondary);
+            var fiTarget = fs.FileName(target);
 
-            messageHandler.Progress($"reading file {fiMain.Name}", steps, ++current);
+            messageHandler.Progress($"reading file {fiMain}", steps, ++current);
             var mainEntries = await ReadFile(main, true);
 
-            messageHandler.Progress($"reading file {fiSecondary.Name}", steps, ++current);
+            messageHandler.Progress($"reading file {fiSecondary}", steps, ++current);
             var secondaryEntries = await ReadFile(secondary, true);
 
             messageHandler.Progress($"action", steps, ++current);
             var result = action(mainEntries, secondaryEntries);
 
-            messageHandler.Progress($"save to file {fiTarget.Name}", steps, ++current);
+            messageHandler.Progress($"save to file {fiTarget}", steps, ++current);
             await WriteFile(result, target);
 
             messageHandler.Done($"{current}/{steps} - Done! Result has {result.Games.Count} entries", target);
@@ -468,6 +461,24 @@ public class Csv : ICsv {
         catch (Exception ex) {
             messageHandler.Error(ex);
         }
+    }
+
+    /// <summary>
+    /// Writes the file to the specified target.
+    /// </summary>
+    /// <param name="entries">The entries to write.</param>
+    /// <param name="target">The target to write to.</param>
+    /// <exception cref="NotImplementedException"></exception>
+    private async Task WriteFile(CsvGamesList entries, string target) {
+        await fs.WriteFileStream(target, async output => {
+            // header line
+            await output.WriteLineAsync(entries.GetHeaderLine(nameColumn, defaultDelimiter));
+
+            // entries
+            foreach (var entry in entries.Games) {
+                await output.WriteLineAsync(entry.ToCSVString(defaultDelimiter));
+            }
+        });
     }
 
     /// <summary>

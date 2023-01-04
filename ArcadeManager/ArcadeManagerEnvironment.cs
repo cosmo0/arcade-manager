@@ -1,4 +1,5 @@
-﻿using ArcadeManager.Models;
+﻿using ArcadeManager.Infrastructure;
+using ArcadeManager.Models;
 using ElectronNET.API;
 using System;
 using System.IO;
@@ -25,7 +26,7 @@ public static class ArcadeManagerEnvironment {
             if (_appData != null) { return _appData; }
 
             string content = File.ReadAllText(Path.Join(BasePath, "Data", "appdata.json"));
-            _appData = Services.Serializer.Deserialize<AppData>(content);
+            _appData = Serializer.Deserialize<AppData>(content);
 
             return _appData;
         }
@@ -133,7 +134,7 @@ public static class ArcadeManagerEnvironment {
         /// <returns>The settings</returns>
         public Settings LoadSettings() =>
             File.Exists(_filePath) ?
-            Services.Serializer.Deserialize<Settings>(File.ReadAllText(_filePath)) :
+            Serializer.Deserialize<Settings>(File.ReadAllText(_filePath)) :
             null;
 
         /// <summary>
@@ -141,7 +142,7 @@ public static class ArcadeManagerEnvironment {
         /// </summary>
         /// <param name="settings">The settings.</param>
         public void SaveSettings(Settings settings) {
-            string json = Services.Serializer.Serialize(settings);
+            string json = Serializer.Serialize(settings);
 
             var fi = new FileInfo(_filePath);
             if (!Directory.Exists(fi.DirectoryName)) {

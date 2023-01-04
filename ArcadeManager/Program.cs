@@ -1,6 +1,9 @@
+using ArcadeManager.Services;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Globalization;
+using System.Threading;
 
 namespace ArcadeManager; 
 
@@ -26,6 +29,8 @@ public static class Program {
 	/// </summary>
 	/// <param name="args">The arguments.</param>
 	public static void Main(string[] args) {
-		CreateHostBuilder(args).Build().Run();
+		Localizer.EnsureLocale();
+
+        CreateHostBuilder(args).Build().Run();
 	}
 }

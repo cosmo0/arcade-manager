@@ -1,8 +1,9 @@
-﻿using ArcadeManager.Models;
+﻿using ArcadeManager.Exceptions;
+using ArcadeManager.Infrastructure;
+using ArcadeManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,13 +16,16 @@ namespace ArcadeManager.Services;
 /// <seealso cref="ArcadeManager.Services.IOverlays"/>
 public class Overlays : IOverlays {
     private readonly IDownloader downloaderService;
+    private readonly IFileSystem fs;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Overlays"/> class.
     /// </summary>
     /// <param name="downloaderService">The downloader service.</param>
-    public Overlays(IDownloader downloaderService) {
+    /// <param name="fs">The file system.</param>
+    public Overlays(IDownloader downloaderService, IFileSystem fs) {
         this.downloaderService = downloaderService;
+        this.fs = fs;
     }
 
     /// <summary>
@@ -43,7 +47,7 @@ public class Overlays : IOverlays {
             // check if the destination of rom cfg is the rom folder
             var romCfgFolder = pack.Roms.Dest[os] == "roms"
                 ? null // save rom cfg directly into rom folder(s)
-                : Path.Join(data.configFolder, pack.Roms.Dest[os]); // save rom cfg in config folder
+                : fs.PathJoin(data.configFolder, pack.Roms.Dest[os]); // save rom cfg in config folder
 
             // list the available rom configs
             messageHandler.Progress("list of files to download", 1, 100);
@@ -52,7 +56,7 @@ public class Overlays : IOverlays {
             // download common files
             messageHandler.Progress("common files", 1, 100);
             if (pack.Common != null && !string.IsNullOrWhiteSpace(pack.Common.Src)) {
-                await DownloadCommon(pack, Path.Join(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, messageHandler, 100, 1);
+                await DownloadCommon(pack, fs.PathJoin(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, messageHandler, 100, 1);
             }
 
             if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
@@ -79,11 +83,11 @@ public class Overlays : IOverlays {
                 foreach (var romFolder in r.TargetFolder) {
                     if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-                    var romConfigFile = Path.Join(romCfgFolder ?? romFolder, $"{game}{r.Extension}.cfg");
+                    var romConfigFile = fs.PathJoin(romCfgFolder ?? romFolder, $"{game}{r.Extension}.cfg");
 
                     // get rom config content
                     if (string.IsNullOrEmpty(romConfigContent)) {
-                        if (data.overwrite || !File.Exists(romConfigFile)) {
+                        if (data.overwrite || !fs.FileExists(romConfigFile)) {
                             // file doesn't exist or we'll overwrite it
                             romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}{r.Extension}.cfg");
 
@@ -93,15 +97,15 @@ public class Overlays : IOverlays {
                         }
                         else {
                             // file exist, we don"t overwrite: read it
-                            romConfigContent = await File.ReadAllTextAsync(romConfigFile);
+                            romConfigContent = await fs.FileReadAsync(romConfigFile);
                         }
                     }
 
                     // write rom config
-                    if (data.overwrite || !File.Exists(romConfigFile)) {
+                    if (data.overwrite || !fs.FileExists(romConfigFile)) {
                         if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-                        await File.WriteAllTextAsync(romConfigFile, romConfigContent);
+                        await fs.FileWriteAsync(romConfigFile, romConfigContent);
                         installed++;
                     }
                 }
@@ -112,24 +116,24 @@ public class Overlays : IOverlays {
 
                 // extract the overlay file name
                 var overlayPath = GetCfgData(romConfigContent, "input_overlay");
-                if (string.IsNullOrWhiteSpace(overlayPath)) { throw new FileNotFoundException($"Unable to parse rom config {game} to find overlay (input_overlay)"); }
-                var overlayFi = new FileInfo(overlayPath);
-                var overlayConfigDest = Path.Join(data.configFolder, overlayFi.Name);
+                if (string.IsNullOrWhiteSpace(overlayPath)) { throw new PathNotFoundException($"Unable to parse rom config {game} to find overlay (input_overlay)"); }
+                var overlayFi = fs.FileName(overlayPath);
+                var overlayConfigDest = fs.PathJoin(data.configFolder, overlayFi);
 
                 // download the overlay file name and extract the image file name
                 var overlayConfigContent = string.Empty;
-                if (data.overwrite || !File.Exists(overlayConfigDest)) {
+                if (data.overwrite || !fs.FileExists(overlayConfigDest)) {
                     if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-                    overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi.Name}");
+                    overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi}");
 
                     // fix path
                     overlayConfigContent = FixPaths(overlayConfigContent, pack);
 
-                    await File.WriteAllTextAsync(overlayConfigDest, overlayConfigContent);
+                    await fs.FileWriteAsync(overlayConfigDest, overlayConfigContent);
                 }
                 else {
-                    overlayConfigContent = File.ReadAllText(overlayConfigDest);
+                    overlayConfigContent = await fs.FileReadAsync(overlayConfigDest);
                 }
 
                 if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
@@ -138,15 +142,15 @@ public class Overlays : IOverlays {
 
                 // extract the image file name
                 var imagePath = GetCfgData(overlayConfigContent, "overlay0_overlay");
-                if (string.IsNullOrWhiteSpace(imagePath)) { throw new FileNotFoundException($"Unable to parse overlay config {game} to find image (overlay0_overlay)"); }
-                var imageFi = new FileInfo(imagePath);
-                var imageDest = Path.Join(data.configFolder, imageFi.Name);
+                if (string.IsNullOrWhiteSpace(imagePath)) { throw new PathNotFoundException($"Unable to parse overlay config {game} to find image (overlay0_overlay)"); }
+                var imageFi = fs.FileName(imagePath);
+                var imageDest = fs.PathJoin(data.configFolder, imageFi);
 
                 // download the image
-                if (data.overwrite || !File.Exists(imageDest)) {
+                if (data.overwrite || !fs.FileExists(imageDest)) {
                     if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
 
-                    await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi.Name}", imageDest);
+                    await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi}", imageDest);
                 }
             }
 
@@ -230,45 +234,6 @@ public class Overlays : IOverlays {
     }
 
     /// <summary>
-    /// Gets the list of roms to process and their folder(s).
-    /// </summary>
-    /// <param name="romFolders">The rom folders.</param>
-    /// <param name="entries">The available entries.</param>
-    /// <returns>The roms to process</returns>
-    private static IEnumerable<RomToProcess> GetRomsToProcess(string[] romFolders, IEnumerable<GithubTree.Entry> entries) {
-        var result = new List<RomToProcess>();
-
-        // list all the folders (arcade, fba, mame...)
-        foreach (var folder in romFolders) {
-            var di = new DirectoryInfo(folder);
-            // get all rom files
-            var files = di.GetFiles("*.zip").ToList();
-            files.AddRange(di.GetFiles("*.7z"));
-            foreach (var fi in files) {
-                var game = fi.Name.Substring(0, fi.Name.LastIndexOf("."));
-                var extension = fi.Extension;
-
-                // only process files that are in the overlays pack
-                if (entries.Any(e => e.Path.Equals($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
-                    var existing = result.FirstOrDefault(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase));
-                    if (existing != null) {
-                        existing.TargetFolder.Add(fi.DirectoryName);
-                    }
-                    else {
-                        result.Add(new RomToProcess {
-                            Game = game,
-                            TargetFolder = new List<string> { fi.DirectoryName },
-                            Extension = extension
-                        });
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /// <summary>
     /// Downloads the common files.
     /// </summary>
     /// <param name="pack">The overlay pack to download.</param>
@@ -287,19 +252,58 @@ public class Overlays : IOverlays {
             });
 
             foreach (var f in files.Where(f => f.EndsWith(".cfg", StringComparison.InvariantCultureIgnoreCase))) {
-                var fi = new FileInfo(f);
-                messageHandler.Progress($"fixing {fi.Name}", total, current);
+                var fi = fs.FileName(f);
+                messageHandler.Progress($"fixing {fi}", total, current);
 
-                if (overwrite || !fi.Exists) {
-                    var content = await File.ReadAllTextAsync(f);
+                if (overwrite || fs.FileExists(f)) {
+                    var content = await fs.FileReadAsync(f);
 
                     content = ChangeResolution(content, ratio);
                     content = FixPaths(content, pack);
 
-                    await File.WriteAllTextAsync(f, content);
+                    await fs.FileWriteAsync(f, content);
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Gets the list of roms to process and their folder(s).
+    /// </summary>
+    /// <param name="romFolders">The rom folders.</param>
+    /// <param name="entries">The available entries.</param>
+    /// <returns>The roms to process</returns>
+    private IEnumerable<RomToProcess> GetRomsToProcess(string[] romFolders, IEnumerable<GithubTree.Entry> entries) {
+        var result = new List<RomToProcess>();
+
+        // list all the folders (arcade, fba, mame...)
+        foreach (var folder in romFolders) {
+            // get all rom files
+            var files = fs.GetFiles(folder, "*.zip");
+            files.AddRange(fs.GetFiles(folder, "*.7z"));
+            foreach (var fi in files) {
+                var game = fs.FileNameWithoutExtension(fi);
+                var directoryName = fs.DirectoryName(fi);
+                var extension = fs.FileExtension(fi);
+
+                // only process files that are in the overlays pack
+                if (entries.Any(e => e.Path.Equals($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
+                    var existing = result.FirstOrDefault(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase));
+                    if (existing != null) {
+                        existing.TargetFolder.Add(directoryName);
+                    }
+                    else {
+                        result.Add(new RomToProcess {
+                            Game = game,
+                            TargetFolder = new List<string> { directoryName },
+                            Extension = extension
+                        });
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     /// <summary>

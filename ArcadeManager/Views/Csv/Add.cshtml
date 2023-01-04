@@ -1,64 +1,62 @@
 ﻿@{
-    ViewData["title"] = "Add games to a list";
+    ViewData["title"] = Localizer["CSV_ADD_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">Manage games lists</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Add games</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">@Localizer["BREADCRUMB_CSV"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_CSV_ADD"]</li>
     </ol>
 </nav>
 
-<h2>Add games to a CSV file</h2>
+<h2>@Localizer["CSV_ADD_TITLE"]</h2>
 
-<p>
-    Select the main CSV file, the files containing the games you want to add, and the target file.
-</p>
+@Html.Raw(Localizer["CSV_ADD_INTRO"])
 
 <div class="input-group mb-0">
     <div class="input-group-prepend">
-        <span class="input-group-text">Main CSV file</span>
+        <span class="input-group-text">@Localizer["CSV_ADD_MAINFILE"]</span>
     </div>
     <input type="text" class="form-control" id="fileMainCsv">
     <div class="input-group-append">
-        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">Browse</button>
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The CSV file to add games to</small>
+    <small class="form-text text-muted">@Localizer["CSV_ADD_MAINFILE_DESC"]</small>
 </p>
 
 <!-- secondary CSV file -->
 <div class="input-group mb-0">
     <div class="input-group-prepend">
-        <span class="input-group-text">Secondary CSV file</span>
+        <span class="input-group-text">@Localizer["CSV_ADD_SECONDARY"]</span>
     </div>
     <input type="text" class="form-control" id="fileSecondaryCsv">
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse" type="button" data-input="fileSecondaryCsv">Browse</button>
+        <button class="btn btn-outline-secondary browse" type="button" data-input="fileSecondaryCsv">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The CSV file with the games to add.</small>
+    <small class="form-text text-muted">@Localizer["CSV_ADD_SECONDARY_DESC"]</small>
 </p>
 
 <!-- target output file -->
 <div class="input-group mb-0">
     <div class="input-group-prepend">
-        <span class="input-group-text">Target file</span>
+        <span class="input-group-text">@Localizer["CSV_ADD_TARGET"]</span>
     </div>
     <input type="text" class="form-control" id="fileTarget">
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">Browse</button>
+        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The merged file to be saved</small>
+    <small class="form-text text-muted">@Localizer["CSV_ADD_TARGET_DESC"]</small>
 </p>
 
 <p class="mt-3">
-    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Add</button>
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["CSV_ADD_ADD"]</button>
 </p>
 
 @section Scripts {
@@ -71,9 +69,9 @@
             target = $('#fileTarget').val();
 
         // check every path is filled
-        if (main === '') { window.alert('Please choose a main CSV file'); return; }
-        if (secondary === '') { window.alert('Please choose a secondary CSV file'); return; }
-        if (target === '') { window.alert('Please choose the target CSV file'); return; }
+        if (main === '') { window.alert('@Localizer.Js("ERROR_NOCSV")'); return; }
+        if (secondary === '') { window.alert('@Localizer.Js("ERROR_NOSECONDARYCSV")'); return; }
+        if (target === '') { window.alert('@Localizer.Js("ERROR_NOTARGETCSV")'); return; }
 
         // execute action
         ipc('csv-merge', { main, secondary, target });

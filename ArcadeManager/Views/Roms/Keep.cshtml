@@ -1,59 +1,57 @@
 ﻿@{
-    ViewData["title"] = "Keep only listed files";
+    ViewData["title"] = Localizer["ROMS_KEEP_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a asp-controller="Roms" asp-action="Index" class="navmenu">Manage roms</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Keep</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Roms" asp-action="Index" class="navmenu">@Localizer["BREADCRUMB_ROMS"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_ROMS_KEEP"]</li>
     </ol>
 </nav>
 
 <h2>
-    Keep only roms listed
-    <a asp-controller="Help" asp-action="Shares" class="navmenu">How to access my Retropie/Recalbox shares</a>
+    @Localizer["ROMS_KEEP_TITLE"]
+    <a asp-controller="Help" asp-action="Shares" class="navmenu">@Localizer["ROMS_COPY_HOWTOACCESS"]</a>
 </h2>
 
 <p>
-    Select a CSV file listing the roms you want to keep, and the folder containing the roms.<br>
-    This will only keep the roms that are listed in the CSV file, and remove all other roms.<br>
-    For example, using a "working games" CSV file will remove all games that are not working.
+    @Html.Raw(Localizer["ROMS_KEEP_INTRO"])
 </p>
 
 <div class="alert alert-danger">
-    Take care not to enter the full romset path! The files cannot be restored!
+    @Localizer["ROMS_DELETE_ALERT"]
 </div>
 
 <div class="input-group mb-0">
     <div class="input-group-prepend">
-        <span class="input-group-text">CSV file</span>
+        <span class="input-group-text">@Localizer["ROMS_COPY_CSVFILE"]</span>
     </div>
     <input type="text" class="form-control" id="fileMainCsv">
     <div class="input-group-append">
-        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">Browse</button>
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMainCsv">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The file containing the games to keep</small>
+    <small class="form-text text-muted">@Localizer["ROMS_COPY_CSVFILE_DESC"]</small>
 </p>
 
 <!-- Selection romset location -->
 <div class="input-group mb-0">
     <div class="input-group-prepend">
-        <span class="input-group-text">Rom folder</span>
+        <span class="input-group-text">@Localizer["ROMS_KEEP_FOLDER"]</span>
     </div>
     <input type="text" class="form-control" id="fileRomSelection">
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomSelection">Browse</button>
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomSelection">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
-    <small class="form-text text-muted">The folder containing the roms you want to keep</small>
+    <small class="form-text text-muted">@Localizer["ROMS_KEEP_FOLDER_DESC"]</small>
 </p>
 
 <p class="mt-3">
-    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">Remove files not listed</button>
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["ROMS_KEEP_KEEP"]</button>
 </p>
 
 @section Scripts {
@@ -73,8 +71,8 @@
                     selection = $('#fileRomSelection').val();
 
                 // check every path is filled
-                if (main === '') { window.alert('Please choose a main CSV file'); return; }
-                if (selection === '') { window.alert('Please choose the path to the selection of roms'); return; }
+                if (main === '') { window.alert('@Localizer.Js("ERROR_NOCSV")'); return; }
+                if (selection === '') { window.alert('@Localizer.Js("ERROR_NOSELECTION")'); return; }
 
                 ipc("roms-keep", { main, selection });
             });

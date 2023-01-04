@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArcadeManager.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,13 +11,15 @@ namespace ArcadeManager.Services;
 /// </summary>
 public class Updater : IUpdater {
     private readonly IDownloader downloaderService;
+    private readonly IFileSystem fs;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Updater"/> class.
     /// </summary>
     /// <param name="downloaderService">The downloader service.</param>
-    public Updater(IDownloader downloaderService) {
+    public Updater(IDownloader downloaderService, IFileSystem fs) {
         this.downloaderService = downloaderService;
+        this.fs = fs;
     }
 
     /// <summary>
@@ -42,7 +45,7 @@ public class Updater : IUpdater {
                 release.PublishedAtLocal = release.PublishedAt.ToShortDateString();
                 release.Body = Markdig.Markdown.ToHtml(release.Body);
                 foreach (var a in release.Assets) {
-                    a.HumanSize = FileSystem.HumanSize(a.Size);
+                    a.HumanSize = fs.HumanSize(a.Size);
                 }
 
                 if ((new Version(version)) > (new Version(currentVersion))) {

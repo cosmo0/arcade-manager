@@ -1,116 +1,100 @@
 ﻿@model Wizard
 @{
-    ViewData["title"] = "Wizard";
+    ViewData["title"] = Localizer["WIZARD_LIST_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item">Wizard</li>
-        <li class="breadcrumb-item">Emulator</li>
-        <li class="breadcrumb-item active" aria-current="page">List selection</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD"]</li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD_EMULATOR"]</li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_WIZARD_LIST"]</li>
     </ol>
 </nav>
 
-<h2>Wizard: choose lists</h2>
+<h2>@Localizer["WIZARD_LIST_TITLE"]</h2>
 
-<p>
-    Please choose the games selection(s) you want.
-</p>
-<p>
-    All the games have been tested and work with a retro pad (SNES-like) or an arcade stick. Sometimes gameplay is possible but not ideal
-    without a dedicated control (ex: racing games).
-</p>
-<p>
-   Note that the various "tops" have duplicates: selecting the top200 and the top50 will only result in 200 games, since the top50 is a sub-selection
-   of the top200.<br />
-   Obviously the "tops" are highly subjective, and mainly destined to people who don't know much about arcade games. This tool also easily lets
-   you <a asp-controller="Csv" asp-action="Index">define your own lists</a>.
-</p>
+@Html.Raw(Localizer["WIZARD_LIST_INTRO"])
 
-<form asp-controller="Wizard" asp-action="PostListSelection" method="post">
+<form asp-controller="Wizard" asp-action="PostListSelection" method="post" class="wizard">
 
     <input type="hidden" asp-for="DoOverlays" />
     <input type="hidden" asp-for="Emulator" />
 
     <div class="border rounded p-3 mb-3">
-        <label><input type="checkbox" name="list" value="top200" checked="checked" /> <strong>Top 200</strong>: a balanced selection of all the great games, and a few hidden gems : a great trip down memory lane, finding new things along the ride.</label>
+        <label><input type="checkbox" name="list" value="top200" checked="checked" /> @Html.Raw(Localizer["WIZARD_LIST_TOP200"])</label>
         <br />
-        <label><input type="checkbox" name="list" value="top50" /> <strong>Top 50</strong>: only the very best, a tight but balanced selection of all-time classics : the best way to see what the arcades were about.</label>
+        <label><input type="checkbox" name="list" value="top50" /> @Html.Raw(Localizer["WIZARD_LIST_TOP50"])</label>
         <br />
-        <label><input type="checkbox" name="list" value="top80s" /> <strong>Top of the 80's</strong>: from Asteroids to Final Fight, the @(Model.GameNumbers["top80s"]) best old-school games.</label>
+        <label><input type="checkbox" name="list" value="top80s" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_TOP80S"], Model.GameNumbers["top80s"]))</label>
         <br />
-        <label><input type="checkbox" name="list" value="top90s" /> <strong>Top of the 90's and 00's</strong>: from Smash TV to Deathsmiles, the @(Model.GameNumbers["top90s"]) best modern games.</label>
+        <label><input type="checkbox" name="list" value="top90s" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_TOP90S"], Model.GameNumbers["top90s"]))</label>
     </div>
 
     <div class="border rounded p-3 mb-3">
         <label>
             <input type="checkbox" name="list" value="icons" />
-            <strong>Icons</strong>: @(Model.GameNumbers["icons"]) groundbreaking, revolutionary, unique, or just very popular games. May not be very good by today's standards.
-            <br />
-            <strong>Warning:</strong> some games in this list will not work well with a simple retro pad or arcade stick, and you might need a spinner,
-            double stick, racing wheel, etc. You can sometimes get good results by changing the control settings in the options.
+            @Html.Raw(string.Format(Localizer["WIZARD_LIST_ICONS"], Model.GameNumbers["icons"]))
         </label>
         <br />
-        <label><input type="checkbox" name="list" value="multiplayer" /> <strong>Multiplayer</strong>: @(Model.GameNumbers["multiplayer"]) great games to play with two players or more, in coop or versus.</label>
+        <label><input type="checkbox" name="list" value="multiplayer" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_MULTIPLAYER"], Model.GameNumbers["multiplayer"]))</label>
         <br />
-        <label><input type="checkbox" name="list" value="neogeo" /> <strong>NeoGeo</strong>: the @(Model.GameNumbers["neogeo"]) best games on NeoGeo, the most popular and enduring arcade system.</label>
+        <label><input type="checkbox" name="list" value="neogeo" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_NEOGEO"], Model.GameNumbers["neogeo"]))</label>
     </div>
 
     <div class="border rounded p-3 mb-3">
         <p>
-            <strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, tested and validated by the community.<br />
-            Original lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+            @Html.Raw(Localizer["WIZARD_LIST_AKNF"])
         </p>
 
         <div class="row">
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-shooting" /> Shooting (@(Model.GameNumbers["aknf-shooting"]) games)</label>
+                <label><input type="checkbox" name="list" value="aknf-shooting" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_SHOOTING"], Model.GameNumbers["aknf-shooting"]))</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-run-gun" /> Run and gun (@(Model.GameNumbers["aknf-run-gun"]) games)</label>
+                <label><input type="checkbox" name="list" value="aknf-run-gun" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_RUNGUN"], Model.GameNumbers["aknf-run-gun"]))</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-platform" /> Platform (@(Model.GameNumbers["aknf-platform"]) games)</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-fighting" /> Fighting (@(Model.GameNumbers["aknf-fighting"]) games)</label>
-            </div>
-            <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-beat-hack" /> Beat'em up and hack &amp; slash (@(Model.GameNumbers["aknf-beat-hack"]) games)</label>
-            </div>
-            <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-puzzle" /> Puzzle (@(Model.GameNumbers["aknf-puzzle"]) games)</label>
+                <label><input type="checkbox" name="list" value="aknf-platform" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_PLATFORM"], Model.GameNumbers["aknf-platform"]))</label>
             </div>
         </div>
         <div class="row">
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-sports" /> Sports (@(Model.GameNumbers["aknf-sports"]) games)</label>
+                <label><input type="checkbox" name="list" value="aknf-fighting" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_FIGHTING"], Model.GameNumbers["aknf-fighting"]))</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-racing" /> Racing (@(Model.GameNumbers["aknf-racing"]) games)</label>
+                <label><input type="checkbox" name="list" value="aknf-beat-hack" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_BEATHACK"], Model.GameNumbers["aknf-beat-hack"]))</label>
             </div>
             <div class="col-4">
-                <label><input type="checkbox" name="list" value="aknf-classics" /> Old school classics (@(Model.GameNumbers["aknf-classics"]) games)</label>
+                <label><input type="checkbox" name="list" value="aknf-puzzle" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_PUZZLE"], Model.GameNumbers["aknf-puzzle"]))</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-sports" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_SPORTS"], Model.GameNumbers["aknf-sports"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-racing" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_RACING"], Model.GameNumbers["aknf-racing"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-classics" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_CLASSICS"], Model.GameNumbers["aknf-classics"]))</label>
             </div>
         </div>
     </div>
 
     <div class="border rounded p-3 mb-3">
-        <label><input type="checkbox" name="list" value="noclones" /> All the games, excluding duplicates (@(Model.GameNumbers["noclones"]) games)</label>
+        <label><input type="checkbox" name="list" value="noclones" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_NOCLONE"], Model.GameNumbers["noclones"]))</label>
         <br />
-        <label><input type="checkbox" name="list" value="clean" /> All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc  (@(Model.GameNumbers["clean"]) games)</label>
+        <label><input type="checkbox" name="list" value="clean" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_CLEAN"], Model.GameNumbers["clean"]))</label>
     </div>
 
     <div class="row">
         <div class="col-6">
-            <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
+            <a href="/" class="btn btn-outline-secondary px-3">@Localizer["CANCEL"]</a>
         </div>
         <div class="col-6 text-right">
             <button type="submit" class="btn btn-primary px-3" id="submitButton">
-                Next - set paths
+                @Localizer["WIZARD_LIST_NEXT"]
             </button>
         </div>
     </div>

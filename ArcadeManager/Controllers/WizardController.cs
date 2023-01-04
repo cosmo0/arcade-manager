@@ -1,7 +1,6 @@
 ﻿using ArcadeManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.IO;
 
 namespace ArcadeManager.Controllers;
 
@@ -9,12 +8,14 @@ namespace ArcadeManager.Controllers;
 /// Controller for the wizard pages
 /// </summary>
 public class WizardController : BaseController {
+    private readonly Services.IWizard wizardService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WizardController"/> class.
     /// </summary>
     /// <param name="logger">The logger.</param>
-    public WizardController(ILogger<WizardController> logger) : base(logger) {
+    public WizardController(ILogger<WizardController> logger, Services.IWizard wizardService) : base(logger) {
+        this.wizardService = wizardService;
     }
 
     /// <summary>
@@ -37,13 +38,7 @@ public class WizardController : BaseController {
     /// <returns>The view</returns>
     public IActionResult ListSelection(Wizard model) {
         // get number of games in each csv file
-        var files = Directory.GetFiles(Path.Combine(ArcadeManagerEnvironment.BasePath, "Data", "csv", model.Emulator), "*.csv");
-        foreach (var f in files) {
-            var lines = System.IO.File.ReadAllLines(f);
-            var filename = Path.GetFileName(f);
-            filename = filename.Substring(0, filename.IndexOf("."));
-            model.GameNumbers.Add(filename, lines.Length - 1);
-        }
+        model.GameNumbers = this.wizardService.CountGamesInLists(model.Emulator);
 
         return View(model);
     }

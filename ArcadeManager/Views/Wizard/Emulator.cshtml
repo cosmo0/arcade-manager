@@ -1,37 +1,30 @@
 ﻿@model Wizard
 @{
-    ViewData["title"] = "Wizard";
+    ViewData["title"] = Localizer["WIZARD_EMULATOR_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item">Wizard</li>
-        <li class="breadcrumb-item active" aria-current="page">Emulator</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD"]</li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_WIZARD_EMULATOR"]</li>
     </ol>
 </nav>
 
-<h2>Automatic installation: emulator</h2>
+<h2>@Localizer["WIZARD_EMULATOR_TITLE"]</h2>
 
-<p>
-    Please choose the emulator you want to use.
-</p>
-<p>
-    FBNeo is missing 3D games (or 2D games developed on 3D systems), and even MAME is missing more recent games (Naomi, Atomiswave, etc).<br />
-    Here is a <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">list of alternatives</a>.
-</p>
+@Html.Raw(Localizer["WIZARD_EMULATOR_INTRO"])
 
-<form asp-controller="Wizard" asp-action="PostEmulator" method="post">
+<form asp-controller="Wizard" asp-action="PostEmulator" method="post" class="wizard">
 
     <input type="hidden" asp-for="DoOverlays" />
 
     <div class="border rounded d-flex p-3 mb-3 option-container">
         <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" checked="checked" value="fbneo">
         <div class="flex-fill">
-            <h5 class="mb-1 name">FBNeo (1.0.0.2)</h5>
+            <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_FBNEO_NAME"]</h5>
             <p class="mb-0 desc">
-                Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game).<br />
-                <strong>Prefer this if you play on Raspberry Pi 4</strong>.
+                @Html.Raw(Localizer["WIZARD_EMULATOR_FBNEO_DESC"])
             </p>
         </div>
     </div>
@@ -39,32 +32,30 @@
     <div class="border rounded d-flex p-3 mb-3 option-container">
         <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame">
         <div class="flex-fill">
-            <h5 class="mb-1 name">MAME - latest version (0.249)</h5>
+            <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_MAME_NAME"]</h5>
             <p class="mb-0 desc">
-                Has the largest games list (3500+ games) and highest emulation accuracy, but also requires the most power, even for older games.<br />
-                <strong>Prefer this if you play on PC</strong>.
+                @Html.Raw(Localizer["WIZARD_EMULATOR_MAME_DESC"])
             </p>
         </div>
     </div>
     
     <div class="border rounded d-flex p-3 mb-3 option-container">
-        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" checked="checked" value="mame2003">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame2003">
         <div class="flex-fill">
-            <h5 class="mb-1 name">MAME 2003+</h5>
+            <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_MAME2003_NAME"]</h5>
             <p class="mb-0 desc">
-                Has the best performance, but has quite a lot of bugs (a lot of Toaplan shooters don't have sound) and other problems.<br />
-                <strong>Prefer this if you play on Raspberry Pi 3</strong>.
+                @Html.Raw(Localizer["WIZARD_EMULATOR_MAME2003_DESC"])
             </p>
         </div>
     </div>
 
     <div class="row">
         <div class="col-6">
-            <a href="/" class="btn btn-outline-secondary px-3">Cancel</a>
+            <a href="/" class="btn btn-outline-secondary px-3">@Localizer["CANCEL"]</a>
         </div>
         <div class="col-6 text-right">
             <button type="submit" class="btn btn-primary px-3" id="submitButton">
-                Next - choose lists
+                @Localizer["WIZARD_EMULATOR_NEXT"]
             </button>
         </div>
     </div>

@@ -1,28 +1,56 @@
 ﻿@{
-    ViewData["title"] = "Download a pre-built list";
+    ViewData["title"] = Localizer["CSV_DOWNLOAD_TITLE"];
 }
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
-        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">Manage games lists</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Download</li>
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">@Localizer["BREADCRUMB_CSV"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_CSV_DOWNLOAD"]</li>
     </ol>
 </nav>
 
-<h2>Download a pre-built games list</h2>
+<h2>@Localizer["CSV_DOWNLOAD_TITLE"]</h2>
 
 <p>
-    You can find quite a lot of various pre-built CSV, DAT and INI files in
-    <a href="https://github.com/cosmo0/arcade-manager-data" class="blank">the arcade-manager-data repository</a>.<br />
-    This is only a selection of the most useful lists.
+    @Html.Raw(Localizer["CSV_DOWNLOAD_INTRO"])
 </p>
 
 <div class="row">
     <div class="col-4">
-        <div class="list-group" id="csvs"></div>
+        <div class="list-group" id="csvs">
+            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/best" data-details="csv/best/files.json">
+                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_BEST_NAME"]</p>
+                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_BEST_DESC"]</small></p>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/all-killer-no-filler" data-details="csv/all-killer-no-filler/files.json">
+                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_AKNF_NAME"]</p>
+                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_AKNF_DESC"]</small></p>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/fbneo-1.0.0.2" data-details="csv/files.json">
+                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_FBNEO_NAME"]</p>
+                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_FBNEO_DESC"]</small></p>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/mame-latest" data-details="csv/files.json">
+                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_MAME_NAME"]</p>
+                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_MAME_DESC"]</small></p>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/mame2003-plus" data-details="csv/files.json">
+                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_MAME2003_NAME"]</p>
+                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_MAME2003_DESC"]</small></p>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/mame2010" data-details="csv/files.json">
+                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_MAME2010_NAME"]</p>
+                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_MAME2010_DESC"]</small></p>
+            </a>
+        </div>
     </div>
-    <div class="col-8" id="files">Please select an emulator version on the left.</div>
+    <div class="col-8" id="files">@Localizer["CSV_DOWNLOAD_SELECTEMULATOR"]</div>
 </div>
 
 <script type="text/template" id="csvItemTemplate">
@@ -40,72 +68,69 @@
 </script>
 
 @section Scripts {
-<script>
-    $(() => {
-        const template = $('#csvItemTemplate').html();
+    <script>
+        $(() => {
+            $('#csvs a').on('click', (e) => {
+                e.preventDefault();
 
-        getAppData((appData) => {
-            // list CSV folders
-            for (let csv of appData.csv) {
-                const li = $(template);
-                li.find('.name').text(csv.name);
-                li.find('.desc small').text(csv.description);
+                // get data
+                const a = $(e.currentTarget),
+                    repo = a.attr('data-repository'),
+                    folder = a.attr('data-folder'),
+                    details = a.attr('data-details');
 
-                li.on('click', () => {
-                    $('#csvs').find('a').removeClass('active');
-                    li.addClass('active');
+                // toggle active
+                $('#csvs').find('a').removeClass('active');
+                a.addClass('active');
 
-                    listFiles(csv.repository, csv.folder, csv.details, li.find('.name').text());
-                });
-
-                $('#csvs').append(li);
-            }
+                // load content
+                listFiles(repo, folder, details, a.find('.name').text());
+            });
         });
-    });
 
-    /**
-     * List the files in a CSV repository and displays them in the window
-     *
-     * @@param {string} repository The repository: username/repository
-     * @@param {string} folder The path to the folder: csv/mame2003
-     * @@param {string} details The path to the files details: csv/files.json
-     * @@param {string} name The name of the repository to load
-     */
-    function listFiles(repository, folder, details, name) {
-        $('#files').empty().html('Loading ' + name + ', please wait...');
-        const template = $('#fileItemTemplate').html();
+        /**
+         * List the files in a CSV repository and displays them in the window
+         *
+         * @@param {string} repository The repository: username/repository
+         * @@param {string} folder The path to the folder: csv/mame2003
+         * @@param {string} details The path to the files details: csv/files.json
+         * @@param {string} name The name of the repository to load
+         */
+        function listFiles(repository, folder, details, name) {
+            $('#files').empty().html(`@Localizer["CSV_DOWNLOAD_LOADING"]`);
+            const template = $('#fileItemTemplate').html();
 
-        getRemoteList(repository, details, folder, (data) => {
-            $('#files').empty();
+            getRemoteList(repository, details, folder, (data) => {
+                $('#files').empty();
 
-            for (let filedetail of data) {
-                const fileItem = $(template);
-                fileItem.find('.file').text(filedetail.filename);
-                fileItem.find('.desc').text(filedetail.description);
-                if (filedetail.types.indexOf('main') >= 0) {
-                    fileItem.addClass('text-primary border-primary');
-                }
+                for (let filedetail of data) {
+                    const fileItem = $(template);
+                    fileItem.find('.file').text(filedetail.filename);
+                    fileItem.find('.desc').text(filedetail.description);
+                    if (filedetail.types.indexOf('main') >= 0) {
+                        fileItem.addClass('text-primary border-primary');
+                    }
 
-                // handle click
-                fileItem.on('click', (e) => {
-                    newFile(filedetail.filename, (filename) => {
-                        if (typeof filename !== 'undefined' && filename !== '') {
-                            progressInit('Download file');
+                    // handle click
+                    fileItem.on('click', (e) => {
+                        newFile(filedetail.filename, (filename) => {
+                            if (typeof filename !== 'undefined' && filename !== '') {
+                                progressInit('@Localizer["CSV_DOWNLOAD_PROGRESSINIT"]');
 
-                            downloadFile(repository, folder + '/' + filedetail.filename, filename, (success) => {
-                                if (success) {
-                                    progressDone('Done.');
-                                } else {
-                                    progressDone('An error has occurred during file download.');
-                                }
-                            });
-                        }
+                                downloadFile(repository, folder + '/' + filedetail.filename, filename, (success) => {
+                                    if (success) {
+                                        progressDone('@Localizer["DONE"]');
+                                    } else {
+                                        progressDone('@Localizer["ERROR_DOWNLOAD"]');
+                                    }
+                                });
+                            }
+                        });
                     });
-                });
 
-                $('#files').append(fileItem);
-            }
-        });
-    }
-</script>
+                    $('#files').append(fileItem);
+                }
+            });
+        }
+    </script>
 }

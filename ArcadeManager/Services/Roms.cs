@@ -1,7 +1,8 @@
 ﻿using ArcadeManager.Actions;
+using ArcadeManager.Exceptions;
+using ArcadeManager.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,16 +15,19 @@ public class Roms : IRoms {
     private readonly List<string> bioslist;
     private readonly BiosMatchList biosmatch = new();
     private readonly ICsv csvService;
+    private readonly IFileSystem fs;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Roms"/> class.
     /// </summary>
     /// <param name="csvService">The CSV service.</param>
-    public Roms(ICsv csvService) {
+    /// <param name="fs">The filesystem infrastructure.</param>
+    public Roms(ICsv csvService, IFileSystem fs) {
         this.csvService = csvService;
+        this.fs = fs;
 
-        this.bioslist = File.ReadAllLines(Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "bioslist.txt")).ToList();
-        this.biosmatch.AddRange(File.ReadAllLines(Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "biosmatch.csv"))
+        this.bioslist = fs.ReadAllLines(fs.GetDataPath("bioslist.txt")).ToList();
+        this.biosmatch.AddRange(fs.ReadAllLines(fs.GetDataPath("biosmatch.csv"))
             .Select(l => l.Split(";".ToCharArray()))
             .Select(l => new BiosMatch(l[0], l[1], l[2])));
     }
@@ -40,9 +44,9 @@ public class Roms : IRoms {
 
         try {
             // check files and folders
-            if (!File.Exists(args.main)) { throw new FileNotFoundException("Unable to find main CSV file", args.main); }
-            if (!Directory.Exists(args.romset)) { throw new DirectoryNotFoundException($"Unable to find romset folder {args.romset}"); }
-            if (!Directory.Exists(args.selection)) { Directory.CreateDirectory(args.selection); }
+            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.main}"); }
+            if (!fs.DirectoryExists(args.romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.romset}"); }
+            if (!fs.DirectoryExists(args.selection)) { fs.CreateDirectory(args.selection); }
 
             // read CSV file
             var content = await csvService.ReadFile(args.main, false);
@@ -72,13 +76,13 @@ public class Roms : IRoms {
 
         try {
             // check files and folders
-            if (!Directory.Exists(args.romset)) { throw new DirectoryNotFoundException($"Unable to find romset folder {args.romset}"); }
-            if (!Directory.Exists(args.selection)) { Directory.CreateDirectory(args.selection); }
+            if (!fs.DirectoryExists(args.romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.romset}"); }
+            if (!fs.DirectoryExists(args.selection)) { fs.CreateDirectory(args.selection); }
 
             // read CSV files
             Models.CsvGamesList content = new();
             foreach (var file in files) {
-                string filepath = Path.Join(ArcadeManagerEnvironment.BasePath, "Data", "csv", emulator, $"{file}.csv");
+                string filepath = fs.GetDataPath("csv", emulator, $"{file}.csv");
                 content.AddRange(await csvService.ReadFile(filepath, false));
             }
 
@@ -106,8 +110,8 @@ public class Roms : IRoms {
 
         try {
             // check files and folders
-            if (!File.Exists(args.main)) { throw new FileNotFoundException("Unable to find main CSV file", args.main); }
-            if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
+            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.main}"); }
+            if (!fs.DirectoryExists(args.selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.selection}"); }
 
             // read CSV file
             var content = await csvService.ReadFile(args.main, false);
@@ -122,22 +126,22 @@ public class Roms : IRoms {
 
                 // build vars
                 var zip = $"{game}.zip";
-                var filePath = Path.Join(args.selection, zip);
+                var filePath = fs.PathJoin(args.selection, zip);
 
                 messageHandler.Progress(game, total, i);
 
                 // check that source rom exists
-                if (!File.Exists(filePath)) {
+                if (!fs.FileExists(filePath)) {
                     zip = $"{game}.7z";
-                    filePath = Path.Join(args.romset, zip);
+                    filePath = fs.PathJoin(args.romset, zip);
                 }
 
                 // still not found: next
-                if (!File.Exists(filePath)) {
+                if (!fs.FileExists(filePath)) {
                     continue;
                 }
 
-                File.Delete(filePath);
+                fs.FileDelete(filePath);
                 deleted++;
             }
 
@@ -160,16 +164,15 @@ public class Roms : IRoms {
 
         try {
             // check files and folders
-            if (!File.Exists(args.main)) { throw new FileNotFoundException("Unable to find main CSV file", args.main); }
-            if (!Directory.Exists(args.selection)) { throw new DirectoryNotFoundException($"Unable to find selection folder {args.selection}"); }
+            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.main}"); }
+            if (!fs.DirectoryExists(args.selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.selection}"); }
 
             // read CSV file
             var content = await csvService.ReadFile(args.main, false);
 
             // get list of files
-            var di = new DirectoryInfo(args.selection);
-            var files = di.GetFiles("*.zip").ToList();
-            files.AddRange(di.GetFiles("*.7z"));
+            var files = fs.GetFiles(args.selection, "*.zip");
+            files.AddRange(fs.GetFiles(args.selection, "*.7z"));
 
             var total = content.Games.Count;
             var i = 0;
@@ -180,9 +183,9 @@ public class Roms : IRoms {
                 if (messageHandler.MustCancel) { break; }
                 i++;
 
-                messageHandler.Progress(f.Name, total, i);
+                var nameNoExt = fs.FileNameWithoutExtension(f);
 
-                var nameNoExt = f.Name.Contains('.') ? f.Name.Substring(0, f.Name.LastIndexOf(".")) : f.Name;
+                messageHandler.Progress(nameNoExt, total, i);
 
                 // don't auto-delete bios files
                 if (this.bioslist.Contains(nameNoExt, StringComparer.InvariantCultureIgnoreCase)) {
@@ -191,7 +194,7 @@ public class Roms : IRoms {
 
                 // delete if it's not found in the provided list
                 if (!content.Games.Any(c => c.Name.Equals(nameNoExt, StringComparison.InvariantCultureIgnoreCase))) {
-                    File.Delete(f.FullName);
+                    fs.FileDelete(f);
                     deleted++;
                 }
             }
@@ -216,56 +219,56 @@ public class Roms : IRoms {
 
             // build vars
             var zip = $"{game}.zip";
-            var sourceRom = Path.Join(args.romset, zip);
+            var sourceRom = fs.PathJoin(args.romset, zip);
             var ext = "zip";
 
             // always display progress
             messageHandler.Progress(game, total, i);
 
             // check that source rom exists
-            if (!File.Exists(sourceRom)) {
+            if (!fs.FileExists(sourceRom)) {
                 zip = $"{game}.7z";
-                sourceRom = Path.Join(args.romset, zip);
+                sourceRom = fs.PathJoin(args.romset, zip);
                 ext = "7z";
             }
 
             // still not found: next
-            if (!File.Exists(sourceRom)) {
+            if (!fs.FileExists(sourceRom)) {
                 continue;
             }
 
-            var destRom = Path.Join(args.selection, zip);
-            var fi = new FileInfo(sourceRom);
+            var destRom = fs.PathJoin(args.selection, zip);
+            var fileSize = fs.FileSize(sourceRom);
 
             // replace progress with file size (so the user knows when a file is large)
-            messageHandler.Progress($"{game} ({FileSystem.HumanSize(fi.Length)})", total, i);
+            messageHandler.Progress($"{game} ({fs.HumanSize(fileSize)})", total, i);
 
             // copy rom
-            if (!File.Exists(destRom) || args.overwrite) {
-                File.Copy(sourceRom, destRom, true);
+            if (!fs.FileExists(destRom) || args.overwrite) {
+                fs.FileCopy(sourceRom, destRom, true);
                 copied++;
             }
 
             // try to copy bios if it's used and can be found
             var biosesforgame = this.biosmatch.GetBiosesForGame(game);
             foreach (var bios in biosesforgame) {
-                var sourcebios = Path.Join(args.romset, $"{bios}.{ext}");
-                var destbios = Path.Join(args.selection, $"{bios}.{ext}");
-                if (File.Exists(sourcebios) && !File.Exists(destbios)) {
-                    File.Copy(sourcebios, destbios);
+                var sourcebios = fs.PathJoin(args.romset, $"{bios}.{ext}");
+                var destbios = fs.PathJoin(args.selection, $"{bios}.{ext}");
+                if (fs.FileExists(sourcebios) && !fs.FileExists(destbios)) {
+                    fs.FileCopy(sourcebios, destbios, args.overwrite);
                     copied++;
                 }
             }
 
             // try to copy chd if it can be found
-            var sourceChd = Path.Join(args.romset, game);
-            var targetChd = Path.Join(args.selection, game);
-            if (Directory.Exists(sourceChd)) {
+            var sourceChd = fs.PathJoin(args.romset, game);
+            var targetChd = fs.PathJoin(args.selection, game);
+            if (fs.DirectoryExists(sourceChd)) {
                 if (messageHandler.MustCancel) { break; }
 
-                messageHandler.Progress($"Copying {game} CHD ({FileSystem.HumanSize(FileSystem.DirectorySize(sourceChd))})", total, i);
+                messageHandler.Progress($"Copying {game} CHD ({fs.HumanSize(fs.DirectorySize(sourceChd))})", total, i);
 
-                copied += FileSystem.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
+                copied += fs.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
             }
         }
 
