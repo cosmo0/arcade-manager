@@ -1,5 +1,4 @@
 CLOSE=Fermer
-HELP=Aide
 HOME=Accueil
 BROWSE=Parcourir
 DONE=Terminé
@@ -12,6 +11,11 @@ OVERWRITE_NO=Ne pas écraser les fichiers existants
 BREADCRUMB_CSV=Listes de jeux
 BREADCRUMB_CSV_DOWNLOAD=Télécharger
 BREADCRUMB_CSV_ADD=Ajouter des jeux
+BREADCRUMB_CSV_LIST=Lister les roms
+BREADCRUMB_CSV_KEEP=Conserver les jeux
+BREADCRUMB_CSV_DELETE=Supprimer les jeux
+BREADCRUMB_CSV_CONVERTINI=Convertir un INI
+BREADCRUMB_CSV_CONVERTDAT=Convertir un DAT
 BREADCRUMB_OVERLAYS=Installer des overlays
 BREADCRUMB_ROMS=Gérer ses roms
 BREADCRUMB_ROMS_COPY=Copier
@@ -31,6 +35,7 @@ ERROR_NOTARGETCSV=Veuillez sélectionner un fichier cible
 HOME_ACTION_CSV=Gérer ses listes de jeux
 HOME_ACTION_OVERLAYS=Installer des overlays
 HOME_ACTION_ROMS=Gérer ses roms
+HOME_ACTION_HELP=Aide (en anglais)
 HOME_ACTION_SYSTEM=Changer de système
 HOME_ACTION_TITLE=Sélectionnez une action <a href="/Help/What" class="navmenu">Que devrais-je faire ?</a>
 HOME_ACTION_WIZARD=Assistant
@@ -80,7 +85,7 @@ CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
 CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 
 CSV_ADD_TITLE=Ajouter des jeux à un fichier CSV
-CSV_ADD_INTRO=Sélectionnez le fichier CSV principal, le fichier contenant les jeux à ajouter, et le fichier cible.
+CSV_ADD_INTRO=<p>Sélectionnez le fichier CSV principal, le fichier contenant les jeux à ajouter, et le fichier cible.</p>
 CSV_ADD_MAINFILE=Fichier principal
 CSV_ADD_MAINFILE_DESC=Le fichier CSV auquel ajouter des jeux
 CSV_ADD_SECONDARY=Fichier secondaire
@@ -97,6 +102,47 @@ CSV_LIST_TARGET=Fichier de liste de roms
 CSV_LIST_TARGET_DESC=Le fichier CSV listant les roms
 CSV_LIST_ERROR_NOFOLDER=Veuillez sélectionner un dossier de liste de roms
 CSV_LIST_LIST=Lister les fichiers
+
+CSV_KEEP_TITLE=Conserver seulement les jeux listés
+CSV_KEEP_INTRO=<p>Exemples d'utilisation :<br>- supprimer les jeux non fonctionnels d'une liste : principal = votre sélection ; secondaire = liste de tous les jeux fonctionnels<br>- créer une liste "meilleurs jeux avec un stick" : principal = "meilleurs jeux" ; secondaire= "jouables au stick"<br>- créer un CSV complet depuis une simple liste de roms : principal = romset complet ; secondaire = liste de roms simple</p>
+CSV_KEEP_MAINFILE=Fichier CSV principal
+CSV_KEEP_MAINFILE_DESC=Le fichier CSV à filtrer
+CSV_KEEP_SECONDARY=Fichier CSV secondaire
+CSV_KEEP_SECONDARY_DESC=Le fichier CSV contenant les jeux à conserver
+CSV_KEEP_TARGET=Fichier cible
+CSV_KEEP_TARGET_DESC=Le fichier nettoyé à sauvegarder
+CSV_KEEP_KEEP=Supprimer les jeux non listés
+
+CSV_DELETE_TITLE=Supprimer des jeux d'un fichier CSV
+CSV_DELETE_INTRO=<p>Sélectionnez le fichier CSV principal, le fichier contenant les jeux à en retirer, et le fichier cible.</p>
+CSV_DELETE_MAINFILE=Fichier CSV principal
+CSV_DELETE_MAINFILE_DESC=Le fichier CSV duquel retirer les jeux
+CSV_DELETE_SECONDARY=Fichier CSV secondaire
+CSV_DELETE_SECONDARY_DESC=Le fichier CSV contenant les jeux à retirer
+CSV_DELETE_TARGET=Fichier cible
+CSV_DELETE_TARGET_DESC=Le fichier nettoyé à sauvegarder
+CSV_DELETE_DELETE=Retirer les jeux
+
+CSV_CONVERTINI_TITLE=Convertir un fichier INI
+CSV_CONVERTINI_INTRO=<p>Sélectionnez le fichier INI que vous voulez convertir et le dossier qui contiendra les CSV.<br>Cela créera un fichier CSV par section/catégorie du INI.<br>Les fichiers INI supportés sont ceux fournis par <a href="http://progettosnaps.net/" class="blank">Progetto Snaps</a> ou le "catver.ini" fourni par MAME.</p>
+CSV_CONVERTINI_MAINFILE=Fichier INI
+CSV_CONVERTINI_MAINFILE_DESC=Le fichier INI à convertir
+CSV_CONVERTINI_TARGET=Dossier de conversion
+CSV_CONVERTINI_TARGET_DESC=Le dossier contenant les fichiers à sauvegarder (un fichier par section INI)
+CSV_CONVERTINI_ERRORNOINI=Veuillez sélectionner un fichier INI à convertir
+CSV_CONVERTINI_ERRORNOTARGET=Veuillez sélectionner un dossier cible
+CSV_CONVERTINI_ERRORBADINI=Le fichier INI doit être un fichier .INI
+CSV_CONVERTINI_CONVERT=Convertir
+
+CSV_CONVERTDAT_TITLE=Convertir un fichier DAT (XML)
+CSV_CONVERTDAT_INTRO=<p>Sélectionnez le fichier DAT que vous voulez convertir, et le fichier CSV cible.</p>
+CSV_CONVERTDAT_MAINFILE=Fichier DAT
+CSV_CONVERTDAT_MAINFILE_DESC=Le fichier DAT à convertir
+CSV_CONVERTDAT_TARGET=Fichier converti
+CSV_CONVERTDAT_TARGET_DESC=Le fichier converti à sauvegarder
+CSV_CONVERTDAT_ERRORNODAT=Veuillez sélectionner un fichier DAT à convertir
+CSV_CONVERTDAT_ERRORBADDAT=Le fichier DAT doit être un fichier .DAT ou .XML
+CSV_CONVERTDAT_CONVERT=Convertir
 
 ROMS_INDEX_TITLE=Gérer ses roms
 ROMS_INDEX_INTRO=Copiez facilement les roms que vous voulez, ou retirez celles dont vous ne voulez pas, en vous basant sur un simple fichier CSV.<br>Copier depuis un romset part du principe que le fichier correspond à votre version de MAME, et est de préférence "non-merged".

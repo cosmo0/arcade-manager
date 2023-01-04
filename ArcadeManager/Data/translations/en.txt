@@ -1,5 +1,4 @@
 CLOSE=Close
-HELP=Help
 HOME=Home
 BROWSE=Browse
 DONE=Done
@@ -13,6 +12,10 @@ BREADCRUMB_CSV=Manage games list
 BREADCRUMB_CSV_DOWNLOAD=Download
 BREADCRUMB_CSV_ADD=Add games
 BREADCRUMB_CSV_LIST=List roms
+BREADCRUMB_CSV_KEEP=Keep games
+BREADCRUMB_CSV_DELETE=Delete games
+BREADCRUMB_CSV_CONVERTINI=Convert INI
+BREADCRUMB_CSV_CONVERTDAT=Convert DAT
 BREADCRUMB_OVERLAYS=Install overlays
 BREADCRUMB_ROMS=Manage roms
 BREADCRUMB_ROMS_COPY=Copy
@@ -32,6 +35,7 @@ ERROR_NOTARGETCSV=Please choose the target CSV file
 HOME_ACTION_CSV=Manage games lists
 HOME_ACTION_OVERLAYS=Install overlays
 HOME_ACTION_ROMS=Manage roms
+HOME_ACTION_HELP=Help
 HOME_ACTION_SYSTEM=Change system
 HOME_ACTION_TITLE=Select an action <a href="/Help/What" class="navmenu">What should I do?</a>
 HOME_ACTION_WIZARD=Wizard
@@ -81,7 +85,7 @@ CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
 CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
 
 CSV_ADD_TITLE=Add games to a CSV file
-CSV_ADD_INTRO=Select the main CSV file, the files containing the games you want to add, and the target file.
+CSV_ADD_INTRO=<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>
 CSV_ADD_MAINFILE=Main CSV file
 CSV_ADD_MAINFILE_DESC=The CSV file to add games to
 CSV_ADD_SECONDARY=Secondary CSV file
@@ -98,6 +102,47 @@ CSV_LIST_TARGET=Roms list file
 CSV_LIST_TARGET_DESC=The CSV file listing your roms to be saved
 CSV_LIST_ERROR_NOFOLDER=Please choose a folder to list the files from
 CSV_LIST_LIST=List the files
+
+CSV_KEEP_TITLE=Keep only listed games
+CSV_KEEP_INTRO=<p>Example usages:<br>- removing non-working games from a list: main = your list ; secondary = "working" list<br>- create a "best games with a stick" list: main = "best games" ; secondary = "playable with an arcade stick"<br>- create a full CSV from a simple games list: main = full romset ; secondary = raw list with only the file names</p>
+CSV_KEEP_MAINFILE=Main CSV file
+CSV_KEEP_MAINFILE_DESC=The CSV file to filter
+CSV_KEEP_SECONDARY=Secondary CSV file
+CSV_KEEP_SECONDARY_DESC=The CSV file containing the games to keep
+CSV_KEEP_TARGET=Target file
+CSV_KEEP_TARGET_DESC=The merged file to be saved
+CSV_KEEP_KEEP=Remove games not listed
+
+CSV_DELETE_TITLE=Delete games from a CSV file
+CSV_DELETE_INTRO=<p>Select the main CSV file, the file containing the games you want to remove from the first, and the target file.</p>
+CSV_DELETE_MAINFILE=Main CSV file
+CSV_DELETE_MAINFILE_DESC=The CSV file to remove games from
+CSV_DELETE_SECONDARY=Secondary CSV file
+CSV_DELETE_SECONDARY_DESC=The CSV file containing the games to remove
+CSV_DELETE_TARGET=Target file
+CSV_DELETE_TARGET_DESC=The merged file to be saved
+CSV_DELETE_DELETE=Remove games
+
+CSV_CONVERTINI_TITLE=Convert a INI file
+CSV_CONVERTINI_INTRO=<p>Select the INI file you want to convert and the target CSV file.<br>This will create one CSV file per INI section/category.<br>The supported INI files are the ones provided by <a href="http://progettosnaps.net/" class="blank">Progetto Snaps</a> or the "catver.ini" file provided with MAME.</p>
+CSV_CONVERTINI_MAINFILE=INI file
+CSV_CONVERTINI_MAINFILE_DESC=The INI file to convert
+CSV_CONVERTINI_TARGET=Conversion folder
+CSV_CONVERTINI_TARGET_DESC=The folder where the converted files will be saved (one file per INI section)
+CSV_CONVERTINI_ERRORNOINI=Please choose a INI file to convert
+CSV_CONVERTINI_ERRORNOTARGET=Please choose a target folder
+CSV_CONVERTINI_ERRORBADINI=The INI file should be a .ini file
+CSV_CONVERTINI_CONVERT=Convert
+
+CSV_CONVERTDAT_TITLE=Convert a DAT (XML) file
+CSV_CONVERTDAT_INTRO=<p>Select the DAT file you want to convert and the target CSV file.</p>
+CSV_CONVERTDAT_MAINFILE=DAT file
+CSV_CONVERTDAT_MAINFILE_DESC=The DAT file to convert
+CSV_CONVERTDAT_TARGET=Converted file
+CSV_CONVERTDAT_TARGET_DESC=The converted file to be saved
+CSV_CONVERTDAT_ERRORNODAT=Please choose a DAT file to convert
+CSV_CONVERTDAT_ERRORBADDAT=The DAT file should be a .DAT or .XML file.
+CSV_CONVERTDAT_CONVERT=Convert
 
 ROMS_INDEX_TITLE=Manage roms
 ROMS_INDEX_INTRO=Easily copy roms you want, or remove roms you don't want, based on a simple CSV file.<br>Copying from a romset assumes it matches your MAME version and is non-merged.
