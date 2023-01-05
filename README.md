@@ -4,7 +4,7 @@
 [![Linux build status](https://ci.appveyor.com/api/projects/status/ltp88yfy8b22y8sv?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-dotnet-linux)
 [![MacOS build status](https://ci.appveyor.com/api/projects/status/jxkja8m43yjjcdo8?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-dotnet-mac)
 
-This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox.
+This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox, but it works with anything.
 
 It helps you to manage and filter your arcade rom collection (MAME/FBNeo) by removing unwanted, bad, and unplayable games.
 
