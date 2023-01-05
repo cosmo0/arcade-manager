@@ -160,6 +160,7 @@ ROMS_COPY_ROMSET=Romset complet
 ROMS_COPY_ROMSET_DESC=Le dossier contenant tous les fichiers du romset
 ROMS_COPY_ROMSELECT=Sélection de roms
 ROMS_COPY_ROMSELECT_DESC=Le dossier qui contiendra la sélection de roms que vous voulez
+ROMS_COPY_SAMPLES=Certains vieux jeux, comme Space Invaders, ont besoin de "samples" pour avoir du son. Copiez-les manuellement ; le dossier change en fonction de votre système et de l'émulateur.<br>Vous pouvez les <a href="https://www.progettosnaps.net/samples/" class="blank">télécharger sur ProgettoSnaps</a>.
 ROMS_COPY_COPY=Copier les roms listées
 
 ROMS_DELETE_TITLE=Supprimer des roms
