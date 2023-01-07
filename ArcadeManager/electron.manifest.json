@@ -12,7 +12,7 @@
 		"appId": "com.ArcadeManager.app",
 		"productName": "ArcadeManager",
 		"copyright": "",
-		"buildVersion": "7.0.0",
+		"buildVersion": "7.1.0",
 		"compression": "maximum",
 		"win": {
 			"target": [
