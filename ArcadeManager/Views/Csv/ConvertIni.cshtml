@@ -52,9 +52,9 @@
                 target = $('#fileTarget').val();
 
             // check every path is filled
-            if (main === '') { window.alert('@Localizer.Js("CSV_CONVERTINI_ERRORNOINI")'); return; }
-            if (target === '') { window.alert('@Localizer.Js("CSV_CONVERTINI_ERRORNOTARGET")'); return; }
-            if (!main.toLowerCase().endsWith('.ini')) { window.alert('@Localizer.Js("CSV_CONVERTINI_ERRORBADINI")'); }
+            if (main === '') { window.alert('@Html.Raw(Localizer.Js("CSV_CONVERTINI_ERRORNOINI"))'); return; }
+            if (target === '') { window.alert('@Html.Raw(Localizer.Js("CSV_CONVERTINI_ERRORNOTARGET"))'); return; }
+            if (!main.toLowerCase().endsWith('.ini')) { window.alert('@Html.Raw(Localizer.Js("CSV_CONVERTINI_ERRORBADINI"))'); }
 
             // execute action
             ipc('csv-convertini', { main, target });

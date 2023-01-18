@@ -52,10 +52,10 @@
 			target = $('#fileTarget').val();
 
 		// check every path is filled
-        if (main === '') { window.alert('@Localizer.Js("CSV_CONVERTDAT_ERRORNODAT")'); return; }
-        if (target === '') { window.alert('@Localizer.Js("ERROR_NOTARGETCSV")'); return; }
+        if (main === '') { window.alert('@Html.Raw(Localizer.Js("CSV_CONVERTDAT_ERRORNODAT"))'); return; }
+        if (target === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGETCSV"))'); return; }
         if (!main.toLowerCase().endsWith('.xml') && !main.toLowerCase().endsWith('.dat')) {
-            window.alert('@Localizer.Js("CSV_CONVERTDAT_ERRORBADDAT")');
+            window.alert('@Html.Raw(Localizer.Js("CSV_CONVERTDAT_ERRORBADDAT"))');
             return;
         }
 

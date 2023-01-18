@@ -141,7 +141,7 @@
                     if (exists) {
                         $('#romFoldersContainer')
                             .empty()
-                            .append($('<label>@Localizer.Js("OVERLAYS_SETTINGS_ROMSFOLDERS")</label>'));
+                            .append($('<label>@Html.Raw(Localizer.Js("OVERLAYS_SETTINGS_ROMSFOLDERS"))</label>'));
                         for (let folder of appData.defaults.romFolders[os]) {
                             const romFolder = romShare + "/" + folder;
                             ipc('fs-exists', romFolder, (exists) => {
@@ -189,14 +189,14 @@
 
                     // check the width/height aspect ratio is OK
                     if (width / height !== 16 / 9) {
-                        window.alert('@Localizer.Js("OVERLAYS_RATIO_ERROR")');
+                        window.alert('@Html.Raw(Localizer.Js("OVERLAYS_RATIO_ERROR"))');
                         return;
                     }
 
                     // check inputs and paths
-                    if (pack.length === 0) { window.alert('@Localizer.Js("OVERLAYS_ERROR_NOOVERLAY")'); return; }
-                    if (romFolders.length === 0) { window.alert('@Localizer.Js("OVERLAYS_ERROR_NOROMS")'); return; }
-                    if (!configFolder || configFolder === '') { window.alert('@Localizer.Js("OVERLAYS_ERROR_NOCONFIG")'); return; }
+                    if (pack.length === 0) { window.alert('@Html.Raw(Localizer.Js("OVERLAYS_ERROR_NOOVERLAY"))'); return; }
+                    if (romFolders.length === 0) { window.alert('@Html.Raw(Localizer.Js("OVERLAYS_ERROR_NOROMS"))'); return; }
+                    if (!configFolder || configFolder === '') { window.alert('@Html.Raw(Localizer.Js("OVERLAYS_ERROR_NOCONFIG"))'); return; }
 
                     // download and install pack
                     ipc('overlays-download', { romFolders, configFolder, pack: pack.attr('data-pack'), overwrite, ratio: (height / 1080) });

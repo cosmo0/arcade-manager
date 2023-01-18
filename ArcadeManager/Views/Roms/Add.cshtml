@@ -97,9 +97,9 @@
                 overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
 
             // check every path is filled
-            if (main === '') { window.alert('@Localizer.Js("ERROR_NOCSV")'); return; }
-            if (romset === '') { window.alert('@Localizer.Js("ERROR_NOFULLSET")'); return; }
-            if (selection === '') { window.alert('@Localizer.Js("ERROR_NOSELECTION")'); return; }
+            if (main === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOCSV"))'); return; }
+            if (romset === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOFULLSET"))'); return; }
+            if (selection === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
 
             ipc("roms-add", { main, romset, selection, overwrite });
         });

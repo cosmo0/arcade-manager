@@ -68,9 +68,9 @@
 			target = $('#fileTarget').val();
 
 		// check every path is filled
-		if (main === '') { window.alert('@Localizer.Js("ERROR_NOCSV")'); return; }
-        if (secondary === '') { window.alert('@Localizer.Js("ERROR_NOSECONDARYCSV")'); return; }
-        if (target === '') { window.alert('@Localizer.Js("ERROR_NOTARGETCSV")'); return; }
+		if (main === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOCSV"))'); return; }
+        if (secondary === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSECONDARYCSV"))'); return; }
+        if (target === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGETCSV"))'); return; }
 
 		// execute action
         ipc('csv-remove', { main, secondary, target });
