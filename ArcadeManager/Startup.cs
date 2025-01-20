@@ -119,9 +119,9 @@ public class Startup {
 
         var mainWindow = await CreateMainWindow();
 
-        if (env.IsDevelopment()) {
-            mainWindow.WebContents.OpenDevTools();
-        }
+        // if (env.IsDevelopment()) {
+        //     mainWindow.WebContents.OpenDevTools();
+        // }
 
         // re-create main window if last window has been closed
         Electron.App.On("activate", obj => {
