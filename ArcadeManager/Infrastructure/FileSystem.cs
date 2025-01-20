@@ -52,9 +52,11 @@ public class FileSystem : IFileSystem {
         // Get the files in the directory and copy them to the new location.
         FileInfo[] files = dir.GetFiles();
         foreach (FileInfo file in files) {
-            string tempPath = Path.Combine(destDirName, file.Name);
-            file.CopyTo(tempPath, overwrite);
-            nbCopied++;
+            string targetPath = Path.Combine(destDirName, file.Name);
+            if (!File.Exists(targetPath) || overwrite) {
+                file.CopyTo(targetPath, overwrite);
+                nbCopied++;
+            }
         }
 
         // If copying subdirectories, copy them and their contents to new location.
@@ -143,7 +145,9 @@ public class FileSystem : IFileSystem {
     /// <param name="dest">The destination path.</param>
     /// <param name="overwrite">if set to <c>true</c> overwrite existing file.</param>
     public void FileCopy(string source, string dest, bool overwrite) {
-        File.Copy(source, dest, overwrite);
+        if (!File.Exists(dest) || overwrite) {
+            File.Copy(source, dest, overwrite);
+        }
     }
 
     /// <summary>
