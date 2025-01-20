@@ -53,10 +53,15 @@ If you think you can help, please create a pull request!
 
 ## Development
 
+Prerequisites:
+
+* Dotnet 8 SDK
+* NodeJS 22.x
+* `dotnet tool install --global ElectronNET.CLI`
+
 Build and run:
 
 ````bash
-dotnet tool install --global ElectronNET.CLI
 cd ArcadeManager
 dotnet build
 electronize start

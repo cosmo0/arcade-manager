@@ -428,7 +428,8 @@ public partial class MessageHandler : IMessageHandler {
     /// Checks if an update is available
     /// </summary>
     private async void UpdateCheck(object _) {
-        var current = await ArcadeManagerEnvironment.GetVersion();
+        var current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
         var update = await updaterService.CheckUpdate(current);
         if (update != null) {
             update.Current = current;

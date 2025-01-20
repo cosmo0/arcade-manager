@@ -147,7 +147,7 @@
 
             // checks if an update is available
             checkUpdate((version) => {
-                if (!version) { return; }
+                if (!version || version.length === 0) { return; }
 
                 $('#versionName').text(version.name);
                 $('#ignoreVersion').val(version.tagName);
