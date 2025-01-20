@@ -22,10 +22,11 @@
 <ul>
     <li>
         The "lr-" versions have been modified to use Libretro, a library unifying emulators, used in RetroArch,
-        Retropie, Recalbox, and others.
+        Retropie, Recalbox, and others. They have unified options, but are generally slower.
     </li>
     <li>
-        MAME4ALL is a fork of an old version (2000) that aims to run games as fast as possible, even on weaker hardware.
+        MAME4ALL is a fork of an old version (2000) that aims to run games as fast as possible, even on weaker hardware,
+        but has a lot less games.
     </li>
     <li>
         AdvanceMAME is a fork of another old version (2006), optimized to be displayed on CRT screens.
@@ -44,7 +45,7 @@
 <p>
     Basically, the latest MAME version is quite stable and runs pretty well on a PC even a bit old, but lots of
     games (especially from the 90's) are slow on weaker hardware like a Raspberry Pi. MAME2003+ is overall faster,
-    but has quite a lot of bugs : for instance, many games don't have sound, Sega System 24 games hadn't yet
+    but has quite a lot of bugs : for instance, many games don't have sound, CPS3 and System 24 games hadn't yet
     been decrypted, lots of games weren't even dumped yet, etc.
 </p>
 
@@ -54,13 +55,13 @@
     FBA has started life as an emulator of After Burner only (hence the name).
     <a href="https://www.fbalpha.com/history/" class="blank">Over time</a>, games and systems have been added,
     and it now emulates a very large number of games, although still smaller than MAME.<br>
-    After some problem with the FBA "owner", most of the dev team split to create their own fork: Final Burn Neo.
+    After some problem with the main contributor, most of the dev team split to create their own fork: Final Burn Neo.
     Alpha is basically dead at this point.
 </p>
 <p>
-    FBNeo doesn't care as much about accuracy as MAME, and as a result, games generally run much faster on recent FBNeo
-    versions than on recent MAME versions ; it also has more user features than MAME, and is easier to use on PC.
-    However, FBNeo doesn't emulate a single 3D system, so you won't be able to play Tekken or Ridge Racer with it.
+    FBNeo focuses on working games - you will not find any non-working games there. It also does not handle non-joystick/wheels
+    controllers like trackballs, and doesn't have a single 3D game. It is also usually faster than the latest MAME
+    version on a lot of games, has more user-focused features than MAME, and is easier to use on PC.
 </p>
 
 <h3>So, which one should I choose?</h3>
@@ -71,8 +72,8 @@
     The easiest way is:
 </p>
 <ul>
-    <li>If you're using a PC, just use MAME (latest version)</li>
-    <li>On a Pi 4, use FBNeo because it's often fast enough, and emulates most games quite well ; most games missing from FBNeo run probably too slow on Pi 4 anyway</li>
-    <li>On a Pi 3, use MAME2003+ because it's faster than FBNeo, and try MAME2010 for the games that don't work in 2003+</li>
-    <li>On a Pi 1, Pi 2 or Pi Zero, prefer MAME4ALL because it's much faster.</li>
+    <li>On a very low-power device like a Raspberry Pi 1, Pi 2 or Pi Zero, prefer MAME4ALL because it's much faster.</li>
+    <li>On a low-power device like a Raspberry Pi 3 or Miyoo Mini+, use MAME2003+ because it's faster than FBNeo, and try FBNeo for the games that don't work in 2003+</li>
+    <li>On more powerful hardware, use FBNeo because it's often fast enough, and emulates most games quite well</li>
+    <li>If you're using any relatively recent PC (10 years old is still recent), just use MAME (latest version)</li>
 </ul>
