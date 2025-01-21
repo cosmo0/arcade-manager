@@ -83,7 +83,7 @@ public class WizardController : BaseController {
             return RedirectToAction("Emulator", model);
         }
         else {
-            return RedirectToAction("Overlays", model);
+            return RedirectToAction("Index", "Overlays", model);
         }
     }
 

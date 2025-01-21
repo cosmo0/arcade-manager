@@ -215,21 +215,23 @@ WIZARD_START=Démarrer - choisir l'émulateur
 WIZARD_EMULATOR_TITLE=Assistant : émulateur
 WIZARD_EMULATOR_INTRO=<p>Veuillez sélectionner l'émulateur que vous utilisez.</p><p>FBNeo n'a pas de jeu en 3D (ou en 2D développés sur des systèmes 3D), et même MAME n'est pas très bon sur les jeux les plus récents (Naomi, Atomiswave, etc).<br />Voici <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">une liste d'alternatives</a>.</p>
 WIZARD_EMULATOR_FBNEO_NAME=FBNeo (1.0.0.2)
-WIZARD_EMULATOR_FBNEO_DESC=A le meiller équilibre entre performances et précision, mais la liste de jeux est plus restreinte (1900+, pas de 3D).<br /><strong>Préférez ceci si vous jouez sur Raspberry Pi 4</strong>.
+WIZARD_EMULATOR_FBNEO_DESC=A le meiller équilibre entre performances et précision, mais la liste de jeux est plus restreinte (1900+, pas de 3D).<br /><strong>Préférez ceci si vous jouez sur Raspberry Pi 4 et ultérieur, ou Anbernic RG XX et similaire</strong>.
 WIZARD_EMULATOR_MAME_NAME=MAME - dernière version (0.249)
 WIZARD_EMULATOR_MAME_DESC=A la plus large sélection de jeux (3500+) et la plus grande précision, mais demande le plus de puissance, même pour certains vieux jeux.<br /><strong>Préférez ceci si vous jouez sur PC</strong>.
 WIZARD_EMULATOR_MAME2003_NAME=MAME 2003+
-WIZARD_EMULATOR_MAME2003_DESC=A les meilleures performances, mais un bon nombre de bugs, de jeux qui ne marchent pas, et autres problèmes.<br /><strong>Préférez ceci si vous jouez sur Rasbperry Pi 3</strong>.
+WIZARD_EMULATOR_MAME2003_DESC=A les meilleures performances, mais un bon nombre de bugs, de jeux qui ne marchent pas, et autres problèmes.<br /><strong>Préférez ceci si vous jouez sur Rasbperry Pi 3 ou Miyoo Mini+ et similaire</strong>.
 WIZARD_EMULATOR_NEXT=Suivant - choix des listes
 
 WIZARD_LIST_TITLE=Assistant : listes de jeux
 WIZARD_LIST_INTRO=<p>Veuillez sélectionner les listes de jeux que vous souhaitez.</p><p>Tous les jeux ont été testés et fonctionnent avec une manette rétro (type SNES) ou un stick arcade. Parfois il est possible de jouer mais de manière non optimale sans des contrôles dédiés (par exemple les jeux de course).</p><p>Notez que les "tops" ont des doublons : sélectionner le top 200 et le top 50 vous donnera 200 jeux, puisque le top 50 est une sous-sélection du top 200.<br />Evidemment, ces "tops" sont très subjectifs, et plutôt destinés aux joueurs qui ne connaissent pas bien l'arcade. Cet outil vous permet également de <a href="/Csv">créer vos propres listes</a>.</p>
 WIZARD_LIST_TOP200=<strong>Top 200</strong> : une sélection équilibrée de grands jeux, et quelques perles cachées : une bonne dose de nostalgie, et quelques belles découvertes.
 WIZARD_LIST_TOP50=<strong>Top 50</strong> : la crème de la crème, une sélection restreinte mais équilibrée de classiques intemporels : la meilleure manière de découvrir ce qu'était l'arcade.
-WIZARD_LIST_TOP80S=<strong>Top des années 80</strong> : de Asteroids à Final Fight, les {0} meilleurs jeux à l'ancienne.
-WIZARD_LIST_TOP90S=<strong>Top des années 90 et 2000</strong> : de Smash TV à Deathsmiles, les {0} meilleurs jeux modernes.
+WIZARD_LIST_TOP80S=<strong>Top des années 80</strong> : de Berzerk à Final Fight, les {0} meilleurs jeux à l'ancienne.
+WIZARD_LIST_TOP90S=<strong>Top des années 90 et 2000</strong> : de Boulder Dash à Deathsmiles, les {0} meilleurs jeux modernes.
 WIZARD_LIST_ICONS=<strong>Icônes</strong> : {0} jeux révolutionnaires, uniques, ou juste très populaires. Ne sont pas toujours très bons par rapport aux standards actuels, ou à leurs suites.<br /><strong>Attention:</strong> certains jeux de cette liste ne fonctionneront pas bien avec une simple manette rétro ou stick arcade, et vous aurez besoin d'un spinner, double stick, volant, etc. Vous pouvez parfois obtenir de bons résultats en réglant les contrôles dans les options.
 WIZARD_LIST_MULTIPLAYER=<strong>Multijoueur</strong> : {0} jeux à jouer à deux ou plus, en coopération ou en compétition.
+WIZARD_LIST_MULTIPLAYER_VS=<strong>Multijoueur (versus)</strong>: une sélection très restreinte de {0} jeux pour des parties rapides contre vos amis - parfait si vous avez une borne à utiliser en soirée.
+WIZARD_LIST_MULTIPLAYER_COOP=<strong>Multijoueur (coop)</strong>: une sélection très restreinte de {0} jeux à jouer avec votre famille pendant des parties amicales.
 WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong> : les {0} meilleurs jeux de la NeoGeo, le système arcade le plus populaire et le plus endurant.
 WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong> ("que du bon, pas de remplissage") : des bons jeux, encore funs aujourd'hui, jouables avec un stick arcade, sans trop de doublons, testés et validés par la communauté.<br />Listes originales prises sur <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
 WIZARD_LIST_AKNF_SHOOTING=Shoot ({0} jeux)

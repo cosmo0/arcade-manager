@@ -95,7 +95,9 @@
                 if (selection === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
             
                 // activate 'next' button when all is done
-                ipcRenderer.on('progress', (_, data) => {
+                ipcRenderer.on('progress', (origin, target, data) => {
+                    data = !data ? {} : data[0];
+
                     if (data.end) {
                         copyDone();
                     }

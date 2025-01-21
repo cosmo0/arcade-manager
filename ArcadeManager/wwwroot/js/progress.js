@@ -2,7 +2,7 @@
 $(() => {
     // bind progress events
     ipcRenderer.on('progress', (origin, target, data) => {
-        data = data[0];
+        data = !data ? {} : data[0];
 
         if (data.init) {
             console.log('Init: ' + data.label);
@@ -20,7 +20,7 @@ $(() => {
 
     // bind progress log
     ipcRenderer.on('progress-log', (origin, target, data) => {
-        data = data[0];
+        data = !data ? {} : data[0];
         
         progressLog(data.msg, data.error);
     });
