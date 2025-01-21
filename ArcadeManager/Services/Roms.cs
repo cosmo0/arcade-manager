@@ -99,6 +99,40 @@ public class Roms : IRoms {
     }
 
     /// <summary>
+    /// Checks a list of roms
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    /// <param name="messageHandler">The message handler</param>
+    /// <returns>The missing files list</returns>
+    public async Task<string[]> Check(RomsAction args, IMessageHandler messageHandler)
+    {
+        try {
+            // check files and folders
+            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find CSV file {args.main}"); }
+            if (!fs.DirectoryExists(args.romset)) { throw new PathNotFoundException($"Unable to find folder {args.romset}"); }
+
+            // read CSV file
+            var content = await csvService.ReadFile(args.main, false);
+
+            // check that all files in the CSV are listed in the folder
+            var result = new List<string>();
+            foreach (var game in content.Games) {
+                var gamePath = fs.PathJoin(args.romset, $"{game.Name}.zip");
+                if (!fs.FileExists(gamePath)) {
+                    result.Add(game.Name);
+                }
+            }
+
+            return [.. result];
+        }
+        catch (Exception ex) {
+            messageHandler.Error(ex);
+        }
+
+        return [];
+    }
+
+    /// <summary>
     /// Deletes roms from a folder
     /// </summary>
     /// <param name="args">The arguments</param>

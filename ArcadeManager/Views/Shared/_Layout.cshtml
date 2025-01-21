@@ -23,6 +23,7 @@
         <hr>
     </div>
 
+    <!-- Progress modal -->
     <div class="modal" tabindex="-1" role="dialog" id="progress">
         <div class="modal-dialog modal-lg" role="document" data-backdrop="static" data-keyboard="false">
             <div class="modal-content">
@@ -50,17 +51,39 @@
         </div>
     </div>
 
+    <!-- Files list modal -->
+    <div class="modal fade" id="filesListModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    @Localizer["ROMS_FILESNOTFOUD"]
+                </div>
+                <div class="modal-body">
+                    <div id="filesList" class="card p-3" style="max-height: 300px; overflow: auto;"></div>
+                    <div class="mt-3">
+                        <button type="button" id="filesListCopy" class="btn btn-sm btn-outline-info">@Localizer["ROMS_FILESLISTCOPY"]</button>
+                        <span id="filesListCopyMessage" class="d-none ml-2 text-info">@Localizer["ROMS_FILESLISTCOPIED"]</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">@Localizer["CANCEL"]</button>
+                    <button type="button" id="filesListContinue" class="btn btn-outline-success">@Localizer["CONTINUE"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Fixes jQuery integration https://stackoverflow.com/a/37480521/6776 -->
     <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.bundle.min.js"></script>
-    <script>if (window.module) module = window.module;</script>
-    <script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript">if (window.module) module = window.module;</script>
+    <script type="text/javascript">
         // global JS variables
         const platform = '@ArcadeManagerEnvironment.Platform';
     </script>
-    <script src="/js/site.js"></script>
-    <script src="/js/progress.js"></script>
+    <script type="text/javascript" src="/js/site.js"></script>
+    <script type="text/javascript" src="/js/progress.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

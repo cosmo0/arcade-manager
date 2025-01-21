@@ -3,6 +3,7 @@ HOME=Accueil
 BROWSE=Parcourir
 DONE=Terminé
 CANCEL=Annuler
+CONTINUE=Continuer
 ERROR_DOWNLOAD=Une erreur est survenue pendant le téléchargement du fichier.
 
 OVERWRITE_YES=Ecraser les fichiers existants
@@ -150,6 +151,9 @@ ROMS_INDEX_INTRO=Copiez facilement les roms que vous voulez, ou retirez celles d
 ROMS_INDEX_COPY=Copiez les roms listées depuis un romset complet jusqu'à un répertoire de sélection
 ROMS_INDEX_DELETE=Supprimez les roms listées
 ROMS_INDEX_KEEP=Conservez uniquement les roms listées
+ROMS_FILESNOTFOUD=Certains fichiers n'ont pas été trouvés
+ROMS_FILESLISTCOPY=Copier la liste des fichiers
+ROMS_FILESLISTCOPED=Copié dans le presse-papier
 
 ROMS_COPY_TITLE=Copier des roms
 ROMS_COPY_HOWTOACCESS=Comment accéder au partage réseau Retropie/Recalbox

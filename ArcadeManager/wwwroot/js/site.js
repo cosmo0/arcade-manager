@@ -47,6 +47,12 @@ $(() => {
             });
         }
     });
+
+    // files list modal
+    $('#filesListCopy').on('click', () => {
+        navigator.clipboard.writeText($('#filesList').text());
+        $('#filesListCopyMessage').removeClass('d-none').fadeOut(1000);
+    });
 });
 
 /**
@@ -166,8 +172,33 @@ function getRemoteList(repository, details, folder, cb) {
 /**
  * Checks that an update is available
  * 
- * @param {Function} cb the callbal
+ * @param {Function} cb the callback
  */
 function checkUpdate(cb) {
     ipc('update-check', null, cb);
+}
+
+/**
+ * Checks that a list of games exist on the target folder
+ * 
+ * @param {String} file the file containing the list of games
+ * @param {String} folder the folder containing the files to check
+ * @param {Function} cb the callback, if nothing is missing or the user continues
+ */
+function checkRoms(file, folder, cb) {
+    ipc('roms-check', { main: file, romset: folder }, (result) => {
+        if (!result || result.length === 0) {
+            // no missing files
+            cb();
+        } else {
+            // missing files: make the user confirm
+            $('#filesListModal #filesList').html(result.join('<br>\n'));
+            $('#filesListModal').modal('show');
+
+            $('#filesListModal #filesListContinue').off('click').one('click', () => {
+                $('#filesListModal').modal('hide');
+                cb();
+            });
+        }
+    });
 }

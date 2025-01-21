@@ -23,6 +23,14 @@ public interface IRoms {
     Task AddFromWizard(RomsAction args, IMessageHandler messageHandler);
 
     /// <summary>
+    /// Checks a folder for a list of roms
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    /// <param name="messageHandler">The message handler</param>
+    /// <returns>The list of missing files</returns>
+    Task<string[]> Check(RomsAction args, IMessageHandler messageHandler);
+
+    /// <summary>
     /// Deletes roms from a folder
     /// </summary>
     /// <param name="args">The arguments</param>

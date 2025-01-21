@@ -101,7 +101,9 @@
             if (romset === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOFULLSET"))'); return; }
             if (selection === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
 
-            ipc("roms-add", { main, romset, selection, overwrite });
+            checkRoms(main, romset, () => {
+                ipc("roms-add", { main, romset, selection, overwrite });
+            });
         });
     });
 </script>

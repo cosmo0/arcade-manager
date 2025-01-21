@@ -74,7 +74,9 @@
                 if (main === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOCSV"))'); return; }
                 if (selection === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
 
-                ipc("roms-delete", { main, selection });
+                checkRoms(main, selection, () => {
+                    ipc("roms-delete", { main, selection });
+                });
             });
         });</script>
 }

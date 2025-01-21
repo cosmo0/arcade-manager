@@ -45,7 +45,7 @@ If you are new to arcade emulation, please read these resources:
 ![Download CSV](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-csv-download.png)
 ![Copy roms](https://raw.githubusercontent.com/cosmo0/arcade-manager/docs/images/screen-rom-copy.png)
 
-## Help with translations
+## Translating
 
 Anyone can help with translations: they're simple text files (INI style) located in `Data\translations`.
 
@@ -53,13 +53,13 @@ If you think you can help, please create a pull request!
 
 ## Development
 
-Prerequisites:
+### Prerequisites
 
-* Dotnet 8 SDK
-* NodeJS 22.x
-* `dotnet tool install --global ElectronNET.CLI`
+* Dotnet 8 SDK - <https://dotnet.microsoft.com/en-us/download/dotnet/8.0>
+* NodeJS 22.x or later - <https://nodejs.org/download>
+* Open a command line and run `dotnet tool install --global ElectronNET.CLI`
 
-Build and run:
+### Build and run
 
 ````bash
 cd ArcadeManager
@@ -67,15 +67,13 @@ dotnet build
 electronize start
 ````
 
-Then attach Visual Studio to the `ArcadeManager` process.
+To debug, attach Visual Studio to the `ArcadeManager` process.
 
-Generate a fake romset in `tmp\roms` (empty zip files with the right names):
+Run `.\generate-samples.ps1` in Powershell to generate a fake romset in `tmp\roms` (empty zip files with the right names).
 
-````powershell
-.\generate-samples.ps1
-````
+### Create an install package
 
-Create an install package:
+Choose your OS and architecture:
 
 ````bash
 electronize build /target win
