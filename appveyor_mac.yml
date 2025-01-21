@@ -1,11 +1,11 @@
 version: 1.0.{build}
 branches:
   only:
-  - dotnet
-image: macos-catalina
+  - master
+image: macos-monterey
 init:
 - sh: >-
-    nvm use 17.6.0
+    nvm use 22.13.0
     
     dotnet tool install --global ElectronNET.CLI
 build_script:

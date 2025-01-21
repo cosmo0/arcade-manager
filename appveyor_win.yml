@@ -1,10 +1,13 @@
 version: 1.0.{build}
 branches:
   only:
-  - dotnet
+  - master
 image: Visual Studio 2022
 init:
-- cmd: dotnet tool install --global ElectronNET.CLI
+- cmd: >-
+    nvm use 22.13.0
+    
+    dotnet tool install --global ElectronNET.CLI
 build_script:
 - cmd: >-
     dotnet build ArcadeManager.sln
