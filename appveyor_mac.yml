@@ -3,16 +3,11 @@ branches:
   only:
   - master
 image: macos-monterey
-init:
-- sh: >-
-    nvm use 22.13.0
-    
-    dotnet tool install --global ElectronNET.CLI
+install:
+  - nvm use 22.13.0
+  - dotnet tool install --global ElectronNET.CLI
 build_script:
-- sh: >-
-    dotnet build ArcadeManager.sln
-    
-    /Users/appveyor/.dotnet/tools/electronize build /target osx
+  - dotnet build ArcadeManager.sln
+  - /Users/appveyor/.dotnet/tools/electronize build /target osx
 artifacts:
-- path: bin/Desktop/*.zip
-- path: bin/Desktop/*.dmg
+- path: bin/Desktop/*.*

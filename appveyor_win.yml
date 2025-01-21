@@ -3,16 +3,11 @@ branches:
   only:
   - master
 image: Visual Studio 2022
-init:
-- cmd: >-
-    nvm use 22.13.0
-    
-    dotnet tool install --global ElectronNET.CLI
+install:
+  - nvm use 22.13.0
+  - dotnet tool install --global ElectronNET.CLI
 build_script:
-- cmd: >-
-    dotnet build ArcadeManager.sln
-    
-    electronize build /target win
+  - dotnet build ArcadeManager.sln
+  - electronize build /target win
 artifacts:
-- path: bin/Desktop/*.zip
-- path: bin/Desktop/*.exe
+- path: bin/Desktop/*.*
