@@ -230,8 +230,8 @@ WIZARD_LIST_TOP80S=<strong>Top des années 80</strong> : de Berzerk à Final Fig
 WIZARD_LIST_TOP90S=<strong>Top des années 90 et 2000</strong> : de Boulder Dash à Deathsmiles, les {0} meilleurs jeux modernes.
 WIZARD_LIST_ICONS=<strong>Icônes</strong> : {0} jeux révolutionnaires, uniques, ou juste très populaires. Ne sont pas toujours très bons par rapport aux standards actuels, ou à leurs suites.<br /><strong>Attention:</strong> certains jeux de cette liste ne fonctionneront pas bien avec une simple manette rétro ou stick arcade, et vous aurez besoin d'un spinner, double stick, volant, etc. Vous pouvez parfois obtenir de bons résultats en réglant les contrôles dans les options.
 WIZARD_LIST_MULTIPLAYER=<strong>Multijoueur</strong> : {0} jeux à jouer à deux ou plus, en coopération ou en compétition.
-WIZARD_LIST_MULTIPLAYER_VS=<strong>Multijoueur (versus)</strong>: une sélection très restreinte de {0} jeux pour des parties rapides contre vos amis - parfait si vous avez une borne à utiliser en soirée.
-WIZARD_LIST_MULTIPLAYER_COOP=<strong>Multijoueur (coop)</strong>: une sélection très restreinte de {0} jeux à jouer avec votre famille pendant des parties amicales.
+WIZARD_LIST_MULTIPLAYER_VS=<strong>Multijoueur (versus)</strong>: une sélection très restreinte de {0} jeux facile à prendre en main, pour des parties rapides contre vos amis - parfait si vous avez une borne à utiliser en soirée.
+WIZARD_LIST_MULTIPLAYER_COOP=<strong>Multijoueur (coop)</strong>: une sélection très restreinte de {0} jeux à faire en famille sans s'énerver.
 WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong> : les {0} meilleurs jeux de la NeoGeo, le système arcade le plus populaire et le plus endurant.
 WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong> ("que du bon, pas de remplissage") : des bons jeux, encore funs aujourd'hui, jouables avec un stick arcade, sans trop de doublons, testés et validés par la communauté.<br />Listes originales prises sur <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
 WIZARD_LIST_AKNF_SHOOTING=Shoot ({0} jeux)
