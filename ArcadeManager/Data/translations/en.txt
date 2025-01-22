@@ -233,6 +233,8 @@ WIZARD_LIST_MULTIPLAYER=<strong>Multiplayer</strong>: {0} great games to play wi
 WIZARD_LIST_MULTIPLAYER_VS=<strong>Multiplayer (versus)</strong>: a very tight selection of {0} games that are easy to pick up, to play against your friends for a few quick rounds - perfect if you have an arcade cabinet to use at parties.
 WIZARD_LIST_MULTIPLAYER_COOP=<strong>Multiplayer (coop)</strong>: a very tight selection of {0} games to play with your family in friendly gaming sessions.
 WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong>: the {0} best games on NeoGeo, the most popular and enduring arcade system.
+WIZARD_LIST_4BUTTONS=<strong>4 Buttons</strong>: {0} games to play on a controller limited to 4 buttons.
+WIZARD_LIST_VERTICAL=<strong>Vertical</strong>: {0} games using a vertical screen, including lots of shooters but also lots of other genres.
 WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, without too many duplicates, tested and validated by the community.<br />Original lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
 WIZARD_LIST_AKNF_SHOOTING=Shooting ({0} games)
 WIZARD_LIST_AKNF_RUNGUN=Run and gun ({0} games)

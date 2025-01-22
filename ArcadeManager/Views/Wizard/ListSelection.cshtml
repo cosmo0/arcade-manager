@@ -42,8 +42,15 @@
         <label><input type="checkbox" name="list" value="multi_vs" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_MULTIPLAYER_VS"], Model.GameNumbers["multi_vs"]))</label>
         <br />
         <label><input type="checkbox" name="list" value="multi_coop" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_MULTIPLAYER_COOP"], Model.GameNumbers["multi_coop"]))</label>
-        <br />
+    </div>
+
+    <div class="border rounded p-3 mb-3">
         <label><input type="checkbox" name="list" value="neogeo" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_NEOGEO"], Model.GameNumbers["neogeo"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="4buttons" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_4BUTTONS"], Model.GameNumbers["4buttons"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="vertical" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_VERTICAL"], Model.GameNumbers["vertical"]))</label>
+        <br />
     </div>
 
     <div class="border rounded p-3 mb-3">
