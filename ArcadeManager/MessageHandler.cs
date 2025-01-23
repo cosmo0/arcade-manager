@@ -360,9 +360,9 @@ public partial class MessageHandler : IMessageHandler {
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        var missing = await romsService.Check(data, this);
-        
-        Electron.IpcMain.Send(window, "roms-check-reply", missing);
+        string[] missing = await romsService.Check(data, this);
+        // why is this method the ONLY one where the result is not wrapped into an array?
+        Electron.IpcMain.Send(window, "roms-check-reply", [missing]);
     }
 
     /// <summary>
