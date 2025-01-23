@@ -1,0 +1,121 @@
+﻿@model Wizard
+@{
+    ViewData["title"] = Localizer["WIZARD_LIST_TITLE"];
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD"]</li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD_EMULATOR"]</li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_WIZARD_LIST"]</li>
+    </ol>
+</nav>
+
+<h2>@Localizer["WIZARD_LIST_TITLE"]</h2>
+
+@Html.Raw(Localizer["WIZARD_LIST_INTRO"])
+
+<form asp-controller="Wizard" asp-action="PostListSelection" method="post" class="wizard">
+
+    <input type="hidden" asp-for="DoOverlays" />
+    <input type="hidden" asp-for="Emulator" />
+
+    <div class="border rounded p-3 mb-3">
+        <label><input type="checkbox" name="list" value="top200" checked="checked" /> @Html.Raw(Localizer["WIZARD_LIST_TOP200"])</label>
+        <br />
+        <label><input type="checkbox" name="list" value="top50" /> @Html.Raw(Localizer["WIZARD_LIST_TOP50"])</label>
+        <br />
+        <label><input type="checkbox" name="list" value="top80s" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_TOP80S"], Model.GameNumbers["top80s"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="top90s" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_TOP90S"], Model.GameNumbers["top90s"]))</label>
+    </div>
+
+    <div class="border rounded p-3 mb-3">
+        <label>
+            <input type="checkbox" name="list" value="icons" />
+            @Html.Raw(string.Format(Localizer["WIZARD_LIST_ICONS"], Model.GameNumbers["icons"]))
+        </label>
+        <br />
+        <label><input type="checkbox" name="list" value="multiplayer" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_MULTIPLAYER"], Model.GameNumbers["multiplayer"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="multi_vs" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_MULTIPLAYER_VS"], Model.GameNumbers["multi_vs"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="multi_coop" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_MULTIPLAYER_COOP"], Model.GameNumbers["multi_coop"]))</label>
+    </div>
+
+    <div class="border rounded p-3 mb-3">
+        <label><input type="checkbox" name="list" value="neogeo" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_NEOGEO"], Model.GameNumbers["neogeo"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="4buttons" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_4BUTTONS"], Model.GameNumbers["4buttons"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="vertical" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_VERTICAL"], Model.GameNumbers["vertical"]))</label>
+        <br />
+    </div>
+
+    <div class="border rounded p-3 mb-3">
+        <p>
+            @Html.Raw(Localizer["WIZARD_LIST_AKNF"])
+        </p>
+
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-shooting" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_SHOOTING"], Model.GameNumbers["aknf-shooting"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-run-gun" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_RUNGUN"], Model.GameNumbers["aknf-run-gun"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-platform" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_PLATFORM"], Model.GameNumbers["aknf-platform"]))</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-fighting" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_FIGHTING"], Model.GameNumbers["aknf-fighting"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-beat-hack" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_BEATHACK"], Model.GameNumbers["aknf-beat-hack"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-puzzle" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_PUZZLE"], Model.GameNumbers["aknf-puzzle"]))</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-sports" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_SPORTS"], Model.GameNumbers["aknf-sports"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-racing" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_RACING"], Model.GameNumbers["aknf-racing"]))</label>
+            </div>
+            <div class="col-4">
+                <label><input type="checkbox" name="list" value="aknf-classics" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_CLASSICS"], Model.GameNumbers["aknf-classics"]))</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="border rounded p-3 mb-3">
+        <label><input type="checkbox" name="list" value="noclones" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_NOCLONE"], Model.GameNumbers["noclones"]))</label>
+        <br />
+        <label><input type="checkbox" name="list" value="clean" /> @Html.Raw(string.Format(Localizer["WIZARD_LIST_AKNF_CLEAN"], Model.GameNumbers["clean"]))</label>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <a href="/" class="btn btn-outline-secondary px-3">@Localizer["CANCEL"]</a>
+        </div>
+        <div class="col-6 text-right">
+            <button type="submit" class="btn btn-primary px-3" id="submitButton">
+                @Localizer["WIZARD_LIST_NEXT"]
+            </button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(':checkbox').on('change', (e) => {
+            $('#submitButton').prop('disabled', $(':checkbox:checked').length === 0);
+        });
+    </script>
+}

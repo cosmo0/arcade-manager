@@ -69,7 +69,7 @@ electronize start
 
 To debug, attach Visual Studio to the `ArcadeManager` process.
 
-Run `.\generate-samples.ps1` in Powershell to generate a fake romset in `tmp\roms` (empty zip files with the right names).
+Run `.\samples\generate-samples.ps1` in Powershell to generate a fake romset in `tmp\roms` (empty zip files with the right names).
 
 ### Create an install package
 

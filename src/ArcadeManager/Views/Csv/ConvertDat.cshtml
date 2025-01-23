@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["title"] = Localizer["CSV_CONVERTDAT_TITLE"];
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Csv" asp-action="Index" class="navmenu">@Localizer["BREADCRUMB_CSV"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_CSV_CONVERTDAT"]</li>
+    </ol>
+</nav>
+
+<h2>@Localizer["CSV_CONVERTDAT_TITLE"]</h2>
+
+@Html.Raw(Localizer["CSV_CONVERTDAT_INTRO"])
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["CSV_CONVERTDAT_MAINFILE"]</span>
+    </div>
+    <input type="text" class="form-control" id="fileMain">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse" type="button" data-input="fileMain">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["CSV_CONVERTDAT_MAINFILE_DESC"]</small>
+</p>
+
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["CSV_CONVERTDAT_TARGET"]</span>
+    </div>
+    <input type="text" class="form-control" id="fileTarget">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse new" type="button" data-input="fileTarget">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["CSV_CONVERTDAT_TARGET_DESC"]</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["CSV_CONVERTDAT_CONVERT"]</button>
+</p>
+
+@section Scripts {
+	<script>
+	$('#buttonOk').on('click', () => {
+		// get paths from file inputs
+		const main = $('#fileMain').val(),
+			target = $('#fileTarget').val();
+
+		// check every path is filled
+        if (main === '') { window.alert('@Html.Raw(Localizer.Js("CSV_CONVERTDAT_ERRORNODAT"))'); return; }
+        if (target === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGETCSV"))'); return; }
+        if (!main.toLowerCase().endsWith('.xml') && !main.toLowerCase().endsWith('.dat')) {
+            window.alert('@Html.Raw(Localizer.Js("CSV_CONVERTDAT_ERRORBADDAT"))');
+            return;
+        }
+
+		// execute action
+		ipc('csv-convertdat', { main, target });
+    });
+    </script>
+}

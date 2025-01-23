@@ -1,0 +1,256 @@
+CLOSE=Close
+HOME=Home
+BROWSE=Browse
+DONE=Done
+CANCEL=Cancel
+CONTINUE=Continue
+ERROR_DOWNLOAD=An error has occurred during file download.
+
+OVERWRITE_YES=Overwrite existing files
+OVERWRITE_NO=Do not overwrite existing files
+
+BREADCRUMB_CSV=Manage games list
+BREADCRUMB_CSV_DOWNLOAD=Download
+BREADCRUMB_CSV_ADD=Add games
+BREADCRUMB_CSV_LIST=List roms
+BREADCRUMB_CSV_KEEP=Keep games
+BREADCRUMB_CSV_DELETE=Delete games
+BREADCRUMB_CSV_CONVERTINI=Convert INI
+BREADCRUMB_CSV_CONVERTDAT=Convert DAT
+BREADCRUMB_OVERLAYS=Install overlays
+BREADCRUMB_ROMS=Manage roms
+BREADCRUMB_ROMS_COPY=Copy
+BREADCRUMB_ROMS_DELETE=Delete
+BREADCRUMB_ROMS_KEEP=Keep
+BREADCRUMB_WIZARD=Wizard
+BREADCRUMB_WIZARD_EMULATOR=Emulator
+BREADCRUMB_WIZARD_LIST=List selection
+BREADCRUMB_WIZARD_PATHS=Paths
+
+ERROR_NOCSV=Please choose a main CSV file
+ERROR_NOFULLSET=Please choose the path to the full romset
+ERROR_NOSELECTION=Please choose the path to the selection of roms
+ERROR_NOSECONDARYCSV=Please choose a secondary CSV file
+ERROR_NOTARGETCSV=Please choose the target CSV file
+
+HOME_ACTION_LANGUAGE=Language
+HOME_ACTION_CSV=Manage games lists
+HOME_ACTION_OVERLAYS=Install overlays
+HOME_ACTION_ROMS=Manage roms
+HOME_ACTION_HELP=Help
+HOME_ACTION_SYSTEM=Change system
+HOME_ACTION_TITLE=Select an action <a href="/Help/What" class="navmenu">What should I do?</a>
+HOME_ACTION_WIZARD=Wizard
+HOME_INTRO=<p>This tool helps you to manage and filter your rom collection by removing unwanted, bad, and unplayable games.<br>It assumes you have a working romset corresponding to the MAME/FBA/FBNeo version you're using.<br>It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.</p><div class="alert alert-info">If you have no idea what a "romset" is, or why the MAME version is important, check out <a href="/Help" class="navmenu">the help section</a> first.</div>
+HOME_UPDATE_CURRENTVERSION=current version:
+HOME_UPDATE_DONOTNOTIFY=Do not notify me again for this version
+HOME_UPDATE_MOREINFOS=more informations
+HOME_UPDATE_PUBLISHEDON=Published on
+
+HOME_OS_TITLE=Choose your distribution
+HOME_OS_INTRO=<p> Hello, and welcome to ArcadeManager, where you will be able to manage and filter your rom collection by removing unwanted, bad, and unplayable games. </p> <p> Before doing anything, I will need to know which system you're using, because some things are slightly different depending on your system. </p> <p> Don't worry, you will be able to change it later: look in the bottom right corner of the main menu. </p>
+HOME_OS_NOTSURE=Other / not sure
+
+PROGRESS_PLEASEWAIT=Please wait...
+PROGRESS_STOP=Stop
+PROGRESS_OPENRESULTS=Open the result
+
+CSV_INDEX_TITLE=Manage games lists
+CSV_INDEX_INTRO=This tool uses CSV files for the games list. Why? Because it's easier to use, and you can easily toy with the files using Excel to <a href="/Help/CustomCsv" class="navmenu">create your own custom lists</a> or edit the provided ones.
+CSV_INDEX_EXISTING_TITLE=From an existing source
+CSV_INDEX_CREATE_TITLE=Create your own files
+CSV_INDEX_CREATE_KEEP=Keep only games listed in another file
+CSV_INDEX_CREATE_MERGE=Add games from a file to another file (merge)
+CSV_INDEX_CREATE_REMOVE=Remove games in a file that are listed in another file
+CSV_INDEX_EXISTING_DAT=Convert a DAT file
+CSV_INDEX_EXISTING_DOWNLOAD=Download a pre-built games list
+CSV_INDEX_EXISTING_FOLDER=List the roms in a folder
+CSV_INDEX_EXISTING_INI=Convert a INI file
+
+CSV_DOWNLOAD_TITLE=Download a pre-built games list
+CSV_DOWNLOAD_INTRO=You can find quite a lot of various pre-built CSV, DAT and INI files in <a href="https://github.com/cosmo0/arcade-manager-data" class="blank">the arcade-manager-data repository</a>.<br />This is only a selection of the most useful lists.
+CSV_DOWNLOAD_SELECTEMULATOR=Please select an emulator version on the left.
+CSV_DOWNLOAD_LOADING=Loading ${name}, please wait...
+CSV_DOWNLOAD_PROGRESSINIT=Download file
+
+CSV_DOWNLOAD_LIST_BEST_NAME=Best games
+CSV_DOWNLOAD_LIST_BEST_DESC=The best games for each emulator
+CSV_DOWNLOAD_LIST_AKNF_NAME=All killer, no filler
+CSV_DOWNLOAD_LIST_AKNF_DESC=The 'All Killer, No Filler' list from forum.arcadecontrols.com
+CSV_DOWNLOAD_LIST_FBNEO_NAME=FinalBurn Neo
+CSV_DOWNLOAD_LIST_FBNEO_DESC=FinalBurn Neo (1.0.0.2)
+CSV_DOWNLOAD_LIST_MAME_NAME=MAME
+CSV_DOWNLOAD_LIST_MAME_DESC=The latest version of MAME (0.249)
+CSV_DOWNLOAD_LIST_MAME2003_NAME=MAME 2003+
+CSV_DOWNLOAD_LIST_MAME2003_DESC=MAME 2003 Plus, an improved version of MAME 2003
+CSV_DOWNLOAD_LIST_MAME2010_NAME=MAME 2010
+CSV_DOWNLOAD_LIST_MAME2010_DESC=MAME 2010 (0.139)
+
+CSV_ADD_TITLE=Add games to a CSV file
+CSV_ADD_INTRO=<p>Select the main CSV file, the files containing the games you want to add, and the target file.</p>
+CSV_ADD_MAINFILE=Main CSV file
+CSV_ADD_MAINFILE_DESC=The CSV file to add games to
+CSV_ADD_SECONDARY=Secondary CSV file
+CSV_ADD_SECONDARY_DESC=The CSV file with the games to add.
+CSV_ADD_TARGET=Target file
+CSV_ADD_TARGET_DESC=The merged file to be saved
+CSV_ADD_ADD=Add
+
+CSV_LIST_TITLE=List the roms in a folder
+CSV_LIST_INTRO=<p>Select the folder that contain your roms, and the target CSV file.<br>If you want more informations for each, use the "<a href="/Csv/Keep" class="navmenu">keep games</a>" filter, use a "complete romset" CSV as main, and your files list as secondary.</p>
+CSV_LIST_FOLDER=Roms folder
+CSV_LIST_FOLDER_DESC=The folder containing the roms to list
+CSV_LIST_TARGET=Roms list file
+CSV_LIST_TARGET_DESC=The CSV file listing your roms to be saved
+CSV_LIST_ERROR_NOFOLDER=Please choose a folder to list the files from
+CSV_LIST_LIST=List the files
+
+CSV_KEEP_TITLE=Keep only listed games
+CSV_KEEP_INTRO=<p>Example usages:<br>- removing non-working games from a list: main = your list ; secondary = "working" list<br>- create a "best games with a stick" list: main = "best games" ; secondary = "playable with an arcade stick"<br>- create a full CSV from a simple games list: main = full romset ; secondary = raw list with only the file names</p>
+CSV_KEEP_MAINFILE=Main CSV file
+CSV_KEEP_MAINFILE_DESC=The CSV file to filter
+CSV_KEEP_SECONDARY=Secondary CSV file
+CSV_KEEP_SECONDARY_DESC=The CSV file containing the games to keep
+CSV_KEEP_TARGET=Target file
+CSV_KEEP_TARGET_DESC=The merged file to be saved
+CSV_KEEP_KEEP=Remove games not listed
+
+CSV_DELETE_TITLE=Delete games from a CSV file
+CSV_DELETE_INTRO=<p>Select the main CSV file, the file containing the games you want to remove from the first, and the target file.</p>
+CSV_DELETE_MAINFILE=Main CSV file
+CSV_DELETE_MAINFILE_DESC=The CSV file to remove games from
+CSV_DELETE_SECONDARY=Secondary CSV file
+CSV_DELETE_SECONDARY_DESC=The CSV file containing the games to remove
+CSV_DELETE_TARGET=Target file
+CSV_DELETE_TARGET_DESC=The merged file to be saved
+CSV_DELETE_DELETE=Remove games
+
+CSV_CONVERTINI_TITLE=Convert a INI file
+CSV_CONVERTINI_INTRO=<p>Select the INI file you want to convert and the target CSV file.<br>This will create one CSV file per INI section/category.<br>The supported INI files are the ones provided by <a href="http://progettosnaps.net/" class="blank">Progetto Snaps</a> or the "catver.ini" file provided with MAME.</p>
+CSV_CONVERTINI_MAINFILE=INI file
+CSV_CONVERTINI_MAINFILE_DESC=The INI file to convert
+CSV_CONVERTINI_TARGET=Conversion folder
+CSV_CONVERTINI_TARGET_DESC=The folder where the converted files will be saved (one file per INI section)
+CSV_CONVERTINI_ERRORNOINI=Please choose a INI file to convert
+CSV_CONVERTINI_ERRORNOTARGET=Please choose a target folder
+CSV_CONVERTINI_ERRORBADINI=The INI file should be a .ini file
+CSV_CONVERTINI_CONVERT=Convert
+
+CSV_CONVERTDAT_TITLE=Convert a DAT (XML) file
+CSV_CONVERTDAT_INTRO=<p>Select the DAT file you want to convert and the target CSV file.</p>
+CSV_CONVERTDAT_MAINFILE=DAT file
+CSV_CONVERTDAT_MAINFILE_DESC=The DAT file to convert
+CSV_CONVERTDAT_TARGET=Converted file
+CSV_CONVERTDAT_TARGET_DESC=The converted file to be saved
+CSV_CONVERTDAT_ERRORNODAT=Please choose a DAT file to convert
+CSV_CONVERTDAT_ERRORBADDAT=The DAT file should be a .DAT or .XML file.
+CSV_CONVERTDAT_CONVERT=Convert
+
+ROMS_INDEX_TITLE=Manage roms
+ROMS_INDEX_INTRO=Easily copy roms you want, or remove roms you don't want, based on a simple CSV file.<br>Copying from a romset assumes it matches your MAME version and is non-merged.
+ROMS_INDEX_COPY=Copy listed roms from a full romset to a selection folder
+ROMS_INDEX_DELETE=Delete listed roms
+ROMS_INDEX_KEEP=Keep only the roms listed
+ROMS_FILESNOTFOUD=Some files have not been found
+ROMS_FILESLISTCOPY=Copy the files list
+ROMS_FILESLISTCOPIED=Copied in clipboard
+
+ROMS_COPY_TITLE=Copy roms
+ROMS_COPY_HOWTOACCESS=How to access my Retropie/Recalbox shares
+ROMS_COPY_INTRO=Select a CSV file listing the roms you want, the path to the full romset, and the path to a rom selection<br>This will copy the roms listed in the CSV from the romset to the selection.<br>For example, using a "classic games" CSV file will copy only the classics instead of the thousands of games MAME provides.
+ROMS_COPY_CSVFILE=CSV file
+ROMS_COPY_CSVFILE_DESC=The CSV file listing the games to copy
+ROMS_COPY_ROMSET=Full romset
+ROMS_COPY_ROMSET_DESC=The folder containing all the files of the romset
+ROMS_COPY_ROMSELECT=Rom selection
+ROMS_COPY_ROMSELECT_DESC=The folder that will contain the subset of the roms you want
+ROMS_COPY_SAMPLES=Some old games, like Space Invaders, need "samples" to have sound. Make sure you copy them manually; the installation path vary depending on the system and emulator.<br>You can <a href="https://www.progettosnaps.net/samples/" class="blank">download them at ProgettoSnaps</a>.
+ROMS_COPY_COPY=Copy listed roms
+
+ROMS_DELETE_TITLE=Delete roms
+ROMS_DELETE_INTRO=Select a CSV file listing the roms you want to remove, and the folder containing your roms<br>This will remove all roms listed in the CSV file from the folder.<br>For example, using a "bad games" CSV file will remove all bad games.
+ROMS_DELETE_ALERT=Take care not to enter the full romset path! The files cannot be restored!
+ROMS_DELETE_FOLDER=Roms folder
+ROMS_DELETE_FOLDER_DESC=The folder containing the roms you want to delete
+ROMS_DELETE_DELETE=Delete listed roms
+
+ROMS_KEEP_TITLE=Keep only roms listed
+ROMS_KEEP_INTRO=Select a CSV file listing the roms you want to keep, and the folder containing the roms.<br>This will only keep the roms that are listed in the CSV file, and remove all other roms.<br>For example, using a "working games" CSV file will remove all games that are not working.
+ROMS_KEEP_FOLDER=Rom folder
+ROMS_KEEP_FOLDER_DESC=The folder containing the roms you want to keep
+ROMS_KEEP_KEEP=Remove roms not listed
+
+OVERLAYS_PAGETITLE=Overlays
+OVERLAYS_TITLE=Download and install an overlays pack <a href="/Help/Shares" class="navmenu">How to access my Retropie/Recabox shares</a>
+OVERLAYS_INTRO=Select the overlays pack you want, and the arcade roms folder(s) to install overlays in. This will download and install only the files you need.<br> Note that <strong>it will only work with RetroArch/Libretro emulators</strong> (mame-libretro and fba-libretro), not AdvanceMAME, MAME4All, FBA2x, PiFBA, etc.
+OVERLAYS_ALERT=These overlays are made for a 16:9 resolution (like 1080p or 720p for example). They won't work with another aspect ratio.
+OVERLAYS_PACK_TITLE=Overlay pack
+OVERLAYS_SETTINGS_TITLE=Settings
+OVERLAYS_SETTINGS_ROMSFOLDER=Roms folder
+OVERLAYS_SETTINGS_ROMSFOLDERS=Roms folders
+OVERLAYS_SETTINGS_ROMSFOLDER_PLACEHOLDER=Roms folder (ex: \\\\retropie\\roms\\arcade)
+OVERLAYS_SETTINGS_CONFIGFOLDER=Config folder
+OVERLAYS_SETTINGS_CONFIGFOLDER_PLACEHOLDER=Config folder (ex: \\\\retropie\\configs)
+OVERLAYS_WIDTH=Width
+OVERLAYS_HEIGHT=Height
+OVERLAYS_RATIO_ERROR=Resolution is not correct. These packs will only work with 16:9 screens.
+OVERLAYS_INSTALL=Download and install
+OVERLAYS_ERROR_NOOVERLAY=Please select an overlay pack
+OVERLAYS_ERROR_NOROMS=Please select the roms folder
+OVERLAYS_ERROR_NOCONFIG=Please fill the path to the config share
+
+OVERLAYS_PACK_REALISTIC_NAME=Realistic
+OVERLAYS_PACK_REALISTIC_DESC=Realistic-looking overlays, with scratches, reflections, and CRT shader
+OVERLAYS_PACK_ARTWORK_NAME=Artworks
+OVERLAYS_PACK_ARTWORK_DESC=Artwork-style overlays, as clean as possible, with a large screen area
+
+WIZARD_TITLE=Wizard
+WIZARD_INTRO=<p> This wizard will help you to manage your games. Use this if you're not sure what games you want to play exactly, or just want "the best games" but don't know what they are. You will still be able to add more games later.</p><p>To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose in the next step.</p><p>To install overlays, you will need a Retropie or Recalbox installation.</p>
+WIZARD_ACTION_ROMS=Copy roms
+WIZARD_ACTION_ROMS_DESC=Copy games from a full romset to your installation folder.
+WIZARD_ACTION_OVERLAYS=Install overlays
+WIZARD_ACTION_OVERLAYS_DESC=Add nice borders around the game screen.
+WIZARD_START=Start - choose emulator
+
+WIZARD_EMULATOR_TITLE=Automatic installation: emulator
+WIZARD_EMULATOR_INTRO=<p>Please choose the emulator you want to use.</p><p>FBNeo is missing 3D games (or 2D games developed on 3D systems), and even MAME isn't great on more recent games (Naomi, Atomiswave, etc).<br />Here is a <a href="https://github.com/cosmo0/arcade-manager-data/blob/master/alternatives.md" class="blank">list of alternatives</a>.</p>
+WIZARD_EMULATOR_FBNEO_NAME=FBNeo (1.0.0.2)
+WIZARD_EMULATOR_FBNEO_DESC=Has the best balance between performance and accuracy, but the games list is a bit more limited (1900+, no 3D game).<br /><strong>Prefer this if you play on Raspberry Pi 4 and later, or Anbernic RG XX and similar devices</strong>.
+WIZARD_EMULATOR_MAME_NAME=MAME - latest version (0.249)
+WIZARD_EMULATOR_MAME_DESC=Has the largest games list (3500+ games) and highest emulation accuracy, but also requires the most power, even for older games.<br /><strong>Prefer this if you play on PC</strong>.
+WIZARD_EMULATOR_MAME2003_NAME=MAME 2003+
+WIZARD_EMULATOR_MAME2003_DESC=Has the best performance, but has quite a lot of bugs, non-working games, and other problems.<br /><strong>Prefer this if you play on Raspberry Pi 3, or Miyoo Mini and similar devices</strong>.
+WIZARD_EMULATOR_NEXT=Next - choose lists
+
+WIZARD_LIST_TITLE=Automatic installation: games lists
+WIZARD_LIST_INTRO=<p>Please choose the games selection(s) you want.</p><p>All the games have been tested and work with a retro pad (SNES-like) or an arcade stick. Sometimes gameplay is possible but not ideal without a dedicated control (ex: racing games).</p><p>Note that the various "tops" have duplicates: selecting the top200 and the top50 will only result in 200 games, since the top50 is a sub-selection of the top200.<br />Obviously the "tops" are highly subjective, and mainly destined to people who don't know much about arcade games. This tool also easily lets you <a href="/Csv">define your own lists</a>.</p>
+WIZARD_LIST_TOP200=<strong>Top 200</strong>: a balanced selection of all the great games, and a few hidden gems : a great trip down memory lane, finding new things along the ride.
+WIZARD_LIST_TOP50=<strong>Top 50</strong>: only the very best, a tight but balanced selection of all-time classics : the best way to see what the arcades were about.
+WIZARD_LIST_TOP80S=<strong>Top of the 80s</strong>: from Berzerk to Final Fight, the {0} best old-school games.
+WIZARD_LIST_TOP90S=<strong>Top of the 90s and 00s</strong>: from Boulder Dash to Progear, the {0} best modern games.
+WIZARD_LIST_ICONS=<strong>Icons</strong>: {0} groundbreaking, revolutionary, unique, or just very popular games. May not be very good by today's standards, or compared to their follow-ups.<br /><strong>Warning:</strong> some games in this list will not work well with a simple retro pad or arcade stick, and you might need a spinner, double stick, racing wheel, etc. You can sometimes get good results by changing the control settings in the options.
+WIZARD_LIST_MULTIPLAYER=<strong>Multiplayer</strong>: {0} great games to play with two players or more, in coop or versus.
+WIZARD_LIST_MULTIPLAYER_VS=<strong>Multiplayer (versus)</strong>: a very tight selection of {0} games that are easy to pick up, to play against your friends for a few quick rounds - perfect if you have an arcade cabinet to use at parties.
+WIZARD_LIST_MULTIPLAYER_COOP=<strong>Multiplayer (coop)</strong>: a very tight selection of {0} games to play with your family in friendly gaming sessions.
+WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong>: the {0} best games on NeoGeo, the most popular and enduring arcade system.
+WIZARD_LIST_4BUTTONS=<strong>4 Buttons</strong>: {0} games to play on a controller limited to 4 buttons.
+WIZARD_LIST_VERTICAL=<strong>Vertical</strong>: {0} games using a vertical screen, including lots of shooters but also lots of other genres.
+WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong>: great games, still fun to play today, playable with an arcade stick, without too many duplicates, tested and validated by the community.<br />Original lists from <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
+WIZARD_LIST_AKNF_SHOOTING=Shooting ({0} games)
+WIZARD_LIST_AKNF_RUNGUN=Run and gun ({0} games)
+WIZARD_LIST_AKNF_PLATFORM=Platform ({0} games)
+WIZARD_LIST_AKNF_FIGHTING=Fighting ({0} games)
+WIZARD_LIST_AKNF_BEATHACK=Beat'em up and hack & slash ({0} games)
+WIZARD_LIST_AKNF_PUZZLE=Puzzle ({0} games)
+WIZARD_LIST_AKNF_SPORTS=Sports ({0} games)
+WIZARD_LIST_AKNF_RACING=Racing ({0} games)
+WIZARD_LIST_AKNF_CLASSICS=Old school classics ({0} games)
+WIZARD_LIST_AKNF_NOCLONE=All the games, excluding duplicates ({0} games)
+WIZARD_LIST_AKNF_CLEAN=All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc  ({0} games)
+WIZARD_LIST_NEXT=Next - set paths
+
+WIZARD_PATHS_TITLE=Wizard: choose paths
+WIZARD_PATHS_INTRO=Please select the paths of the source romset, and the target selection.
+WIZARD_PATHS_START=Start copy
+WIZARD_PATHS_NEXT=Next - install overlays
+WIZARD_PATHS_FINISH=Finish

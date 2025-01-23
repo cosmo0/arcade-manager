@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["title"] = Localizer["WIZARD_TITLE"];
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_WIZARD"]</li>
+    </ol>
+</nav>
+
+<h2>@Localizer["WIZARD_TITLE"]</h2>
+
+@Html.Raw(Localizer["WIZARD_INTRO"])
+
+<form asp-controller="Wizard" asp-action="PostIndex" method="post" class="wizard">
+
+<div class="border rounded d-flex p-3 mb-3 option-container">
+    <input type="checkbox" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" id="roms" name="roms" checked="checked" value="true">
+    <div class="flex-fill">
+        <h5 class="mb-1 name">@Localizer["WIZARD_ACTION_ROMS"]</h5>
+        <p class="mb-0 desc">@Localizer["WIZARD_ACTION_ROMS_DESC"]</p>
+    </div>
+</div>
+
+<div class="border rounded d-flex p-3 mb-3 option-container option-overlays">
+    <input type="checkbox" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" id="overlays" name="overlays" checked="checked" value="true">
+    <div class="flex-fill">
+        <h5 class="mb-1 name">@Localizer["WIZARD_ACTION_OVERLAYS"]</h5>
+        <p class="mb-0 desc">@Localizer["WIZARD_ACTION_OVERLAYS_DESC"]</p>
+    </div>
+</div>
+
+<div class="row justify-content-end">
+    <div class="col-6">
+        <a href="/" class="btn btn-outline-secondary px-3">@Localizer["CANCEL"]</a>
+    </div>
+    <div class="col-6 text-right">
+        <button type="submit" class="btn btn-primary px-5" id="submitButton">
+            @Localizer["WIZARD_START"]
+        </button>
+    </div>
+</div>
+
+</form>
+
+@section Scripts {
+<script type="text/javascript">
+    $(() => {
+        getOs((os) => {
+            if (os === 'none') {
+                // disable overlays entry if no OS has been selected
+                $('.option-overlays')
+                    .addClass('disabled text-muted')
+                    .off('click')
+                    .find('input')
+                        .prop('disabled', true)
+                        .prop('checked', false);
+            }
+        });
+    });
+
+    // toggle checkbox on click anywhere in the box
+    $('.option-container').on('click', (e) => {
+        const container = $(e.currentTarget),
+            check = container.find('input:checkbox');
+        check.prop('checked', !check.prop('checked'));
+
+        $('#submitButton').prop('disabled', $(':checkbox:checked').length === 0);
+    });
+</script>
+}

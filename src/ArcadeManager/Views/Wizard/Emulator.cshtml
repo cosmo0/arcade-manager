@@ -1,0 +1,74 @@
+﻿@model Wizard
+@{
+    ViewData["title"] = Localizer["WIZARD_EMULATOR_TITLE"];
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD"]</li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_WIZARD_EMULATOR"]</li>
+    </ol>
+</nav>
+
+<h2>@Localizer["WIZARD_EMULATOR_TITLE"]</h2>
+
+@Html.Raw(Localizer["WIZARD_EMULATOR_INTRO"])
+
+<form asp-controller="Wizard" asp-action="PostEmulator" method="post" class="wizard">
+
+    <input type="hidden" asp-for="DoOverlays" />
+
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" checked="checked" value="fbneo">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_FBNEO_NAME"]</h5>
+            <p class="mb-0 desc">
+                @Html.Raw(Localizer["WIZARD_EMULATOR_FBNEO_DESC"])
+            </p>
+        </div>
+    </div>
+
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_MAME_NAME"]</h5>
+            <p class="mb-0 desc">
+                @Html.Raw(Localizer["WIZARD_EMULATOR_MAME_DESC"])
+            </p>
+        </div>
+    </div>
+    
+    <div class="border rounded d-flex p-3 mb-3 option-container">
+        <input type="radio" class="mr-3 mt-4 flex-grow-0 flex-shrink-0" asp-for="Emulator" value="mame2003">
+        <div class="flex-fill">
+            <h5 class="mb-1 name">@Localizer["WIZARD_EMULATOR_MAME2003_NAME"]</h5>
+            <p class="mb-0 desc">
+                @Html.Raw(Localizer["WIZARD_EMULATOR_MAME2003_DESC"])
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <a href="/" class="btn btn-outline-secondary px-3">@Localizer["CANCEL"]</a>
+        </div>
+        <div class="col-6 text-right">
+            <button type="submit" class="btn btn-primary px-3" id="submitButton">
+                @Localizer["WIZARD_EMULATOR_NEXT"]
+            </button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        // toggle radio on click anywhere in the box
+        $('.option-container').on('click', (e) => {
+            const container = $(e.currentTarget),
+                check = container.find('input:radio');
+            check.prop('checked', true);
+        });
+    </script>
+}

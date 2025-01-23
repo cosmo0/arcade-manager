@@ -1,0 +1,125 @@
+﻿@model Wizard
+@{
+    ViewData["title"] = Localizer["WIZARD_PATHS_TITLE"];
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD"]</li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD_EMULATOR"]</li>
+        <li class="breadcrumb-item">@Localizer["BREADCRUMB_WIZARD_LIST"]</li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_WIZARD_PATHS"]</li>
+    </ol>
+</nav>
+
+<h2>@Localizer["WIZARD_PATHS_TITLE"]</h2>
+
+<p>
+    @Localizer["WIZARD_PATHS_INTRO"]
+</p>
+
+<div class="alert alert-info">
+    @Html.Raw(Localizer["ROMS_COPY_SAMPLES"])
+</div>
+
+<!-- Full romset location -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_COPY_ROMSET"]</span>
+    </div>
+    <input type="text" class="form-control" id="fileRomset">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomset">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["ROMS_COPY_ROMSET_DESC"]</small>
+</p>
+
+<!-- Selection romset location -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_COPY_ROMSELECT"]</span>
+    </div>
+    <input type="text" class="form-control" id="fileRomSelection">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fileRomSelection">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["ROMS_COPY_ROMSELECT_DESC"]</small>
+</p>
+
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
+    <label class="form-check-label" for="overwriteYes">@Localizer["OVERWRITE_YES"]</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
+    <label class="form-check-label" for="overwriteNo">@Localizer["OVERWRITE_NO"]</label>
+</div>
+
+<div class="row mt-3">
+    <div class="col-6">
+        <a href="/" class="btn btn-outline-secondary px-3">@Localizer["CANCEL"]</a>
+    </div>
+    <div class="col-6 text-right">
+        <button type="button" class="btn btn-primary px-3" id="submitButton">
+            @Localizer["WIZARD_PATHS_START"]
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(() => {
+            getOs((os) => {
+                if (!os) { return; }
+                getAppData((data) => {
+                    if (!data) { return; }
+                    $('#fileRomSelection').attr("placeholder", data.defaults.roms[os][platform]);
+                });
+            });
+
+            // run copy
+            $('#submitButton').on('click', () => {
+                // get paths from file inputs
+                const csvs = '@(string.Join(",", Model.Lists ?? new string[] {}))',
+                    romset = $('#fileRomset').val(),
+                    selection = $('#fileRomSelection').val(),
+                    overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
+
+                // check that every path is filled
+                if (romset === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOFULLSET"))'); return; }
+                if (selection === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
+            
+                // activate 'next' button when all is done
+                ipcRenderer.on('progress', (origin, target, data) => {
+                    data = !data ? {} : data[0];
+
+                    if (data.end) {
+                        copyDone();
+                    }
+                });
+
+                ipc("roms-addfromwizard", { main: `@(Model.Emulator)/${csvs}`, romset, selection, overwrite });
+            });
+
+            function copyDone() {
+                const doOverlays = '@(Model.DoOverlays.ToString().ToLower())' === 'true',
+                    btnlabel = doOverlays ? '@Html.Raw(Localizer.Js("WIZARD_PATHS_NEXT"))' : '@Html.Raw(Localizer.Js("WIZARD_PATHS_FINISH"))';
+
+                $('#progress .modal-footer .btn-success')
+                .text(btnlabel)
+                .one('click', () => {
+                    if (doOverlays) {
+                        window.location.href = '@(Url.Action("Index", "Overlays"))';
+                    } else {
+                        window.location.href = '/';
+                    }
+                });
+            }
+        });
+    </script>
+}
