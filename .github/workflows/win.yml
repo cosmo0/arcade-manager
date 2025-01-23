@@ -1,0 +1,32 @@
+name: ArcadeManager Windows
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version: 22.x
+      - name: Setup ElectronNET
+        run: dotnet tool install --global ElectronNET.CLI
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Electronize
+        run: electronize build /target win
