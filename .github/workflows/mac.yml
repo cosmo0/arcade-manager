@@ -1,4 +1,4 @@
-name: ArcadeManager Windows
+name: ArcadeManager MacOS
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: macos-latest
     defaults:
       run:
         working-directory: ./src
@@ -29,9 +29,9 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Electronize
-        run: electronize build /target win
+        run: electronize build /target osx
       - name: Upload binaries
         uses: actions/upload-artifact@v4
         with:
-          name: ArcadeManager-win
+          name: ArcadeManager-macos
           path: ./bin/Desktop/*.*

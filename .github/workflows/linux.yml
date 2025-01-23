@@ -1,4 +1,4 @@
-name: ArcadeManager Windows
+name: ArcadeManager Linux
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./src
@@ -24,14 +24,16 @@ jobs:
           node-version: 22.x
       - name: Setup ElectronNET
         run: dotnet tool install --global ElectronNET.CLI
+      - name: Setup Snapcraft
+        run: sudo snap install snapcraft --classic
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
       - name: Electronize
-        run: electronize build /target win
+        run: electronize build /target linux
       - name: Upload binaries
         uses: actions/upload-artifact@v4
         with:
-          name: ArcadeManager-win
+          name: ArcadeManager-linux
           path: ./bin/Desktop/*.*
