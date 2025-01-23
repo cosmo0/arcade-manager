@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace ArcadeManager;
 
@@ -29,7 +30,7 @@ public interface IMessageHandler {
     /// Handles the messages for the specified window.
     /// </summary>
     /// <param name="window">The window.</param>
-    void Handle(ElectronNET.API.BrowserWindow window);
+    Task Handle(ElectronNET.API.BrowserWindow window);
 
     /// <summary>
     /// Sends an "init" progress message

@@ -66,6 +66,10 @@ function ipc(method, data, cb) {
     if (cb && typeof cb === 'function') {
         ipcRenderer.once(method + "-reply", (_, result) => {
             console.log('Get results back from ' + method + '-reply');
+            if (result && result instanceof Array && result.length > 0) {
+                result = result[0];
+            }
+
             cb(result);
         });
     }
@@ -84,6 +88,8 @@ function getOs(cb) {
         cb(selectedOs);
     } else {
         ipc('get-os', null, (os) => {
+            if (os) { os = JSON.parse(os[0]); }
+
             selectedOs = os;
             cb(os);
         });
@@ -110,6 +116,8 @@ function getAppData(cb) {
         cb(appData);
     } else {
         ipc('get-appdata', null, (data) => {
+            if (data) { data = JSON.parse(data[0]); }
+
             appData = data;
             cb(data);
         });

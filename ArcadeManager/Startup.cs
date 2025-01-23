@@ -75,7 +75,7 @@ public class Startup {
         }
 
         if (HybridSupport.IsElectronActive) {
-            ElectronBootstrap();
+            ElectronBootstrap().GetAwaiter().GetResult();
         }
     }
 
@@ -114,14 +114,10 @@ public class Startup {
     /// <summary>
     /// Initializes the Electron app
     /// </summary>
-    public async void ElectronBootstrap() {
+    public async Task ElectronBootstrap() {
         BuildAppMenu();
 
         var mainWindow = await CreateMainWindow();
-
-        // if (env.IsDevelopment()) {
-        //     mainWindow.WebContents.OpenDevTools();
-        // }
 
         // re-create main window if last window has been closed
         await Electron.App.On("activate", obj => {

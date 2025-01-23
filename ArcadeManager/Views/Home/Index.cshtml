@@ -73,17 +73,18 @@
 </div>
 
 <div class="row mt-4">
-    <div class="col-10 help">
+    <div class="col-8 help">
         <div class="list-group">
             <a asp-controller="Help" asp-action="Index" class="navmenu list-group-item list-group-item-action text-primary border-primary">
                 <i class="icustom-help"></i> @Localizer["HOME_ACTION_HELP"]
             </a>
         </div>
     </div>
-    <div class="col-2 system">
+    <div class="col-4 system">
         <div class="list-group">
             <a asp-controller="Home" asp-action="Os" class="navmenu list-group-item list-group-item-action text-info border-info">
                 @Localizer["HOME_ACTION_SYSTEM"]
+                <img src="img/@(ArcadeManagerEnvironment.SettingsOs)-h.png">
             </a>
         </div>
     </div>
@@ -137,17 +138,14 @@
                         .find('.card')
                         .removeClass('border-primary')
                         .on('click', () => { window.location.href = '@Url.Action("KnownSystems", "Help")'; });
-                } else {
-                    // Add system logo
-                    $('.help').removeClass('col-10').addClass('col-8');
-                    $('.system').removeClass('col-2').addClass('col-4')
-                        .find('.list-group a').prepend($('<img src="img/' + os + '-h.png">'));
                 }
             });
 
             // checks if an update is available
             checkUpdate((version) => {
                 if (!version || version.length === 0) { return; }
+
+                version = version[0];
 
                 $('#versionName').text(version.name);
                 $('#ignoreVersion').val(version.tagName);

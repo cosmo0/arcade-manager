@@ -4,6 +4,7 @@ using ArcadeManager.Services;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace ArcadeManager;
 
@@ -68,57 +69,57 @@ public partial class MessageHandler : IMessageHandler {
     /// Initializes the message handling for the specified window
     /// </summary>
     /// <param name="window">The window.</param>
-    public void Handle(BrowserWindow window) {
+    public async Task Handle(BrowserWindow window) {
         this.window = window;
 
         if (HybridSupport.IsElectronActive) {
             // Cancel actions
-            Electron.IpcMain.On("cancel", (args) => { MustCancel = true; });
+            await Electron.IpcMain.On("cancel", (args) => { MustCancel = true; });
 
             // Navigation
-            Electron.IpcMain.On("open-blank", OpenNewWindow);
-            Electron.IpcMain.On("open-folder", OpenFolder);
+            await Electron.IpcMain.On("open-blank", async (args) => await OpenNewWindow(args));
+            await Electron.IpcMain.On("open-folder", async (args) => await OpenFolder(args));
 
             // Get AppData
-            Electron.IpcMain.On("get-appdata", GetAppData);
+            await Electron.IpcMain.On("get-appdata", (args) => GetAppData());
 
             // Get/Set OS
-            Electron.IpcMain.On("get-os", GetOs);
-            Electron.IpcMain.On("change-os", ChangeOs);
+            await Electron.IpcMain.On("get-os", (args) => GetOs());
+            await Electron.IpcMain.On("change-os", ChangeOs);
 
             // Browse events
-            Electron.IpcMain.On("select-directory", BrowseFolder);
-            Electron.IpcMain.On("new-file", NewFile);
-            Electron.IpcMain.On("select-file", SelectFile);
+            await Electron.IpcMain.On("select-directory", async (args) => await BrowseFolder(args));
+            await Electron.IpcMain.On("new-file", async (args) => await NewFile(args));
+            await Electron.IpcMain.On("select-file", async (args) => await SelectFile(args));
 
             // filesystem events
-            Electron.IpcMain.On("fs-exists", FsExists);
+            await Electron.IpcMain.On("fs-exists", FsExists);
 
             // Roms actions
-            Electron.IpcMain.On("roms-check", RomsCheck);
-            Electron.IpcMain.On("roms-add", RomsAdd);
-            Electron.IpcMain.On("roms-addfromwizard", RomsAddFromWizard);
-            Electron.IpcMain.On("roms-delete", RomsDelete);
-            Electron.IpcMain.On("roms-keep", RomsKeep);
+            await Electron.IpcMain.On("roms-check", async (args) => await RomsCheck(args));
+            await Electron.IpcMain.On("roms-add", async (args) => await RomsAdd(args));
+            await Electron.IpcMain.On("roms-addfromwizard", async (args) => await RomsAddFromWizard(args));
+            await Electron.IpcMain.On("roms-delete", async (args) => await RomsDelete(args));
+            await Electron.IpcMain.On("roms-keep", async (args) => await RomsKeep(args));
 
             // download actions
-            Electron.IpcMain.On("download-getlist", GithubFilesGetList);
-            Electron.IpcMain.On("download-file", DownloadFile);
+            await Electron.IpcMain.On("download-getlist", async (args) => await GithubFilesGetList(args));
+            await Electron.IpcMain.On("download-file", async (args) => await DownloadFile(args));
 
             // CSV actions
-            Electron.IpcMain.On("csv-convertdat", CsvConvertDat);
-            Electron.IpcMain.On("csv-convertini", CsvConvertIni);
-            Electron.IpcMain.On("csv-listfiles", CsvListFiles);
-            Electron.IpcMain.On("csv-merge", CsvMerge);
-            Electron.IpcMain.On("csv-remove", CsvRemove);
-            Electron.IpcMain.On("csv-keep", CsvKeep);
+            await Electron.IpcMain.On("csv-convertdat", async (args) => await CsvConvertDat(args));
+            await Electron.IpcMain.On("csv-convertini", async (args) => await CsvConvertIni(args));
+            await Electron.IpcMain.On("csv-listfiles", async (args) => await CsvListFiles(args));
+            await Electron.IpcMain.On("csv-merge", async (args) => await CsvMerge(args));
+            await Electron.IpcMain.On("csv-remove", async (args) => await CsvRemove(args));
+            await Electron.IpcMain.On("csv-keep", async (args) => await CsvKeep(args));
 
             // overlays action
-            Electron.IpcMain.On("overlays-download", OverlaysDownload);
+            await Electron.IpcMain.On("overlays-download", async (args) => await OverlaysDownload(args));
 
             // check for update
-            Electron.IpcMain.On("update-check", UpdateCheck);
-            Electron.IpcMain.On("update-ignore", UpdateIgnore);
+            await Electron.IpcMain.On("update-check", async (_) => await UpdateCheck());
+            await Electron.IpcMain.On("update-ignore", UpdateIgnore);
         }
     }
 
@@ -163,9 +164,9 @@ public partial class MessageHandler : IMessageHandler {
     /// Browse for a folder to select
     /// </summary>
     /// <param name="currentPath">The default path</param>
-    private async void BrowseFolder(object currentPath) {
+    private async Task BrowseFolder(object currentPath) {
         var options = new OpenDialogOptions {
-            Properties = new OpenDialogProperty[] { OpenDialogProperty.openDirectory },
+            Properties = [ OpenDialogProperty.openDirectory ],
             DefaultPath = currentPath as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal)
         };
 
@@ -188,7 +189,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Converts a DAT file.
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void CsvConvertDat(object args) {
+    private async Task CsvConvertDat(object args) {
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
@@ -199,7 +200,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Converts a INI file
     /// </summary>
     /// <param name="args">The arguments</param>
-    private async void CsvConvertIni(object args) {
+    private async Task CsvConvertIni(object args) {
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
@@ -210,7 +211,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Keeps only listed entries in a CSV file
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void CsvKeep(object args) {
+    private async Task CsvKeep(object args) {
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
@@ -221,7 +222,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Lists the files in a folder to CSV
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void CsvListFiles(object args) {
+    private async Task CsvListFiles(object args) {
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
@@ -232,7 +233,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Merges two CSV files
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void CsvMerge(object args) {
+    private async Task CsvMerge(object args) {
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
@@ -243,7 +244,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Removes entries from a CSV file
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void CsvRemove(object args) {
+    private async Task CsvRemove(object args) {
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
@@ -254,7 +255,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Downloads the specified file.
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void DownloadFile(object args) {
+    private async Task DownloadFile(object args) {
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
@@ -275,22 +276,25 @@ public partial class MessageHandler : IMessageHandler {
     /// <summary>
     /// Gets the application data settings
     /// </summary>
-    private void GetAppData(object _) {
-        Electron.IpcMain.Send(window, "get-appdata-reply", ArcadeManagerEnvironment.AppData);
+    private void GetAppData() {
+        Console.WriteLine(ArcadeManagerEnvironment.AppData);
+        // serialize here to handle a transmission problem
+        Electron.IpcMain.Send(window, "get-appdata-reply", Serializer.Serialize(ArcadeManagerEnvironment.AppData));
     }
 
     /// <summary>
     /// Gets the selected OS
     /// </summary>
-    private void GetOs(object _) {
-        Electron.IpcMain.Send(window, "get-os-reply", ArcadeManagerEnvironment.SettingsOs);
+    private void GetOs() {
+        // serialize here to handle a transmission problem
+        Electron.IpcMain.Send(window, "get-os-reply", Serializer.Serialize(ArcadeManagerEnvironment.SettingsOs));
     }
 
     /// <summary>
     /// Gets a files list from Github.
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void GithubFilesGetList(object args) {
+    private async Task GithubFilesGetList(object args) {
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
@@ -301,7 +305,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Create a new file
     /// </summary>
     /// <param name="path">The default path</param>
-    private async void NewFile(object path) {
+    private async Task NewFile(object path) {
         var options = new SaveDialogOptions {
             DefaultPath = path as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal)
         };
@@ -314,7 +318,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Opens the explorer to the specified folder
     /// </summary>
     /// <param name="folder">The folder to open</param>
-    private async void OpenFolder(object folder) {
+    private async Task OpenFolder(object folder) {
         if (folder != null) {
             await Electron.Shell.OpenPathAsync(folder.ToString());
         }
@@ -327,7 +331,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Opens a new browser window to the specified URL
     /// </summary>
     /// <param name="url">The URL to open</param>
-    private async void OpenNewWindow(object url) {
+    private async Task OpenNewWindow(object url) {
         if (url != null) {
             Console.WriteLine("open blank link to: " + url.ToString());
             await Electron.Shell.OpenExternalAsync(url.ToString());
@@ -341,7 +345,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Downloads overlays
     /// </summary>
     /// <param name="args">The arguments</param>
-    private async void OverlaysDownload(object args) {
+    private async Task OverlaysDownload(object args) {
         var data = ConvertArgs<OverlaysAction>(args);
         MustCancel = false;
 
@@ -352,7 +356,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Checks the existence of roms
     /// </summary>
     /// <param name="args">The arguments</param>
-    private async void RomsCheck(object args) {
+    private async Task RomsCheck(object args) {
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
@@ -365,7 +369,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Copies roms from a folder to another
     /// </summary>
     /// <param name="args">The arguments</param>
-    private async void RomsAdd(object args) {
+    private async Task RomsAdd(object args) {
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
@@ -376,7 +380,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Copies roms from a folder to another, from the wizard
     /// </summary>
     /// <param name="args">The arguments.</param>
-    private async void RomsAddFromWizard(object args) {
+    private async Task RomsAddFromWizard(object args) {
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
@@ -387,7 +391,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Deletes rom from a folder
     /// </summary>
     /// <param name="args">The arguments</param>
-    private async void RomsDelete(object args) {
+    private async Task RomsDelete(object args) {
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
@@ -398,7 +402,7 @@ public partial class MessageHandler : IMessageHandler {
     /// Keeps roms in a folder
     /// </summary>
     /// <param name="args">The arguments</param>
-    private async void RomsKeep(object args) {
+    private async Task RomsKeep(object args) {
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
@@ -409,11 +413,11 @@ public partial class MessageHandler : IMessageHandler {
     /// Selects a file
     /// </summary>
     /// <param name="path">The default path</param>
-    private async void SelectFile(object path) {
+    private async Task SelectFile(object path) {
         var options = new OpenDialogOptions {
-            Properties = new OpenDialogProperty[] { OpenDialogProperty.openFile },
+            Properties = [OpenDialogProperty.openFile],
             DefaultPath = path as string ?? Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-            Filters = new FileFilter[] { new FileFilter { Extensions = new string[] { ".csv" } } }
+            Filters = [new FileFilter { Extensions = [".csv"] }]
         };
 
         string[] files = await Electron.Dialog.ShowOpenDialogAsync(window, options);
@@ -423,7 +427,7 @@ public partial class MessageHandler : IMessageHandler {
     /// <summary>
     /// Checks if an update is available
     /// </summary>
-    private async void UpdateCheck(object _) {
+    private async Task UpdateCheck() {
         var current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         var update = await updaterService.CheckUpdate(current);
