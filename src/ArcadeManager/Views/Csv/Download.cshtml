@@ -19,34 +19,19 @@
 <div class="row">
     <div class="col-4">
         <div class="list-group" id="csvs">
-            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/best" data-details="csv/best/files.json">
-                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_BEST_NAME"]</p>
-                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_BEST_DESC"]</small></p>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/all-killer-no-filler" data-details="csv/all-killer-no-filler/files.json">
-                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_AKNF_NAME"]</p>
-                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_AKNF_DESC"]</small></p>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/fbneo-1.0.0.2" data-details="csv/files.json">
+            <a href="#" class="list-group-item list-group-item-action" data-folder="fbneo">
                 <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_FBNEO_NAME"]</p>
                 <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_FBNEO_DESC"]</small></p>
             </a>
 
-            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/mame-latest" data-details="csv/files.json">
+            <a href="#" class="list-group-item list-group-item-action" data-folder="mame">
                 <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_MAME_NAME"]</p>
                 <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_MAME_DESC"]</small></p>
             </a>
 
-            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/mame2003-plus" data-details="csv/files.json">
+            <a href="#" class="list-group-item list-group-item-action" data-folder="mame2003">
                 <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_MAME2003_NAME"]</p>
                 <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_MAME2003_DESC"]</small></p>
-            </a>
-
-            <a href="#" class="list-group-item list-group-item-action" data-repository="cosmo0/arcade-manager-data" data-folder="csv/mame2010" data-details="csv/files.json">
-                <p class="mb-0 mt-0 font-weight-bold text-primary name">@Localizer["CSV_DOWNLOAD_LIST_MAME2010_NAME"]</p>
-                <p class="mb-0 mt-0 text-muted desc"><small>@Localizer["CSV_DOWNLOAD_LIST_MAME2010_DESC"]</small></p>
             </a>
         </div>
     </div>
@@ -75,38 +60,29 @@
 
                 // get data
                 const a = $(e.currentTarget),
-                    repo = a.attr('data-repository'),
-                    folder = a.attr('data-folder'),
-                    details = a.attr('data-details');
+                    folder = a.attr('data-folder');
 
                 // toggle active
                 $('#csvs').find('a').removeClass('active');
                 a.addClass('active');
 
                 // load content
-                listFiles(repo, folder, details, a.find('.name').text());
+                listFiles(folder);
             });
         });
 
-        /**
-         * List the files in a CSV repository and displays them in the window
-         *
-         * @@param {string} repository The repository: username/repository
-         * @@param {string} folder The path to the folder: csv/mame2003
-         * @@param {string} details The path to the files details: csv/files.json
-         * @@param {string} name The name of the repository to load
-         */
-        function listFiles(repository, folder, details, name) {
+        function listFiles(folder) {
+            const name = folder; // for the string interpolation in the translation message
             $('#files').empty().html(`@Localizer["CSV_DOWNLOAD_LOADING"]`);
             const template = $('#fileItemTemplate').html();
 
-            getRemoteList(repository, details, folder, (data) => {
+            getLocalList(folder, (data) => {
                 $('#files').empty();
 
                 for (let filedetail of data) {
                     const fileItem = $(template);
                     fileItem.find('.file').text(filedetail.filename);
-                    fileItem.find('.desc').text(filedetail.description);
+                    fileItem.find('.desc').html(filedetail.description);
                     if (filedetail.types.indexOf('main') >= 0) {
                         fileItem.addClass('text-primary border-primary');
                     }
@@ -114,17 +90,12 @@
                     // handle click
                     fileItem.on('click', (e) => {
                         newFile(filedetail.filename, (filename) => {
-                            if (typeof filename !== 'undefined' && filename !== '') {
-                                progressInit('@Localizer["CSV_DOWNLOAD_PROGRESSINIT"]');
+                            if (!filename) { return; }
 
-                                downloadFile(repository, folder + '/' + filedetail.filename, filename, (success) => {
-                                    if (success) {
-                                        progressDone('@Localizer["DONE"]');
-                                    } else {
-                                        progressDone('@Localizer["ERROR_DOWNLOAD"]');
-                                    }
-                                });
-                            }
+                            copyFile(filedetail.filepath, filename, true, (success) => {
+                                // TODO: ask the user? not sure
+                                //ipc('open-folder', filename);
+                            });
                         });
                     });
 

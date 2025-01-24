@@ -73,10 +73,6 @@ CSV_DOWNLOAD_SELECTEMULATOR=Veuillez sélectionner un émulateur dans le menu de
 CSV_DOWNLOAD_LOADING=Chargement de ${name}, veuillez patienter...
 CSV_DOWNLOAD_PROGRESSINIT=Téléchargement de fichier
 
-CSV_DOWNLOAD_LIST_BEST_NAME=Les meilleurs jeux
-CSV_DOWNLOAD_LIST_BEST_DESC=Les meilleurs jeux pour chaque émulateur
-CSV_DOWNLOAD_LIST_AKNF_NAME=All killer, no filler
-CSV_DOWNLOAD_LIST_AKNF_DESC=La liste 'Que du bon, pas de remplissage' de forum.arcadecontrols.com
 CSV_DOWNLOAD_LIST_FBNEO_NAME=FinalBurn Neo
 CSV_DOWNLOAD_LIST_FBNEO_DESC=FinalBurn Neo (1.0.0.2)
 CSV_DOWNLOAD_LIST_MAME_NAME=MAME
@@ -236,7 +232,7 @@ WIZARD_LIST_NEOGEO=<strong>NeoGeo</strong> : les {0} meilleurs jeux de la NeoGeo
 WIZARD_LIST_4BUTTONS=<strong>4 Boutons</strong>: {0} jeux adaptés à un contrôleur limité à 4 boutons.
 WIZARD_LIST_VERTICAL=<strong>Vertical</strong>: {0} jeux qui utilisent un écran vertical, avec beaucoup de shooters mais aussi beaucoup d'autres genres.
 WIZARD_LIST_AKNF=<strong>"All Killer, No Filler"</strong> ("que du bon, pas de remplissage") : des bons jeux, encore funs aujourd'hui, jouables avec un stick arcade, sans trop de doublons, testés et validés par la communauté.<br />Listes originales prises sur <a href="http://forum.arcadecontrols.com/index.php/topic,149708.0.html" class="blank">ArcadeControls forums</a>.
-WIZARD_LIST_AKNF_SHOOTING=Shoot ({0} jeux)
+WIZARD_LIST_AKNF_SHOOTING=Shooters ({0} jeux)
 WIZARD_LIST_AKNF_RUNGUN=Run & gun ({0} jeux)
 WIZARD_LIST_AKNF_PLATFORM=Plate-forme ({0} jeux)
 WIZARD_LIST_AKNF_FIGHTING=Combat ({0} jeux)
@@ -245,8 +241,8 @@ WIZARD_LIST_AKNF_PUZZLE=Puzzle ({0} jeux)
 WIZARD_LIST_AKNF_SPORTS=Sport ({0} jeux)
 WIZARD_LIST_AKNF_RACING=Course ({0} jeux)
 WIZARD_LIST_AKNF_CLASSICS=Classiques à l'ancienne ({0} jeux)
-WIZARD_LIST_AKNF_NOCLONE=Tous les jeux, sans les clones ({0} jeux)
-WIZARD_LIST_AKNF_CLEAN=Tous les jeux, sans les clones, les portages console (Playchoice 10...), les jeux porno, de casino, de mahjong, etc ({0} jeux)
+WIZARD_LIST_NOCLONE=Tous les jeux, sans les clones ({0} jeux)
+WIZARD_LIST_CLEAN=Tous les jeux, sans les clones, les portages console (Playchoice 10...), les jeux porno, de casino, de mahjong, etc ({0} jeux)
 WIZARD_LIST_NEXT=Suivant - définir les chemins
 
 WIZARD_PATHS_TITLE=Assistant : chemins
@@ -254,3 +250,13 @@ WIZARD_PATHS_INTRO=Veuillez sélectionner les chemins vers le romset complet, et
 WIZARD_PATHS_START=Démarrer la copie
 WIZARD_PATHS_NEXT=Suivant - installer les overlays
 WIZARD_PATHS_FINISH=Terminer
+
+DOWNLOAD_LIST_AKNF_SHOOTING=<strong>All Killer, No Filler</strong> - Shooters ({0} jeux)
+DOWNLOAD_LIST_AKNF_RUNGUN=<strong>All Killer, No Filler</strong> - Run and gun ({0} jeux)
+DOWNLOAD_LIST_AKNF_PLATFORM=<strong>All Killer, No Filler</strong> - Plate-forme ({0} jeux)
+DOWNLOAD_LIST_AKNF_FIGHTING=<strong>All Killer, No Filler</strong> - Combat ({0} jeux)
+DOWNLOAD_LIST_AKNF_BEATHACK=<strong>All Killer, No Filler</strong> - Beat'em up et hack & slash ({0} jeux)
+DOWNLOAD_LIST_AKNF_PUZZLE=<strong>All Killer, No Filler</strong> - Puzzle ({0} jeux)
+DOWNLOAD_LIST_AKNF_SPORTS=<strong>All Killer, No Filler</strong> - Sport ({0} jeux)
+DOWNLOAD_LIST_AKNF_RACING=<strong>All Killer, No Filler</strong> - Course ({0} jeux)
+DOWNLOAD_LIST_AKNF_CLASSICS=<strong>All Killer, No Filler</strong> - Classiques à l'ancienne ({0} jeux)

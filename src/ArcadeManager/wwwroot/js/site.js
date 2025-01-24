@@ -145,6 +145,18 @@ function newFile(current, cb) {
 }
 
 /**
+ * Copies a file
+ * 
+ * @param {String} source the source file to copy
+ * @param {String} target the target file to copy to
+ * @param {Boolean} overwrite whether to overwrite the target file
+ * @param {Function} cb the callback
+ */
+function copyFile(source, target, overwrite, cb) {
+    ipc('copy-file', { source, target, overwrite }, cb);
+}
+
+/**
  * Selects a file
  * 
  * @param {String} current the current path
@@ -175,6 +187,15 @@ function downloadFile(repository, path, localfile, cb) {
  */
 function getRemoteList(repository, details, folder, cb) {
     ipc('download-getlist', { repository, details, folder }, cb);
+}
+
+/**
+ * Gets a local list of files
+ * 
+ * @param {String} folder the folder
+ */
+function getLocalList(folder, cb) {
+    ipc('local-getlist', { folder }, cb);
 }
 
 /**

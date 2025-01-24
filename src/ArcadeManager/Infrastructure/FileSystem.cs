@@ -192,7 +192,7 @@ public class FileSystem : IFileSystem {
     /// <returns>The file name</returns>
     public string FileNameWithoutExtension(string path) {
         var filename = Path.GetFileName(path);
-        filename = filename.Substring(0, filename.IndexOf("."));
+        filename = filename[..filename.IndexOf('.')];
         return filename;
     }
 

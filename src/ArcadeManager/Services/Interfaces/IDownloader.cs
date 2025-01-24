@@ -72,6 +72,13 @@ public interface IDownloader {
     Task<IEnumerable<CsvFile>> GetList(DownloadAction data);
 
     /// <summary>
+    /// Returns the list of available CSV files in the specified local folder
+    /// </summary>
+    /// <param name="data">The parameters</param>
+    /// <returns>The list of files</returns>
+    IEnumerable<CsvFile> GetLocalList(DownloadAction data);
+
+    /// <summary>
     /// Lists the files in a Github folder
     /// </summary>
     /// <param name="repository">The repository</param>

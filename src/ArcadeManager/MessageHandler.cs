@@ -94,6 +94,8 @@ public partial class MessageHandler : IMessageHandler {
 
             // filesystem events
             await Electron.IpcMain.On("fs-exists", FsExists);
+            await Electron.IpcMain.On("copy-file", CopyFile);
+            await Electron.IpcMain.On("local-getlist", LocalFilesGetList);
 
             // Roms actions
             await Electron.IpcMain.On("roms-check", async (args) => await RomsCheck(args));
@@ -277,7 +279,6 @@ public partial class MessageHandler : IMessageHandler {
     /// Gets the application data settings
     /// </summary>
     private void GetAppData() {
-        Console.WriteLine(ArcadeManagerEnvironment.AppData);
         // serialize here to handle a transmission problem
         Electron.IpcMain.Send(window, "get-appdata-reply", Serializer.Serialize(ArcadeManagerEnvironment.AppData));
     }
@@ -302,6 +303,17 @@ public partial class MessageHandler : IMessageHandler {
     }
 
     /// <summary>
+    /// Gets a files list from a local folder.
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    private void LocalFilesGetList(object args) {
+        var data = ConvertArgs<DownloadAction>(args);
+        MustCancel = false;
+
+        Electron.IpcMain.Send(window, "local-getlist-reply", downloaderService.GetLocalList(data));
+    }
+
+    /// <summary>
     /// Create a new file
     /// </summary>
     /// <param name="path">The default path</param>
@@ -315,12 +327,29 @@ public partial class MessageHandler : IMessageHandler {
     }
 
     /// <summary>
+    /// Copies a local file
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    private void CopyFile(object args) {
+        var data = ConvertArgs<FileAction>(args);
+        
+        fs.FileCopy(data.source, data.target, data.overwrite);
+
+        Electron.IpcMain.Send(window, "copy-file-reply", true);
+    }
+
+    /// <summary>
     /// Opens the explorer to the specified folder
     /// </summary>
     /// <param name="folder">The folder to open</param>
     private async Task OpenFolder(object folder) {
-        if (folder != null) {
-            await Electron.Shell.OpenPathAsync(folder.ToString());
+        if (folder != null && fs.Exists(folder.ToString())) {
+            var path = folder.ToString();
+            if (!fs.IsDirectory(path)) {
+                path = fs.DirectoryName(path);
+            }
+
+            await Electron.Shell.OpenPathAsync(path);
         }
         else {
             Console.WriteLine("Unable to open the folder");

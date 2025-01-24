@@ -13,7 +13,7 @@ namespace ArcadeManager.Services;
 public class Localizer : ILocalizer {
     private static readonly List<string> _locales = new() { "en", "fr" };
 
-    private readonly Dictionary<string, Dictionary<string, string>> translations = new();
+    private readonly Dictionary<string, Dictionary<string, string>> translations = [];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Localizer"/> class.
@@ -29,7 +29,7 @@ public class Localizer : ILocalizer {
 
             var translationContent = fs.ReadAllLines(translationFile);
             foreach (var l in translationContent.Where(l => !string.IsNullOrWhiteSpace(l) && l.Contains('=', StringComparison.InvariantCultureIgnoreCase))) {
-                var equal = l.IndexOf("=");
+                var equal = l.IndexOf('=');
                 var code = l.Substring(0, equal).Trim().ToUpperInvariant();
                 var text = l.Substring(equal + 1).Trim();
                 words.Add(code, text);

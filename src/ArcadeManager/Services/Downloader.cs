@@ -12,23 +12,17 @@ namespace ArcadeManager.Services;
 /// The downloader service
 /// </summary>
 /// <seealso cref="ArcadeManager.Services.IDownloader"/>
-public class Downloader : IDownloader {
+/// <remarks>
+/// Initializes a new instance of the <see cref="Downloader"/> class.
+/// </remarks>
+/// <param name="webclientfactory">The webclient factory.</param>
+/// <param name="fs">The file system infrastructure.</param>
+/// <param name="localizer">The localizer service</param>
+public class Downloader(IWebClientFactory webclientfactory, IFileSystem fs, ILocalizer localizer) : IDownloader {
     private const string api = "api.github.com";
     private const string protocol = "https:";
     private const string raw = "raw.githubusercontent.com";
-    private readonly IFileSystem fs;
-    private readonly IWebClientFactory webclientfactory;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Downloader"/> class.
-    /// </summary>
-    /// <param name="webclientfactory">The webclient factory.</param>
-    /// <param name="fs">The file system infrastructure.</param>
-    public Downloader(IWebClientFactory webclientfactory, IFileSystem fs) {
-        this.webclientfactory = webclientfactory;
-        this.fs = fs;
-    }
-
+    
     /// <summary>
     /// Downloads the specified URL in the Github API.
     /// </summary>
@@ -38,9 +32,9 @@ public class Downloader : IDownloader {
     public async Task<string> DownloadApiUrl(string repository, string path) {
         var url = $"{protocol}//{api}/repos/{repository}/{path}";
 
-        using (var wc = webclientfactory.GetWebClient()) {
-            return await wc.GetString(url);
-        }
+        using var wc = webclientfactory.GetWebClient();
+
+        return await wc.GetString(url);
     }
 
     /// <summary>
@@ -52,9 +46,9 @@ public class Downloader : IDownloader {
     public async Task DownloadFile(string repository, string filePath, string localPath) {
         var url = $"{protocol}//{raw}/{repository}/master/{filePath}";
 
-        using (var wc = webclientfactory.GetWebClient()) {
-            await wc.DownloadFile(url, localPath);
-        }
+        using var wc = webclientfactory.GetWebClient();
+        
+        await wc.DownloadFile(url, localPath);
     }
 
     /// <summary>
@@ -148,6 +142,49 @@ public class Downloader : IDownloader {
 
         // return the files that match in both lists
         return descriptor.files.Where(d => files.Tree.Any((f) => f.Path == d.filename));
+    }
+
+    /// <summary>
+    /// Returns the list of available CSV files in the specified local folder
+    /// </summary>
+    /// <param name="data">The parameters</param>
+    /// <returns>The list of files</returns>
+    public IEnumerable<CsvFile> GetLocalList(DownloadAction data) {
+        var result = new List<CsvFile>();
+
+        // get fileslist.txt content
+        var filesList = fs.ReadAllLines(fs.GetDataPath("csv", "fileslist.txt"));
+        foreach (var f in filesList.Where(f => !string.IsNullOrWhiteSpace(f))) {
+            // split
+            var split = f.Split(';');
+            var fileName = split[0].Trim();
+            var translationCode = split[1].Trim().ToUpperInvariant();
+            string[] types = split.Length > 2 ? [ split[2], "set" ] : [ "set" ];
+
+            // build paths
+            var sourceFolder = fs.GetDataPath("csv", data.folder);
+            var sourceFile = fs.GetDataPath(sourceFolder, fileName);
+
+            // get matching translation
+            var description = localizer[translationCode];
+
+            if (description.Contains("{0}", StringComparison.InvariantCultureIgnoreCase)) {
+                // read the number of entries and use it the translation
+                var entries = fs.ReadAllLines(sourceFile).Length - 1;
+                description = string.Format(description, entries);
+            }
+
+            result.Add(new CsvFile {
+                description = description,
+                filename = fileName,
+                filepath = sourceFile,
+                folderpath = sourceFolder,
+                types = types
+            });
+        }
+
+        // return the files list
+        return result;
     }
 
     /// <summary>

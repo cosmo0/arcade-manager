@@ -18,6 +18,16 @@ public class CsvFile {
     public string filename { get; set; }
 
     /// <summary>
+    /// Gets or sets the file path
+    /// </summary>
+    public string filepath { get; set; }
+
+    /// <summary>
+    /// Gets or sets the folder path
+    /// </summary>
+    public string folderpath { get; set; }
+
+    /// <summary>
     /// Gets or sets the file types (ex: [ "set", "main" ])
     /// </summary>
     public string[] types { get; set; }

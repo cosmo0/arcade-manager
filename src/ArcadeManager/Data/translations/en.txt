@@ -73,10 +73,6 @@ CSV_DOWNLOAD_SELECTEMULATOR=Please select an emulator version on the left.
 CSV_DOWNLOAD_LOADING=Loading ${name}, please wait...
 CSV_DOWNLOAD_PROGRESSINIT=Download file
 
-CSV_DOWNLOAD_LIST_BEST_NAME=Best games
-CSV_DOWNLOAD_LIST_BEST_DESC=The best games for each emulator
-CSV_DOWNLOAD_LIST_AKNF_NAME=All killer, no filler
-CSV_DOWNLOAD_LIST_AKNF_DESC=The 'All Killer, No Filler' list from forum.arcadecontrols.com
 CSV_DOWNLOAD_LIST_FBNEO_NAME=FinalBurn Neo
 CSV_DOWNLOAD_LIST_FBNEO_DESC=FinalBurn Neo (1.0.0.2)
 CSV_DOWNLOAD_LIST_MAME_NAME=MAME
@@ -245,8 +241,8 @@ WIZARD_LIST_AKNF_PUZZLE=Puzzle ({0} games)
 WIZARD_LIST_AKNF_SPORTS=Sports ({0} games)
 WIZARD_LIST_AKNF_RACING=Racing ({0} games)
 WIZARD_LIST_AKNF_CLASSICS=Old school classics ({0} games)
-WIZARD_LIST_AKNF_NOCLONE=All the games, excluding duplicates ({0} games)
-WIZARD_LIST_AKNF_CLEAN=All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc  ({0} games)
+WIZARD_LIST_NOCLONE=All the games, excluding duplicates ({0} games)
+WIZARD_LIST_CLEAN=All the games, excluding duplicates, console ports (Playchoice 10...), mature/porn games, casino games, mahjong, etc  ({0} games)
 WIZARD_LIST_NEXT=Next - set paths
 
 WIZARD_PATHS_TITLE=Wizard: choose paths
@@ -254,3 +250,13 @@ WIZARD_PATHS_INTRO=Please select the paths of the source romset, and the target 
 WIZARD_PATHS_START=Start copy
 WIZARD_PATHS_NEXT=Next - install overlays
 WIZARD_PATHS_FINISH=Finish
+
+DOWNLOAD_LIST_AKNF_SHOOTING=<strong>All Killer, No Filler</strong> - Shooting ({0} games)
+DOWNLOAD_LIST_AKNF_RUNGUN=<strong>All Killer, No Filler</strong> - Run and gun ({0} games)
+DOWNLOAD_LIST_AKNF_PLATFORM=<strong>All Killer, No Filler</strong> - Platform ({0} games)
+DOWNLOAD_LIST_AKNF_FIGHTING=<strong>All Killer, No Filler</strong> - Fighting ({0} games)
+DOWNLOAD_LIST_AKNF_BEATHACK=<strong>All Killer, No Filler</strong> - Beat'em up and hack & slash ({0} games)
+DOWNLOAD_LIST_AKNF_PUZZLE=<strong>All Killer, No Filler</strong> - Puzzle ({0} games)
+DOWNLOAD_LIST_AKNF_SPORTS=<strong>All Killer, No Filler</strong> - Sports ({0} games)
+DOWNLOAD_LIST_AKNF_RACING=<strong>All Killer, No Filler</strong> - Racing ({0} games)
+DOWNLOAD_LIST_AKNF_CLASSICS=<strong>All Killer, No Filler</strong> - Old school classics ({0} games)
