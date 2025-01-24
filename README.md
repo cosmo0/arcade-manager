@@ -1,8 +1,8 @@
 # Arcade manager for Retropie & Recalbox
 
-[![Windows build status](https://ci.appveyor.com/api/projects/status/80a8164snm8dxqb5?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-dotnet-win)
-[![Linux build status](https://ci.appveyor.com/api/projects/status/ltp88yfy8b22y8sv?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-dotnet-linux)
-[![MacOS build status](https://ci.appveyor.com/api/projects/status/jxkja8m43yjjcdo8?svg=true)](https://ci.appveyor.com/project/cosmo0/arcade-manager-dotnet-mac)
+[![ArcadeManager Windows](https://github.com/cosmo0/arcade-manager/actions/workflows/win.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/win.yml)
+[![ArcadeManager Linux](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml)
+[![ArcadeManager MacOS](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml)
 
 This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox, but it works with anything.
 
