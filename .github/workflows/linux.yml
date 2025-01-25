@@ -38,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ArcadeManager-linux
-          path: ./src/bin/Desktop/*.*
+          path: ./src/ArcadeManager/bin/Desktop/*.*

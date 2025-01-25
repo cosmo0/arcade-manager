@@ -88,7 +88,7 @@ function getOs(cb) {
         cb(selectedOs);
     } else {
         ipc('get-os', null, (os) => {
-            if (os) { os = JSON.parse(os[0]); }
+            if (os) { os = JSON.parse(os); }
 
             selectedOs = os;
             cb(os);
@@ -116,7 +116,7 @@ function getAppData(cb) {
         cb(appData);
     } else {
         ipc('get-appdata', null, (data) => {
-            if (data) { data = JSON.parse(data[0]); }
+            if (data) { data = JSON.parse(data); }
 
             appData = data;
             cb(data);

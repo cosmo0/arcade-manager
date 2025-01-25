@@ -36,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ArcadeManager-win
-          path: ./src/bin/Desktop/*.*
+          path: ./src/ArcadeManager/bin/Desktop/*.*
