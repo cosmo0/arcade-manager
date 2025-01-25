@@ -132,7 +132,7 @@ public class Startup {
         });
 
         // initializes RPC message handling
-        var msgHandler = container.GetInstance<IMessageHandler>();
+        var msgHandler = container.GetInstance<IElectronMessageHandler>();
         msgHandler?.Handle(mainWindow);
     }
 
@@ -259,6 +259,9 @@ public class Startup {
     /// </summary>
     private void InitializeInjection(IServiceCollection services) {
         try {
+            // environment
+            container.Register<IEnvironment, ArcadeManagerEnvironment>(Lifestyle.Singleton);
+
             // infrastructure
             container.Register<Infrastructure.IWebClientFactory, Infrastructure.WebClientFactory>(Lifestyle.Singleton);
             container.Register<Infrastructure.IFileSystem, Infrastructure.FileSystem>(Lifestyle.Singleton);
@@ -272,8 +275,9 @@ public class Startup {
             container.Register<Services.ILocalizer, Services.Localizer>(Lifestyle.Singleton);
             container.Register<Services.IWizard, Services.Wizard>(Lifestyle.Singleton);
 
-            // message handler
-            container.Register<IMessageHandler, MessageHandler>(Lifestyle.Singleton);
+            // message handler (SimpleInjector returns the same singleton if it's the same implementation)
+            container.Register<IMessageHandler, ElectronMessageHandler>(Lifestyle.Singleton);
+            container.Register<IElectronMessageHandler, ElectronMessageHandler>(Lifestyle.Singleton);
 
             // view localization uses dotnet tooling
             services.AddSingleton(provider => container.GetInstance<Services.ILocalizer>());

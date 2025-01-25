@@ -9,7 +9,7 @@ namespace ArcadeManager.Infrastructure;
 /// <summary>
 /// File system utilities
 /// </summary>
-public class FileSystem : IFileSystem {
+public class FileSystem(IEnvironment environment) : IFileSystem {
 
     /// <summary>
     /// Creates the specified directory.
@@ -85,7 +85,7 @@ public class FileSystem : IFileSystem {
     /// <param name="path">The path.</param>
     /// <returns>The directory name</returns>
     public string DirectoryName(string path) {
-        return new FileInfo(path).DirectoryName;
+        return new FileInfo(path)?.DirectoryName ?? string.Empty;
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ public class FileSystem : IFileSystem {
     /// <param name="paths">The paths parts.</param>
     /// <returns>The path to the file or folder</returns>
     public string GetDataPath(params string[] paths) {
-        paths = (new string[] { ArcadeManagerEnvironment.BasePath, "Data" }).Concat(paths).ToArray();
+        paths = (new string[] { environment.GetBasePath(), "Data" }).Concat(paths).ToArray();
         return Path.Combine(paths);
     }
 

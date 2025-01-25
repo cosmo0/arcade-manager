@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ArcadeManager.Core\ArcadeManager.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="23.6.2" />
     <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="Markdig" Version="0.40.0" />
-    <PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
     <PackageReference Include="SimpleInjector" Version="5.5.0" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="5.5.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
@@ -43,5 +46,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ProjectExtensions><VisualStudio><UserProperties electron_1manifest_1json__JsonSchema="electro" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties electron_1manifest_1json__JsonSchema="electro" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

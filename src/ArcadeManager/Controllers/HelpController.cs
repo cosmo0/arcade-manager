@@ -6,14 +6,11 @@ namespace ArcadeManager.Controllers;
 /// <summary>
 /// Controller for the help pages
 /// </summary>
-public class HelpController : BaseController {
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="HelpController"/> class.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    public HelpController(ILogger<HelpController> logger) : base(logger) {
-    }
+/// <remarks>
+/// Initializes a new instance of the <see cref="HelpController"/> class.
+/// </remarks>
+/// <param name="logger">The logger.</param>
+public class HelpController(ILogger<HelpController> logger) : BaseController(logger) {
 
     /// <summary>
     /// Basics view

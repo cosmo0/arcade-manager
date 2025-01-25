@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        working-directory: ./src
+        working-directory: ./src/ArcadeManager
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -30,10 +30,8 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
-      - name: Electronize x86
+      - name: Electronize
         run: electronize build /target win
-      - name: Electronize ARM
-        run: electronize build /target win /electron-arch arm64
       - name: Upload binaries
         uses: actions/upload-artifact@v4
         with:

@@ -12,17 +12,17 @@
 		"appId": "com.ArcadeManager.app",
 		"productName": "ArcadeManager",
 		"copyright": "",
-		"buildVersion": "7.1.0",
+		"buildVersion": "25.1.0",
 		"compression": "maximum",
 		"win": {
 			"target": [
 				{
 					"target": "nsis",
-					"arch": [ "x64", "arm64" ]
+					"arch": [ "x64" ]
 				},
 				{
 					"target": "zip",
-					"arch": [ "x64", "arm64" ]
+					"arch": [ "x64" ]
 				}
 			],
 			"icon": "bin/Assets/electron.ico"
@@ -31,11 +31,11 @@
 			"target": [
 				{
 					"target": "AppImage",
-					"arch": [ "x64", "armv7l", "arm64" ]
+					"arch": [ "x64" ]
 				},
 				{
 					"target": "snap",
-					"arch": [ "x64", "armv7l", "arm64" ]
+					"arch": [ "x64" ]
 				}
 			],
 			"icon": "bin/Assets/electron_256x256.png"
@@ -44,7 +44,7 @@
 			"target": [
 				{
 					"target": "dmg",
-					"arch": [ "x64", "arm64" ]
+					"arch": [ "arm64" ]
 				}
 			],
 			"icon": "bin/Assets/icon.icns",

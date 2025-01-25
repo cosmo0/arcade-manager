@@ -9,18 +9,13 @@ namespace ArcadeManager.Services;
 /// <summary>
 /// Application update
 /// </summary>
-public class Updater : IUpdater {
-    private readonly IDownloader downloaderService;
-    private readonly IFileSystem fs;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Updater"/> class.
-    /// </summary>
-    /// <param name="downloaderService">The downloader service.</param>
-    public Updater(IDownloader downloaderService, IFileSystem fs) {
-        this.downloaderService = downloaderService;
-        this.fs = fs;
-    }
+/// <remarks>
+/// Initializes a new instance of the <see cref="Updater"/> class.
+/// </remarks>
+/// <param name="downloaderService">The downloader service.</param>
+/// <param name="fs">The file system service</param>
+/// <param name="environment">The environment data accessor</param>
+public class Updater(IDownloader downloaderService, IFileSystem fs, IEnvironment environment) : IUpdater {
 
     /// <summary>
     /// Checks for app updates.
@@ -29,13 +24,13 @@ public class Updater : IUpdater {
     /// <returns>The new release details, if any</returns>
     public async Task<Models.GithubRelease> CheckUpdate(string currentVersion) {
         try {
-            var releases = Serializer.Deserialize<IEnumerable<Models.GithubRelease>>(await this.downloaderService.DownloadApiUrl("cosmo0/arcade-manager", "releases"));
+            var releases = Serializer.Deserialize<IEnumerable<Models.GithubRelease>>(await downloaderService.DownloadApiUrl("cosmo0/arcade-manager", "releases"));
             if (releases != null && releases.Any()) {
                 // get latest version
                 var release = releases.First(r => !r.Draft && !r.Prerelease);
 
                 // version is ignored
-                if (release.Draft || ArcadeManagerEnvironment.SettingsIgnoredVersionHas(release.TagName)) {
+                if (release.Draft || environment.SettingsIgnoredVersionHas(release.TagName)) {
                     return null;
                 }
 

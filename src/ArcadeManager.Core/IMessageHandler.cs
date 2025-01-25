@@ -1,13 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+using System;
 
 namespace ArcadeManager;
 
-/// <summary>
-/// Interface for message handlers
-/// </summary>
-public interface IMessageHandler {
-
+public interface IMessageHandler
+{    
     /// <summary>
     /// Gets or sets the cancellation token
     /// </summary>
@@ -25,12 +21,6 @@ public interface IMessageHandler {
     /// </summary>
     /// <param name="ex">The exception.</param>
     void Error(Exception ex);
-
-    /// <summary>
-    /// Handles the messages for the specified window.
-    /// </summary>
-    /// <param name="window">The window.</param>
-    Task Handle(ElectronNET.API.BrowserWindow window);
 
     /// <summary>
     /// Sends an "init" progress message

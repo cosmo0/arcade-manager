@@ -7,16 +7,11 @@ namespace ArcadeManager.Controllers;
 /// <summary>
 /// Controller for the wizard pages
 /// </summary>
-public class WizardController : BaseController {
-    private readonly Services.IWizard wizardService;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="WizardController"/> class.
-    /// </summary>
-    /// <param name="logger">The logger.</param>
-    public WizardController(ILogger<WizardController> logger, Services.IWizard wizardService) : base(logger) {
-        this.wizardService = wizardService;
-    }
+/// <remarks>
+/// Initializes a new instance of the <see cref="WizardController"/> class.
+/// </remarks>
+/// <param name="logger">The logger.</param>
+public class WizardController(ILogger<WizardController> logger, Services.IWizard wizardService) : BaseController(logger) {
 
     /// <summary>
     /// Emulator view: choose the emulator
@@ -38,7 +33,7 @@ public class WizardController : BaseController {
     /// <returns>The view</returns>
     public IActionResult ListSelection(Wizard model) {
         // get number of games in each csv file
-        model.GameNumbers = this.wizardService.CountGamesInLists(model.Emulator);
+        model.GameNumbers = wizardService.CountGamesInLists(model.Emulator);
 
         return View(model);
     }

@@ -11,7 +11,7 @@ namespace ArcadeManager;
 /// <summary>
 /// Provides environment values relative to ArcadeManager
 /// </summary>
-public static class ArcadeManagerEnvironment {
+public class ArcadeManagerEnvironment : IEnvironment {
     private static readonly SettingsManager mgr = new(@"ArcadeManager\userSettings.json");
     private static readonly Settings settings = mgr.LoadSettings() ?? new Settings();
     private static AppData _appData;
@@ -33,6 +33,14 @@ public static class ArcadeManagerEnvironment {
     }
 
     /// <summary>
+    /// Gets the application data
+    /// </summary>
+    /// <returns>The application data</returns>
+    public AppData GetAppData() {
+        return AppData;
+    }
+
+    /// <summary>
     /// Gets the base application path
     /// </summary>
     public static string BasePath {
@@ -45,6 +53,14 @@ public static class ArcadeManagerEnvironment {
 
             return _basePath;
         }
+    }
+
+    /// <summary>
+    /// Gets the application base path
+    /// </summary>
+    /// <returns></returns>
+    public string GetBasePath() {
+        return BasePath;
     }
 
     /// <summary>
@@ -86,6 +102,14 @@ public static class ArcadeManagerEnvironment {
     }
 
     /// <summary>
+    /// Gets the OS from the settings
+    /// </summary>
+    /// <returns>The OS</returns>
+    public string GetSettingsOs() {
+        return SettingsOs;
+    }
+
+    /// <summary>
     /// Gets the app version.
     /// </summary>
     /// <returns>The app version</returns>
@@ -97,7 +121,7 @@ public static class ArcadeManagerEnvironment {
     /// Adds the specified version to the list of ignored versions
     /// </summary>
     /// <param name="version">The version.</param>
-    public static void SettingsIgnoredVersionAdd(string version) {
+    public void SettingsIgnoredVersionAdd(string version) {
         if (string.IsNullOrWhiteSpace(version)) { return; }
 
         settings.IgnoredVersions.Add(version);
@@ -110,23 +134,20 @@ public static class ArcadeManagerEnvironment {
     /// </summary>
     /// <param name="version">The version.</param>
     /// <returns>Whether the version should be ignored</returns>
-    public static bool SettingsIgnoredVersionHas(string version) {
+    public bool SettingsIgnoredVersionHas(string version) {
         return settings.IgnoredVersions.Contains(version);
     }
 
     /// <summary>
     /// Settings manager
     /// </summary>
-    internal class SettingsManager {
-        private readonly string _filePath;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
-        /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        public SettingsManager(string fileName) {
-            _filePath = GetLocalFilePath(fileName);
-        }
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="SettingsManager"/> class.
+    /// </remarks>
+    /// <param name="fileName">Name of the file.</param>
+    internal class SettingsManager(string fileName)
+    {
+        private readonly string _filePath = GetLocalFilePath(fileName);
 
         /// <summary>
         /// Loads the settings.

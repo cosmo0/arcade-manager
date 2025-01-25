@@ -14,16 +14,11 @@ namespace ArcadeManager.Controllers;
 /// <summary>
 /// Controller for the home pages
 /// </summary>
-public class HomeController : BaseController {
-    private readonly ILocalizer localizer;
-
-    /// <summary>
-    /// Initializes a new instance of the HomeController class
-    /// </summary>
-    /// <param name="logger"></param>
-    public HomeController(ILogger<HomeController> logger, ILocalizer localizer) : base(logger) {
-        this.localizer = localizer;
-    }
+/// <remarks>
+/// Initializes a new instance of the HomeController class
+/// </remarks>
+/// <param name="logger"></param>
+public class HomeController(ILogger<HomeController> logger, ILocalizer localizer) : BaseController(logger) {
 
     /// <summary>
     /// Displays the error

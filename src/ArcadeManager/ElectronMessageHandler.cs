@@ -21,7 +21,7 @@ namespace ArcadeManager;
 /// <param name="updaterService">The updater service.</param>
 /// <param name="fs">The file system service</param>
 /// <param name="environment">The environment accessor</param>
-public partial class ElectronMessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService, IUpdater updaterService, IFileSystem fs, IEnvironment environment) : IElectronMessageHandler {
+public partial class MessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService, IUpdater updaterService, IFileSystem fs, IEnvironment environment) : IElectronMessageHandler {
     private BrowserWindow window;
 
     /// <summary>

@@ -14,19 +14,13 @@ namespace ArcadeManager.Services;
 /// The overlays service
 /// </summary>
 /// <seealso cref="ArcadeManager.Services.IOverlays"/>
-public class Overlays : IOverlays {
-    private readonly IDownloader downloaderService;
-    private readonly IFileSystem fs;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Overlays"/> class.
-    /// </summary>
-    /// <param name="downloaderService">The downloader service.</param>
-    /// <param name="fs">The file system.</param>
-    public Overlays(IDownloader downloaderService, IFileSystem fs) {
-        this.downloaderService = downloaderService;
-        this.fs = fs;
-    }
+/// <remarks>
+/// Initializes a new instance of the <see cref="Overlays"/> class.
+/// </remarks>
+/// <param name="downloaderService">The downloader service.</param>
+/// <param name="fs">The file system.</param>
+/// <param name="environment">The environment data</param>
+public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironment environment) : IOverlays {
 
     /// <summary>
     /// Downloads an overlay pack
@@ -41,8 +35,8 @@ public class Overlays : IOverlays {
         messageHandler.Init("Download overlay pack");
 
         try {
-            var os = ArcadeManagerEnvironment.SettingsOs;
-            var pack = ArcadeManagerEnvironment.AppData.Overlays.First(o => o.Name == data.pack);
+            var os = environment.GetSettingsOs();
+            var pack = environment.GetAppData().Overlays.First(o => o.Name == data.pack);
 
             // check if the destination of rom cfg is the rom folder
             var romCfgFolder = pack.Roms.Dest[os] == "roms"
@@ -154,7 +148,7 @@ public class Overlays : IOverlays {
                 }
             }
 
-            messageHandler.Done($"Installed {installed} overlays", null);
+            messageHandler.Done($"Installed {installed} overlays", "");
         }
         catch (Exception ex) {
             messageHandler.Error(ex);
@@ -210,9 +204,9 @@ public class Overlays : IOverlays {
     /// <param name="content">The config content.</param>
     /// <param name="pack">The pack to download.</param>
     /// <returns>The fixed content</returns>
-    private static string FixPaths(string content, OverlayBundle pack) {
-        if (ArcadeManagerEnvironment.SettingsOs != pack.BaseOs) {
-            return content.Replace(pack.Base[pack.BaseOs], pack.Base[ArcadeManagerEnvironment.SettingsOs], StringComparison.InvariantCultureIgnoreCase);
+    private string FixPaths(string content, OverlayBundle pack) {
+        if (environment.GetSettingsOs() != pack.BaseOs) {
+            return content.Replace(pack.Base[pack.BaseOs], pack.Base[environment.GetSettingsOs()], StringComparison.InvariantCultureIgnoreCase);
         }
 
         return content;
@@ -288,14 +282,14 @@ public class Overlays : IOverlays {
 
                 // only process files that are in the overlays pack
                 if (entries.Any(e => e.Path.Equals($"{game}.zip.cfg", StringComparison.InvariantCultureIgnoreCase))) {
-                    var existing = result.FirstOrDefault(r => r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase));
+                    var existing = result.FirstOrDefault(r => r.Game != null && r.Game.Equals(game, StringComparison.InvariantCultureIgnoreCase));
                     if (existing != null) {
                         existing.TargetFolder.Add(directoryName);
                     }
                     else {
                         result.Add(new RomToProcess {
                             Game = game,
-                            TargetFolder = new List<string> { directoryName },
+                            TargetFolder = [ directoryName ],
                             Extension = extension
                         });
                     }
@@ -325,6 +319,6 @@ public class Overlays : IOverlays {
         /// <summary>
         /// Gets or sets the folders in which the game is present.
         /// </summary>
-        public List<string> TargetFolder { get; set; } = new();
+        public List<string> TargetFolder { get; set; } = [];
     }
 }

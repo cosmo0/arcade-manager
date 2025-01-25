@@ -1,25 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ArcadeManager.Controllers; 
+namespace ArcadeManager.Controllers;
 
 /// <summary>
 /// Controller for the help pages
 /// </summary>
-public class CsvController : BaseController {
+/// <remarks>
+/// Initializes a new instance of the <see cref="CsvController" /> class.
+/// </remarks>
+/// <param name="logger">The logger.</param>
+public class CsvController(ILogger<CsvController> logger) : BaseController(logger) {
 
-	/// <summary>
-	/// Initializes a new instance of the <see cref="CsvController" /> class.
-	/// </summary>
-	/// <param name="logger">The logger.</param>
-	public CsvController(ILogger<CsvController> logger) : base(logger) {
-	}
-
-	/// <summary>
-	/// Add files to a list
-	/// </summary>
-	/// <returns>The view</returns>
-	public IActionResult Add() => View();
+    /// <summary>
+    /// Add files to a list
+    /// </summary>
+    /// <returns>The view</returns>
+    public IActionResult Add() => View();
 
 	/// <summary>
 	/// Convert a DAT file
