@@ -33,6 +33,8 @@ ERROR_NOFULLSET=Veuillez sélectionner le chemin du romset complet
 ERROR_NOSELECTION=Veuillez sélectionner le chemin de la sélection de roms
 ERROR_NOSECONDARYCSV=Veuillez sélectionner un fichier CSV secondaire
 ERROR_NOTARGETCSV=Veuillez sélectionner un fichier cible
+ERROR_NODAT=Veuillez sélectionner un fichier DAT
+ERROR_NOTARGET=Veuillez sélectionner un dossier cible
 
 HOME_ACTION_LANGUAGE=Langue
 HOME_ACTION_CSV=Gérer ses listes de jeux
@@ -292,6 +294,6 @@ ROMS_CHECKDAT_OTHER_BIOS=Vérifier que les bios requis sont présents
 ROMS_CHECKDAT_OTHER_DEVICES=Vérifier que les devices requis sont présents (nécessaire dans certaines versions de MAME)
 ROMS_CHECKDAT_ADDFOLDER=Dossier additionnel
 ROMS_CHECKDAT_ADDFOLDER_DESC=(Optionnel) Un autre dossier dans lequel rechercher les fichiers pour réparer le romset (ces fichiers ne seront pas modifiés)
-ROMS_CHECKDAT_FIXFOLDER=Dossier des corrections
-ROMS_CHECKDAT_FIXFOLDER_DESC=(Optionnel) Le dossier dans lequel les fichiers modifiés seront créés - si laissé vide, le romset sera modifié sur place.
+ROMS_CHECKDAT_FIXFOLDER=Dossier cible
+ROMS_CHECKDAT_FIXFOLDER_DESC=Le dossier dans lequel les fichiers modifiés seront créés
 ROMS_CHECKDAT_CHECK=Vérifier

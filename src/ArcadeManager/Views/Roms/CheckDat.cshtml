@@ -41,7 +41,7 @@
         <a href="#" data-toggle="modal" data-target="#datHelp">@Localizer["ROMS_CHECKDAT_DATFILE_HELPDECIDE"]</a>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="datfilePre" value="fbneo" id="datfilePreFbneo">
+        <input class="form-check-input" type="radio" name="datfilePre" value="fbneo" id="datfilePreFbneo" checked>
         <label class="form-check-label" for="datfilePreFbneo">FBNeo 1.0.0.3</label>
     </div>
     <div class="form-check">
@@ -121,6 +121,20 @@
     </div>
 </div>
 
+<!-- Fix folder -->
+<div class="input-group mb-0" id="fixFolderContainer">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_CHECKDAT_FIXFOLDER"]</span>
+    </div>
+    <input type="text" class="form-control" id="fixFolder" disabled>
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="fixFolder" disabled>@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["ROMS_CHECKDAT_FIXFOLDER_DESC"]</small>
+</p>
+
 <h2>@Localizer["ROMS_CHECKDAT_OPTIONS"]</h2>
 
 <!-- All files in DAT -->
@@ -184,27 +198,13 @@
     <div class="input-group-prepend">
         <span class="input-group-text">@Localizer["ROMS_CHECKDAT_ADDFOLDER"]</span>
     </div>
-    <input type="text" class="form-control" id="romset">
+    <input type="text" class="form-control" id="otherFolder">
     <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse folder" type="button" data-input="romset">@Localizer["BROWSE"]</button>
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="otherFolder">@Localizer["BROWSE"]</button>
     </div>
 </div>
 <p class="mt-0 mb-3">
     <small class="form-text text-muted">@Localizer["ROMS_CHECKDAT_ADDFOLDER_DESC"]</small>
-</p>
-
-<!-- Fix folder -->
-<div class="input-group mb-0">
-    <div class="input-group-prepend">
-        <span class="input-group-text">@Localizer["ROMS_CHECKDAT_FIXFOLDER"]</span>
-    </div>
-    <input type="text" class="form-control" id="romset">
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary browse folder" type="button" data-input="romset">@Localizer["BROWSE"]</button>
-    </div>
-</div>
-<p class="mt-0 mb-3">
-    <small class="form-text text-muted">@Localizer["ROMS_CHECKDAT_FIXFOLDER_DESC"]</small>
 </p>
 
 <p class="mt-3">
@@ -214,7 +214,43 @@
 @section Scripts {
 <script type="text/javascript">
 $(() => {
+    // custom DAT
+    $('input[type=radio][name=datfilePre]').on('change', (e) => {
+        $('#datfileCustomContainer input, #datfileCustomContainer button').prop('disabled', e.currentTarget.value !== 'custom');
+    });
 
+    // change romset
+    $('input[type=radio][name=action]').on('change', (e) => {
+        $('#romsetType').prop('disabled', e.currentTarget.value !== 'change');
+        $('#fixFolderContainer input, #fixFolderContainer button').prop('disabled', e.currentTarget.value === 'report');
+    });
+
+    // run check
+    $('#buttonOk').on('click', () => {
+        // get paths from file inputs
+        const options = {
+            romset: $('#romset').val(),
+            datfilePre: $('input[name=datfilePre]:checked').val(),
+            datfileCustom: $('#datfileCustom').val(),
+            action: $('input[name=action]:checked').val(),
+            romsetType: $('#romsetType').val(),
+            fixFolder: $('#fixFolder').val(),
+            actionReportAll: $('#actionReportAll').is(':checked'),
+            speed: $('input[name=speed]:checked').val(),
+            csvfilter: $('#csvfilter').val(),
+            otherBios: $('#otherBios').is(':checked'),
+            otherDevices: $('#otherDevices').is(':checked'),
+            csvfilter: $('#csvfilter').val(),
+            otherFolder: $('#otherFolder').val()
+        };
+
+        // check options are coherent
+        if (options.romset === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOFULLSET"))'); return; }
+        if (options.datfilePre === 'custom' && options.datfileCustom === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NODAT"))'); return; }
+        if (options.action !== 'report' && options.fixFolder === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
+
+        ipc("roms-checkdat", options);
+    });
 });
 </script>
 }
