@@ -1,0 +1,220 @@
+﻿@{
+    ViewData["title"] = Localizer["ROMS_INDEX_CHECKDAT"];
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">@Localizer["HOME"]</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Roms" asp-action="Index" class="navmenu">@Localizer["BREADCRUMB_ROMS"]</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_ROMS_CHECKDAT"]</li>
+    </ol>
+</nav>
+
+<h2>
+    @Localizer["ROMS_INDEX_CHECKDAT"]
+    <a asp-controller="Help" asp-action="Shares" class="navmenu">@Localizer["ROMS_COPY_HOWTOACCESS"]</a>
+</h2>
+
+<p>
+    @Html.Raw(Localizer["ROMS_CHECKDAT_INTRO"])
+</p>
+
+<!-- Full romset location -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_CHECKDAT_ROMSET"]</span>
+    </div>
+    <input type="text" class="form-control" id="romset">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="romset">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["ROMS_CHECKDAT_ROMSET_DESC"]</small>
+</p>
+
+<!-- Dat file -->
+<div class="border rounded mb-3 p-2">
+    <div class="mb-2">
+        @Html.Raw(Localizer["ROMS_CHECKDAT_DATFILE_HEADER"])
+        -
+        <a href="#" data-toggle="modal" data-target="#datHelp">@Localizer["ROMS_CHECKDAT_DATFILE_HELPDECIDE"]</a>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="datfilePre" value="fbneo" id="datfilePreFbneo">
+        <label class="form-check-label" for="datfilePreFbneo">FBNeo 1.0.0.3</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="datfilePre" value="mame268" id="datfilePreMame268">
+        <label class="form-check-label" for="datfilePreMame268">MAME 0.268 - Batocera 41</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="datfilePre" value="mame258" id="datfilePreMame258">
+        <label class="form-check-label" for="datfilePreMame258">MAME 0.258 - Recalbox 9.2</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="datfilePre" value="mame078knulli" id="datfilePreMame078knulli">
+        <label class="form-check-label" for="datfilePreMame078knulli">MAME 2003-plus (new) - Knulli, Batocera 41</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="datfilePre" value="mame078miyoo" id="datfilePreMame078miyoo">
+        <label class="form-check-label" for="datfilePreMame078miyoo">MAME 2003-plus (old) - Miyoo Mini / OnionOS</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="datfilePre" value="custom" id="datfilePreCustom">
+        <label class="form-check-label" for="datfilePreCustom">@Localizer["ROMS_CHECKDAT_DATFILE_CUSTOM"]</label>
+    </div>
+</div>
+<div class="input-group mb-3" id="datfileCustomContainer">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_CHECKDAT_DATFILE_CUSTOM"]</span>
+    </div>
+    <input type="text" class="form-control" id="datfileCustom" disabled>
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse" type="button" data-input="datfileCustom" disabled>@Localizer["BROWSE"]</button>
+    </div>
+</div>
+
+<!-- DAT help modal -->
+<div class="modal fade" id="datHelp" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>@Localizer["ROMS_CHECKDAT_HELPDECIDE_TITLE"]</h2>
+            </div>
+            <div class="modal-body">
+                @Html.Raw(Localizer["ROMS_CHECKDAT_HELPDECIDE_BODY"])
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-success" data-dismiss="modal">@Localizer["CLOSE"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action -->
+<div class="border rounded mb-3 p-2">
+    <div class="mb-2">
+        @Localizer["ROMS_CHECKDAT_ACTION_HEADER"]
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="action" value="report" id="actionReport" checked>
+        <label class="form-check-label" for="actionReport">@Localizer["ROMS_CHECKDAT_ACTION_REPORT"]</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="action" value="fix" id="actionFix">
+        <label class="form-check-label" for="actionFix">@Localizer["ROMS_CHECKDAT_ACTION_FIX"]</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="action" value="change" id="actionChange">
+        <label class="form-check-label" for="actionChange">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE"]</label>
+    </div>
+    <div>
+        <select id="romsetType" class="form-control" disabled>
+            <option value="nonmerged">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE_NONMERGED"]</option>
+            <option value="split">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE_SPLIT"]</option>
+            <option value="merged">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE_MERGED"]</option>
+        </select>
+    </div>
+    <div>
+        @Html.Raw(Localizer["ROMS_CHECKDAT_ACTION_CHANGE_EXPLANATION"])
+    </div>
+</div>
+
+<h2>@Localizer["ROMS_CHECKDAT_OPTIONS"]</h2>
+
+<!-- All files in DAT -->
+<div class="border rounded mb-3 p-2">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="actionReportAll">
+        <label class="form-check-label" for="actionReportAll">@Localizer["ROMS_CHECKDAT_ALLFILES"]</label>
+    </div>
+</div>
+
+<!-- Speed -->
+<div class="border rounded mb-3 p-2">
+    <div class="mb-2">
+        @Localizer["ROMS_CHECKDAT_SPEED_HEADER"]
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="speed" value="fast" id="speedFast">
+        <label class="form-check-label" for="speedFast">@Localizer["ROMS_CHECKDAT_SPEED_FAST"]</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="speed" value="medium" id="speedMedium" checked>
+        <label class="form-check-label" for="speedMedium">@Localizer["ROMS_CHECKDAT_SPEED_MEDIUM"]</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="speed" value="slow" id="speedSlow">
+        <label class="form-check-label" for="speedSlow">@Localizer["ROMS_CHECKDAT_SPEED_SLOW"]</label>
+    </div>
+</div>
+
+<!-- CSV filter file -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_CHECKDAT_CSVFILTER"]</span>
+    </div>
+    <input type="text" class="form-control" id="csvfilter">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse" type="button" data-input="csvfilter">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["ROMS_CHECKDAT_CSVFILTER_DESC"]</small>
+</p>
+
+<!-- Other file checks -->
+<div class="border rounded mb-3 p-2">
+    <div class="mb-2">
+        @Localizer["ROMS_CHECKDAT_OTHER_HEADER"]
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="otherBios" checked>
+        <label class="form-check-label" for="otherBios">@Localizer["ROMS_CHECKDAT_OTHER_BIOS"]</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="otherDevices" checked>
+        <label class="form-check-label" for="otherDevices">@Localizer["ROMS_CHECKDAT_OTHER_DEVICES"]</label>
+    </div>
+</div>
+
+<!-- Additional folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_CHECKDAT_ADDFOLDER"]</span>
+    </div>
+    <input type="text" class="form-control" id="romset">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="romset">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["ROMS_CHECKDAT_ADDFOLDER_DESC"]</small>
+</p>
+
+<!-- Fix folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <span class="input-group-text">@Localizer["ROMS_CHECKDAT_FIXFOLDER"]</span>
+    </div>
+    <input type="text" class="form-control" id="romset">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary browse folder" type="button" data-input="romset">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["ROMS_CHECKDAT_FIXFOLDER_DESC"]</small>
+</p>
+
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["ROMS_CHECKDAT_CHECK"]</button>
+</p>
+
+@section Scripts {
+<script type="text/javascript">
+$(() => {
+
+});
+</script>
+}

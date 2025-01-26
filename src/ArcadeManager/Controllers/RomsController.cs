@@ -35,4 +35,10 @@ public class RomsController(ILogger<RomsController> logger) : BaseController(log
 	/// </summary>
 	/// <returns>The view</returns>
 	public IActionResult Keep() => View();
+	
+	/// <summary>
+	/// Check a romset against a DAT file
+	/// </summary>
+	/// <returns>The view</returns>
+	public IActionResult CheckDat() => View();
 }
