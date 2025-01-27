@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ArcadeManager.Services;
 
@@ -274,6 +275,121 @@ public class Roms : IRoms
         }
     }
 
+    /// <summary>
+    /// Checks a romset against a DAT file
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    /// <param name="messageHandler">The message handler</param>
+    public async Task CheckDat(RomsActionCheckDat args, IMessageHandler messageHandler) {
+        messageHandler.Init("Filtering roms");
+
+        if (!fs.DirectoryExists(args.romset)) {
+            messageHandler.Done($"Folder {args.romset} not found", args.fixFolder);
+            return;
+        }
+
+        var filesInRomset = fs.GetFiles(args.romset, "");
+
+        int total = filesInRomset.Count;
+        int progress = 0;
+
+        // TODO: total depends on chosen action
+
+        try
+        {
+            // get the DAT file path
+            string dat = args.datfilePre;
+            if (dat == "custom") {
+                dat = args.datfileCustom;
+            } else {
+                dat = fs.GetDataPath("mame-xml", dat, "games.xml");
+            }
+
+            var cancelToken = new CancellationToken();
+
+            // build a found files dataset
+            var games = new List<GameRom>();
+
+            // build an errors list
+            var errors = new List<GameError>();
+            
+            // read the csv file if it is sent
+            if (!string.IsNullOrEmpty(args.csvfilter) && fs.FileExists(args.csvfilter)) {
+                // TODO
+            }
+
+            await fs.ReadFileStream(dat, async (datStream) => {
+                messageHandler.Progress("Reading DAT file", 0, 0);
+
+                // read DAT file and detect the tags names
+                XDocument doc = await XDocument.LoadAsync(datStream, LoadOptions.None, cancelToken);
+                if (messageHandler.MustCancel) { return; }
+                string gameTag = doc.Root.Descendants().Skip(1).First().Name.LocalName; // ensure we skip the header, if any
+
+                // for each game in the dat file
+                foreach (var gameXml in doc.Descendants(gameTag)) {
+                    // parse game infos
+                    var game = GameRom.FromXml(gameXml);
+
+                    messageHandler.Progress(game.Name, total, progress);
+
+                    // if the CSV filter is set, filter it out
+                    // TODO
+
+                    // add to the games list
+                    games.Add(game);
+
+                    // build file path
+                    var gameFile = fs.PathJoin(args.romset, $"{game.Name}.zip");
+
+                    // check if a matching file is on the disk
+                    if (!fs.FileExists(gameFile)) {
+                        if (args.actionReportAll) {
+                            // report all errors
+                            errors.Add(new() { Name = game.Name, NotFound = true });
+                        }
+
+                        // then skip to next file
+                        continue;
+                    }
+
+                    // check the existence of matching bios
+                    if (args.otherBios && biosmatch.Any(bm => bm.Game == game.Name)) {
+                        // TODO
+                    }
+
+                    // check the existence of matching device
+                    if (args.otherDevices && devicematch.Any(dm => dm.Game == game.Name)) {
+                        // TODO
+                    }
+
+                    // open the zip
+
+                    // check the files in the zip
+
+                    progress++;
+                }
+            });
+
+
+
+            // if error fixing: loop on errors and try to find a file to fix it with
+
+
+            // if romset type change: move/copy files around
+
+
+            // remove unnecessary files
+            
+
+            messageHandler.Done($"Checked {total} files", args.fixFolder);
+        }
+        catch (Exception ex)
+        {
+            messageHandler.Error(ex);
+        }
+    }
+
     private int CopyGamesList(Actions.RomsAction args, Models.CsvGamesList content, IMessageHandler messageHandler)
     {
         var total = content.Games.Count;
@@ -427,5 +543,57 @@ public class Roms : IRoms
 
             return [];
         }
+    }
+
+    /// <summary>
+    /// A game rom (zip)
+    /// </summary>
+    private sealed class GameRom {
+        public string Name { get; set; }
+        public string CloneOf { get; set; }
+        public string RomOf { get; set; }
+        public List<GameRomFile> RomFilesFromDat { get; } = [];
+        public List<GameRomFile> RomFilesOnDisk { get; } = [];
+
+        public static GameRom FromXml(XElement gameXml) {
+            var game = new GameRom {
+                Name = gameXml.Attribute("name").Value,
+                CloneOf = gameXml.Attribute("cloneof").Value,
+                RomOf = gameXml.Attribute("romof").Value
+            };
+
+            foreach (var romXml in gameXml.Descendants("rom")) {
+                game.RomFilesFromDat.Add(GameRomFile.FromXml(romXml));
+            }
+
+            return game;
+        }
+    }
+
+    /// <summary>
+    /// A game rom file (rom files inside the zip)
+    /// </summary>
+    private sealed class GameRomFile {
+        public string Name { get; set; }
+        public int Size { get; set; }
+        public string Crc { get; set; }
+        public string Sha1 { get; set; }
+
+        public static GameRomFile FromXml(XElement romXml) {
+            return new GameRomFile() {
+                Name = romXml.Attribute("name").Value,
+                Size = int.Parse(romXml.Attribute("size").Value),
+                Crc = romXml.Attribute("crc").Value,
+                Sha1 = romXml.Attribute("sha1").Value,
+            };
+        }
+    }
+
+    /// <summary>
+    /// A game error details
+    /// </summary>
+    private sealed class GameError {
+        public string Name { get; set; }
+        public bool NotFound { get; set; }
     }
 }

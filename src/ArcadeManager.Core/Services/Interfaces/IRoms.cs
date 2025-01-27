@@ -43,4 +43,11 @@ public interface IRoms {
     /// <param name="args">The arguments</param>
     /// <param name="messageHandler">The message handler.</param>
     Task Keep(RomsAction args, IMessageHandler messageHandler);
+
+    /// <summary>
+    /// Checks a romset against a DAT file
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    /// <param name="messageHandler">The message handler</param>
+    Task CheckDat(RomsActionCheckDat args, IMessageHandler messageHandler);
 }

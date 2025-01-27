@@ -55,6 +55,8 @@ Anyone can help with translations: they're simple text files (INI style) located
 
 If you think you can help, please create a pull request! Or just send me the translated files. I'm happy either way.
 
+You can also contribute using [Weblate](https://hosted.weblate.org/projects/arcademanager/arcademanager-ui/)
+
 ## Development
 
 ### Prerequisites

@@ -90,6 +90,7 @@ public partial class MessageHandler(ICsv csvService, IDownloader downloaderServi
             await Electron.IpcMain.On("roms-addfromwizard", async (args) => await RomsAddFromWizard(args));
             await Electron.IpcMain.On("roms-delete", async (args) => await RomsDelete(args));
             await Electron.IpcMain.On("roms-keep", async (args) => await RomsKeep(args));
+            await Electron.IpcMain.On("roms-checkdat", async (args) => await RomsCheckDat(args));
 
             // download actions
             await Electron.IpcMain.On("download-getlist", async (args) => await GithubFilesGetList(args));
@@ -423,6 +424,17 @@ public partial class MessageHandler(ICsv csvService, IDownloader downloaderServi
         MustCancel = false;
 
         await romsService.Keep(data, this);
+    }
+
+    /// <summary>
+    /// Checks a romset against a DAT file
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    private async Task RomsCheckDat(object args) {
+        var data = ConvertArgs<RomsActionCheckDat>(args);
+        MustCancel = false;
+
+        await romsService.CheckDat(data, this);
     }
 
     /// <summary>

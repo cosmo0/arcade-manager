@@ -162,6 +162,10 @@
         <input class="form-check-input" type="radio" name="speed" value="slow" id="speedSlow">
         <label class="form-check-label" for="speedSlow">@Localizer["ROMS_CHECKDAT_SPEED_SLOW"]</label>
     </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="speed" value="slowest" id="speedSlow">
+        <label class="form-check-label" for="speedSlowest">@Localizer["ROMS_CHECKDAT_SPEED_SLOWEST"]</label>
+    </div>
 </div>
 
 <!-- CSV filter file -->
@@ -240,7 +244,6 @@ $(() => {
             csvfilter: $('#csvfilter').val(),
             otherBios: $('#otherBios').is(':checked'),
             otherDevices: $('#otherDevices').is(':checked'),
-            csvfilter: $('#csvfilter').val(),
             otherFolder: $('#otherFolder').val()
         };
 
