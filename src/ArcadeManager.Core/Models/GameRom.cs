@@ -40,12 +40,12 @@ public class GameRom {
     public static GameRom FromXml(XElement gameXml) {
         var game = new GameRom {
             Name = gameXml.Attribute("name").Value,
-            CloneOf = gameXml.Attribute("cloneof").Value,
-            RomOf = gameXml.Attribute("romof").Value
+            CloneOf = gameXml.Attribute("cloneof")?.Value,
+            RomOf = gameXml.Attribute("romof")?.Value
         };
 
         foreach (var romXml in gameXml.Descendants("rom")) {
-            game.RomFilesFromDat.Add(GameRomFile.FromXml(romXml));
+            game.RomFilesFromDat.Add(GameRomFile.FromXml(game.Name, romXml));
         }
 
         return game;
@@ -77,16 +77,30 @@ public class GameRomFile {
     public string Sha1 { get; set; }
 
     /// <summary>
+    /// Gets or sets the file status, if any
+    /// </summary>
+    public string Status { get; set; }
+
+    /// <summary>
     /// Creates a new rom file info from a XML node from the DAT
     /// </summary>
     /// <param name="romXml">The XML node from the DAT</param>
     /// <returns>The file infos</returns>
-    public static GameRomFile FromXml(XElement romXml) {
+    public static GameRomFile FromXml(string game, XElement romXml) {
+        var name = romXml.Attribute("name").Value;
+
+        var crc = romXml.Attribute("crc")?.Value;
+        var status = romXml.Attribute("status")?.Value;
+        if (crc == null && status != "nodump") {
+            throw new ArgumentNullException($"No crc for file {name} in game {game}");
+        }
+
         return new GameRomFile() {
-            Name = romXml.Attribute("name").Value,
-            Size = int.Parse(romXml.Attribute("size").Value),
-            Crc = romXml.Attribute("crc").Value,
-            Sha1 = romXml.Attribute("sha1").Value,
+            Name = name,
+            Size = int.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
+            Crc = crc,
+            Status = status,
+            Sha1 = romXml.Attribute("sha1")?.Value,
         };
     }
 }
@@ -98,23 +112,53 @@ public class GameError {
     /// <summary>
     /// Gets or sets the game name
     /// </summary>
-    public string Name { get; set; }
+    public string Game { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the file is missing
+    /// Gets or sets the file name
     /// </summary>
-    public bool IsMissing { get; set; }
+    public string File { get; set; }
+
+    /// <summary>
+    /// Gets or sets the error reason
+    /// </summary>
+    public string Reason { get; set; }
+
+    /// <summary>
+    /// Gets or sets the error details, if any
+    /// </summary>
+    public string Details { get; set; }
 
     /// <summary>
     /// Creates a new "missing game" error
     /// </summary>
-    /// <param name="name">The missing game name</param>
+    /// <param name="game">The game name</param>
+    /// <param name="file">The file name</param>
     /// <returns>The error details</returns>
-    public static GameError Missing(string name)
+    public static GameError Missing(string game, string file)
     {
         return new GameError {
-            Name = name,
-            IsMissing = true
+            Game = game,
+            File = file,
+            Reason = "missing",
+            Details = "File missing"
+        };
+    }
+
+    /// <summary>
+    /// Creates a new "bad hash" error
+    /// </summary>
+    /// <param name="game">The game name</param>
+    /// <param name="file">The file name</param>
+    /// <param name="details">The error details, if any</param>
+    /// <returns>The error details</returns>
+    public static GameError BadHash(string game, string file, string details = null)
+    {
+        return new GameError {
+            Game = game,
+            File = file,
+            Reason = "badhash",
+            Details = details
         };
     }
 }

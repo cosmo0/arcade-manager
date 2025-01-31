@@ -282,20 +282,22 @@ public class Roms : IRoms
     /// <param name="args">The arguments</param>
     /// <param name="messageHandler">The message handler</param>
     public async Task CheckDat(RomsActionCheckDat args, IMessageHandler messageHandler) {
-        messageHandler.Init("Filtering roms");
+        messageHandler.Init("Checking a romset against a DAT file");
 
         if (!fs.DirectoryExists(args.romset)) {
             messageHandler.Error(new DirectoryNotFoundException($"Folder {args.romset} not found"));
             return;
         }
 
-        var filesInRomset = fs.GetFiles(args.romset, "");
+        messageHandler.Progress("Reading DAT file", 0, 0);
+        var filesInRomset = fs.GetFiles(args.romset, "*.zip");
 
         int total = filesInRomset.Count;
         int progress = 0;
 
         bool repair = args.action == "fix" || args.action == "change";
         bool change = args.action == "change";
+        bool isSlow = args.speed == "slow";
 
         // total depends on chosen action (check=x1, repair=x2, rebuild=x3)
         if (repair) {
@@ -315,7 +317,7 @@ public class Roms : IRoms
             }
 
             // build a found files dataset
-            var games = new List<GameRom>();
+            var processed = new List<GameRom>();
 
             // build an errors list
             var errors = new List<GameError>();
@@ -332,10 +334,12 @@ public class Roms : IRoms
                 // read DAT file and detect the tags names
                 XDocument doc = await XDocument.LoadAsync(datStream, LoadOptions.None, new CancellationToken());
                 if (messageHandler.MustCancel) { return; }
-                string gameTag = doc.Root.Descendants().Skip(1).First().Name.LocalName; // ensure we skip the header, if any
+                string gameTag = doc.Root.Elements().Skip(1).First().Name.LocalName; // ensure we skip the header, if any
 
                 // for each game in the dat file
-                foreach (var gameXml in doc.Descendants(gameTag)) {
+                foreach (var gameXml in doc.Root.Elements(gameTag)) {
+                    progress++;
+
                     // parse game infos
                     var game = GameRom.FromXml(gameXml);
 
@@ -348,9 +352,6 @@ public class Roms : IRoms
                         continue;
                     }
 
-                    // add to the games list
-                    games.Add(game);
-
                     // build file path
                     var gameFile = fs.PathJoin(args.romset, $"{game.Name}.zip");
 
@@ -358,7 +359,7 @@ public class Roms : IRoms
                     if (!fs.FileExists(gameFile)) {
                         if (args.actionReportAll) {
                             // report all errors
-                            errors.Add(GameError.Missing(game.Name));
+                            errors.Add(GameError.Missing(game.Name, $"{game.Name}.zip"));
                         }
 
                         // then skip to next file
@@ -371,7 +372,7 @@ public class Roms : IRoms
                     var biosmatches = biosmatch.Where(bm => bm.Game == game.Name);
                     if (args.otherBios && biosmatches.Any()) {
                         foreach (var bm in biosmatches.Where(bm => !fs.FileExists(fs.PathJoin(args.romset, $"{bm.Bios}.zip")))) {
-                            errors.Add(GameError.Missing(bm.Bios));
+                            errors.Add(GameError.Missing(game.Name, $"{bm.Bios}.zip"));
                         }
                     }
 
@@ -381,32 +382,51 @@ public class Roms : IRoms
                     var devicematches = devicematch.Where(dm => dm.Game == game.Name);
                     if (args.otherDevices && devicematches.Any()) {
                         foreach (var dm in devicematches.SelectMany(dm => dm.Devices).Where(dm => !fs.FileExists(fs.PathJoin(args.romset, $"{dm}.zip")))) {
-                            errors.Add(GameError.Missing(dm));
+                            errors.Add(GameError.Missing(game.Name, $"{dm}.zip"));
                         }
                     }
 
                     if (messageHandler.MustCancel) { return; }
 
                     // open the zip
-                    var zipFiles = fs.GetZipFiles(gameFile, args.speed == "slow");
+                    var zipFiles = fs.GetZipFiles(gameFile, isSlow);
+
+                    var hasError = false;
 
                     // check the files that are supposed to be in the game
                     foreach (var datFile in game.RomFilesFromDat) {
                         if (messageHandler.MustCancel) { return; }
 
+                        var zf = zipFiles.FirstOrDefault(zf => zf.Name.Equals(datFile.Name, StringComparison.InvariantCultureIgnoreCase));
+
                         // ensure the file exists in the zip
+                        if (zf == null) {
+                            errors.Add(GameError.Missing(game.Name, datFile.Name));
+                            hasError = true;
+                            continue;
+                        }
 
                         // check size and crc
-
-                        if (messageHandler.MustCancel) { return; }
+                        if (!zf.Crc.Equals(datFile.Crc, StringComparison.InvariantCultureIgnoreCase)) {
+                            errors.Add(GameError.BadHash(game.Name, datFile.Name, $"Expected: {datFile.Crc}; actual: {zf.Crc}"));
+                            hasError = true;
+                            continue;
+                        }
 
                         // if speed slow: check hash
+                        if (isSlow && !string.IsNullOrEmpty(datFile.Sha1) && !zf.Sha1.Equals(datFile.Sha1, StringComparison.InvariantCultureIgnoreCase)) {
+                            errors.Add(GameError.BadHash(game.Name, datFile.Name, $"Expected: {datFile.Sha1}; actual: {zf.Sha1}"));
+                            hasError = true;
+                            continue;
+                        }
                     }
-
-                    progress++;
+                    
+                    // add to the games list
+                    if (!hasError) {
+                        processed.Add(game);
+                    }
                 }
             });
-
 
             if (!messageHandler.MustCancel && repair) {
                 // if error fixing: loop on errors and try to find a file to fix it with
@@ -416,9 +436,9 @@ public class Roms : IRoms
                 // if romset type change: move/copy files around
             }
 
-
-
-            messageHandler.Done($"Checked {total} files", args.fixFolder);
+            messageHandler.SetProcessed(processed);
+            messageHandler.SetErrors(errors);
+            messageHandler.Done($"Checked {progress} files", args.fixFolder);
         }
         catch (Exception ex)
         {

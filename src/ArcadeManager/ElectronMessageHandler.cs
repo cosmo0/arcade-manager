@@ -4,6 +4,8 @@ using ArcadeManager.Services;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ArcadeManager;
@@ -73,6 +75,24 @@ public partial class ElectronMessageHandler(ICsv csvService, IDownloader downloa
         Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
         
         MustCancel = false;
+    }
+
+    /// <summary>
+    /// Sets the list of successfully processed games
+    /// </summary>
+    /// <param name="games">The processed games</param>
+    public void SetProcessed(IEnumerable<Models.GameRom> games) {
+        if (!games.Any()) { return; }
+        Electron.IpcMain.Send(window, "progress-processed", Serializer.Serialize(games));
+    }
+
+    /// <summary>
+    /// Sets the list of failed games to process
+    /// </summary>
+    /// <param name="errors">The errors</param>
+    public void SetErrors(IEnumerable<Models.GameError> errors) {
+        if (!errors.Any()) { return; }
+        Electron.IpcMain.Send(window, "progress-errors", Serializer.Serialize(errors));
     }
 
     /// <summary>

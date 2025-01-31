@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using ArcadeManager.Models;
 
@@ -351,11 +354,25 @@ public class FileSystem(IEnvironment environment) : IFileSystem {
             result.Add(new GameRomFile {
                 Name = entry.Name,
                 Size = (int)entry.Length,
-                // Crc = entry.Crc32,
-                // Sha1 = getSha1 ? entry.Open() : null
+                Crc = entry.Crc32.ToString("X4").PadLeft(8, '0'),
+                Sha1 = getSha1 ? GetZipFileSha1(entry) : null
             });
         }
 
         return result;
+    }
+
+    private static string GetZipFileSha1(ZipArchiveEntry entry) {
+        var sha1 = SHA1.Create();
+
+        // see https://stackoverflow.com/questions/1993903
+        byte[] hash = sha1.ComputeHash(entry.Open());
+        StringBuilder formatted = new(2 * hash.Length);
+        foreach (byte b in hash)
+        {
+            formatted.AppendFormat("{0:X2}", b);
+        }
+
+        return formatted.ToString();
     }
 }
