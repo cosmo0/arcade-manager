@@ -18,11 +18,16 @@ $(() => {
         }
     });
 
-    // bind progress log
-    ipcRenderer.on('progress-log', (origin, target, data) => {
+    // bind display of files processed and failed
+    ipcRenderer.on('progress-processed', (origin, data) => {
         data = !data ? {} : data[0];
         
-        progressLog(data.msg, data.error);
+        progressProcessed(data);
+    });
+    ipcRenderer.on('progress-errors', (origin, data) => {
+        data = !data ? {} : data[0];
+        
+        progressErrors(data);
     });
 
     // bind errors
@@ -62,7 +67,7 @@ function progressInit(title, canCancel) {
     p.modal({ 'backdrop': 'static', 'keyboard': false });
 
     // hides/displays some items
-    p.find('.modal-footer, .msg, .log').addClass('d-none');
+    p.find('.modal-footer, .msg, .log, .errors').addClass('d-none');
     p.find('.progress, .details').removeClass('d-none');
 
     // display or hide cancel button
@@ -74,7 +79,7 @@ function progressInit(title, canCancel) {
 
     // reset texts
     p.find('.modal-title').text(title);
-    p.find('.details, .log').text('');
+    p.find('.details, .log, .errors').text('');
 
     // reset styles
     p.find('.progress .progress-bar').width('0%');
@@ -124,6 +129,38 @@ function progressLog(msg, isError) {
         // display/hide items
         p.find('.modal-footer').removeClass('d-none');
         p.find('.progress, .stop').addClass('d-none');
+    }
+}
+
+/**
+ * Displays the list of processed games
+ * 
+ * @param {String} raw the raw string of the processed games
+ */
+function progressProcessed(raw) {
+    let p = $('#progress');
+    let log = p.find('.log');
+    if (log.hasClass('d-none')) { log.removeClass('d-none'); }
+
+    const data = JSON.parse(raw);
+    for (let entry of data) {
+        log.append("Successfully processed " + entry.name + "<br>");
+    }
+}
+
+/**
+ * Displays the list of failed games
+ * 
+ * @param {String} raw the raw string of the failed games
+ */
+function progressErrors(raw) {
+    let p = $('#progress');
+    let log = p.find('.errors');
+    if (log.hasClass('d-none')) { log.removeClass('d-none'); }
+
+    const data = JSON.parse(raw);
+    for (let entry of data) {
+        log.append(`Error for game ${entry.game}: ${entry.file} ${entry.details}<br>`);
     }
 }
 

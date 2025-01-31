@@ -4,38 +4,42 @@
 [![ArcadeManager Linux](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml)
 [![ArcadeManager MacOS](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml)
 
-This repository provides a rom management tool, specifically designed for use with Retropie & Recalbox, but it works with anything.
+This is a rom management tool that will work with any arcade emulator romset. It helps you filter your arcade rom collection (MAME/FBNeo) by removing unwanted, bad, and unplayable games.
 
-It helps you to manage and filter your arcade rom collection (MAME/FBNeo) by removing unwanted, bad, and unplayable games.
+It also includes several selection of "best games", if you feel a bit lost among the several thousand games that full MAME romsets provide.
 
-It's also useful if you feel a bit lost among the several thousand games that full MAME romsets provides, and only want the very best.
+It also installs overlays/bezels, but only Retropie and Recalbox are currently supported.
+
+## Download
+
+The latest version is available here: <https://github.com/cosmo0/arcade-manager/releases/>
 
 ## Features
 
-**THIS TOOL DOES NOT CHANGE THE ROMSET VERSION!!!**
+**⚠ THIS TOOL DOES NOT CHANGE THE ROMSET VERSION ⚠**
 
-Copying files assumes you have a working, **non-merged** romset corresponding to the MAME/FBA version you're using. If you ever need to change your romset version, use a tool like [ClrMamePro](https://mamedev.emulab.it/clrmamepro/).
+Copying files assumes you have a working, **non-merged** romset corresponding to the MAME/FBNeo version you're using. If you ever need to change your romset version, use a tool like [ClrMamePro](https://mamedev.emulab.it/clrmamepro/).
 
 * Multi-platform, works on Windows, MacOS and Linux
 * User-friendly, easy to use interface
-* Wizard with pre-built lists of games
-* Download and install an overlays pack (Retropie or Recalbox)
+* Wizard with pre-built lists of "best games"
 * Manage rom files: copy or cleanup a selection of roms
-* Manage games lists: download pre-built files, merge and split files, convert DAT or INI files, and more
-* Included help
+* Download and install an overlays pack (Retropie or Recalbox)
+* Manage games lists to use with the roms file management: merge and split files, convert DAT or INI files, and more
+* Includes extensive help
 
 Obviously, this tool does not download roms.
 
 ## Usage
 
-Launch ArcadeManager on a computer running Windows, MacOS or Linux. If you're using a Rapsberry Pi for emulation (or another computer), it can connect to it using network shares (but you should consider using a USB key for rom storage).
+Launch ArcadeManager on a computer running Windows, MacOS or Linux. It can connect to another computer (or Raspberry Pi) using network shares.
 
 ## External help
 
 If you are new to arcade emulation, please read these resources:
 
 * [Arcade roms and how to play them, a non-technical guide](https://retropie.org.uk/forum/topic/7247/)
-* [Demistifying MAME roms](https://choccyhobnob.com/mame/demystifying-mame-roms/)
+* [Demistifying MAME roms](https://web.archive.org/web/20180101211010/https://choccyhobnob.com/mame/demystifying-mame-roms/)
 
 ## Screenshots
 
@@ -49,12 +53,15 @@ If you are new to arcade emulation, please read these resources:
 
 Anyone can help with translations: they're simple text files (INI style) located in `Data\translations`.
 
-If you think you can help, please create a pull request!
+If you think you can help, please create a pull request! Or just send me the translated files. I'm happy either way.
+
+You can also contribute using [Weblate](https://hosted.weblate.org/projects/arcademanager/arcademanager-ui/)
 
 ## Development
 
 ### Prerequisites
 
+* Dotnet 6 SDK - <https://dotnet.microsoft.com/en-us/download/dotnet/6.0>
 * Dotnet 8 SDK - <https://dotnet.microsoft.com/en-us/download/dotnet/8.0>
 * NodeJS 22.x or later - <https://nodejs.org/download>
 * Open a command line and run `dotnet tool install --global ElectronNET.CLI`
@@ -62,7 +69,7 @@ If you think you can help, please create a pull request!
 ### Build and run
 
 ````bash
-cd ArcadeManager
+cd src/ArcadeManager
 dotnet build
 electronize start
 ````
@@ -77,9 +84,11 @@ Choose your OS and architecture:
 
 ````bash
 electronize build /target win
-electronize build /target osx
-electronize build /target linux
-electronize build /target win /electron-arch arm64
 electronize build /target osx /electron-arch arm64
-electronize build /target linux /electron-arch arm64
+electronize build /target linux
 ````
+
+Windows and Linux ARM64 are not currently supported.  
+MacOS x86 is not supported anymore.
+
+If you want to build for another architecture, edit the file `src\ArcadeManager\electron.manifest.json`, scroll down to "build", locate your platform (win, osx, linux), and in "target", change the "arch" property to your architecture (x64 or arm64). Don't forget to build using the matching `/electron-arch` parameter.

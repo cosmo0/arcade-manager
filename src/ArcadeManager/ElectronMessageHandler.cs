@@ -4,6 +4,8 @@ using ArcadeManager.Services;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ArcadeManager;
@@ -21,13 +23,32 @@ namespace ArcadeManager;
 /// <param name="updaterService">The updater service.</param>
 /// <param name="fs">The file system service</param>
 /// <param name="environment">The environment accessor</param>
-public partial class MessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService, IUpdater updaterService, IFileSystem fs, IEnvironment environment) : IElectronMessageHandler {
+public partial class ElectronMessageHandler(ICsv csvService, IDownloader downloaderService, IOverlays overlaysService, IRoms romsService, IUpdater updaterService, IFileSystem fs, IEnvironment environment) : IElectronMessageHandler {
     private BrowserWindow window;
 
     /// <summary>
     /// Gets or sets the cancellation token
     /// </summary>
     public bool MustCancel { get; set; }
+
+    /// <summary>
+    /// Sends an "init" progress message
+    /// </summary>
+    /// <param name="label">The label.</param>
+    public void Init(string label) {
+        MustCancel = false;
+        Electron.IpcMain.Send(window, "progress", new Progress { label = label, init = true, canCancel = true });
+    }
+
+    /// <summary>
+    /// Sends a progression message
+    /// </summary>
+    /// <param name="label">The label.</param>
+    /// <param name="total">The total number of items.</param>
+    /// <param name="current">The current item number.</param>
+    public void Progress(string label, int total, int current) {
+        Electron.IpcMain.Send(window, "progress", new Progress { label = label, total = total, current = current });
+    }
 
     /// <summary>
     /// Sends a "done" progress message
@@ -42,6 +63,8 @@ public partial class MessageHandler(ICsv csvService, IDownloader downloaderServi
         else {
             Electron.IpcMain.Send(window, "progress", new Progress { label = label, end = true, folder = folder });
         }
+
+        MustCancel = false;
     }
 
     /// <summary>
@@ -50,6 +73,26 @@ public partial class MessageHandler(ICsv csvService, IDownloader downloaderServi
     /// <param name="ex">The exception.</param>
     public void Error(Exception ex) {
         Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
+        
+        MustCancel = false;
+    }
+
+    /// <summary>
+    /// Sets the list of successfully processed games
+    /// </summary>
+    /// <param name="games">The processed games</param>
+    public void SetProcessed(IEnumerable<Models.GameRom> games) {
+        if (!games.Any()) { return; }
+        Electron.IpcMain.Send(window, "progress-processed", Serializer.Serialize(games));
+    }
+
+    /// <summary>
+    /// Sets the list of failed games to process
+    /// </summary>
+    /// <param name="errors">The errors</param>
+    public void SetErrors(IEnumerable<Models.GameError> errors) {
+        if (!errors.Any()) { return; }
+        Electron.IpcMain.Send(window, "progress-errors", Serializer.Serialize(errors));
     }
 
     /// <summary>
@@ -90,6 +133,7 @@ public partial class MessageHandler(ICsv csvService, IDownloader downloaderServi
             await Electron.IpcMain.On("roms-addfromwizard", async (args) => await RomsAddFromWizard(args));
             await Electron.IpcMain.On("roms-delete", async (args) => await RomsDelete(args));
             await Electron.IpcMain.On("roms-keep", async (args) => await RomsKeep(args));
+            await Electron.IpcMain.On("roms-checkdat", async (args) => await RomsCheckDat(args));
 
             // download actions
             await Electron.IpcMain.On("download-getlist", async (args) => await GithubFilesGetList(args));
@@ -110,24 +154,6 @@ public partial class MessageHandler(ICsv csvService, IDownloader downloaderServi
             await Electron.IpcMain.On("update-check", async (_) => await UpdateCheck());
             await Electron.IpcMain.On("update-ignore", UpdateIgnore);
         }
-    }
-
-    /// <summary>
-    /// Sends an "init" progress message
-    /// </summary>
-    /// <param name="label">The label.</param>
-    public void Init(string label) {
-        Electron.IpcMain.Send(window, "progress", new Progress { label = label, init = true, canCancel = true });
-    }
-
-    /// <summary>
-    /// Sends a progression message
-    /// </summary>
-    /// <param name="label">The label.</param>
-    /// <param name="total">The total number of items.</param>
-    /// <param name="current">The current item number.</param>
-    public void Progress(string label, int total, int current) {
-        Electron.IpcMain.Send(window, "progress", new Progress { label = label, total = total, current = current });
     }
 
     /// <summary>
@@ -423,6 +449,17 @@ public partial class MessageHandler(ICsv csvService, IDownloader downloaderServi
         MustCancel = false;
 
         await romsService.Keep(data, this);
+    }
+
+    /// <summary>
+    /// Checks a romset against a DAT file
+    /// </summary>
+    /// <param name="args">The arguments</param>
+    private async Task RomsCheckDat(object args) {
+        var data = ConvertArgs<RomsActionCheckDat>(args);
+        MustCancel = false;
+
+        await romsService.CheckDat(data, this);
     }
 
     /// <summary>

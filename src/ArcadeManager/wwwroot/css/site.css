@@ -10,6 +10,12 @@ h3 a {
     margin-left: 1rem;
 }
 
+.code {
+    padding: 0 0.25rem;
+    background-color: rgba(86, 61, 124, 0.07);
+    border: 1px solid rgba(86, 61, 124, 0.1);
+}
+
 /*
     Home page menu
 */

@@ -1,4 +1,5 @@
 using System;
+using ArcadeManager.Models;
 
 namespace ArcadeManager;
 
@@ -35,4 +36,16 @@ public interface IMessageHandler
     /// <param name="total">The total number of items.</param>
     /// <param name="current">The current item number.</param>
     void Progress(string label, int total, int current);
+
+    /// <summary>
+    /// Sets the list of successfully processed games
+    /// </summary>
+    /// <param name="games">The processed games</param>
+    void SetProcessed(IEnumerable<GameRom> games);
+
+    /// <summary>
+    /// Sets the list of failed games to process
+    /// </summary>
+    /// <param name="errors">The errors</param>
+    void SetErrors(IEnumerable<GameError> errors);
 }

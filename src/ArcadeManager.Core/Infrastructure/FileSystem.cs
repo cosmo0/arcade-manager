@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using ArcadeManager.Models;
 
 namespace ArcadeManager.Infrastructure;
 
@@ -334,5 +338,41 @@ public class FileSystem(IEnvironment environment) : IFileSystem {
         using var outStreamWriter = new StreamWriter(outStream);
 
         await action(outStreamWriter);
+    }
+
+    /// <summary>
+    /// Lists the files inside a zip
+    /// </summary>
+    /// <param name="path">The path to the zip file</param>
+    /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
+    /// <returns>The zip file infos</returns>
+    public IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1) {
+        var result = new List<GameRomFile>();
+
+        using var zip = System.IO.Compression.ZipFile.OpenRead(path);
+        foreach (var entry in zip.Entries) {
+            result.Add(new GameRomFile {
+                Name = entry.Name,
+                Size = (int)entry.Length,
+                Crc = entry.Crc32.ToString("X4").PadLeft(8, '0'),
+                Sha1 = getSha1 ? GetZipFileSha1(entry) : null
+            });
+        }
+
+        return result;
+    }
+
+    private static string GetZipFileSha1(ZipArchiveEntry entry) {
+        var sha1 = SHA1.Create();
+
+        // see https://stackoverflow.com/questions/1993903
+        byte[] hash = sha1.ComputeHash(entry.Open());
+        StringBuilder formatted = new(2 * hash.Length);
+        foreach (byte b in hash)
+        {
+            formatted.AppendFormat("{0:X2}", b);
+        }
+
+        return formatted.ToString();
     }
 }
