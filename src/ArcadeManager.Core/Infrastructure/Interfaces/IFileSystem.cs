@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using ArcadeManager.Models;
 
 namespace ArcadeManager.Infrastructure;
 
@@ -194,4 +195,12 @@ public interface IFileSystem {
     /// <param name="path">The file path.</param>
     /// <param name="action">The action to execute on the stream writer.</param>
     Task WriteFileStream(string path, Func<StreamWriter, Task> action);
+
+    /// <summary>
+    /// Lists the files inside a zip
+    /// </summary>
+    /// <param name="path">The path to the zip file</param>
+    /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
+    /// <returns>The zip file infos</returns>
+    IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1);
 }

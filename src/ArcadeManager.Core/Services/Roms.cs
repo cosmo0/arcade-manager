@@ -1,6 +1,7 @@
 ﻿using ArcadeManager.Actions;
 using ArcadeManager.Exceptions;
 using ArcadeManager.Infrastructure;
+using ArcadeManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -284,7 +285,7 @@ public class Roms : IRoms
         messageHandler.Init("Filtering roms");
 
         if (!fs.DirectoryExists(args.romset)) {
-            messageHandler.Done($"Folder {args.romset} not found", args.fixFolder);
+            messageHandler.Error(new DirectoryNotFoundException($"Folder {args.romset} not found"));
             return;
         }
 
@@ -293,7 +294,15 @@ public class Roms : IRoms
         int total = filesInRomset.Count;
         int progress = 0;
 
-        // TODO: total depends on chosen action
+        bool repair = args.action == "fix" || args.action == "change";
+        bool change = args.action == "change";
+
+        // total depends on chosen action (check=x1, repair=x2, rebuild=x3)
+        if (repair) {
+            total *= 2; // check then repair
+        } else if (change) {
+            total *= 3; // check then repair then rebuild
+        }
 
         try
         {
@@ -305,8 +314,6 @@ public class Roms : IRoms
                 dat = fs.GetDataPath("mame-xml", dat, "games.xml");
             }
 
-            var cancelToken = new CancellationToken();
-
             // build a found files dataset
             var games = new List<GameRom>();
 
@@ -314,15 +321,16 @@ public class Roms : IRoms
             var errors = new List<GameError>();
             
             // read the csv file if it is sent
+            CsvGamesList csv = null;
             if (!string.IsNullOrEmpty(args.csvfilter) && fs.FileExists(args.csvfilter)) {
-                // TODO
+                csv = await csvService.ReadFile(args.csvfilter, false);
             }
 
             await fs.ReadFileStream(dat, async (datStream) => {
                 messageHandler.Progress("Reading DAT file", 0, 0);
 
                 // read DAT file and detect the tags names
-                XDocument doc = await XDocument.LoadAsync(datStream, LoadOptions.None, cancelToken);
+                XDocument doc = await XDocument.LoadAsync(datStream, LoadOptions.None, new CancellationToken());
                 if (messageHandler.MustCancel) { return; }
                 string gameTag = doc.Root.Descendants().Skip(1).First().Name.LocalName; // ensure we skip the header, if any
 
@@ -331,10 +339,14 @@ public class Roms : IRoms
                     // parse game infos
                     var game = GameRom.FromXml(gameXml);
 
+                    if (messageHandler.MustCancel) { return; }
+
                     messageHandler.Progress(game.Name, total, progress);
 
-                    // if the CSV filter is set, filter it out
-                    // TODO
+                    // if the CSV filter is set, check if the game is in the list
+                    if (csv != null && !csv.Games.Any(g => g.Name == game.Name)) {
+                        continue;
+                    }
 
                     // add to the games list
                     games.Add(game);
@@ -346,41 +358,65 @@ public class Roms : IRoms
                     if (!fs.FileExists(gameFile)) {
                         if (args.actionReportAll) {
                             // report all errors
-                            errors.Add(new() { Name = game.Name, NotFound = true });
+                            errors.Add(GameError.Missing(game.Name));
                         }
 
                         // then skip to next file
                         continue;
                     }
 
+                    if (messageHandler.MustCancel) { return; }
+
                     // check the existence of matching bios
-                    if (args.otherBios && biosmatch.Any(bm => bm.Game == game.Name)) {
-                        // TODO
+                    var biosmatches = biosmatch.Where(bm => bm.Game == game.Name);
+                    if (args.otherBios && biosmatches.Any()) {
+                        foreach (var bm in biosmatches.Where(bm => !fs.FileExists(fs.PathJoin(args.romset, $"{bm.Bios}.zip")))) {
+                            errors.Add(GameError.Missing(bm.Bios));
+                        }
                     }
+
+                    if (messageHandler.MustCancel) { return; }
 
                     // check the existence of matching device
-                    if (args.otherDevices && devicematch.Any(dm => dm.Game == game.Name)) {
-                        // TODO
+                    var devicematches = devicematch.Where(dm => dm.Game == game.Name);
+                    if (args.otherDevices && devicematches.Any()) {
+                        foreach (var dm in devicematches.SelectMany(dm => dm.Devices).Where(dm => !fs.FileExists(fs.PathJoin(args.romset, $"{dm}.zip")))) {
+                            errors.Add(GameError.Missing(dm));
+                        }
                     }
 
-                    // open the zip
+                    if (messageHandler.MustCancel) { return; }
 
-                    // check the files in the zip
+                    // open the zip
+                    var zipFiles = fs.GetZipFiles(gameFile, args.speed == "slow");
+
+                    // check the files that are supposed to be in the game
+                    foreach (var datFile in game.RomFilesFromDat) {
+                        if (messageHandler.MustCancel) { return; }
+
+                        // ensure the file exists in the zip
+
+                        // check size and crc
+
+                        if (messageHandler.MustCancel) { return; }
+
+                        // if speed slow: check hash
+                    }
 
                     progress++;
                 }
             });
 
 
+            if (!messageHandler.MustCancel && repair) {
+                // if error fixing: loop on errors and try to find a file to fix it with
+            }
 
-            // if error fixing: loop on errors and try to find a file to fix it with
+            if (!messageHandler.MustCancel && change) {
+                // if romset type change: move/copy files around
+            }
 
 
-            // if romset type change: move/copy files around
-
-
-            // remove unnecessary files
-            
 
             messageHandler.Done($"Checked {total} files", args.fixFolder);
         }
@@ -543,57 +579,5 @@ public class Roms : IRoms
 
             return [];
         }
-    }
-
-    /// <summary>
-    /// A game rom (zip)
-    /// </summary>
-    private sealed class GameRom {
-        public string Name { get; set; }
-        public string CloneOf { get; set; }
-        public string RomOf { get; set; }
-        public List<GameRomFile> RomFilesFromDat { get; } = [];
-        public List<GameRomFile> RomFilesOnDisk { get; } = [];
-
-        public static GameRom FromXml(XElement gameXml) {
-            var game = new GameRom {
-                Name = gameXml.Attribute("name").Value,
-                CloneOf = gameXml.Attribute("cloneof").Value,
-                RomOf = gameXml.Attribute("romof").Value
-            };
-
-            foreach (var romXml in gameXml.Descendants("rom")) {
-                game.RomFilesFromDat.Add(GameRomFile.FromXml(romXml));
-            }
-
-            return game;
-        }
-    }
-
-    /// <summary>
-    /// A game rom file (rom files inside the zip)
-    /// </summary>
-    private sealed class GameRomFile {
-        public string Name { get; set; }
-        public int Size { get; set; }
-        public string Crc { get; set; }
-        public string Sha1 { get; set; }
-
-        public static GameRomFile FromXml(XElement romXml) {
-            return new GameRomFile() {
-                Name = romXml.Attribute("name").Value,
-                Size = int.Parse(romXml.Attribute("size").Value),
-                Crc = romXml.Attribute("crc").Value,
-                Sha1 = romXml.Attribute("sha1").Value,
-            };
-        }
-    }
-
-    /// <summary>
-    /// A game error details
-    /// </summary>
-    private sealed class GameError {
-        public string Name { get; set; }
-        public bool NotFound { get; set; }
     }
 }

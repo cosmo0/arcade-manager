@@ -2,7 +2,7 @@ using System;
 
 namespace ArcadeManager.Actions;
 
-public class RomActionCheckDat
+public class RomsActionCheckDat
 {
     public string romset { get; set; }
     

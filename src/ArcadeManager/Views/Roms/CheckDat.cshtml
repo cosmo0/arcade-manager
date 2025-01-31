@@ -137,34 +137,26 @@
 
 <h2>@Localizer["ROMS_CHECKDAT_OPTIONS"]</h2>
 
-<!-- All files in DAT -->
-<div class="border rounded mb-3 p-2">
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="actionReportAll">
-        <label class="form-check-label" for="actionReportAll">@Localizer["ROMS_CHECKDAT_ALLFILES"]</label>
-    </div>
-</div>
-
 <!-- Speed -->
 <div class="border rounded mb-3 p-2">
     <div class="mb-2">
         @Localizer["ROMS_CHECKDAT_SPEED_HEADER"]
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="speed" value="fast" id="speedFast">
-        <label class="form-check-label" for="speedFast">@Localizer["ROMS_CHECKDAT_SPEED_FAST"]</label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="speed" value="medium" id="speedMedium" checked>
-        <label class="form-check-label" for="speedMedium">@Localizer["ROMS_CHECKDAT_SPEED_MEDIUM"]</label>
+        <input class="form-check-input" type="radio" name="speed" value="fast" id="speedFast" checked>
+        <label class="form-check-label" for="speedFast">@Html.Raw(Localizer["ROMS_CHECKDAT_SPEED_FAST"])</label>
     </div>
     <div class="form-check">
         <input class="form-check-input" type="radio" name="speed" value="slow" id="speedSlow">
-        <label class="form-check-label" for="speedSlow">@Localizer["ROMS_CHECKDAT_SPEED_SLOW"]</label>
+        <label class="form-check-label" for="speedSlow">@Html.Raw(Localizer["ROMS_CHECKDAT_SPEED_SLOW"])</label>
     </div>
+</div>
+
+<!-- All files in DAT -->
+<div class="border rounded mb-3 p-2">
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="speed" value="slowest" id="speedSlow">
-        <label class="form-check-label" for="speedSlowest">@Localizer["ROMS_CHECKDAT_SPEED_SLOWEST"]</label>
+        <input class="form-check-input" type="checkbox" id="actionReportAll">
+        <label class="form-check-label" for="actionReportAll">@Localizer["ROMS_CHECKDAT_ALLFILES"]</label>
     </div>
 </div>
 
