@@ -40,7 +40,29 @@
                     </p>
                     <p class="d-none msg"></p>
                     <div class="alert alert-info log"></div>
-                    <div class="alert alert-danger errors"></div>
+                    <div class="processed">
+                        <div class="d-flex flex-row">
+                            <div class="custom-control custom-switch flex-grow-1">
+                                <input type="checkbox" class="custom-control-input" id="processedOnlyErrors" checked disabled>
+                                <label class="custom-control-label" for="processedOnlyErrors">@Localizer["PROGRESS_ONLYERRORS"]</label>
+                            </div>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-sm btn-outline-secondary active">
+                                    <input type="radio" name="processedFormat" id="processedFormatList" value="list" checked> @Localizer["PROGRESS_FORMAT_LIST"]
+                                </label>
+                                <label class="btn btn-sm btn-outline-secondary">
+                                    <input type="radio" name="processedFormat" id="processedFormatCsv" value="csv"> @Localizer["PROGRESS_FORMAT_CSV"]
+                                </label>
+                            </div>
+                        </div>
+                        <div id="processedList" class="border rounded p-3 my-3" style="overflow:auto; max-height:300px;">
+                            
+                        </div>
+                        <div>
+                            <button type="button" id="filesListCopyLog" class="btn btn-sm btn-outline-info" disabled>@Localizer["ROMS_LOGCOPY"]</button>
+                            <span id="filesListCopyLogMessage" class="d-none ml-2 text-info">@Localizer["ROMS_LOGCOPIED"]</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer d-none">
                     <a href="#" class="d-none open btn btn-outline-info">@Localizer["PROGRESS_OPENRESULTS"]</a>

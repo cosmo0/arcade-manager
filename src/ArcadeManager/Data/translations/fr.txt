@@ -57,6 +57,9 @@ HOME_OS_NOTSURE=Autre / je ne sais pas
 PROGRESS_PLEASEWAIT=Veuillez patienter...
 PROGRESS_STOP=Arrêter
 PROGRESS_OPENRESULTS=Ouvrir le résultat
+PROGRESS_ONLYERRORS=N'afficher que les erreurs
+PROGRESS_FORMAT_LIST=Liste
+PROGRESS_FORMAT_CSV=CSV
 
 CSV_INDEX_TITLE=Gérer ses listes de jeux
 CSV_INDEX_INTRO=<p>Cet outil utilise des fichiers CSV pour les listes de jeux. Pourquoi ? Parce que c'est plus facile à utiliser, et vous pouvez utiliser n'importe quel outil pour <a href="/Help/CustomCsv" class="navmenu">créer les votres</a> ou manipuler les listes fournies à votre guise.</p>
@@ -154,6 +157,8 @@ ROMS_INDEX_CHECKDAT=Vérifiez un romset par rapport à un fichier DAT
 ROMS_FILESNOTFOUD=Certains fichiers n'ont pas été trouvés
 ROMS_FILESLISTCOPY=Copier la liste des fichiers
 ROMS_FILESLISTCOPIED=Copié dans le presse-papier
+ROMS_LOGCOPY=Copier le résultat dans le presse-papier
+ROMS_LOGCOPIED=Copié dans le presse-papier
 
 ROMS_COPY_TITLE=Copier des roms
 ROMS_COPY_HOWTOACCESS=Comment accéder au partage réseau Retropie/Recalbox

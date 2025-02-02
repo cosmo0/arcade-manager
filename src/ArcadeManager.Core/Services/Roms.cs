@@ -2,11 +2,6 @@
 using ArcadeManager.Exceptions;
 using ArcadeManager.Infrastructure;
 using ArcadeManager.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ArcadeManager.Services;
 
@@ -20,16 +15,18 @@ public class Roms : IRoms
     private readonly DeviceMatchList devicematch = new();
     private readonly ICsv csvService;
     private readonly IFileSystem fs;
+    private readonly IDatFile datFile;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Roms"/> class.
     /// </summary>
     /// <param name="csvService">The CSV service.</param>
     /// <param name="fs">The filesystem infrastructure.</param>
-    public Roms(ICsv csvService, IFileSystem fs)
+    public Roms(ICsv csvService, IFileSystem fs, IDatFile datFile)
     {
         this.csvService = csvService;
         this.fs = fs;
+        this.datFile = datFile;
 
         this.bioslist = [.. fs.ReadAllLines(fs.GetDataPath("bioslist.txt"))];
         this.biosmatch.AddRange(
@@ -297,7 +294,6 @@ public class Roms : IRoms
 
         bool repair = args.action == "fix" || args.action == "change";
         bool change = args.action == "change";
-        bool isSlow = args.speed == "slow";
 
         // total depends on chosen action (check=x1, repair=x2, rebuild=x3)
         if (repair) {
@@ -317,116 +313,23 @@ public class Roms : IRoms
             }
 
             // build a found files dataset
-            var processed = new List<GameRom>();
+            var processed = new GameRomList();
 
-            // build an errors list
-            var errors = new List<GameError>();
-            
             // read the csv file if it is sent
             CsvGamesList csv = null;
             if (!string.IsNullOrEmpty(args.csvfilter) && fs.FileExists(args.csvfilter)) {
                 csv = await csvService.ReadFile(args.csvfilter, false);
             }
 
-            await fs.ReadFileStream(dat, async (datStream) => {
-                messageHandler.Progress("Reading DAT file", 0, 0);
+            messageHandler.Progress("Reading DAT file", 0, 0);
+            var games = await datFile.GetRoms(dat);
 
-                // read DAT file and detect the tags names
-                XDocument doc = await XDocument.LoadAsync(datStream, LoadOptions.None, new CancellationToken());
-                if (messageHandler.MustCancel) { return; }
-                string gameTag = doc.Root.Elements().Skip(1).First().Name.LocalName; // ensure we skip the header, if any
-
-                // for each game in the dat file
-                foreach (var gameXml in doc.Root.Elements(gameTag)) {
-                    progress++;
-
-                    // parse game infos
-                    var game = GameRom.FromXml(gameXml);
-
-                    if (messageHandler.MustCancel) { return; }
-
-                    messageHandler.Progress(game.Name, total, progress);
-
-                    // if the CSV filter is set, check if the game is in the list
-                    if (csv != null && !csv.Games.Any(g => g.Name == game.Name)) {
-                        continue;
-                    }
-
-                    // build file path
-                    var gameFile = fs.PathJoin(args.romset, $"{game.Name}.zip");
-
-                    // check if a matching file is on the disk
-                    if (!fs.FileExists(gameFile)) {
-                        if (args.actionReportAll) {
-                            // report all errors
-                            errors.Add(GameError.Missing(game.Name, $"{game.Name}.zip"));
-                        }
-
-                        // then skip to next file
-                        continue;
-                    }
-
-                    if (messageHandler.MustCancel) { return; }
-
-                    // check the existence of matching bios
-                    var biosmatches = biosmatch.Where(bm => bm.Game == game.Name);
-                    if (args.otherBios && biosmatches.Any()) {
-                        foreach (var bm in biosmatches.Where(bm => !fs.FileExists(fs.PathJoin(args.romset, $"{bm.Bios}.zip")))) {
-                            errors.Add(GameError.Missing(game.Name, $"{bm.Bios}.zip"));
-                        }
-                    }
-
-                    if (messageHandler.MustCancel) { return; }
-
-                    // check the existence of matching device
-                    var devicematches = devicematch.Where(dm => dm.Game == game.Name);
-                    if (args.otherDevices && devicematches.Any()) {
-                        foreach (var dm in devicematches.SelectMany(dm => dm.Devices).Where(dm => !fs.FileExists(fs.PathJoin(args.romset, $"{dm}.zip")))) {
-                            errors.Add(GameError.Missing(game.Name, $"{dm}.zip"));
-                        }
-                    }
-
-                    if (messageHandler.MustCancel) { return; }
-
-                    // open the zip
-                    var zipFiles = fs.GetZipFiles(gameFile, isSlow);
-
-                    var hasError = false;
-
-                    // check the files that are supposed to be in the game
-                    foreach (var datFile in game.RomFilesFromDat) {
-                        if (messageHandler.MustCancel) { return; }
-
-                        var zf = zipFiles.FirstOrDefault(zf => zf.Name.Equals(datFile.Name, StringComparison.InvariantCultureIgnoreCase));
-
-                        // ensure the file exists in the zip
-                        if (zf == null) {
-                            errors.Add(GameError.Missing(game.Name, datFile.Name));
-                            hasError = true;
-                            continue;
-                        }
-
-                        // check size and crc
-                        if (!zf.Crc.Equals(datFile.Crc, StringComparison.InvariantCultureIgnoreCase)) {
-                            errors.Add(GameError.BadHash(game.Name, datFile.Name, $"Expected: {datFile.Crc}; actual: {zf.Crc}"));
-                            hasError = true;
-                            continue;
-                        }
-
-                        // if speed slow: check hash
-                        if (isSlow && !string.IsNullOrEmpty(datFile.Sha1) && !zf.Sha1.Equals(datFile.Sha1, StringComparison.InvariantCultureIgnoreCase)) {
-                            errors.Add(GameError.BadHash(game.Name, datFile.Name, $"Expected: {datFile.Sha1}; actual: {zf.Sha1}"));
-                            hasError = true;
-                            continue;
-                        }
-                    }
-                    
-                    // add to the games list
-                    if (!hasError) {
-                        processed.Add(game);
-                    }
+            foreach (var game in games.OrderBy(g => g.Name)) {
+                (progress, bool processNext) = CheckGame(total, progress, game, args, processed, messageHandler, csv);
+                if (!processNext) {
+                    break;
                 }
-            });
+            }
 
             if (!messageHandler.MustCancel && repair) {
                 // if error fixing: loop on errors and try to find a file to fix it with
@@ -436,14 +339,110 @@ public class Roms : IRoms
                 // if romset type change: move/copy files around
             }
 
-            messageHandler.SetProcessed(processed);
-            messageHandler.SetErrors(errors);
-            messageHandler.Done($"Checked {progress} files", args.fixFolder);
+            messageHandler.Done($"Checked {progress} roms", args.fixFolder);
         }
         catch (Exception ex)
         {
             messageHandler.Error(ex);
         }
+    }
+
+    /// <summary>
+    /// Checks the specified game
+    /// </summary>
+    /// <param name="total">The total number of games to check</param>
+    /// <param name="progress">The current progress</param>
+    /// <param name="game">The game to check</param>
+    /// <param name="args">The action arguments</param>
+    /// <param name="processed">The list of already processed games</param>
+    /// <param name="messageHandler">The message handler</param>
+    /// <param name="csv">The CSV filter file</param>
+    /// <returns>The new progress value, and whether to continue to process other games in the list</returns>
+    public (int progress, bool processNext) CheckGame(int total, int progress, GameRom game, RomsActionCheckDat args, GameRomList processed, IMessageHandler messageHandler, CsvGamesList csv) {
+        if (messageHandler.MustCancel) { return (progress, false); }
+
+        // build file path
+        var gameFile = fs.PathJoin(args.romset, $"{game.Name}.zip");
+
+        // check if a matching file is on the disk
+        if (!fs.FileExists(gameFile)) {
+            if (args.actionReportAll) {
+                // report all errors
+                game.Error(ErrorReason.MissingFile, $"Missing rom {game.Name}.zip", $"{game.Name}.zip");
+                processed.Add(game);
+            }
+
+            // then skip to next file
+            return (progress, true);
+        }
+
+        // only increment progress if the file exists on the disk, since the total is based on disk
+        progress++;
+
+        // if the CSV filter is set, check if the game is in the list
+        if (csv != null && !csv.Games.Any(g => g.Name == game.Name)) {
+            return (progress, true);
+        }
+
+        // progress only if we actually process the game
+        messageHandler.Progress(game.Name, total, progress);
+
+        // if we are here: we are always processing the game, and we do not have added it to the list yet
+        processed.Add(game);
+
+        if (messageHandler.MustCancel) { return (progress, false); }
+
+        // check the existence of matching bios
+        var biosmatches = biosmatch.Where(bm => bm.Game == game.Name);
+        if (args.otherBios && biosmatches.Any()) {
+            foreach (var bm in biosmatches.Where(bm => !fs.FileExists(fs.PathJoin(args.romset, $"{bm.Bios}.zip")))) {
+                game.Error(ErrorReason.MissingFile, $"Missing BIOS {bm.Bios}.zip", $"{bm.Bios}.zip");
+            }
+        }
+
+        if (messageHandler.MustCancel) { return (progress, false); }
+
+        // check the existence of matching device
+        var devicematches = devicematch.Where(dm => dm.Game == game.Name);
+        if (args.otherDevices && devicematches.Any()) {
+            foreach (var dm in devicematches.SelectMany(dm => dm.Devices).Where(dm => !fs.FileExists(fs.PathJoin(args.romset, $"{dm}.zip")))) {
+                game.Error(ErrorReason.MissingFile, $"Missing device {dm}.zip", $"{dm}.zip");
+            }
+        }
+
+        if (messageHandler.MustCancel) { return (progress, false); }
+
+        // open the zip
+        var zipFiles = fs.GetZipFiles(gameFile, args.isslow);
+
+        // check the files that are supposed to be in the game
+        foreach (var datFile in game.RomFiles) {
+            if (messageHandler.MustCancel) { return (progress, false); }
+
+            var zf = zipFiles.FirstOrDefault(zf => zf.Name.Equals(datFile.Name, StringComparison.InvariantCultureIgnoreCase));
+
+            // ensure the file exists in the zip
+            if (zf == null) {
+                game.Error(ErrorReason.MissingFile, "Missing file in zip", datFile.Name);
+                continue;
+            }
+
+            // check size and crc
+            if (!zf.Crc.Equals(datFile.Crc, StringComparison.InvariantCultureIgnoreCase)) {
+                game.Error(ErrorReason.BadHash, $"Bad CRC - expected: {datFile.Crc}; actual: {zf.Crc}", datFile.Name);
+                continue;
+            }
+
+            // if speed slow: check hash
+            if (args.isslow && !string.IsNullOrEmpty(datFile.Sha1) && !zf.Sha1.Equals(datFile.Sha1, StringComparison.InvariantCultureIgnoreCase)) {
+                game.Error(ErrorReason.BadHash, $"Bad SHA1 - expected: {datFile.Sha1}; actual: {zf.Sha1}", datFile.Name);
+                continue;
+            }
+        }
+        
+        messageHandler.SetProcessed(game);
+
+        return (progress, true);
     }
 
     private int CopyGamesList(Actions.RomsAction args, Models.CsvGamesList content, IMessageHandler messageHandler)

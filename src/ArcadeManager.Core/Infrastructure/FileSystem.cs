@@ -349,12 +349,15 @@ public class FileSystem(IEnvironment environment) : IFileSystem {
     public IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1) {
         var result = new List<GameRomFile>();
 
+        var fileName = FileName(path);
+
         using var zip = System.IO.Compression.ZipFile.OpenRead(path);
         foreach (var entry in zip.Entries) {
             result.Add(new GameRomFile {
+                ZipFileName = fileName,
                 Name = entry.Name,
                 Size = (int)entry.Length,
-                Crc = entry.Crc32.ToString("X4").PadLeft(8, '0'),
+                Crc = entry.Crc32.ToString("X4").PadLeft(8, '0').ToLower(),
                 Sha1 = getSha1 ? GetZipFileSha1(entry) : null
             });
         }
@@ -373,6 +376,6 @@ public class FileSystem(IEnvironment environment) : IFileSystem {
             formatted.AppendFormat("{0:X2}", b);
         }
 
-        return formatted.ToString();
+        return formatted.ToString().ToLower();
     }
 }

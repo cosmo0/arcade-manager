@@ -11,7 +11,7 @@ namespace ArcadeManager.Services;
 /// Localization management
 /// </summary>
 public class Localizer : ILocalizer {
-    private static readonly List<string> _locales = new() { "en", "fr" };
+    private static readonly List<string> _locales = ["en", "fr"];
 
     private readonly Dictionary<string, Dictionary<string, string>> translations = [];
 
@@ -143,21 +143,24 @@ public class Localizer : ILocalizer {
         try {
             code = code.ToUpperInvariant();
 
-            if (!translations.ContainsKey(language)) {
+            // get translations dictionary of the language
+            if (!translations.TryGetValue(language, out var t)) {
                 return $"{code}_NO_LANGUAGE";
             }
 
-            var t = translations[language];
-
             // fallback on english
-            if (!t.ContainsKey(code) && !language.Equals("en", System.StringComparison.InvariantCultureIgnoreCase)) {
+            if (!t.TryGetValue(code, out var translation) && !language.Equals("en", StringComparison.InvariantCultureIgnoreCase)) {
                 return GetTranslationForLanguage(code, "en");
             }
 
-            return t[code];
+            if (!string.IsNullOrEmpty(translation)) {
+                return translation;
+            } else {
+                return $"{code}_NO_TRANSLATION";
+            }
         }
-        catch {
-            return $"{code}_ERROR";
+        catch (Exception ex) {
+            return $"{code}_ERROR_{ex.Message}";
         }
     }
 }
