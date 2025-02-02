@@ -186,7 +186,7 @@ public class GameRomFile {
         }
 
         return new GameRomFile() {
-            ZipFileName = $"{name}.zip",
+            ZipFileName = $"{game}.zip",
             Name = name,
             Size = long.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
             Crc = crc,

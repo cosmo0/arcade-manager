@@ -27,6 +27,13 @@ $(() => {
         progressProcessed(data);
     });
 
+    // bind display of files fixed
+    ipcRenderer.on('progress-processed', (origin, data) => {
+        data = !data ? {} : data[0];
+        
+        progressFixed(data);
+    });
+
     // bind errors
     window.onerror = function (msg, url, line, col, error) {
         var extra = !col ? '' : ' ; column: ' + col;
@@ -57,33 +64,13 @@ $(() => {
 
     // bind "only errors" checkbox change
     $('#processedOnlyErrors').off('change').on('change', () => {
-        const onlyErrors = $('#processedOnlyErrors').is(':checked');
-        $('#processedList').empty();
-
-        if (processedFormat == 'csv') {
-            $('#processedList').append('game;file;status\n');
-        }
-
-        for (let game of processed) {
-            displayGame(game, onlyErrors);
-        }
+        refreshProcessed();
     });
 
     // bind processed format change
     $('input:radio[name=processedFormat]').on('change', (e) => {
-        const onlyErrors = $('#processedOnlyErrors').is(':checked');
         processedFormat = e.target.value;
-        $('#processedList').empty();
-
-        if (processedFormat == 'csv') {
-            $('#processedList').css('white-space', 'pre').append('game;file;status\n');
-        } else {
-            $('#processedList').css('white-space', 'normal');
-        }
-
-        for (let game of processed) {
-            displayGame(game, onlyErrors);
-        }
+        refreshProcessed();
     });
 });
 
@@ -174,16 +161,59 @@ function progressLog(msg, isError) {
 }
 
 /**
- * Displays the list of processed games
+ * Refreshes the processed games list
+ */
+function refreshProcessed() {
+    const onlyErrors = $('#processedOnlyErrors').is(':checked');
+    $('#processedList').empty();
+
+    if (processedFormat == 'csv') {
+        $('#processedList').css('white-space', 'pre').append('game;file;status\n');
+    } else {
+        $('#processedList').css('white-space', 'normal');
+    }
+
+    for (let game of processed) {
+        displayGame(game, onlyErrors);
+    }
+}
+
+/**
+ * Displays a processed game
  * 
- * @param {String} raw the raw string of the processed games
+ * @param {String} raw the raw string of the processed game
  */
 function progressProcessed(raw) {
     $('#progress .processed').removeClass('d-none');
 
     const data = JSON.parse(raw);
 
-    displayGame(data, $('#processedOnlyErrors').is(':checked'));
+    // add to the list if it doesn't exist
+    if (!processed.some(g => g.name === data.name)) {
+        processed.push(data);
+
+        displayGame(data, $('#processedOnlyErrors').is(':checked'));
+    }
+}
+
+/**
+ * Updates a fixed game
+ * 
+ * @param {String} raw the raw string of the fixed game
+ */
+function progressFixed(raw) {
+    const data = JSON.parse(raw);
+
+    // update the list
+    const idx = processed.findIndex(g => g.name === data.name);
+    if (idx < 0) {
+        processed.push(data);
+    } else {
+        processed[idx] = data;
+    }
+
+    // TODO: update a specific game instead of rewriting everything
+    refreshProcessed();
 }
 
 /**
@@ -194,14 +224,8 @@ function progressProcessed(raw) {
  * @returns 
  */
 function displayGame(data, onlyErrors) {
-    const target = $('#processedList');
-
-    // add to the list if it doesn't exist
-    if (!processed.some(p => p == data)) {
-        processed.push(data);
-    }
-
-    const item = $('<div></div>\n');
+    const target = $('#processedList'),
+        item = $('<div></div>\n');
 
     if (data.haserror || data.romfiles.some(rf => rf.haserror)) {
         if (processedFormat == 'list') {

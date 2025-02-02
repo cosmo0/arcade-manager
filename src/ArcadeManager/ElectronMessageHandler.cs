@@ -81,9 +81,18 @@ public partial class ElectronMessageHandler(ICsv csvService, IDownloader downloa
     /// Sets the list of successfully processed games
     /// </summary>
     /// <param name="game">The processed game</param>
-    public void SetProcessed(Models.GameRom game) {
+    public void Processed(Models.GameRom game) {
         if (game == null) { return; }
         Electron.IpcMain.Send(window, "progress-processed", Serializer.Serialize(game));
+    }
+
+    /// <summary>
+    /// Sends a game fixed message
+    /// </summary>
+    /// <param name="game"></param>
+    public void Fixed(Models.GameRom game) {
+        if (game == null) { return; }
+        Electron.IpcMain.Send(window, "progress-fixed", Serializer.Serialize(game)); 
     }
 
     /// <summary>

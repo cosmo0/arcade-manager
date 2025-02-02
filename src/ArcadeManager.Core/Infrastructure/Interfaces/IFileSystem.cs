@@ -203,4 +203,12 @@ public interface IFileSystem {
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
     IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1);
+
+    /// <summary>
+    /// Replaces a file in a zip with another file
+    /// </summary>
+    /// <param name="sourceZip">The source zip to copy the file from</param>
+    /// <param name="targetZip">The target zip to copy the file to</param>
+    /// <param name="fileName">The file name to replace</param>
+    Task ReplaceZipFile(string sourceZip, string targetZip, string fileName);
 }

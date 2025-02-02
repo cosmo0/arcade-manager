@@ -38,8 +38,14 @@ public interface IMessageHandler
     void Progress(string label, int total, int current);
 
     /// <summary>
-    /// Sets the list of successfully processed games
+    /// Sends a game processed message
     /// </summary>
     /// <param name="game">The processed game</param>
-    void SetProcessed(GameRom game);
+    void Processed(GameRom game);
+
+    /// <summary>
+    /// Sends a game fixed message
+    /// </summary>
+    /// <param name="game"></param>
+    void Fixed(GameRom game);
 }
