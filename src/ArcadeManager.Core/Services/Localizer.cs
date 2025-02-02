@@ -30,8 +30,14 @@ public class Localizer : ILocalizer {
             var translationContent = fs.ReadAllLines(translationFile);
             foreach (var l in translationContent.Where(l => !string.IsNullOrWhiteSpace(l) && l.Contains('=', StringComparison.InvariantCultureIgnoreCase))) {
                 var equal = l.IndexOf('='); // use IndexOf instead of Split because the translation text can also have "="
-                var code = l.Substring(0, equal).Trim().ToUpperInvariant();
-                var text = l.Substring(equal + 1).Trim();
+                var code = l[..equal].Trim().ToUpperInvariant();
+                var text = l[(equal + 1)..].Trim();
+
+                // removes Weblate quotes around translation
+                if (text.StartsWith('"') && text.EndsWith('"')) {
+                    text = text.Trim('"');
+                }
+
                 words.Add(code, text);
             }
 
