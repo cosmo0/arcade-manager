@@ -174,20 +174,18 @@ function displayGame(data, onlyErrors) {
 
     processed.push(data);
 
-    if (onlyErrors && !data.haserror) {
-        return;
-    }
-
     const item = $('<div></div>');
 
-    if (data.haserror) {
-        item.append(`<div class="text-danger"><i class="icon-warning"></i> ${data.name} : ${data.errordetails}</div>`);
+    if (data.haserror || data.romfiles.some(rf => rf.haserror)) {
+        item.append(`<div class="text-danger"><i class="icon-warning"></i> ${data.name} : ${data.errordetails ?? ''}</div>`);
         for (let file of data.romfiles) {
-            if (file.haserror) {
-                item.append(`<div class="pl-5">${file.name} : ${file.errordetails}</div>`)
+            if (!onlyErrors && !file.haserror) {
+                item.append(`<div class="pl-5">${file.name} : OK</div>`);
+            } else if (file.haserror) {
+                item.append(`<div class="pl-5">${file.name} : ${file.errordetails}</div>`);
             }
         }
-    } else {
+    } else if (!onlyErrors) {
         item.text(data.name + ' : OK');
     }
 

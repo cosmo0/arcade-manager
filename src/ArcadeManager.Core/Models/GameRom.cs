@@ -114,6 +114,11 @@ public class GameRomFilesList : List<GameRomFile> {
             return this.FirstOrDefault(g => g.Name == fileName);
         }
     }
+
+    /// <summary>
+    /// Gets a value indicating whether any rom file has an error
+    /// </summary>
+    public bool HasError => this.Any(rf => rf.HasError);
 }
 
 /// <summary>
