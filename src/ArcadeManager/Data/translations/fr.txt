@@ -58,6 +58,8 @@ PROGRESS_PLEASEWAIT=Veuillez patienter...
 PROGRESS_STOP=Arrêter
 PROGRESS_OPENRESULTS=Ouvrir le résultat
 PROGRESS_ONLYERRORS=N'afficher que les erreurs
+PROGRESS_FORMAT_LIST=Liste
+PROGRESS_FORMAT_CSV=CSV
 
 CSV_INDEX_TITLE=Gérer ses listes de jeux
 CSV_INDEX_INTRO=<p>Cet outil utilise des fichiers CSV pour les listes de jeux. Pourquoi ? Parce que c'est plus facile à utiliser, et vous pouvez utiliser n'importe quel outil pour <a href="/Help/CustomCsv" class="navmenu">créer les votres</a> ou manipuler les listes fournies à votre guise.</p>

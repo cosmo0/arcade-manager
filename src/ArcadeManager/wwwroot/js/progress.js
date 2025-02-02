@@ -1,4 +1,5 @@
 ﻿let processed = [];
+let processedFormat = 'list';
 
 $(() => {
     // bind progress events
@@ -50,13 +51,36 @@ $(() => {
 
     // bind result list copy
     $('#filesListCopyLog').off('click').on('click', () => {
-        navigator.clipboard.writeText(target.text());
-        $('#filesListCopyLogMessage').removeClass('d-none').fadeOut(1000);
+        navigator.clipboard.writeText($('#processedList').text());
+        $('#filesListCopyLogMessage').removeClass('d-none').show().fadeOut(1000);
     });
 
     // bind "only errors" checkbox change
     $('#processedOnlyErrors').off('change').on('change', () => {
         const onlyErrors = $('#processedOnlyErrors').is(':checked');
+        $('#processedList').empty();
+
+        if (processedFormat == 'csv') {
+            $('#processedList').append('game;file;status\n');
+        }
+
+        for (let game of processed) {
+            displayGame(game, onlyErrors);
+        }
+    });
+
+    // bind processed format change
+    $('input:radio[name=processedFormat]').on('change', (e) => {
+        const onlyErrors = $('#processedOnlyErrors').is(':checked');
+        processedFormat = e.target.value;
+        $('#processedList').empty();
+
+        if (processedFormat == 'csv') {
+            $('#processedList').css('white-space', 'pre').append('game;file;status\n');
+        } else {
+            $('#processedList').css('white-space', 'normal');
+        }
+
         for (let game of processed) {
             displayGame(game, onlyErrors);
         }
@@ -172,21 +196,41 @@ function progressProcessed(raw) {
 function displayGame(data, onlyErrors) {
     const target = $('#processedList');
 
-    processed.push(data);
+    // add to the list if it doesn't exist
+    if (!processed.some(p => p == data)) {
+        processed.push(data);
+    }
 
-    const item = $('<div></div>');
+    const item = $('<div></div>\n');
 
     if (data.haserror || data.romfiles.some(rf => rf.haserror)) {
-        item.append(`<div class="text-danger"><i class="icon-warning"></i> ${data.name} : ${data.errordetails ?? ''}</div>`);
+        if (processedFormat == 'list') {
+            item.append(`<div class="text-danger"><i class="icon-warning"></i> ${data.name} : ${data.errordetails ?? ''}</div>\n`);
+        } else {
+            item.append(`${data.name};${data.name}.zip;"${data.errordetails ?? 'OK'}"\n`);
+        }
+
         for (let file of data.romfiles) {
             if (!onlyErrors && !file.haserror) {
-                item.append(`<div class="pl-5">${file.name} : OK</div>`);
+                if (processedFormat == 'list') {
+                    item.append(`<div class="pl-5">${file.name} : OK</div>\n`);
+                } else {
+                    item.append(`${data.name};${file.name};OK\n`);
+                }
             } else if (file.haserror) {
-                item.append(`<div class="pl-5">${file.name} : ${file.errordetails}</div>`);
+                if (processedFormat == 'list') {
+                    item.append(`<div class="pl-5">${file.name} : ${file.errordetails}</div>\n`);
+                } else {
+                    item.append(`${data.name};${file.name};"${file.errordetails}"\n`);
+                }
             }
         }
     } else if (!onlyErrors) {
-        item.text(data.name + ' : OK');
+        if (processedFormat == 'list') {
+            item.text(data.name + ' : OK');
+        } else {
+            item.text(`${data.name};${data.name}.zip;OK\n`);
+        }
     }
 
     target.append(item);
