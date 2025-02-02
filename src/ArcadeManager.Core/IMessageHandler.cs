@@ -40,12 +40,6 @@ public interface IMessageHandler
     /// <summary>
     /// Sets the list of successfully processed games
     /// </summary>
-    /// <param name="games">The processed games</param>
-    void SetProcessed(IEnumerable<GameRom> games);
-
-    /// <summary>
-    /// Sets the list of failed games to process
-    /// </summary>
-    /// <param name="errors">The errors</param>
-    void SetErrors(IEnumerable<GameError> errors);
+    /// <param name="game">The processed game</param>
+    void SetProcessed(GameRom game);
 }

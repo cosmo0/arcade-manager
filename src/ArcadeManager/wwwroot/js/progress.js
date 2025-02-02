@@ -1,4 +1,5 @@
-﻿
+﻿let processed = [];
+
 $(() => {
     // bind progress events
     ipcRenderer.on('progress', (origin, target, data) => {
@@ -18,16 +19,11 @@ $(() => {
         }
     });
 
-    // bind display of files processed and failed
+    // bind display of files processed
     ipcRenderer.on('progress-processed', (origin, data) => {
         data = !data ? {} : data[0];
         
         progressProcessed(data);
-    });
-    ipcRenderer.on('progress-errors', (origin, data) => {
-        data = !data ? {} : data[0];
-        
-        progressErrors(data);
     });
 
     // bind errors
@@ -51,6 +47,20 @@ $(() => {
         // send cancel message
         ipc('cancel');
     });
+
+    // bind result list copy
+    $('#filesListCopyLog').off('click').on('click', () => {
+        navigator.clipboard.writeText(target.text());
+        $('#filesListCopyLogMessage').removeClass('d-none').fadeOut(1000);
+    });
+
+    // bind "only errors" checkbox change
+    $('#processedOnlyErrors').off('change').on('change', () => {
+        const onlyErrors = $('#processedOnlyErrors').is(':checked');
+        for (let game of processed) {
+            displayGame(game, onlyErrors);
+        }
+    });
 });
 
 /**
@@ -67,7 +77,7 @@ function progressInit(title, canCancel) {
     p.modal({ 'backdrop': 'static', 'keyboard': false });
 
     // hides/displays some items
-    p.find('.modal-footer, .msg, .log, .errors').addClass('d-none');
+    p.find('.modal-footer, .msg, .log, .processed').addClass('d-none');
     p.find('.progress, .details').removeClass('d-none');
 
     // display or hide cancel button
@@ -79,7 +89,7 @@ function progressInit(title, canCancel) {
 
     // reset texts
     p.find('.modal-title').text(title);
-    p.find('.details, .log, .errors').text('');
+    p.find('.details, .log, #processedList').text('');
 
     // reset styles
     p.find('.progress .progress-bar').width('0%');
@@ -88,6 +98,13 @@ function progressInit(title, canCancel) {
         .prop('disabled', false)
         .removeClass('disabled btn-outline-secondary')
         .addClass('btn-outline-danger');
+    
+    // reset "display only errors"
+    $('#processedOnlyErrors').prop('checked', true).prop('disabled', true);
+    $('#filesListCopyLog').prop('disabled', true);
+
+    // reset list of processed games
+    processed = [];
 }
 
 /**
@@ -138,30 +155,43 @@ function progressLog(msg, isError) {
  * @param {String} raw the raw string of the processed games
  */
 function progressProcessed(raw) {
-    let p = $('#progress');
-    let log = p.find('.log');
-    if (log.hasClass('d-none')) { log.removeClass('d-none'); }
+    $('#progress .processed').removeClass('d-none');
 
     const data = JSON.parse(raw);
-    for (let entry of data) {
-        log.append("Successfully processed " + entry.name + "<br>");
-    }
+
+    displayGame(data, $('#processedOnlyErrors').is(':checked'));
 }
 
 /**
- * Displays the list of failed games
+ * Displays a game result
  * 
- * @param {String} raw the raw string of the failed games
+ * @param {Object} data the game data
+ * @param {Boolean} onlyErrors whether to display only errors
+ * @returns 
  */
-function progressErrors(raw) {
-    let p = $('#progress');
-    let log = p.find('.errors');
-    if (log.hasClass('d-none')) { log.removeClass('d-none'); }
+function displayGame(data, onlyErrors) {
+    const target = $('#processedList');
 
-    const data = JSON.parse(raw);
-    for (let entry of data) {
-        log.append(`Error for game ${entry.game}: ${entry.file} ${entry.details}<br>`);
+    processed.push(data);
+
+    if (onlyErrors && !data.haserror) {
+        return;
     }
+
+    const item = $('<div></div>');
+
+    if (data.haserror) {
+        item.append(`<div class="text-danger"><i class="icon-warning"></i> ${data.name} : ${data.errordetails}</div>`);
+        for (let file of data.romfiles) {
+            if (file.haserror) {
+                item.append(`<div class="pl-5">${file.name} : ${file.errordetails}</div>`)
+            }
+        }
+    } else {
+        item.text(data.name + ' : OK');
+    }
+
+    target.append(item);
 }
 
 /**
@@ -175,6 +205,8 @@ function progressDone(msg, path) {
     p.find('.modal-footer, .msg').removeClass('d-none');
     p.find('.progress, .details, .stop').addClass('d-none');
     p.find('.msg').html(msg);
+
+    $('#processedOnlyErrors, #filesListCopyLog').prop('disabled', false);
 
     if (path) {
         p.find('.open')

@@ -40,7 +40,19 @@
                     </p>
                     <p class="d-none msg"></p>
                     <div class="alert alert-info log"></div>
-                    <div class="alert alert-danger errors"></div>
+                    <div class="processed">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="processedOnlyErrors" checked disabled>
+                            <label class="custom-control-label" for="processedOnlyErrors">@Localizer["PROGRESS_ONLYERRORS"]</label>
+                        </div>
+                        <div id="processedList" class="border rounded p-3 my-3" style="overflow:auto; max-height:300px;">
+                            
+                        </div>
+                        <div>
+                            <button type="button" id="filesListCopyLog" class="btn btn-sm btn-outline-info" disabled>@Localizer["ROMS_LOGCOPY"]</button>
+                            <span id="filesListCopyLogMessage" class="d-none ml-2 text-info">@Localizer["ROMS_LOGCOPIED"]</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer d-none">
                     <a href="#" class="d-none open btn btn-outline-info">@Localizer["PROGRESS_OPENRESULTS"]</a>

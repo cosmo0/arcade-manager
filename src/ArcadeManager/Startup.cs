@@ -265,6 +265,7 @@ public class Startup {
             // infrastructure
             container.Register<Infrastructure.IWebClientFactory, Infrastructure.WebClientFactory>(Lifestyle.Singleton);
             container.Register<Infrastructure.IFileSystem, Infrastructure.FileSystem>(Lifestyle.Singleton);
+            container.Register<Infrastructure.IDatFile, Infrastructure.DatFile>(Lifestyle.Singleton);
 
             // services
             container.Register<Services.IDownloader, Services.Downloader>(Lifestyle.Singleton);

@@ -4,6 +4,22 @@ using System.Xml.Linq;
 namespace ArcadeManager.Models;
 
 /// <summary>
+/// A list of game roms (zip)
+/// </summary>
+public class GameRomList : List<GameRom> {
+    /// <summary>
+    /// Gets a game by its name
+    /// </summary>
+    /// <param name="name">The game name</param>
+    /// <returns>The game, if found</returns>
+    public GameRom this[string name] {
+        get {
+            return this.FirstOrDefault(g => g.Name == name);
+        }
+    }
+}
+
+/// <summary>
 /// A game rom (zip)
 /// </summary>
 public class GameRom {
@@ -23,14 +39,45 @@ public class GameRom {
     public string RomOf { get; set; }
 
     /// <summary>
-    /// Gets the list of rom files from the DAT
+    /// Gets a value indicating whether this game has an error
     /// </summary>
-    public List<GameRomFile> RomFilesFromDat { get; } = [];
+    public bool HasError => ErrorReason != ErrorReason.None;
 
     /// <summary>
-    /// Gets the list of rom files found on the disk
+    /// Gets or sets the error reasons
     /// </summary>
-    public List<GameRomFile> RomFilesOnDisk { get; } = [];
+    public ErrorReason ErrorReason { get; set; } = ErrorReason.None;
+
+    /// <summary>
+    /// Gets or sets the error details, if any
+    /// </summary>
+    public string ErrorDetails { get; set; }
+
+    /// <summary>
+    /// Gets the list of rom files
+    /// </summary>
+    public GameRomFilesList RomFiles { get; } = [];
+
+    /// <summary>
+    /// Sets an error on the game
+    /// </summary>
+    /// <param name="reason">The error reason</param>
+    /// <param name="details">The error details</param>
+    /// <param name="fileName">The related file name</param>
+    public void Error(ErrorReason reason, string details, string fileName) {
+        if (!string.IsNullOrEmpty(fileName)) {
+            var file = this.RomFiles[fileName];
+            if (file != null) {
+                file.ErrorReason = reason;
+                file.ErrorDetails = details;
+                return;
+            }
+        }
+
+        // if no file name or not found
+        this.ErrorReason = reason;
+        this.ErrorDetails = details;
+    }
 
     /// <summary>
     /// Creates a new game rom info from an XML node from the DAT
@@ -44,11 +91,28 @@ public class GameRom {
             RomOf = gameXml.Attribute("romof")?.Value
         };
 
+        // add the files
         foreach (var romXml in gameXml.Descendants("rom")) {
-            game.RomFilesFromDat.Add(GameRomFile.FromXml(game.Name, romXml));
+            game.RomFiles.Add(GameRomFile.FromXml(game.Name, romXml));
         }
 
         return game;
+    }
+}
+
+/// <summary>
+/// A list of rom files (inside a zip)
+/// </summary>
+public class GameRomFilesList : List<GameRomFile> {
+    /// <summary>
+    /// Gets the rom file details using the specified file name
+    /// </summary>
+    /// <param name="fileName">The file name</param>
+    /// <returns>The rom file details, if any</returns>
+    public GameRomFile this[string fileName] {
+        get {
+            return this.FirstOrDefault(g => g.Name == fileName);
+        }
     }
 }
 
@@ -57,6 +121,11 @@ public class GameRom {
 /// </summary>
 public class GameRomFile {
     /// <summary>
+    /// Gets or sets the zip file name
+    /// </summary>
+    public string ZipFileName { get; set; }
+
+    /// <summary>
     /// Gets or sets the file name (including extension)
     /// </summary>
     public string Name { get; set; }
@@ -64,7 +133,7 @@ public class GameRomFile {
     /// <summary>
     /// Gets or sets the file size
     /// </summary>
-    public int Size { get; set; }
+    public long Size { get; set; }
 
     /// <summary>
     /// Gets or sets the file CRC
@@ -82,8 +151,24 @@ public class GameRomFile {
     public string Status { get; set; }
 
     /// <summary>
+    /// Gets a value indicating whether this rom file has an error
+    /// </summary>
+    public bool HasError => ErrorReason != ErrorReason.None;
+
+    /// <summary>
+    /// Gets or sets the error reason
+    /// </summary>
+    public ErrorReason ErrorReason { get; set; } = ErrorReason.None;
+
+    /// <summary>
+    /// Gets or sets the error details
+    /// </summary>
+    public string ErrorDetails { get; set; }
+
+    /// <summary>
     /// Creates a new rom file info from a XML node from the DAT
     /// </summary>
+    /// <param name="game">The game name</param>
     /// <param name="romXml">The XML node from the DAT</param>
     /// <returns>The file infos</returns>
     public static GameRomFile FromXml(string game, XElement romXml) {
@@ -96,8 +181,9 @@ public class GameRomFile {
         }
 
         return new GameRomFile() {
+            ZipFileName = $"{name}.zip",
             Name = name,
-            Size = int.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
+            Size = long.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
             Crc = crc,
             Status = status,
             Sha1 = romXml.Attribute("sha1")?.Value,
@@ -106,59 +192,10 @@ public class GameRomFile {
 }
 
 /// <summary>
-/// A game error details
+/// A reason of an error on a game or file
 /// </summary>
-public class GameError {
-    /// <summary>
-    /// Gets or sets the game name
-    /// </summary>
-    public string Game { get; set; }
-
-    /// <summary>
-    /// Gets or sets the file name
-    /// </summary>
-    public string File { get; set; }
-
-    /// <summary>
-    /// Gets or sets the error reason
-    /// </summary>
-    public string Reason { get; set; }
-
-    /// <summary>
-    /// Gets or sets the error details, if any
-    /// </summary>
-    public string Details { get; set; }
-
-    /// <summary>
-    /// Creates a new "missing game" error
-    /// </summary>
-    /// <param name="game">The game name</param>
-    /// <param name="file">The file name</param>
-    /// <returns>The error details</returns>
-    public static GameError Missing(string game, string file)
-    {
-        return new GameError {
-            Game = game,
-            File = file,
-            Reason = "missing",
-            Details = "File missing"
-        };
-    }
-
-    /// <summary>
-    /// Creates a new "bad hash" error
-    /// </summary>
-    /// <param name="game">The game name</param>
-    /// <param name="file">The file name</param>
-    /// <param name="details">The error details, if any</param>
-    /// <returns>The error details</returns>
-    public static GameError BadHash(string game, string file, string details = null)
-    {
-        return new GameError {
-            Game = game,
-            File = file,
-            Reason = "badhash",
-            Details = details
-        };
-    }
+public enum ErrorReason {
+    None,
+    MissingFile,
+    BadHash
 }
