@@ -1,0 +1,25 @@
+<mame>
+	<game name="test1" sourcefile="test.c" cloneof="test" romof="bios">
+		<description>Street Fighter II' - Champion Edition (US 920313)</description>
+		<year>1992</year>
+		<manufacturer>Capcom</manufacturer>
+		<rom name="s92u-23a" size="524288" crc="ac44415b" sha1="218f8b1886eb72b8547127042b5ae47600e18944" region="cpu1" offset="0"/>
+		<rom name="sf2ce.22" merge="sf2ce.22" size="524288" crc="99f1cca4" sha1="64111eba81d743fc3fd51d7a89cd0b2eefcc900d" region="cpu1" offset="80000"/>
+		<rom name="s92_21a.bin" merge="s92_21a.bin" size="524288" crc="925a7877" sha1="1960dca35f0ca6f2b399a9fccfbc0132ac6425d1" region="cpu1" offset="100000"/>
+		<rom name="s92_01.bin" merge="s92_01.bin" size="524288" crc="03b0d852" sha1="f370f25c96ad2b94f8c53d6b7139100285a25bef" region="gfx1" offset="0"/>
+		<rom name="s92_02.bin" merge="s92_02.bin" size="524288" crc="840289ec" sha1="2fb42a242f60ba7e74009b5a90eb26e035ba1e82" region="gfx1" offset="2"/>
+		<rom name="s92_03.bin" merge="s92_03.bin" size="524288" crc="cdb5f027" sha1="4c7d944fef200fdfcaf57758b901b5511188ed2e" region="gfx1" offset="4"/>
+		<rom name="s92_04.bin" merge="s92_04.bin" size="524288" crc="e2799472" sha1="27d3796429338d82a8de246a0ea06dd487a87768" region="gfx1" offset="6"/>
+		<rom name="s92_05.bin" merge="s92_05.bin" size="524288" crc="ba8a2761" sha1="4b696d66c51611e43522bed752654314e76d33b6" region="gfx1" offset="200000"/>
+		<rom name="s92_06.bin" merge="s92_06.bin" size="524288" crc="e584bfb5" sha1="ebdf1f5e2638eed3a65dda82b1ed9151a355f4c9" region="gfx1" offset="200002"/>
+		<rom name="s92_07.bin" merge="s92_07.bin" size="524288" crc="21e3f87d" sha1="4a4961bb68c3a1ce15f9d393d9c03ecb2466cc29" region="gfx1" offset="200004"/>
+		<rom name="s92_08.bin" merge="s92_08.bin" size="524288" crc="befc47df" sha1="520390420da3a0271ba90b0a933e65143265e5cf" region="gfx1" offset="200006"/>
+		<rom name="s92_10.bin" merge="s92_10.bin" size="524288" crc="960687d5" sha1="2868c31121b1c7564e9767b9a19cdbf655c7ed1d" region="gfx1" offset="400000"/>
+		<rom name="s92_11.bin" merge="s92_11.bin" size="524288" crc="978ecd18" sha1="648a59706b93c84b4206a968ecbdc3e834c476f6" region="gfx1" offset="400002"/>
+		<rom name="s92_12.bin" merge="s92_12.bin" size="524288" crc="d6ec9a0a" sha1="ed6143f8737013b6ef1684e37c05e037e7a80dae" region="gfx1" offset="400004"/>
+		<rom name="s92_13.bin" merge="s92_13.bin" size="524288" crc="ed2c67f6" sha1="0083c0ffaf6fe7659ff0cf822be4346cd6e61329" region="gfx1" offset="400006"/>
+		<rom name="s92_09.bin" merge="s92_09.bin" size="65536" crc="08f6b60e" sha1="8258fcaca4ac419312531eec67079b97f471179c" region="cpu2" offset="0"/>
+		<rom name="s92_18.bin" merge="s92_18.bin" size="131072" crc="7f162009" sha1="346bf42992b4c36c593e21901e22c87ae4a7d86d" region="sound1" offset="0"/>
+		<rom name="s92_19.bin" merge="s92_19.bin" size="131072" crc="beade53f" sha1="277c397dc12752719ec6b47d2224750bd1c07f79" region="sound1" offset="20000"/>
+	</game>
+</mame>

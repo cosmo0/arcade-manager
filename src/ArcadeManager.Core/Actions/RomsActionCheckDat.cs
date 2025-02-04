@@ -63,11 +63,6 @@ public class RomsActionCheckDat
     public bool otherBios { get; set; }
     
     /// <summary>
-    /// Gets or sets a value indicating whether to check for "devices" files
-    /// </summary>
-    public bool otherDevices { get; set; }
-    
-    /// <summary>
     /// Gets or sets the path to another folder to fix/rebuild the romset with
     /// </summary>
     public string otherFolder { get; set; }

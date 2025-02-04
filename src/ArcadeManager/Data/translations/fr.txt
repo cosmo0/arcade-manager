@@ -295,7 +295,6 @@ ROMS_CHECKDAT_CSVFILTER=Filtre CSV
 ROMS_CHECKDAT_CSVFILTER_DESC=(Optionnel) Ne vérifier que les roms listées dans le fichier CSV
 ROMS_CHECKDAT_OTHER_HEADER=Autres vérifications
 ROMS_CHECKDAT_OTHER_BIOS=Vérifier que les bios requis sont présents
-ROMS_CHECKDAT_OTHER_DEVICES=Vérifier que les devices requis sont présents - inutile sur FBNeo ou MAME2003
 ROMS_CHECKDAT_ADDFOLDER=Dossier additionnel
 ROMS_CHECKDAT_ADDFOLDER_DESC=(Optionnel) Un autre dossier dans lequel rechercher les fichiers pour réparer le romset (ces fichiers ne seront pas modifiés)
 ROMS_CHECKDAT_FIXFOLDER=Dossier cible

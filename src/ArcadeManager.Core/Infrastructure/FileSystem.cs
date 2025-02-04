@@ -394,12 +394,15 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         var fileName = FileName(path);
 
         using var zip = System.IO.Compression.ZipFile.OpenRead(path);
-        foreach (var entry in zip.Entries)
+
+        // loop on entry, skipping folders (which are entries with size 0 and no name)
+        foreach (var entry in zip.Entries.Where(e => e.Length > 0 && !string.IsNullOrEmpty(e.Name)))
         {
             result.Add(new GameRomFile
             {
                 ZipFileName = fileName,
                 Name = entry.Name,
+                Path = Path.GetDirectoryName(entry.FullName),
                 Size = (int)entry.Length,
                 Crc = entry.Crc32.ToString("X4").PadLeft(8, '0').ToLower(),
                 Sha1 = getSha1 ? GetZipFileSha1(entry) : null

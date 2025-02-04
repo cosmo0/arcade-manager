@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
 namespace ArcadeManager.Models;
@@ -23,30 +24,65 @@ public class GameRomList : List<GameRom> {
 /// A game rom (zip)
 /// </summary>
 public class GameRom {
+    private ErrorReason _ownError = ErrorReason.None;
+
     /// <summary>
     /// Gets or sets the game name (without extension)
     /// </summary>
     public string Name { get; set; }
     
     /// <summary>
-    /// Gets or sets the parent
+    /// Gets or sets the parent name
     /// </summary>
-    public string CloneOf { get; set; }
+    public string CloneOfName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the parent data
+    /// </summary>
+    [JsonIgnore]
+    public GameRom CloneOf { get; set; }
 
     /// <summary>
     /// Gets or sets the bios, or the parent
     /// </summary>
-    public string RomOf { get; set; }
+    public string RomOfName { get; set; }
 
     /// <summary>
-    /// Gets a value indicating whether this game has an error
+    /// Gets or sets the bios or parent data
     /// </summary>
-    public bool HasError => ErrorReason != ErrorReason.None;
+    [JsonIgnore]
+    public GameRom RomOf { get; set; }
+
+    /// <summary>
+    /// Gets the list of clones
+    /// </summary>
+    public GameRomList Clones { get; } = [];
+
+    /// <summary>
+    /// Gets a value indicating whether this game or any associated file has an error
+    /// </summary>
+    public bool HasError {
+        get {
+            if (_ownError != ErrorReason.None) {
+                return true;
+            }
+
+            if (this.RomOf != null && this.RomOf.HasError) {
+                return true;
+            }
+
+            if (this.RomFiles.Any(f => f.HasError)) {
+                return true;
+            }
+
+            return false;
+        }
+    }
 
     /// <summary>
     /// Gets or sets the error reasons
     /// </summary>
-    public ErrorReason ErrorReason { get; set; } = ErrorReason.None;
+    public ErrorReason ErrorReason { get => _ownError; }
 
     /// <summary>
     /// Gets or sets the error details, if any
@@ -65,17 +101,40 @@ public class GameRom {
     /// <param name="details">The error details</param>
     /// <param name="fileName">The related file name</param>
     public void Error(ErrorReason reason, string details, string fileName) {
-        if (!string.IsNullOrEmpty(fileName)) {
-            var file = this.RomFiles[fileName];
-            if (file != null) {
-                file.ErrorReason = reason;
-                file.ErrorDetails = details;
-                return;
-            }
+        if (string.IsNullOrEmpty(fileName))
+        {
+            // if no file name
+            this._ownError = reason;
+            this.ErrorDetails = details;
+            return;
+        }
+        
+        // missing whole file
+        if (fileName == $"{this.Name}.zip")
+        {
+            this._ownError = reason;
+            this.ErrorDetails = details;
+            return;
         }
 
-        // if no file name or not found
-        this.ErrorReason = reason;
+        // missing bios
+        if (fileName == $"{this.RomOfName}.zip")
+        {
+            this.RomOf?.Error(reason, details, fileName);
+            return;
+        }
+
+        // missing file inside
+        var file = this.RomFiles[fileName];
+        if (file != null)
+        {
+            file.ErrorReason = reason;
+            file.ErrorDetails = details;
+            return;
+        }
+
+        // default: assign error to the game
+        this._ownError = reason;
         this.ErrorDetails = details;
     }
 
@@ -87,9 +146,13 @@ public class GameRom {
     public static GameRom FromXml(XElement gameXml) {
         var game = new GameRom {
             Name = gameXml.Attribute("name").Value,
-            CloneOf = gameXml.Attribute("cloneof")?.Value,
-            RomOf = gameXml.Attribute("romof")?.Value
+            CloneOfName = gameXml.Attribute("cloneof")?.Value,
+            RomOfName = gameXml.Attribute("romof")?.Value
         };
+
+        if (game.CloneOfName == game.RomOfName) {
+            game.RomOfName = null;
+        }
 
         // add the files
         foreach (var romXml in gameXml.Descendants("rom")) {
@@ -134,6 +197,11 @@ public class GameRomFile {
     /// Gets or sets the file name (including extension)
     /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the path in the zip
+    /// </summary>
+    public string Path { get; set; }
 
     /// <summary>
     /// Gets or sets the file size

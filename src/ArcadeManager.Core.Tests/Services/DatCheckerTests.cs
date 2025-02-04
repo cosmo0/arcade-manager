@@ -9,22 +9,22 @@ using ArcadeManager.Actions;
 
 namespace ArcadeManager.Core.Tests.Services;
 
-public class RomsTests
+public class DatCheckerTests
 {
     private readonly ICsv csv;
     private readonly IFileSystem fs;
     private readonly IDatFile dat;
     private readonly IMessageHandler messageHandler;
-    private readonly Roms sut;
+    private readonly DatChecker sut;
 
-    public RomsTests()
+    public DatCheckerTests()
     {
         this.csv = A.Fake<ICsv>();
         this.fs = A.Fake<IFileSystem>();
         this.dat = A.Fake<IDatFile>();
         this.messageHandler = A.Fake<IMessageHandler>();
 
-        this.sut = new Roms(this.csv, this.fs, this.dat);
+        this.sut = new DatChecker(this.fs, this.csv, this.dat);
     }
 
     [Fact]
@@ -42,10 +42,10 @@ public class RomsTests
         var args = new RomsActionCheckDat {
             action = "check",
             romset = "roms",
-            otherBios = false,
-            otherDevices = false
+            otherBios = false
         };
         var processed = new GameRomList();
+        var all = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
             new GameRomFile {
@@ -61,7 +61,7 @@ public class RomsTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -80,17 +80,17 @@ public class RomsTests
             action = "check",
             romset = "roms",
             otherBios = false,
-            otherDevices = false,
             actionReportAll = true
         };
         var processed = new GameRomList();
+        var all = new GameRomList();
 
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(false);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -120,10 +120,10 @@ public class RomsTests
         var args = new RomsActionCheckDat {
             action = "check",
             romset = "roms",
-            otherBios = false,
-            otherDevices = false
+            otherBios = false
         };
         var processed = new GameRomList();
+        var all = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
             new GameRomFile {
@@ -139,7 +139,7 @@ public class RomsTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -168,10 +168,10 @@ public class RomsTests
         var args = new RomsActionCheckDat {
             action = "check",
             romset = "roms",
-            otherBios = false,
-            otherDevices = false
+            otherBios = false
         };
         var processed = new GameRomList();
+        var all = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
             new GameRomFile {
@@ -187,7 +187,7 @@ public class RomsTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -198,7 +198,7 @@ public class RomsTests
     }
 
     [Fact]
-    public void Rom_file_is_fixed()
+    public async Task Rom_file_is_fixed()
     {
         // arrange: data
         var game = new GameRom {
@@ -218,6 +218,9 @@ public class RomsTests
         var processed = new GameRomList() {
             game
         };
+        var all = new GameRomList() {
+            game
+        };
 
         var fixFolder = new GameRomFilesList {
             new GameRomFile {
@@ -232,8 +235,17 @@ public class RomsTests
         A.CallTo(() => fs.PathJoin("fix", "test.zip")).Returns("fix/test.zip");
         A.CallTo(() => fs.FileExists(A<string>._)).Returns(true);
 
+        // arrange: this gets called at the end of the check
+        A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns([
+            new GameRomFile {
+                Name = "test.1",
+                Crc = "abcd",
+                Size = 1234
+            }
+        ]);
+
         // act
-        sut.FixGame(1, 1, game, args, processed, fixFolder, messageHandler, null);
+        await sut.FixGame(1, 1, game, args, processed, fixFolder, messageHandler, null);
 
         // assert
         A.CallTo(() => fs.ReplaceZipFile(A<string>._, A<string>._, "test.1")).MustHaveHappened();

@@ -193,7 +193,7 @@ public class CsvGamesList {
 
             // additional values
             foreach (var h in listRef.Headers) {
-                line.Append(this.Values.ContainsKey(h) ? this.Values[h] : emptyValue).Append(defaultDelimiter);
+                line.Append(Values.TryGetValue(h, out string value) ? value : emptyValue).Append(defaultDelimiter);
             }
 
             return line.ToString();

@@ -31,6 +31,9 @@ public class DatFile(IFileSystem fs) : IDatFile
             }
         });
 
+        // loop again on the files list to do a bios and clones matching
+        
+
         return result;
     }
 }
