@@ -43,15 +43,15 @@ public class GameRom {
     public GameRom CloneOf { get; set; }
 
     /// <summary>
-    /// Gets or sets the bios, or the parent
+    /// Gets or sets the bios
     /// </summary>
-    public string RomOfName { get; set; }
+    public string BiosName { get; set; }
 
     /// <summary>
-    /// Gets or sets the bios or parent data
+    /// Gets or sets the bios data
     /// </summary>
     [JsonIgnore]
-    public GameRom RomOf { get; set; }
+    public GameRom Bios { get; set; }
 
     /// <summary>
     /// Gets the list of clones
@@ -67,7 +67,7 @@ public class GameRom {
                 return true;
             }
 
-            if (this.RomOf != null && this.RomOf.HasError) {
+            if (this.Bios != null && this.Bios.HasError) {
                 return true;
             }
 
@@ -118,9 +118,9 @@ public class GameRom {
         }
 
         // missing bios
-        if (fileName == $"{this.RomOfName}.zip")
+        if (fileName == $"{this.BiosName}.zip")
         {
-            this.RomOf?.Error(reason, details, fileName);
+            this.Bios?.Error(reason, details, fileName);
             return;
         }
 
@@ -147,11 +147,11 @@ public class GameRom {
         var game = new GameRom {
             Name = gameXml.Attribute("name").Value,
             CloneOfName = gameXml.Attribute("cloneof")?.Value,
-            RomOfName = gameXml.Attribute("romof")?.Value
+            BiosName = gameXml.Attribute("romof")?.Value
         };
 
-        if (game.CloneOfName == game.RomOfName) {
-            game.RomOfName = null;
+        if (game.CloneOfName == game.BiosName) {
+            game.BiosName = null;
         }
 
         // add the files

@@ -30,6 +30,8 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
+      - name: Test
+        run: dotnet test
       - name: Electronize ARM
         run: electronize build /target osx /electron-arch arm64
       - name: Upload binaries

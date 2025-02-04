@@ -27,7 +27,7 @@ public class GameRomsTests
         // assert: rom
         game.Name.Should().Be("test1");
         game.CloneOfName.Should().Be("test");
-        game.RomOfName.Should().Be("bios");
+        game.BiosName.Should().Be("bios");
 
         // assert: files
         game.RomFiles.Should().HaveCount(18);
@@ -59,14 +59,14 @@ public class GameRomsTests
         var game = GameRom.FromXml(xml);
 
         // arrange: fake bios (should be filled with Infrastructure.DatFile.GetRoms)
-        game.RomOf = new() { Name = "bios.zip" };
+        game.Bios = new() { Name = "bios.zip" };
 
         // act
         game.Error(ErrorReason.MissingFile, "Missing bios", "bios.zip");
     
         // assert
         game.HasError.Should().BeTrue();
-        game.RomOf.HasError.Should().BeTrue();
+        game.Bios.HasError.Should().BeTrue();
         game.RomFiles.HasError.Should().BeFalse();
     }
 

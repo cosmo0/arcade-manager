@@ -32,7 +32,29 @@ public class DatFile(IFileSystem fs) : IDatFile
         });
 
         // loop again on the files list to do a bios and clones matching
-        
+        foreach (var game in result) {
+            // get parent
+            if (!string.IsNullOrEmpty(game.CloneOfName)) {
+                game.CloneOf = result.FirstOrDefault(g => g.Name == game.CloneOfName);
+
+                // circular reference
+                game.CloneOf?.Clones.Add(game);
+                
+                // get bios from parent
+                if (!string.IsNullOrEmpty(game.CloneOf?.BiosName)) {
+                    game.BiosName = game.CloneOf.BiosName;
+
+                    if (game.CloneOf.Bios != null) {
+                        game.Bios = game.CloneOf.Bios;
+                    }
+                }
+            }
+
+            // get bios
+            if (game.Bios == null && !string.IsNullOrEmpty(game.BiosName)) {
+                game.Bios = result.FirstOrDefault(g => g.Name == game.BiosName);
+            }
+        }
 
         return result;
     }
