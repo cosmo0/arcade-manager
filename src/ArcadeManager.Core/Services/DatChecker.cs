@@ -114,6 +114,12 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         // build file path
         var gameFile = fs.PathJoin(args.romset, $"{game.Name}.zip");
 
+        // if the CSV filter is set, check if the game is in the list
+        if (csv != null && !csv.Games.Any(g => g.Name == game.Name))
+        {
+            return progress++; // increment anyway, since the total is based on number of files on the disk
+        }
+
         // check if a matching file is on the disk
         if (!fs.FileExists(gameFile))
         {
@@ -128,16 +134,9 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             return progress;
         }
 
-        // only increment progress if the file exists on the disk, since the total is based on disk
         progress++;
 
-        // if the CSV filter is set, check if the game is in the list
-        if (csv != null && !csv.Games.Any(g => g.Name == game.Name))
-        {
-            return progress;
-        }
-
-        // progress only if we actually process the game
+        // progress only if we actually check the game
         messageHandler.Progress($"Checking {game.Name}", total, progress);
 
         // if we are here: we are always processing the game, and we do not have added it to the list yet
@@ -152,6 +151,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         return progress;
     }
 
+    /// <summary>
+    /// Checks the files of a game
+    /// </summary>
+    /// <param name="game">The game infos to check the files of</param>
+    /// <param name="filePath">The folder of the roms</param>
+    /// <param name="checkSha1">Whether to check the SHA1</param>
+    /// <param name="messageHandler">The message handler</param>
     public void CheckFilesOfGame(GameRom game, string filePath, bool checkSha1, IMessageHandler messageHandler)
     {
         // open the zip
@@ -160,36 +166,28 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         if (messageHandler.MustCancel) { return; }
 
         // check the files that are supposed to be in the game
-        foreach (var datFile in game.RomFiles)
+        foreach (var gameFile in game.RomFiles)
         {
             if (messageHandler.MustCancel) { return; }
 
-            var zf = zipFiles.FirstOrDefault(zf => zf.Name.Equals(datFile.Name, StringComparison.InvariantCultureIgnoreCase));
+            var zipFile = zipFiles.FirstOrDefault(zf => zf.Name.Equals(gameFile.Name, StringComparison.InvariantCultureIgnoreCase));
 
-            // ensure the file exists in the zip
-            if (zf == null)
-            {
-                game.Error(ErrorReason.MissingFile, "Missing file in zip", datFile.Name);
-                continue;
+            CheckFileOfGame(game, gameFile, zipFile, checkSha1);
+        }
+    
+        // check clones that are located inside the zip in case of merged set
+        if (zipFiles.Any(zf => !string.IsNullOrEmpty(zf.Path))) {
+            foreach (var clone in game.Clones) {
+                foreach (var cloneFile in clone.RomFiles) {
+                    var cloneZipFile = zipFiles.Where(zf => zf.Path.Equals(clone.Name, StringComparison.InvariantCultureIgnoreCase) && zf.Name.Equals(cloneFile.Name, StringComparison.InvariantCultureIgnoreCase));
+                    CheckFileOfGame(game, cloneFile, cloneFile, checkSha1);
+                }
             }
+        }
 
-            // check size and crc
-            if (!zf.Crc.Equals(datFile.Crc, StringComparison.InvariantCultureIgnoreCase))
-            {
-                game.Error(ErrorReason.BadHash, $"Bad CRC - expected: {datFile.Crc}; actual: {zf.Crc}", datFile.Name);
-                continue;
-            }
-
-            // if speed slow: check hash
-            if (checkSha1 && !string.IsNullOrEmpty(datFile.Sha1) && !zf.Sha1.Equals(datFile.Sha1, StringComparison.InvariantCultureIgnoreCase))
-            {
-                game.Error(ErrorReason.BadHash, $"Bad SHA1 - expected: {datFile.Sha1}; actual: {zf.Sha1}", datFile.Name);
-                continue;
-            }
-
-            // TODO: check clones that are located inside the zip in case of merged set
-
-            // TODO: check the bios
+        // check that the bios exists (don't check files inside, as it *should* be also in the dat)
+        if (game.Bios != null && !fs.FileExists(fs.PathJoin(filePath, $"{game.BiosName}.zip"))) {
+            game.Error(ErrorReason.MissingFile, $"Missing BIOS file {game.BiosName}", $"{game.BiosName}.zip");
         }
     }
 
@@ -233,6 +231,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         if (messageHandler.MustCancel) { return progress; }
 
         // TODO: check that either the parent exists or the current zip has all the parent files
+        
 
         // TODO: check the bios in game.romof or parent's game.romof
 
@@ -377,5 +376,28 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
 
         return total;
+    }
+    
+    private static void CheckFileOfGame(GameRom game, GameRomFile datFile, GameRomFile zipFile, bool checkSha1) {
+        // ensure the file exists in the zip
+        if (zipFile == null)
+        {
+            game.Error(ErrorReason.MissingFile, "Missing file in zip", datFile.Name);
+            return;
+        }
+
+        // check size and crc
+        if (!zipFile.Crc.Equals(datFile.Crc, StringComparison.InvariantCultureIgnoreCase))
+        {
+            game.Error(ErrorReason.BadHash, $"Bad CRC - expected: {datFile.Crc}; actual: {zipFile.Crc}", datFile.Name);
+            return;
+        }
+
+        // if speed slow: check hash
+        if (checkSha1 && !string.IsNullOrEmpty(datFile.Sha1) && !zipFile.Sha1.Equals(datFile.Sha1, StringComparison.InvariantCultureIgnoreCase))
+        {
+            game.Error(ErrorReason.BadHash, $"Bad SHA1 - expected: {datFile.Sha1}; actual: {zipFile.Sha1}", datFile.Name);
+            return;
+        }
     }
 }
