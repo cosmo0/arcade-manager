@@ -42,7 +42,7 @@ public class DatCheckerTests
         var args = new RomsActionCheckDat {
             action = "check",
             romset = "roms",
-            otherBios = false
+            checkBios = false
         };
         var processed = new GameRomList();
         var all = new GameRomList();
@@ -79,8 +79,8 @@ public class DatCheckerTests
         var args = new RomsActionCheckDat {
             action = "check",
             romset = "roms",
-            otherBios = false,
-            actionReportAll = true
+            checkBios = false,
+            reportAll = true
         };
         var processed = new GameRomList();
         var all = new GameRomList();
@@ -120,7 +120,7 @@ public class DatCheckerTests
         var args = new RomsActionCheckDat {
             action = "check",
             romset = "roms",
-            otherBios = false
+            checkBios = false
         };
         var processed = new GameRomList();
         var all = new GameRomList();
@@ -168,7 +168,7 @@ public class DatCheckerTests
         var args = new RomsActionCheckDat {
             action = "check",
             romset = "roms",
-            otherBios = false
+            checkBios = false
         };
         var processed = new GameRomList();
         var all = new GameRomList();
@@ -198,7 +198,7 @@ public class DatCheckerTests
     }
 
     [Fact]
-    public async Task Rom_file_is_fixed()
+    public async Task Rom_is_fixed()
     {
         // arrange: data
         var game = new GameRom {
@@ -213,7 +213,7 @@ public class DatCheckerTests
         var args = new RomsActionCheckDat {
             action = "fix",
             romset = "roms",
-            fixFolder = "fix"
+            targetFolder = "fix"
         };
         var processed = new GameRomList() {
             game

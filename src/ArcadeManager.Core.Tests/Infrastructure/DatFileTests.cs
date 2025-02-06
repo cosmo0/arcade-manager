@@ -39,22 +39,22 @@ public class DatFileTests
         result["1944"].Should().NotBeNull();
         result["1944"].RomFiles.Should().HaveCount(15);
         result["1944"].Clones.Should().HaveCount(1);
-        result["1944"].CloneOf.Should().BeNull();
+        result["1944"].Parent.Should().BeNull();
         result["1944"].Bios.Should().BeNull();
 
         // assert: clone
         result["1944j"].Should().NotBeNull();
-        result["1944j"].CloneOf.Name.Should().Be("1944");
+        result["1944j"].Parent.Name.Should().Be("1944");
         result["1944j"].Bios.Should().BeNull();
 
         // assert: game with bios
         result["aof"].Should().NotBeNull();
-        result["aof"].CloneOf.Should().BeNull();
+        result["aof"].Parent.Should().BeNull();
         result["aof"].Bios.Name.Should().Be("neogeo");
 
         // assert: bios
         result["neogeo"].Should().NotBeNull();
-        result["neogeo"].CloneOf.Should().BeNull();
+        result["neogeo"].Parent.Should().BeNull();
         result["neogeo"].Bios.Should().BeNull();
         result["neogeo"].Clones.Should().BeNullOrEmpty();
     }

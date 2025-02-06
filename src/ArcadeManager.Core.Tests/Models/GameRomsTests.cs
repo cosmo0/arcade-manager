@@ -26,7 +26,7 @@ public class GameRomsTests
     
         // assert: rom
         game.Name.Should().Be("test1");
-        game.CloneOfName.Should().Be("test");
+        game.ParentName.Should().Be("test");
         game.BiosName.Should().Be("bios");
 
         // assert: files

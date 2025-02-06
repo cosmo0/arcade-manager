@@ -34,13 +34,13 @@ public class GameRom {
     /// <summary>
     /// Gets or sets the parent name
     /// </summary>
-    public string CloneOfName { get; set; }
+    public string ParentName { get; set; }
 
     /// <summary>
     /// Gets or sets the parent data
     /// </summary>
     [JsonIgnore]
-    public GameRom CloneOf { get; set; }
+    public GameRom Parent { get; set; }
 
     /// <summary>
     /// Gets or sets the bios
@@ -146,11 +146,11 @@ public class GameRom {
     public static GameRom FromXml(XElement gameXml) {
         var game = new GameRom {
             Name = gameXml.Attribute("name").Value,
-            CloneOfName = gameXml.Attribute("cloneof")?.Value,
+            ParentName = gameXml.Attribute("cloneof")?.Value,
             BiosName = gameXml.Attribute("romof")?.Value
         };
 
-        if (game.CloneOfName == game.BiosName) {
+        if (game.ParentName == game.BiosName) {
             game.BiosName = null;
         }
 

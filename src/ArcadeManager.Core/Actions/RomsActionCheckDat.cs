@@ -15,12 +15,12 @@ public class RomsActionCheckDat
     /// <summary>
     /// Gets or sets the pre-built DAT file identifier
     /// </summary>
-    public string datfilePre { get; set; }
+    public string datfile { get; set; }
     
     /// <summary>
     /// Gets or sets a path to a custom DAT file
     /// </summary>
-    public string datfileCustom { get; set; }
+    public string datfilePath { get; set; }
     
     /// <summary>
     /// Gets or sets the action to execute
@@ -35,12 +35,12 @@ public class RomsActionCheckDat
     /// <summary>
     /// Gets or sets the target folder for fixes
     /// </summary>
-    public string fixFolder { get; set; }
+    public string targetFolder { get; set; }
     
     /// <summary>
     /// Gets or sets a value indicating whether to report all missing files; otherwise, it only reports error on roms existing on the disk
     /// </summary>
-    public bool actionReportAll { get; set; }
+    public bool reportAll { get; set; }
     
     /// <summary>
     /// Gets or sets the check speed
@@ -60,7 +60,7 @@ public class RomsActionCheckDat
     /// <summary>
     /// Gets or sets a value indicating whether to check for missing BIOS files
     /// </summary>
-    public bool otherBios { get; set; }
+    public bool checkBios { get; set; }
     
     /// <summary>
     /// Gets or sets the path to another folder to fix/rebuild the romset with
