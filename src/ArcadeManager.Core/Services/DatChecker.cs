@@ -329,7 +329,6 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     /// <param name="progress">The current item</param>
     /// <param name="game">The game to process</param>
     /// <param name="args">The action arguments</param>
-    /// <param name="allGames">All the games informations</param>
     /// <param name="otherFolderFiles">The path </param>
     /// <param name="messageHandler"></param>
     /// <param name="csv"></param>
@@ -363,22 +362,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
         // parent roms: if the zip contains the clones, extract the clones
         if (game.Parent == null && game.Clones.Any()) {
-            // get the clones inside the zip
-            foreach (var cloneName in targetZipFiles.Where(f => !string.IsNullOrEmpty(f.Path)).Select(f => f.Path).Distinct()) {
-                var targetCloneFile = fs.PathJoin(args.targetFolder, $"{cloneName}.zip");
+            await ExtractClone(game, targetRom, targetZipFiles, args, messageHandler);
 
-                // get the files related to the clone
-                foreach (var cloneZipFile in targetZipFiles.Where(f => f.Path == cloneName)) {
-                    // check that we actually want this file
-                    if (game.Clones[cloneName].RomFiles.Any(f => f.Name == cloneZipFile.Name && f.Crc == cloneZipFile.Crc)) {
-                        await fs.ReplaceZipFile(targetRom, targetCloneFile, cloneZipFile.Name, cloneZipFile.Path);
-                        
-                        if (messageHandler.MustCancel) { return progress; }
-                    }
-                }
-                
-                if (messageHandler.MustCancel) { return progress; }
-            }
+            if (messageHandler.MustCancel) { return progress; }
+
+            CleanupFilesOfGame(game, targetRom);
+
+            if (messageHandler.MustCancel) { return progress; }
 
             // check the files again
             CheckFilesOfGame(game, targetRom, args.checksha1, messageHandler);
@@ -388,41 +378,95 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
         // clone roms: copy the files from the parent, if they're missing
         if (game.Parent != null) {
-            var parentFileName = $"{game.Parent.Name}";
-            
-            // get the files of the parent that are not in the current clone
-            var filesOnlyInParent = game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name && cf.Crc == pf.Crc));
-
-            // get the missing files from the parent that are not already in the clone
-            foreach (var missingFile in filesOnlyInParent.Where(pf => !targetZipFiles.Any(zf => zf.Name == pf.Name && zf.Crc == pf.Crc))) {
-                await fs.ReplaceZipFile(fs.PathJoin(args.romset, parentFileName), targetRom, missingFile.Name);
-                
-                if (messageHandler.MustCancel) { return progress; }
-            }
+            await RebuildFromParent(game, targetRom, targetZipFiles, otherFolderFiles, args, messageHandler);
 
             if (messageHandler.MustCancel) { return progress; }
 
-            if (otherFolderFiles.Any()) {
-                // get the list of files again
-                targetZipFiles = fs.GetZipFiles(targetRom, args.checksha1);
+            CleanupFilesOfGame(game, targetRom);
 
-                // get the still-missing files from the other folder
-                foreach (var missingFile in filesOnlyInParent.Where(pf => !targetZipFiles.Any(zf => zf.Name == pf.Name && zf.Crc == pf.Crc))) {
-                    var otherFile = otherFolderFiles.Where(of => of.Name == missingFile.Name && of.Crc == missingFile.Crc).FirstOrDefault();
-                    if (otherFile != null) {
-                        var otherFilePath = fs.PathJoin(args.otherFolder, otherFile.ZipFileName);
-                        await fs.ReplaceZipFile(otherFilePath, targetRom, otherFile.Name, otherFile.Path);
-                    }
-
-                    if (messageHandler.MustCancel) { return progress; }
-                }
-            }
+            if (messageHandler.MustCancel) { return progress; }
 
             // check the files again
             CheckFilesOfGame(game, targetRom, args.checksha1, messageHandler);
         }
 
         return progress;
+    }
+
+    private async Task ExtractClone(GameRom game, string targetRom, IEnumerable<GameRomFile> targetZipFiles, RomsActionCheckDat args, IMessageHandler messageHandler) {
+        // get the clones inside the zip
+        foreach (var cloneName in targetZipFiles.Where(f => !string.IsNullOrEmpty(f.Path)).Select(f => f.Path).Distinct()) {
+            var targetCloneFile = fs.PathJoin(args.targetFolder, $"{cloneName}.zip");
+
+            // get the files related to the clone
+            foreach (var cloneZipFile in targetZipFiles.Where(f => f.Path == cloneName)) {
+                // check that we actually want this file
+                if (game.Clones[cloneName].RomFiles.Any(f => f.Name == cloneZipFile.Name && f.Crc == cloneZipFile.Crc)) {
+                    await fs.ReplaceZipFile(targetRom, targetCloneFile, cloneZipFile.Name, cloneZipFile.Path);
+                    
+                    cloneZipFile.ErrorReason = ErrorReason.None;
+                    cloneZipFile.ErrorDetails = null;
+
+                    if (messageHandler.MustCancel) { return; }
+                }
+            }
+            
+            if (messageHandler.MustCancel) { return; }
+        }
+    }
+
+    private async Task RebuildFromParent(GameRom game, string targetRom, IEnumerable<GameRomFile> targetZipFiles, GameRomFilesList otherFolderFiles, RomsActionCheckDat args, IMessageHandler messageHandler) {
+        var parentFileName = $"{game.Parent.Name}";
+            
+        // get the files of the parent that are not in the current clone
+        var filesOnlyInParent = game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name && cf.Crc == pf.Crc));
+
+        // get the missing files from the parent that are not already in the clone
+        foreach (var missingFile in filesOnlyInParent.Where(pf => !targetZipFiles.Any(zf => zf.Name == pf.Name && zf.Crc == pf.Crc))) {
+            await fs.ReplaceZipFile(fs.PathJoin(args.romset, parentFileName), targetRom, missingFile.Name);
+            
+            if (messageHandler.MustCancel) { return; }
+        }
+
+        if (messageHandler.MustCancel) { return; }
+
+        if (otherFolderFiles.Any()) {
+            // get the list of files again
+            targetZipFiles = fs.GetZipFiles(targetRom, args.checksha1);
+
+            // get the still-missing files from the other folder
+            foreach (var missingFile in filesOnlyInParent.Where(pf => !targetZipFiles.Any(zf => zf.Name == pf.Name && zf.Crc == pf.Crc))) {
+                var otherFile = otherFolderFiles.Where(of => of.Name == missingFile.Name && of.Crc == missingFile.Crc).FirstOrDefault();
+                if (otherFile != null) {
+                    var otherFilePath = fs.PathJoin(args.otherFolder, otherFile.ZipFileName);
+                    await fs.ReplaceZipFile(otherFilePath, targetRom, otherFile.Name, otherFile.Path);
+                }
+
+                if (messageHandler.MustCancel) { return; }
+            }
+        }
+    }
+
+    private async Task CleanupFilesOfGame(GameRom game, string file) {
+        if (!fs.FileExists(file)) {
+            return;
+        }
+
+        // the list of files in the current rom
+        var romFiles = game.RomFiles.ToList(); // ToList does a copy
+        if (game.Parent != null) {
+            // add the roms of the parent that are not in the clone
+            romFiles.AddRange(game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name && cf.Crc == pf.Crc)));
+        }
+
+        // get the files in the zip
+        var zipFiles = fs.GetZipFiles(file, false);
+
+        // get the files that are in the zip but shouldn't
+        var excessFiles = zipFiles.Where(zf => !romFiles.Any(rf => rf.Name == zf.Name));
+
+        // remove them
+        fs.DeleteZipFile(file, excessFiles);
     }
 
     private async Task<CsvGamesList> GetCsvData(string csvfilter) {

@@ -212,4 +212,11 @@ public interface IFileSystem {
     /// <param name="fileName">The file name to replace</param>
     /// <param name="sourceFilePath">The source file path, if any</param>
     Task ReplaceZipFile(string sourceZip, string targetZip, string fileName, string sourceFilePath = "");
+
+    /// <summary>
+    /// Deletes a file in a zip
+    /// </summary>
+    /// <param name="zipFile">The path to the zip file</param>
+    /// <param name="files">The list of files to delete</param>
+    void DeleteZipFile(string zipFile, IEnumerable<GameRomFile> files);
 }

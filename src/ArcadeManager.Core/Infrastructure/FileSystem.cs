@@ -424,7 +424,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         if (!FileExists(sourceZip)) {
             return;
         }
-        
+
         using var source = ZipFile.OpenRead(sourceZip);
         var mode = FileExists(targetZip) ? ZipArchiveMode.Update : ZipArchiveMode.Create;
         using var target = ZipFile.Open(targetZip, mode);
@@ -447,6 +447,24 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         using var sourceStream = sourceEntry.Open();
         
         await sourceStream.CopyToAsync(targetStream);
+    }
+
+    /// <summary>
+    /// Deletes a file in a zip
+    /// </summary>
+    /// <param name="zipFile">The path to the zip file</param>
+    /// <param name="files">The list of files to delete</param>
+    public void DeleteZipFile(string zipFile, IEnumerable<GameRomFile> files) {
+        if (!FileExists(zipFile)) {
+            return;
+        }
+
+        using var zip = ZipFile.Open(zipFile, ZipArchiveMode.Update);
+
+        foreach (var file in files) {
+            var entry = zip.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
+            entry?.Delete();
+        }
     }
 
     private static string GetZipFileSha1(ZipArchiveEntry entry)
