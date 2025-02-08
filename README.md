@@ -4,6 +4,12 @@
 [![ArcadeManager Linux](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml)
 [![ArcadeManager MacOS](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml)
 
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=bugs)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=code_smells)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=ncloc)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)
+
 This is a rom management tool that will work with any arcade emulator romset. It helps you filter your arcade rom collection (MAME/FBNeo) by removing unwanted, bad, and unplayable games.
 
 It also includes several selection of "best games", if you feel a bit lost among the several thousand games that full MAME romsets provide.

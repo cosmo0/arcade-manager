@@ -210,5 +210,6 @@ public interface IFileSystem {
     /// <param name="sourceZip">The source zip to copy the file from</param>
     /// <param name="targetZip">The target zip to copy the file to</param>
     /// <param name="fileName">The file name to replace</param>
-    Task ReplaceZipFile(string sourceZip, string targetZip, string fileName);
+    /// <param name="sourceFilePath">The source file path, if any</param>
+    Task ReplaceZipFile(string sourceZip, string targetZip, string fileName, string sourceFilePath = "");
 }

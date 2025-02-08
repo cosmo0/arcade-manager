@@ -248,7 +248,7 @@ public class DatCheckerTests
         await sut.FixGame(1, 1, game, args, processed, fixFolder, messageHandler, null);
 
         // assert
-        A.CallTo(() => fs.ReplaceZipFile(A<string>._, A<string>._, "test.1")).MustHaveHappened();
+        A.CallTo(() => fs.ReplaceZipFile(A<string>._, A<string>._, "test.1", A<string>._)).MustHaveHappened();
         game.RomFiles[0].ErrorReason.Should().Be(ErrorReason.None);
     }
 }

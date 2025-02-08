@@ -106,18 +106,13 @@
         <label class="form-check-label" for="actionFix">@Localizer["ROMS_CHECKDAT_ACTION_FIX"]</label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="action" value="change" id="actionChange" disabled>
+        <input class="form-check-input" type="radio" name="action" value="change" id="actionChange">
         <label class="form-check-label" for="actionChange">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE"]</label>
     </div>
-    <div>
-        <select id="romsetType" class="form-control" disabled>
-            <option value="nonmerged">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE_NONMERGED"]</option>
-            <option value="split">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE_SPLIT"]</option>
-            <option value="merged">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE_MERGED"]</option>
-        </select>
-    </div>
-    <div>
-        @Html.Raw(Localizer["ROMS_CHECKDAT_ACTION_CHANGE_EXPLANATION"])
+    <div class="text-muted mt-3">
+        <small>
+            @Html.Raw(Localizer["ROMS_CHECKDAT_ACTION_CHANGE_EXPLANATION"])
+        </small>
     </div>
 </div>
 
@@ -221,7 +216,6 @@ $(() => {
             datfile: $('input[name=datfilePre]:checked').val(),
             datfilePath: $('#datfileCustom').val(),
             action: $('input[name=action]:checked').val(),
-            romsetType: $('#romsetType').val(),
             targetFolder: $('#fixFolder').val(),
             reportAll: $('#actionReportAll').is(':checked'),
             speed: $('input[name=speed]:checked').val(),

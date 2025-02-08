@@ -28,11 +28,6 @@ public class RomsActionCheckDat
     public string action { get; set; }
     
     /// <summary>
-    /// Gets or sets the romset target type
-    /// </summary>
-    public string romsetType { get; set; }
-    
-    /// <summary>
     /// Gets or sets the target folder for fixes
     /// </summary>
     public string targetFolder { get; set; }
@@ -48,9 +43,9 @@ public class RomsActionCheckDat
     public string speed { get; set; }
 
     /// <summary>
-    /// Gets a value indicating whether the processing speed is slow
+    /// Gets a value indicating whether to check the SHA1 of the files
     /// </summary>
-    public bool isslow => speed != "fast";
+    public bool checksha1 => speed != "fast";
     
     /// <summary>
     /// Gets or sets the path to a CSV filter

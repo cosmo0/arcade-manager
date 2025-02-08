@@ -418,17 +418,28 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="sourceZip">The source zip to copy the file from</param>
     /// <param name="targetZip">The target zip to copy the file to</param>
     /// <param name="fileName">The file name to replace</param>
-    public async Task ReplaceZipFile(string sourceZip, string targetZip, string fileName)
+    /// <param name="sourceFilePath">The source file path, if any</param>
+    public async Task ReplaceZipFile(string sourceZip, string targetZip, string fileName, string sourceFilePath = "")
     {
-        using var source = System.IO.Compression.ZipFile.OpenRead(sourceZip);
-        using var target = System.IO.Compression.ZipFile.Open(targetZip, ZipArchiveMode.Update);
+        if (!FileExists(sourceZip)) {
+            return;
+        }
+        
+        using var source = ZipFile.OpenRead(sourceZip);
+        var mode = FileExists(targetZip) ? ZipArchiveMode.Update : ZipArchiveMode.Create;
+        using var target = ZipFile.Open(targetZip, mode);
 
         // overwrite the entry
-        var sourceEntry = source.GetEntry(fileName);
+        var sourceEntry = source.GetEntry(string.IsNullOrEmpty(sourceFilePath) ? fileName : $"{sourceFilePath}/{fileName}");
+        if (sourceEntry == null) {
+            // maybe I should throw, but I have very bad exception management
+            return;
+        }
+
         var targetEntry = target.GetEntry(fileName);
         
         // recreate the entry
-        targetEntry.Delete();
+        targetEntry?.Delete();
         targetEntry = target.CreateEntry(fileName);
 
         // write content
