@@ -35,6 +35,7 @@ ERROR_NOSECONDARYCSV=Please choose a secondary CSV file
 ERROR_NOTARGETCSV=Please choose the target CSV file
 ERROR_NODAT=Please choose a DAT file
 ERROR_NOTARGET=Please choose a target folder
+ERROR_SAMESOURCETARGET=The source and target are identical
 
 HOME_ACTION_LANGUAGE=Language
 HOME_ACTION_CSV=Manage games lists

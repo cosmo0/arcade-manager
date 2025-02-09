@@ -4,6 +4,7 @@
 [![ArcadeManager Linux](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/linux.yml)
 [![ArcadeManager MacOS](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml/badge.svg)](https://github.com/cosmo0/arcade-manager/actions/workflows/mac.yml)
 
+[![Translation status](https://hosted.weblate.org/widget/arcademanager/arcademanager-ui/svg-badge.svg)](https://hosted.weblate.org/engage/arcademanager/)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=bugs)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=code_smells)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=cosmo0_arcade-manager&metric=ncloc)](https://sonarcloud.io/dashboard?id=cosmo0_arcade-manager)

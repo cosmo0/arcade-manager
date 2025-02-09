@@ -35,6 +35,7 @@ ERROR_NOSECONDARYCSV=Veuillez sélectionner un fichier CSV secondaire
 ERROR_NOTARGETCSV=Veuillez sélectionner un fichier cible
 ERROR_NODAT=Veuillez sélectionner un fichier DAT
 ERROR_NOTARGET=Veuillez sélectionner un dossier cible
+ERROR_SAMESOURCETARGET=La cible et la source sont identiques
 
 HOME_ACTION_LANGUAGE=Langue
 HOME_ACTION_CSV=Gérer ses listes de jeux

@@ -23,6 +23,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             return;
         }
 
+        if (args.Romset.Equals(args.TargetFolder, StringComparison.InvariantCultureIgnoreCase)) {
+            messageHandler.Error(new ArgumentException($"Source and target folder are identical"));
+            return;
+        }
+
+        fs.EnsureDirectory(args.TargetFolder);
+
         messageHandler.Progress("Reading DAT file", 0, 0);
         var filesInRomset = fs.GetFiles(args.Romset, "*.zip");
 

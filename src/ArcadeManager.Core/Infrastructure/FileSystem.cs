@@ -137,6 +137,10 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="targetFolder">The target folder.</param>
     public void EnsureDirectory(string targetFolder)
     {
+        if (string.IsNullOrEmpty(targetFolder)) {
+            return;
+        }
+        
         if (!Directory.Exists(targetFolder))
         {
             Directory.CreateDirectory(targetFolder);
