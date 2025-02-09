@@ -38,6 +38,9 @@ public class Localizer : ILocalizer {
                     text = text.Trim('"');
                 }
 
+                // removes Weblate weird quotes escaping (because I'm using Joomla format)
+                text = text.Replace("\"_QQ_\"", "\"");
+
                 words.Add(code, text);
             }
 
