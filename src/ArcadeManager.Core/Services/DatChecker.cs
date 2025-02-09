@@ -180,6 +180,19 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
             CheckFileOfGame(game, gameFile, zipFile, checkSha1);
         }
+
+        // if the set is merged, check the parent's files in the zip
+        if (game.Parent != null) {
+            var filesOnlyInParent = GetFilesOnlyInParent(game);
+            foreach (var fip in filesOnlyInParent) {
+                if (messageHandler.MustCancel) { return; }
+
+                var zipFile = zipFiles.FirstOrDefault(zf => zf.Name.Equals(fip.Name, StringComparison.InvariantCultureIgnoreCase));
+                if (zipFile != null) { // don't trigger file missing error if it's not a merged set
+                    CheckFileOfGame(game, fip, zipFile, checkSha1);
+                }
+            }
+        }
     
         // check clones that are located inside the zip in case of merged set
         if (zipFiles.Any(zf => !string.IsNullOrEmpty(zf.Path))) {
@@ -227,17 +240,17 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             return progress;
         }
 
+        // progress only if we actually process the game
+        messageHandler.Progress($"Fixing {game.Name}", total, progress);
+
         // build file path
         var gameFile = fs.PathJoin(args.romset, $"{game.Name}.zip");
         var gameFileFixed = fs.PathJoin(args.targetFolder, $"{game.Name}.zip");
 
-        // we can't do much if the source file does not exist...
-        if (!fs.FileExists(gameFile)) {
-            return progress;
+        // always copy the file, if it doesn't exist already
+        if (fs.Exists(gameFile) && !fs.FileExists(gameFileFixed)) {
+            fs.FileCopy(gameFile, gameFileFixed, false);
         }
-
-        // progress only if we actually process the game
-        messageHandler.Progress($"Fixing {game.Name}", total, progress);
 
         if (messageHandler.MustCancel) { return progress; }
 
@@ -249,16 +262,11 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             if (existing != null && !fs.FileExists(gameFileFixed))
             {
                 fs.FileCopy(fs.PathJoin(args.otherFolder, $"{game.Name}.zip"), gameFileFixed, true);
-            }
+                    
+                if (messageHandler.MustCancel) { return progress; }
 
-            if (messageHandler.MustCancel) { return progress; }
-
-            // check that the files match the expected values; if not it will be rebuilt in the next step
-            CheckFilesOfGame(game, gameFileFixed, args.checksha1, messageHandler);
-        } else {
-            // always copy the file, if it doesn't exist already
-            if (!fs.FileExists(gameFileFixed)) {
-                fs.FileCopy(gameFile, gameFileFixed, false);
+                // check that the files match the expected values; if not it will be rebuilt in the next step
+                CheckFilesOfGame(game, gameFileFixed, args.checksha1, messageHandler);
             }
         }
 
@@ -288,6 +296,8 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     /// <param name="gameFileFixed">The target game file to fix</param>
     /// <param name="messageHandler">The message handler</param>
     public async Task FixGameFiles(GameRom game, GameRomList allGames, string otherFolder, GameRomFilesList otherFolderFiles, string gameFile, string gameFileFixed, IMessageHandler messageHandler) {
+        if (!fs.Exists(gameFile)) { return; }
+
         foreach (var romFile in game.RomFiles.Where(f => f.HasError))
         {
             // try to find the file in the already-processed files
@@ -418,7 +428,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         var parentFileName = $"{game.Parent.Name}";
             
         // get the files of the parent that are not in the current clone
-        var filesOnlyInParent = game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name && cf.Crc == pf.Crc));
+        var filesOnlyInParent = GetFilesOnlyInParent(game);
 
         // get the missing files from the parent that are not already in the clone
         foreach (var missingFile in filesOnlyInParent.Where(pf => !targetZipFiles.Any(zf => zf.Name == pf.Name && zf.Crc == pf.Crc))) {
@@ -447,16 +457,10 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     }
 
     private void CleanupFilesOfGame(GameRom game, string file) {
-        if (!fs.FileExists(file)) {
-            return;
-        }
+        if (!fs.FileExists(file)) { return; }
 
         // the list of files in the current rom
-        var romFiles = game.RomFiles.ToList(); // ToList does a copy
-        if (game.Parent != null) {
-            // add the roms of the parent that are not in the clone
-            romFiles.AddRange(game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name && cf.Crc == pf.Crc)));
-        }
+        var romFiles = GetAllFilesOfGame(game);
 
         // get the files in the zip
         var zipFiles = fs.GetZipFiles(file, false);
@@ -555,5 +559,21 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
 
         return dat;
+    }
+
+    private static List<GameRomFile> GetAllFilesOfGame(GameRom game) {
+        var romFiles = game.RomFiles.ToList(); // ToList does a copy
+        if (game.Parent != null) {
+            // add the roms of the parent that are not in the clone
+            romFiles.AddRange(game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name)));
+        }
+
+        return romFiles;
+    }
+
+    private static IEnumerable<GameRomFile> GetFilesOnlyInParent(GameRom game) {
+        if (game.Parent == null) { return []; }
+
+        return game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name));
     }
 }

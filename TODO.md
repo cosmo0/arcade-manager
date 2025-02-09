@@ -1,10 +1,5 @@
 # TODO
 
-## DAT check & fix
-
-* When checking or fixing a non-merged clone, also check and repair the parent's roms that should be inside the clone
-* New option to delete rom if fix failed
-
 ## UI
 
 * Alter the DOM instead of rebuilding it
