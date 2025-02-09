@@ -136,7 +136,7 @@ public class Csv : ICsv {
                     messageHandler.Progress("Reading source file", 100, (int)(source.BaseStream.Position / fileSize * 50));
 
                     // ignore empty lines and comments
-                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith(";")) {
+                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) {
                         continue;
                     }
 
@@ -146,7 +146,7 @@ public class Csv : ICsv {
                         continue;
                     }
 
-                    if (isFolderSetting && !line.StartsWith("[")) {
+                    if (isFolderSetting && !line.StartsWith('[')) {
                         continue;
                     }
 
@@ -154,7 +154,7 @@ public class Csv : ICsv {
                     isFolderSetting = false;
 
                     // found a section
-                    if (line.StartsWith("[")) {
+                    if (line.StartsWith('[')) {
                         currentSection = line;
 
                         // add to data
@@ -310,7 +310,7 @@ public class Csv : ICsv {
 
         await fs.ReadFileStream(filepath, async reader => {
             // check that the first line has a header
-            var firstLine = reader.ReadLine();
+            var firstLine = await reader.ReadLineAsync();
             var (hasHeader, delimiter) = HasHeader(firstLine);
 
             // back to the beginning of the file

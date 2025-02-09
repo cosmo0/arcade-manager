@@ -45,7 +45,6 @@ public class DatCheckerTests
             checkBios = false
         };
         var processed = new GameRomList();
-        var all = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
             new GameRomFile {
@@ -61,7 +60,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -83,14 +82,13 @@ public class DatCheckerTests
             reportAll = true
         };
         var processed = new GameRomList();
-        var all = new GameRomList();
 
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(false);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -123,7 +121,6 @@ public class DatCheckerTests
             checkBios = false
         };
         var processed = new GameRomList();
-        var all = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
             new GameRomFile {
@@ -139,7 +136,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -171,7 +168,6 @@ public class DatCheckerTests
             checkBios = false
         };
         var processed = new GameRomList();
-        var all = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
             new GameRomFile {
@@ -187,7 +183,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, all, this.messageHandler, null);
+        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -216,9 +212,6 @@ public class DatCheckerTests
             targetFolder = "fix"
         };
         var processed = new GameRomList() {
-            game
-        };
-        var all = new GameRomList() {
             game
         };
 

@@ -8,7 +8,6 @@ namespace ArcadeManager.Services;
 
 public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDatChecker
 {
-    
     /// <summary>
     /// Checks a romset against a DAT file
     /// </summary>
@@ -58,14 +57,14 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             // process check
             foreach (var game in games.OrderBy(g => g.Name))
             {
-                progress = CheckGame(total, progress, game, args, processed, games, messageHandler, csv);
+                progress = CheckGame(total, progress, game, args, processed, messageHandler, csv);
                 if (messageHandler.MustCancel) { break; }
             }
 
             GameRomFilesList otherFolderFiles = [];
             if (!messageHandler.MustCancel && repair) {
                 // get the files details from the repair folder
-                (otherFolderFiles, progress) = GetOtherFolderFilesDetails(total, progress, otherFiles, args.checksha1, repair || change, messageHandler);
+                (otherFolderFiles, progress) = GetOtherFolderFilesDetails(total, progress, otherFiles, args.checksha1, messageHandler);
             }
 
             // if error fixing: loop on errors and try to find a file to fix it with
@@ -110,7 +109,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     /// <param name="messageHandler">The message handler</param>
     /// <param name="csv">The CSV filter file</param>
     /// <returns>The new progress value</returns>
-    public int CheckGame(int total, int progress, GameRom game, RomsActionCheckDat args, GameRomList processed, GameRomList allGames, IMessageHandler messageHandler, CsvGamesList csv)
+    public int CheckGame(int total, int progress, GameRom game, RomsActionCheckDat args, GameRomList processed, IMessageHandler messageHandler, CsvGamesList csv)
     {
         if (messageHandler.MustCancel) { return progress; }
 
@@ -120,7 +119,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         // if the CSV filter is set, check if the game is in the list
         if (csv != null && !csv.Games.Any(g => g.Name == game.Name))
         {
-            return progress++; // increment anyway, since the total is based on number of files on the disk
+            return progress + 1; // increment anyway, since the total is based on number of files on the disk
         }
 
         // check if a matching file is on the disk
@@ -186,8 +185,8 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         if (zipFiles.Any(zf => !string.IsNullOrEmpty(zf.Path))) {
             foreach (var clone in game.Clones) {
                 foreach (var cloneFile in clone.RomFiles) {
-                    var cloneZipFile = zipFiles.Where(zf => zf.Path.Equals(clone.Name, StringComparison.InvariantCultureIgnoreCase) && zf.Name.Equals(cloneFile.Name, StringComparison.InvariantCultureIgnoreCase));
-                    CheckFileOfGame(clone, cloneFile, cloneFile, checkSha1);
+                    var cloneZipFile = zipFiles.FirstOrDefault(zf => zf.Path.Equals(clone.Name, StringComparison.InvariantCultureIgnoreCase) && zf.Name.Equals(cloneFile.Name, StringComparison.InvariantCultureIgnoreCase));
+                    CheckFileOfGame(clone, cloneFile, cloneZipFile, checkSha1);
                 }
             }
         }
@@ -436,7 +435,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
             // get the still-missing files from the other folder
             foreach (var missingFile in filesOnlyInParent.Where(pf => !targetZipFiles.Any(zf => zf.Name == pf.Name && zf.Crc == pf.Crc))) {
-                var otherFile = otherFolderFiles.Where(of => of.Name == missingFile.Name && of.Crc == missingFile.Crc).FirstOrDefault();
+                var otherFile = otherFolderFiles.FirstOrDefault(of => of.Name == missingFile.Name && of.Crc == missingFile.Crc);
                 if (otherFile != null) {
                     var otherFilePath = fs.PathJoin(args.otherFolder, otherFile.ZipFileName);
                     await fs.ReplaceZipFile(otherFilePath, targetRom, otherFile.Name, otherFile.Path);
@@ -447,7 +446,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private async Task CleanupFilesOfGame(GameRom game, string file) {
+    private void CleanupFilesOfGame(GameRom game, string file) {
         if (!fs.FileExists(file)) {
             return;
         }
@@ -488,25 +487,22 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         return [];
     }
 
-    private (GameRomFilesList files, int progress) GetOtherFolderFilesDetails(int total, int progress, IEnumerable<string> fixFiles, bool isslow, bool repairOrChange, IMessageHandler messageHandler) {
-        if (!messageHandler.MustCancel && repairOrChange)
+    private (GameRomFilesList files, int progress) GetOtherFolderFilesDetails(int total, int progress, IEnumerable<string> fixFiles, bool isslow, IMessageHandler messageHandler) {
+        if (messageHandler.MustCancel) { return ([], progress); }
+
+        GameRomFilesList result = [];
+
+        foreach (var ff in fixFiles)
         {
-            GameRomFilesList result = [];
+            messageHandler.Progress($"Reading {fs.FileName(ff)} in additional folder", total, progress++);
 
-            foreach (var ff in fixFiles)
-            {
-                messageHandler.Progress($"Reading {fs.FileName(ff)} in additional folder", total, progress++);
+            // read infos of files in zip
+            result.AddRange(fs.GetZipFiles(ff, isslow));
 
-                // read infos of files in zip
-                result.AddRange(fs.GetZipFiles(ff, isslow));
-
-                if (messageHandler.MustCancel) { break; }
-            }
-
-            return (result, progress);
+            if (messageHandler.MustCancel) { break; }
         }
 
-        return ([], progress);
+        return (result, progress);
     }
 
     private static int ComputeTotal(int filesCount, bool repair, bool change, int fixFilesCount) {
@@ -544,7 +540,6 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         if (checkSha1 && !string.IsNullOrEmpty(datFile.Sha1) && !zipFile.Sha1.Equals(datFile.Sha1, StringComparison.InvariantCultureIgnoreCase))
         {
             game.Error(ErrorReason.BadHash, $"Bad SHA1 - expected: {datFile.Sha1}; actual: {zipFile.Sha1}", datFile.Name);
-            return;
         }
     }
     

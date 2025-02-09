@@ -133,12 +133,12 @@ public class Roms : IRoms
 
             // check that all files in the CSV are listed in the folder
             var result = new List<string>();
-            foreach (var game in content.Games)
+            foreach (var gameName in content.Games.Select(g => g.Name))
             {
-                var gamePath = fs.PathJoin(args.romset, $"{game.Name}.zip");
+                var gamePath = fs.PathJoin(args.romset, $"{gameName}.zip");
                 if (!fs.FileExists(gamePath))
                 {
-                    result.Add(game.Name);
+                    result.Add(gameName);
                 }
             }
 

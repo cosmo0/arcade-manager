@@ -100,7 +100,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <returns>The directory name</returns>
     public string DirectoryName(string path)
     {
-        return new FileInfo(path)?.DirectoryName ?? string.Empty;
+        return new FileInfo(path).DirectoryName ?? string.Empty;
     }
 
     /// <summary>

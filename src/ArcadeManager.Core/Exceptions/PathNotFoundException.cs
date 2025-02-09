@@ -8,7 +8,7 @@ namespace ArcadeManager.Exceptions {
     /// </summary>
     /// <seealso cref="System.Exception"/>
     [Serializable]
-    internal class PathNotFoundException : Exception {
+    public class PathNotFoundException : Exception {
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PathNotFoundException"/> class.

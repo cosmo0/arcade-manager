@@ -36,7 +36,7 @@ $(() => {
 
     // bind errors
     window.onerror = function (msg, url, line, col, error) {
-        var extra = !col ? '' : ' ; column: ' + col;
+        let extra = !col ? '' : ' ; column: ' + col;
         extra += !error ? '' : '<br><br>error: ' + error;
 
         progressLog("Error: " + msg + "<br><br>File: " + url + "<br>line: " + line + extra, true);

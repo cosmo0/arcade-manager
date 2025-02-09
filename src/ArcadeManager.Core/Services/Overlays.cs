@@ -22,6 +22,8 @@ namespace ArcadeManager.Services;
 /// <param name="environment">The environment data</param>
 public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironment environment) : IOverlays {
 
+    private static readonly OperationCanceledException cancel = new("Operation cancelled");
+
     /// <summary>
     /// Downloads an overlay pack
     /// </summary>
@@ -53,7 +55,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 await DownloadCommon(pack, fs.PathJoin(data.configFolder, pack.Common.Dest[os]), data.overwrite, data.ratio, messageHandler, 100, 1);
             }
 
-            if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+            if (messageHandler.MustCancel) { throw cancel; }
 
             // check that there is a matching game in any of the roms folders
             messageHandler.Progress("games list to process", 1, 100);
@@ -64,7 +66,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             var installed = 0;
 
             foreach (var r in romsToProcess.OrderBy(r => r.Game)) {
-                if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+                if (messageHandler.MustCancel) { throw cancel; }
 
                 current++;
 
@@ -75,7 +77,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 // download the rom config and extract the overlay file name
                 var romConfigContent = string.Empty;
                 foreach (var romFolder in r.TargetFolder) {
-                    if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+                    if (messageHandler.MustCancel) { throw cancel; }
 
                     var romConfigFile = fs.PathJoin(romCfgFolder ?? romFolder, $"{game}{r.Extension}.cfg");
 
@@ -97,14 +99,14 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
                     // write rom config
                     if (data.overwrite || !fs.FileExists(romConfigFile)) {
-                        if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+                        if (messageHandler.MustCancel) { throw cancel; }
 
                         await fs.FileWriteAsync(romConfigFile, romConfigContent);
                         installed++;
                     }
                 }
 
-                if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+                if (messageHandler.MustCancel) { throw cancel; }
 
                 messageHandler.Progress($"{game}: download overlay (config)", total, current);
 
@@ -117,7 +119,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 // download the overlay file name and extract the image file name
                 var overlayConfigContent = string.Empty;
                 if (data.overwrite || !fs.FileExists(overlayConfigDest)) {
-                    if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+                    if (messageHandler.MustCancel) { throw cancel; }
 
                     overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi}");
 
@@ -130,7 +132,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                     overlayConfigContent = await fs.FileReadAsync(overlayConfigDest);
                 }
 
-                if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+                if (messageHandler.MustCancel) { throw cancel; }
 
                 messageHandler.Progress($"{game}: download overlay (image)", total, current);
 
@@ -142,7 +144,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
                 // download the image
                 if (data.overwrite || !fs.FileExists(imageDest)) {
-                    if (messageHandler.MustCancel) { throw new OperationCanceledException("Operation cancelled"); }
+                    if (messageHandler.MustCancel) { throw cancel; }
 
                     await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi}", imageDest);
                 }
@@ -173,7 +175,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
     /// <param name="ratio">The ratio.</param>
     /// <returns>The modified content</returns>
     private static string ChangeResolution(string content, float ratio) {
-        if (ratio == 1) {
+        if (Math.Abs(ratio - 1) < 0.001) {
             return content;
         }
 

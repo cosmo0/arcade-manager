@@ -202,7 +202,7 @@ public partial class ElectronMessageHandler(
     /// Changes the selected OS
     /// </summary>
     /// <param name="obj">The value</param>
-    private void ChangeOs(object obj) {
+    private static void ChangeOs(object obj) {
         if (obj != null) {
             // save the OS in settings
             ArcadeManagerEnvironment.SettingsOs = obj.ToString();
@@ -382,7 +382,7 @@ public partial class ElectronMessageHandler(
     /// Opens a new browser window to the specified URL
     /// </summary>
     /// <param name="url">The URL to open</param>
-    private async Task OpenNewWindow(object url) {
+    private static async Task OpenNewWindow(object url) {
         if (url != null) {
             Console.WriteLine("open blank link to: " + url.ToString());
             await Electron.Shell.OpenExternalAsync(url.ToString());

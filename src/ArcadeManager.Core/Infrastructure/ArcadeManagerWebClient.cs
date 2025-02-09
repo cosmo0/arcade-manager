@@ -40,7 +40,7 @@ public class ArcadeManagerWebClient : IArcadeManagerWebClient {
     /// <param name="localPath">The local download path.</param>
     public async Task DownloadFile(string url, string localPath) {
         var bytes = await client.GetByteArrayAsync(url);
-        File.WriteAllBytes(localPath, bytes);
+        await File.WriteAllBytesAsync(localPath, bytes);
     }
 
     /// <summary>
