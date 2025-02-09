@@ -40,9 +40,9 @@ public class DatCheckerTests
             Size = 1234
         });
         var args = new RomsActionCheckDat {
-            action = "check",
-            romset = "roms",
-            checkBios = false
+            Action = "check",
+            Romset = "roms",
+            CheckBios = false
         };
         var processed = new GameRomList();
 
@@ -76,10 +76,10 @@ public class DatCheckerTests
             Name = "test"
         };
         var args = new RomsActionCheckDat {
-            action = "check",
-            romset = "roms",
-            checkBios = false,
-            reportAll = true
+            Action = "check",
+            Romset = "roms",
+            CheckBios = false,
+            ReportAll = true
         };
         var processed = new GameRomList();
 
@@ -116,9 +116,9 @@ public class DatCheckerTests
             }
         ]);
         var args = new RomsActionCheckDat {
-            action = "check",
-            romset = "roms",
-            checkBios = false
+            Action = "check",
+            Romset = "roms",
+            CheckBios = false
         };
         var processed = new GameRomList();
 
@@ -163,9 +163,9 @@ public class DatCheckerTests
             }
         ]);
         var args = new RomsActionCheckDat {
-            action = "check",
-            romset = "roms",
-            checkBios = false
+            Action = "check",
+            Romset = "roms",
+            CheckBios = false
         };
         var processed = new GameRomList();
 
@@ -207,9 +207,9 @@ public class DatCheckerTests
             ErrorReason = ErrorReason.MissingFile
         });
         var args = new RomsActionCheckDat {
-            action = "fix",
-            romset = "roms",
-            targetFolder = "fix"
+            Action = "fix",
+            Romset = "roms",
+            TargetFolder = "fix"
         };
         var processed = new GameRomList() {
             game

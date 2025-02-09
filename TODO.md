@@ -9,5 +9,4 @@
 
 ## Other
 
-* Check if I can change the case of properties in Actions
 * Create unit tests for all missing services

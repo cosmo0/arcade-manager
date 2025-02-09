@@ -46,7 +46,7 @@ public partial class ElectronMessageHandler(
     /// <param name="label">The label.</param>
     public void Init(string label) {
         MustCancel = false;
-        Electron.IpcMain.Send(window, "progress", new Progress { label = label, init = true, canCancel = true });
+        Electron.IpcMain.Send(window, "progress", new Progress { Label = label, Init = true, CanCancel = true });
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public partial class ElectronMessageHandler(
     /// <param name="total">The total number of items.</param>
     /// <param name="current">The current item number.</param>
     public void Progress(string label, int total, int current) {
-        Electron.IpcMain.Send(window, "progress", new Progress { label = label, total = total, current = current });
+        Electron.IpcMain.Send(window, "progress", new Progress { Label = label, Total = total, Current = current });
     }
 
     /// <summary>
@@ -67,10 +67,10 @@ public partial class ElectronMessageHandler(
     public void Done(string label, string folder) {
         // display result
         if (MustCancel) {
-            Electron.IpcMain.Send(window, "progress", new Progress { label = $"Operation cancelled! - {label}", end = true, cancelled = true });
+            Electron.IpcMain.Send(window, "progress", new Progress { Label = $"Operation cancelled! - {label}", End = true, Cancelled = true });
         }
         else {
-            Electron.IpcMain.Send(window, "progress", new Progress { label = label, end = true, folder = folder });
+            Electron.IpcMain.Send(window, "progress", new Progress { Label = label, End = true, Folder = folder });
         }
 
         MustCancel = false;
@@ -81,7 +81,7 @@ public partial class ElectronMessageHandler(
     /// </summary>
     /// <param name="ex">The exception.</param>
     public void Error(Exception ex) {
-        Electron.IpcMain.Send(window, "progress", new Progress { label = $"An error has occurred: {ex.Message}", end = true });
+        Electron.IpcMain.Send(window, "progress", new Progress { Label = $"An error has occurred: {ex.Message}", End = true });
         
         MustCancel = false;
     }
@@ -217,7 +217,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.ConvertDat(data.main, data.target, this);
+        await csvService.ConvertDat(data.Main, data.Target, this);
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.ConvertIni(data.main, data.target, this);
+        await csvService.ConvertIni(data.Main, data.Target, this);
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.Keep(data.main, data.secondary, data.target, this);
+        await csvService.Keep(data.Main, data.Secondary, data.Target, this);
     }
 
     /// <summary>
@@ -250,7 +250,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.ListFiles(data.main, data.target, this);
+        await csvService.ListFiles(data.Main, data.Target, this);
     }
 
     /// <summary>
@@ -261,7 +261,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.Merge(data.main, data.secondary, data.target, this);
+        await csvService.Merge(data.Main, data.Secondary, data.Target, this);
     }
 
     /// <summary>
@@ -272,7 +272,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.Remove(data.main, data.secondary, data.target, this);
+        await csvService.Remove(data.Main, data.Secondary, data.Target, this);
     }
 
     /// <summary>
@@ -283,7 +283,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        await downloaderService.DownloadFile(data.repository, data.path, data.localfile);
+        await downloaderService.DownloadFile(data.Repository, data.Path, data.LocalFile);
 
         Electron.IpcMain.Send(window, "download-file-reply", true);
     }
@@ -355,7 +355,7 @@ public partial class ElectronMessageHandler(
     private void CopyFile(object args) {
         var data = ConvertArgs<FileAction>(args);
         
-        fs.FileCopy(data.source, data.target, data.overwrite);
+        fs.FileCopy(data.Source, data.Target, data.Overwrite);
 
         Electron.IpcMain.Send(window, "copy-file-reply", true);
     }

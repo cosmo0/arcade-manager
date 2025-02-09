@@ -55,17 +55,17 @@ public class Roms : IRoms
         try
         {
             // check files and folders
-            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.main}"); }
-            if (!fs.DirectoryExists(args.romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.romset}"); }
-            if (!fs.DirectoryExists(args.selection)) { fs.CreateDirectory(args.selection); }
+            if (!fs.FileExists(args.Main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.Main}"); }
+            if (!fs.DirectoryExists(args.Romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.Romset}"); }
+            if (!fs.DirectoryExists(args.Selection)) { fs.CreateDirectory(args.Selection); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.main, false);
+            var content = await csvService.ReadFile(args.Main, false);
 
             // copy the games
             var copied = CopyGamesList(args, content, messageHandler);
 
-            messageHandler.Done($"Copied {copied} file(s)", args.selection);
+            messageHandler.Done($"Copied {copied} file(s)", args.Selection);
         }
         catch (Exception ex)
         {
@@ -81,7 +81,7 @@ public class Roms : IRoms
     public async Task AddFromWizard(RomsAction args, IMessageHandler messageHandler)
     {
         // the csv is just a list name, we need to match it to the selected path
-        string[] emulatorFiles = args.main.Split("/", StringSplitOptions.RemoveEmptyEntries);
+        string[] emulatorFiles = args.Main.Split("/", StringSplitOptions.RemoveEmptyEntries);
         string emulator = emulatorFiles[0];
         string[] files = emulatorFiles[1].Split(",", StringSplitOptions.RemoveEmptyEntries);
 
@@ -90,8 +90,8 @@ public class Roms : IRoms
         try
         {
             // check files and folders
-            if (!fs.DirectoryExists(args.romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.romset}"); }
-            if (!fs.DirectoryExists(args.selection)) { fs.CreateDirectory(args.selection); }
+            if (!fs.DirectoryExists(args.Romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.Romset}"); }
+            if (!fs.DirectoryExists(args.Selection)) { fs.CreateDirectory(args.Selection); }
 
             // read CSV files
             Models.CsvGamesList content = new();
@@ -106,7 +106,7 @@ public class Roms : IRoms
             // copy the games
             var copied = CopyGamesList(args, content, messageHandler);
 
-            messageHandler.Done($"Copied {copied} file(s)", args.selection);
+            messageHandler.Done($"Copied {copied} file(s)", args.Selection);
         }
         catch (Exception ex)
         {
@@ -125,17 +125,17 @@ public class Roms : IRoms
         try
         {
             // check files and folders
-            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find CSV file {args.main}"); }
-            if (!fs.DirectoryExists(args.romset)) { throw new PathNotFoundException($"Unable to find folder {args.romset}"); }
+            if (!fs.FileExists(args.Main)) { throw new PathNotFoundException($"Unable to find CSV file {args.Main}"); }
+            if (!fs.DirectoryExists(args.Romset)) { throw new PathNotFoundException($"Unable to find folder {args.Romset}"); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.main, false);
+            var content = await csvService.ReadFile(args.Main, false);
 
             // check that all files in the CSV are listed in the folder
             var result = new List<string>();
             foreach (var gameName in content.Games.Select(g => g.Name))
             {
-                var gamePath = fs.PathJoin(args.romset, $"{gameName}.zip");
+                var gamePath = fs.PathJoin(args.Romset, $"{gameName}.zip");
                 if (!fs.FileExists(gamePath))
                 {
                     result.Add(gameName);
@@ -166,11 +166,11 @@ public class Roms : IRoms
         try
         {
             // check files and folders
-            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.main}"); }
-            if (!fs.DirectoryExists(args.selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.selection}"); }
+            if (!fs.FileExists(args.Main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.Main}"); }
+            if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.main, false);
+            var content = await csvService.ReadFile(args.Main, false);
 
             var total = content.Games.Count;
             var i = 0;
@@ -183,7 +183,7 @@ public class Roms : IRoms
 
                 // build vars
                 var zip = $"{game}.zip";
-                var filePath = fs.PathJoin(args.selection, zip);
+                var filePath = fs.PathJoin(args.Selection, zip);
 
                 messageHandler.Progress(game, total, i);
 
@@ -191,7 +191,7 @@ public class Roms : IRoms
                 if (!fs.FileExists(filePath))
                 {
                     zip = $"{game}.7z";
-                    filePath = fs.PathJoin(args.romset, zip);
+                    filePath = fs.PathJoin(args.Romset, zip);
                 }
 
                 // still not found: next
@@ -204,7 +204,7 @@ public class Roms : IRoms
                 deleted++;
             }
 
-            messageHandler.Done($"Deleted {deleted} file(s)", args.selection);
+            messageHandler.Done($"Deleted {deleted} file(s)", args.Selection);
         }
         catch (Exception ex)
         {
@@ -226,15 +226,15 @@ public class Roms : IRoms
         try
         {
             // check files and folders
-            if (!fs.FileExists(args.main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.main}"); }
-            if (!fs.DirectoryExists(args.selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.selection}"); }
+            if (!fs.FileExists(args.Main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.Main}"); }
+            if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.main, false);
+            var content = await csvService.ReadFile(args.Main, false);
 
             // get list of files
-            var files = fs.GetFiles(args.selection, "*.zip");
-            files.AddRange(fs.GetFiles(args.selection, "*.7z"));
+            var files = fs.GetFiles(args.Selection, "*.zip");
+            files.AddRange(fs.GetFiles(args.Selection, "*.7z"));
 
             var total = content.Games.Count;
             var i = 0;
@@ -264,7 +264,7 @@ public class Roms : IRoms
                 }
             }
 
-            messageHandler.Done($"Deleted {deleted} files", args.selection);
+            messageHandler.Done($"Deleted {deleted} files", args.Selection);
         }
         catch (Exception ex)
         {
@@ -287,7 +287,7 @@ public class Roms : IRoms
 
             // build vars
             var zip = $"{game}.zip";
-            var sourceRom = fs.PathJoin(args.romset, zip);
+            var sourceRom = fs.PathJoin(args.Romset, zip);
             var ext = "zip";
 
             // always display progress
@@ -297,7 +297,7 @@ public class Roms : IRoms
             if (!fs.FileExists(sourceRom))
             {
                 zip = $"{game}.7z";
-                sourceRom = fs.PathJoin(args.romset, zip);
+                sourceRom = fs.PathJoin(args.Romset, zip);
                 ext = "7z";
             }
 
@@ -307,14 +307,14 @@ public class Roms : IRoms
                 continue;
             }
 
-            var destRom = fs.PathJoin(args.selection, zip);
+            var destRom = fs.PathJoin(args.Selection, zip);
             var fileSize = fs.FileSize(sourceRom);
 
             // replace progress with file size (so the user knows when a file is large)
             messageHandler.Progress($"{game} ({fs.HumanSize(fileSize)})", total, i);
 
             // copy rom
-            if (!fs.FileExists(destRom) || args.overwrite)
+            if (!fs.FileExists(destRom) || args.Overwrite)
             {
                 fs.FileCopy(sourceRom, destRom, true);
                 copied++;
@@ -324,8 +324,8 @@ public class Roms : IRoms
             List<string> additionalFiles = [.. this.biosmatch.GetBiosesForGame(game), .. this.devicematch.GetDevicesForGame(game)];
             foreach (var af in additionalFiles)
             {
-                var sourceaf = fs.PathJoin(args.romset, $"{af}.{ext}");
-                var destaf = fs.PathJoin(args.selection, $"{af}.{ext}");
+                var sourceaf = fs.PathJoin(args.Romset, $"{af}.{ext}");
+                var destaf = fs.PathJoin(args.Selection, $"{af}.{ext}");
                 // never overwrite
                 if (fs.FileExists(sourceaf) && !fs.FileExists(destaf))
                 {
@@ -335,15 +335,15 @@ public class Roms : IRoms
             }
 
             // try to copy chd if it can be found
-            var sourceChd = fs.PathJoin(args.romset, game);
-            var targetChd = fs.PathJoin(args.selection, game);
+            var sourceChd = fs.PathJoin(args.Romset, game);
+            var targetChd = fs.PathJoin(args.Selection, game);
             if (fs.DirectoryExists(sourceChd))
             {
                 if (messageHandler.MustCancel) { break; }
 
                 messageHandler.Progress($"Copying {game} CHD ({fs.HumanSize(fs.DirectorySize(sourceChd))})", total, i);
 
-                copied += fs.DirectoryCopy(sourceChd, targetChd, args.overwrite, false);
+                copied += fs.DirectoryCopy(sourceChd, targetChd, args.Overwrite, false);
             }
         }
 

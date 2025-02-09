@@ -8,25 +8,25 @@ public class OverlaysAction {
 	/// <summary>
 	/// Gets or sets the path to the configs folder
 	/// </summary>
-	public string configFolder { get; set; }
+	public string ConfigFolder { get; set; }
 
 	/// <summary>
 	/// Gets or sets a value indicating whether the files should be overwritten
 	/// </summary>
-	public bool overwrite { get; set; }
+	public bool Overwrite { get; set; }
 
 	/// <summary>
 	/// Gets or sets the selected pack name
 	/// </summary>
-	public string pack { get; set; }
+	public string Pack { get; set; }
 
 	/// <summary>
 	/// Gets or sets the target size ratio
 	/// </summary>
-	public float ratio { get; set; }
+	public float Ratio { get; set; }
 
 	/// <summary>
 	/// Gets or sets the path to the roms folders
 	/// </summary>
-	public string[] romFolders { get; set; }
+	public string[] RomFolders { get; set; }
 }

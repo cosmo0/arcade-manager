@@ -135,10 +135,10 @@ public class Downloader(IWebClientFactory webclientfactory, IFileSystem fs, ILoc
     /// <returns>The list of files</returns>
     public async Task<IEnumerable<CsvFile>> GetList(DownloadAction data) {
         // get the content of the JSON file that lists the possible CSV files and their descriptions
-        var descriptor = await DownloadFile<CsvFilesList>(data.repository, data.details);
+        var descriptor = await DownloadFile<CsvFilesList>(data.Repository, data.Details);
 
         // list the actual files in the folder
-        var files = await ListFiles(data.repository, data.folder);
+        var files = await ListFiles(data.Repository, data.Folder);
 
         // return the files that match in both lists
         return descriptor.files.Where(d => files.Tree.Any((f) => f.Path == d.filename));
@@ -162,7 +162,7 @@ public class Downloader(IWebClientFactory webclientfactory, IFileSystem fs, ILoc
             string[] types = split.Length > 2 ? [ split[2], "set" ] : [ "set" ];
 
             // build paths
-            var sourceFolder = fs.GetDataPath("csv", data.folder);
+            var sourceFolder = fs.GetDataPath("csv", data.Folder);
             var sourceFile = fs.GetDataPath(sourceFolder, fileName);
 
             // get matching translation

@@ -8,15 +8,15 @@ public class CsvAction
     /// <summary>
     /// Gets or sets the path to the main file.
     /// </summary>
-    public string main { get; set; }
+    public string Main { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the secondary file.
     /// </summary>
-    public string secondary { get; set; }
+    public string Secondary { get; set; }
 
     /// <summary>
     /// Gets or sets the path to the target file.
     /// </summary>
-    public string target { get; set; }
+    public string Target { get; set; }
 }
