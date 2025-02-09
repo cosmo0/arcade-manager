@@ -24,15 +24,15 @@
     </div>
 
     <!-- Progress modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="progress">
-        <div class="modal-dialog modal-lg" role="document" data-backdrop="static" data-keyboard="false">
+    <dialog class="modal" tabindex="-1" id="progress">
+        <div class="modal-dialog modal-lg" data-backdrop="static" data-keyboard="false">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">@Localizer["PROGRESS_PLEASEWAIT"]</h5>
                 </div>
                 <div class="modal-body">
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar"></div>
+                        <div class="progress-bar"></div>
                     </div>
                     <p class="text-center details"></p>
                     <p class="text-center stop">
@@ -70,10 +70,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 
     <!-- Files list modal -->
-    <div class="modal fade" id="filesListModal" tabindex="-1" aria-hidden="true">
+    <dialog class="modal fade" id="filesListModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,7 +92,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 
     <!-- Fixes jQuery integration https://stackoverflow.com/a/37480521/6776 -->
     <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>

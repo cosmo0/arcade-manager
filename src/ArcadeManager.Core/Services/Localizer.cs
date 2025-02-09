@@ -78,6 +78,14 @@ public class Localizer : ILocalizer {
     }
 
     /// <summary>
+    /// Gets the list of supported cultures
+    /// </summary>
+    /// <returns>The list of supported cultures</returns>
+    public static CultureInfo[] GetSupportedCultures() {
+        return [.. _locales.Select(l => new CultureInfo(l))];
+    }
+
+    /// <summary>
     /// Changes the current culture.
     /// </summary>
     /// <param name="locale">The locale (en, fr...).</param>

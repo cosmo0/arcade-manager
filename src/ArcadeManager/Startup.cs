@@ -18,24 +18,21 @@ namespace ArcadeManager;
 /// <summary>
 /// Startup app
 /// </summary>
-public class Startup {
-    private readonly Container container = new Container();
+/// <remarks>
+/// Initializes a new instance of the <see cref="Startup"/> class.
+/// </remarks>
+/// <param name="configuration">The configuration.</param>
+public class Startup(IConfiguration configuration)
+{
+    private readonly Container container = new();
 
     private IWebHostEnvironment env;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Startup"/> class.
-    /// </summary>
-    /// <param name="configuration">The configuration.</param>
-    public Startup(IConfiguration configuration) {
-        Configuration = configuration;
-    }
 
     /// <summary>
     /// Gets the configuration.
     /// </summary>
     /// <value>The configuration.</value>
-    public IConfiguration Configuration { get; }
+    public IConfiguration Configuration { get; } = configuration;
 
     /// <summary>
     /// Configures the application pipeline.
@@ -86,11 +83,7 @@ public class Startup {
     public void ConfigureServices(IServiceCollection services) {
         services.AddLocalization();
         services.Configure<RequestLocalizationOptions>(options => {
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en"),
-                new CultureInfo("fr")
-            };
+            var supportedCultures = Services.Localizer.GetSupportedCultures();
 
             options.DefaultRequestCulture = new RequestCulture("en", "en");
             options.SupportedCultures = supportedCultures;
@@ -142,42 +135,42 @@ public class Startup {
     private static void BuildAppMenu() {
         static MenuItem firstMenu() {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-                return new MenuItem {
+                return new() {
                     Label = "ArcadeManager",
-                    Submenu = new MenuItem[]
-                    {
-                        new MenuItem { Role = MenuRole.about },
-                        new MenuItem { Type = MenuType.separator },
-                        new MenuItem
+                    Submenu =
+                    [
+                        new() { Role = MenuRole.about },
+                        new() { Type = MenuType.separator },
+                        new()
                         {
                             Label = "Open Developer Tools",
                             Accelerator = "CmdOrCtrl+I",
                             Click = () => Electron.WindowManager.BrowserWindows.First().WebContents.OpenDevTools()
                         },
-                        new MenuItem { Type = MenuType.separator },
-                        new MenuItem { Role = MenuRole.hide },
-                        new MenuItem { Role = MenuRole.hideothers },
-                        new MenuItem { Type = MenuType.separator },
-                        new MenuItem { Role = MenuRole.quit }
-                    }
+                        new() { Type = MenuType.separator },
+                        new() { Role = MenuRole.hide },
+                        new() { Role = MenuRole.hideothers },
+                        new() { Type = MenuType.separator },
+                        new() { Role = MenuRole.quit }
+                    ]
                 };
             }
             else {
                 return new MenuItem {
                     Label = "File",
-                    Submenu = new MenuItem[]
-                    {
-                        new MenuItem { Role = MenuRole.about },
-                        new MenuItem { Type = MenuType.separator },
-                        new MenuItem
+                    Submenu =
+                    [
+                        new() { Role = MenuRole.about },
+                        new() { Type = MenuType.separator },
+                        new()
                         {
                             Label = "Open Developer Tools",
                             Accelerator = "CmdOrCtrl+I",
                             Click = () => Electron.WindowManager.BrowserWindows.First().WebContents.OpenDevTools()
                         },
-                        new MenuItem { Type = MenuType.separator },
-                        new MenuItem { Role = MenuRole.quit }
-                    }
+                        new() { Type = MenuType.separator },
+                        new() { Role = MenuRole.quit }
+                    ]
                 };
             }
         }
@@ -188,42 +181,44 @@ public class Startup {
 			firstMenu(),
 
 			// Edit
-			new MenuItem {
+			new() {
                 Label = "Edit",
                 Type = MenuType.submenu,
-                Submenu = new MenuItem[] {
-                    new MenuItem { Label = "Undo", Accelerator = "CmdOrCtrl+Z", Role = MenuRole.undo },
-                    new MenuItem { Label = "Redo", Accelerator = "Shift+CmdOrCtrl+Z", Role = MenuRole.redo },
-                    new MenuItem { Type = MenuType.separator },
-                    new MenuItem { Label = "Cut", Accelerator = "CmdOrCtrl+X", Role = MenuRole.cut },
-                    new MenuItem { Label = "Copy", Accelerator = "CmdOrCtrl+C", Role = MenuRole.copy },
-                    new MenuItem { Label = "Paste", Accelerator = "CmdOrCtrl+V", Role = MenuRole.paste },
-                }
+                Submenu = [
+                    new() { Label = "Undo", Accelerator = "CmdOrCtrl+Z", Role = MenuRole.undo },
+                    new() { Label = "Redo", Accelerator = "Shift+CmdOrCtrl+Z", Role = MenuRole.redo },
+                    new() { Type = MenuType.separator },
+                    new() { Label = "Cut", Accelerator = "CmdOrCtrl+X", Role = MenuRole.cut },
+                    new() { Label = "Copy", Accelerator = "CmdOrCtrl+C", Role = MenuRole.copy },
+                    new() { Label = "Paste", Accelerator = "CmdOrCtrl+V", Role = MenuRole.paste },
+                ]
             },
 
 			// Window
-			new MenuItem {
+			new() {
                 Label = "Window",
                 Role = MenuRole.window,
                 Type = MenuType.submenu,
-                Submenu = new MenuItem[] {
-                    new MenuItem { Label = "Minimize", Accelerator = "CmdOrCtrl+M", Role = MenuRole.minimize },
-                    new MenuItem { Label = "Close", Accelerator = "CmdOrCtrl+W", Role = MenuRole.close }
-                }
+                Submenu = [
+                    new() { Label = "Minimize", Accelerator = "CmdOrCtrl+M", Role = MenuRole.minimize },
+                    new() { Label = "Close", Accelerator = "CmdOrCtrl+W", Role = MenuRole.close }
+                ]
             },
 
 			// Help
-			new MenuItem {
+			new() {
                 Label = "Help",
                 Role = MenuRole.help,
                 Type = MenuType.submenu,
-                Submenu = new MenuItem[] {
-                    new MenuItem
+                Submenu = [
+                    new()
                     {
                         Label = "Learn More",
+                        #pragma warning disable S1075
                         Click = async () => await Electron.Shell.OpenExternalAsync("https://github.com/cosmo0/arcade-manager/")
+                        #pragma warning restore S1075
                     }
-                }
+                ]
             }
         };
 

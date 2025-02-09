@@ -8,6 +8,10 @@ namespace ArcadeManager.Exceptions {
     /// </summary>
     /// <seealso cref="System.Exception"/>
     [Serializable]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Serialization",
+        "S3925:Update this implementation of 'ISerializable' to conform to the recommended serialization pattern",
+        Justification = "Not serialized")]
     public class PathNotFoundException : Exception {
 
         /// <summary>

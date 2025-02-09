@@ -126,61 +126,12 @@ public class Csv : ICsv {
             var fileName = fs.FileName(main);
 
             await fs.ReadFileStream(main, async source => {
-                var isFolderSetting = false;
-                var currentSection = "";
-
-                while (!source.EndOfStream) {
-                    var line = (await source.ReadLineAsync()).Trim();
-
-                    // progress up to 50%
-                    messageHandler.Progress("Reading source file", 100, (int)(source.BaseStream.Position / fileSize * 50));
-
-                    // ignore empty lines and comments
-                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) {
-                        continue;
-                    }
-
-                    // ignore folder settings
-                    if (line == "[FOLDER_SETTINGS]") {
-                        isFolderSetting = true;
-                        continue;
-                    }
-
-                    if (isFolderSetting && !line.StartsWith('[')) {
-                        continue;
-                    }
-
-                    // we're out of folder settings
-                    isFolderSetting = false;
-
-                    // found a section
-                    if (line.StartsWith('[')) {
-                        currentSection = line;
-
-                        // add to data
-                        if (!data.ContainsKey(currentSection)) {
-                            data.Add(currentSection, new List<IniEntry>());
-                        }
-
-                        continue;
-                    }
-
-                    // we're in a section data
-                    if (line.Contains('=', StringComparison.InvariantCultureIgnoreCase)) {
-                        // game=value
-                        var split = line.Split("=", StringSplitOptions.TrimEntries);
-                        data[currentSection].Add(new IniEntry { game = split[0], value = split[1] });
-                    }
-                    else {
-                        // simple games list
-                        data[currentSection].Add(new IniEntry { game = line });
-                    }
-                }
+                await ReadIniFile(source, data, fileSize, messageHandler);
             });
 
             // create a file for each non-empty section
             var i = 0;
-            foreach (var entry in data.Where(d => d.Value.Any())) {
+            foreach (var entry in data.Where(d => d.Value.Count != 0)) {
                 i++;
 
                 // file name = sanitized section name, or source name if there's only one section
@@ -479,6 +430,59 @@ public class Csv : ICsv {
                 await output.WriteLineAsync(entry.ToCSVString(defaultDelimiter));
             }
         });
+    }
+
+    private async Task ReadIniFile(StreamReader source, Dictionary<string, List<IniEntry>> data, long fileSize, IMessageHandler messageHandler) {
+        var isFolderSetting = false;
+        var currentSection = "";
+
+        while (!source.EndOfStream) {
+            var line = (await source.ReadLineAsync()).Trim();
+
+            // progress up to 50%
+            messageHandler.Progress("Reading source file", 100, (int)(source.BaseStream.Position / fileSize * 50));
+
+            // ignore empty lines and comments
+            if (string.IsNullOrWhiteSpace(line) || line.StartsWith(';')) {
+                continue;
+            }
+
+            // ignore folder settings
+            if (line == "[FOLDER_SETTINGS]") {
+                isFolderSetting = true;
+                continue;
+            }
+
+            if (isFolderSetting && !line.StartsWith('[')) {
+                continue;
+            }
+
+            // we're out of folder settings
+            isFolderSetting = false;
+
+            // found a section
+            if (line.StartsWith('[')) {
+                currentSection = line;
+
+                // add to data
+                if (!data.ContainsKey(currentSection)) {
+                    data.Add(currentSection, []);
+                }
+
+                continue;
+            }
+
+            // we're in a section data
+            if (line.Contains('=', StringComparison.InvariantCultureIgnoreCase)) {
+                // game=value
+                var split = line.Split("=", StringSplitOptions.TrimEntries);
+                data[currentSection].Add(new IniEntry { game = split[0], value = split[1] });
+            }
+            else {
+                // simple games list
+                data[currentSection].Add(new IniEntry { game = line });
+            }
+        }
     }
 
     /// <summary>

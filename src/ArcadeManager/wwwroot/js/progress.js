@@ -35,7 +35,7 @@ $(() => {
     });
 
     // bind errors
-    window.onerror = function (msg, url, line, col, error) {
+    window.onerror = (msg, url, line, col, error) => {
         let extra = !col ? '' : ' ; column: ' + col;
         extra += !error ? '' : '<br><br>error: ' + error;
 

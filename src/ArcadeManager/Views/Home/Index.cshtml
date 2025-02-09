@@ -30,7 +30,7 @@
     <div class="col-3">
         <a asp-controller="Wizard" asp-action="Index" class="navmenu">
             <div class="card text-center border-primary">
-                <img class="card-img-top" src="img/wizard.png">
+                <img class="card-img-top" src="img/wizard.png" alt="@Localizer["HOME_ACTION_WIZARD"]">
                 <div class="card-footer">
                     @Localizer["HOME_ACTION_WIZARD"]
                 </div>
@@ -41,7 +41,7 @@
     <div class="col-3">
         <a asp-controller="Overlays" asp-action="Index" class="navmenu overlays">
             <div class="card text-center border-primary">
-                <img class="card-img-top" src="img/overlays.png">
+                <img class="card-img-top" src="img/overlays.png" alt="@Localizer["HOME_ACTION_OVERLAYS"]">
                 <div class="card-footer">
                     @Localizer["HOME_ACTION_OVERLAYS"]
                 </div>
@@ -52,7 +52,7 @@
     <div class="col-3">
         <a asp-controller="Roms" asp-action="Index" class="navmenu">
             <div class="card text-center border-primary">
-                <img class="card-img-top" src="img/roms.png">
+                <img class="card-img-top" src="img/roms.png" alt="@Localizer["HOME_ACTION_ROMS"]">
                 <div class="card-footer">
                     @Localizer["HOME_ACTION_ROMS"]
                 </div>
@@ -63,7 +63,7 @@
     <div class="col-3">
         <a asp-controller="Csv" asp-action="Index" class="navmenu">
             <div class="card text-center border-primary">
-                <img class="card-img-top" src="img/csv.png">
+                <img class="card-img-top" src="img/csv.png" alt="@Localizer["HOME_ACTION_CSV"]">
                 <div class="card-footer">
                     @Localizer["HOME_ACTION_CSV"]
                 </div>
@@ -84,7 +84,7 @@
         <div class="list-group">
             <a asp-controller="Home" asp-action="Os" class="navmenu list-group-item list-group-item-action text-info border-info">
                 @Localizer["HOME_ACTION_SYSTEM"]
-                <img src="img/@(ArcadeManagerEnvironment.SettingsOs)-h.png">
+                <img src="img/@(ArcadeManagerEnvironment.SettingsOs)-h.png" alt="OS">
             </a>
         </div>
     </div>
@@ -95,7 +95,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-body">
-				<h1 class="display-4" id="versionName"></h1>
+				<h1 class="display-4" id="versionName">[version name]</h1>
 				<p class="lead">
                     @Localizer["HOME_UPDATE_PUBLISHEDON"]
                     <span id="versionDate"></span>
