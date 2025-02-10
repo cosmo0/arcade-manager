@@ -28,7 +28,7 @@ $(() => {
     });
 
     // bind display of files fixed
-    ipcRenderer.on('progress-processed', (origin, data) => {
+    ipcRenderer.on('progress-fixed', (origin, data) => {
         data = !data ? {} : data[0];
         
         progressFixed(data);
@@ -166,7 +166,7 @@ function progressLog(msg, isError) {
 function refreshProcessed() {
     const onlyErrors = $('#processedOnlyErrors').is(':checked');
     $('#processedList').empty();
-
+    
     if (processedFormat == 'csv') {
         $('#processedList').css('white-space', 'pre').append('game;file;status\n');
     } else {
@@ -212,8 +212,7 @@ function progressFixed(raw) {
         processed[idx] = data;
     }
 
-    // TODO: update a specific game instead of rewriting everything
-    refreshProcessed();
+    displayGame(data, $('#processedOnlyErrors').is(':checked'));
 }
 
 /**
@@ -221,43 +220,85 @@ function progressFixed(raw) {
  * 
  * @param {Object} data the game data
  * @param {Boolean} onlyErrors whether to display only errors
- * @returns 
  */
 function displayGame(data, onlyErrors) {
-    const target = $('#processedList'),
-        item = $('<div></div>\n');
+    if (processedFormat == 'list') {
+        displayGameList(data, onlyErrors);
+    } else {
+        displayGameCsv(data, onlyErrors);
+    }
+}
 
-    if (data.haserror || data.romfiles.some(rf => rf.haserror)) {
-        if (processedFormat == 'list') {
-            item.append(`<div class="text-danger"><i class="icon-warning"></i> ${data.name} : ${data.errordetails ?? ''}</div>\n`);
-        } else {
-            item.append(`${data.name};${data.name}.zip;"${data.errordetails ?? 'OK'}"\n`);
-        }
+/**
+ * Displays a game as a list format
+ * 
+ * @param {Object} game the game to display
+ * @param {Boolean} onlyErrors whether to display only the errors
+ */
+function displayGameList(game, onlyErrors) {
+    const target = $('#processedList');
 
-        for (let file of data.romfiles) {
-            if (!onlyErrors && !file.haserror) {
-                if (processedFormat == 'list') {
-                    item.append(`<div class="pl-5">${file.name} : OK</div>\n`);
-                } else {
-                    item.append(`${data.name};${file.name};OK\n`);
-                }
-            } else if (file.haserror) {
-                if (processedFormat == 'list') {
-                    item.append(`<div class="pl-5">${file.name} : ${file.errordetails}</div>\n`);
-                } else {
-                    item.append(`${data.name};${file.name};"${file.errordetails}"\n`);
-                }
-            }
-        }
-    } else if (!onlyErrors) {
-        if (processedFormat == 'list') {
-            item.text(data.name + ' : OK');
-        } else {
-            item.text(`${data.name};${data.name}.zip;OK\n`);
+    let item = $(`#game-${game.name}`);
+    
+    // no error
+    if (onlyErrors && !game.haserror && !game.romfiles.some(rf => rf.haserror)) {
+        item.remove();
+        return;
+    }
+
+    if (item.length === 0) {
+        item = $(`<div id="game-${game.name}"></div>\n`);
+    } else {
+        item.empty();
+    }
+
+    // game line
+    const className = game.haserror ? 'text-danger' : '';
+    const icon = game.haserror ? '<i class="icon-warning"></i>' : '';
+    const error = game.haserror || game.romfiles.some(rf => rf.haserror) ? (game.errordetails ?? '') : 'OK';
+    item.append(`<div class="${className}">${icon} ${game.name} : ${error}</div>\n`);
+
+    // get files with errors
+    const filesWithError = game.romfiles.filter(f => f.haserror);
+    if (filesWithError.length > 0) {
+        const errors = $('<div class="text-danger pl-5"></div>\n');
+        errors.text(filesWithError.map(f => f.name).join(', '));
+        item.append(errors);
+    }
+
+    // get files without error
+    if (!onlyErrors) {
+        const filesWithoutError = game.romfiles.filter(f => !f.haserror);
+        if (filesWithoutError.length > 0) {
+            const noerrors = $('<div class="pl-5"></div>\n');
+            noerrors.text(filesWithoutError.map(f => f.name).join(', '));
+            item.append(noerrors);
         }
     }
 
     target.append(item);
+}
+
+/**
+ * Displays a game as a CSV list
+ * 
+ * @param {Object} game the game to display
+ * @param {Boolean} onlyErrors whether to display on the errors
+ */
+function displayGameCsv(game, onlyErrors) {
+    const target = $('#processedList');
+
+    // game line
+    if (!onlyErrors || game.haserror) {
+        target.append(`${game.name};${game.name}.zip;"${game.errordetails ?? 'OK'}"\n`);
+    }
+
+    // a new line for each file
+    for (let file of game.romfiles) {
+        if (!onlyErrors || file.haserror) {
+            target.append(`${game.name};${file.name};"${file.errordetails ?? 'OK'}"\n`);
+        }
+    }
 }
 
 /**

@@ -226,7 +226,8 @@ public class DatCheckerTests
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("roms/test.zip");
         A.CallTo(() => fs.PathJoin("fix", "test.zip")).Returns("fix/test.zip");
-        A.CallTo(() => fs.FileExists(A<string>._)).Returns(true);
+        A.CallTo(() => fs.FileExists("roms/test.zip")).Returns(true);
+        A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(false);
 
         // arrange: this gets called at the end of the check
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns([

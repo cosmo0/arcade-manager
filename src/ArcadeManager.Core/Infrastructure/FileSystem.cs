@@ -423,10 +423,11 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="targetZip">The target zip to copy the file to</param>
     /// <param name="fileName">The file name to replace</param>
     /// <param name="sourceFilePath">The source file path, if any</param>
-    public async Task ReplaceZipFile(string sourceZip, string targetZip, string fileName, string sourceFilePath = "")
+    /// <returns>A value indicating whether the file has been replaced</returns>
+    public async Task<bool> ReplaceZipFile(string sourceZip, string targetZip, string fileName, string sourceFilePath = "")
     {
         if (!FileExists(sourceZip)) {
-            return;
+            return false;
         }
 
         using var source = ZipFile.OpenRead(sourceZip);
@@ -437,11 +438,17 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         var sourceEntry = source.GetEntry(string.IsNullOrEmpty(sourceFilePath) ? fileName : $"{sourceFilePath}/{fileName}");
         if (sourceEntry == null) {
             // maybe I should throw, but I have very bad exception management
-            return;
+            return false;
         }
 
         var targetEntry = target.GetEntry(fileName);
-        
+
+        // check if we have to replace it
+        if (targetEntry != null && targetEntry.Length == sourceEntry.Length && targetEntry.Crc32 == sourceEntry.Crc32)
+        {
+            return false;
+        }
+
         // recreate the entry
         targetEntry?.Delete();
         targetEntry = target.CreateEntry(fileName);
@@ -451,6 +458,8 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         using var sourceStream = sourceEntry.Open();
         
         await sourceStream.CopyToAsync(targetStream);
+
+        return true;
     }
 
     /// <summary>
