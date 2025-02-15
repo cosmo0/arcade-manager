@@ -12,8 +12,9 @@ public class DatFile(IFileSystem fs) : IDatFile
     /// Gets a roms list from a DAT file
     /// </summary>
     /// <param name="datFilePath">The DAT file path</param>
+    /// <param name="folder">The folder of the rom files</param>
     /// <returns>The roms list</returns>
-    public async Task<GameRomList> GetRoms(string datFilePath)
+    public async Task<GameRomList> GetRoms(string datFilePath, string folder)
     {
         var result = new GameRomList();
 
@@ -27,7 +28,7 @@ public class DatFile(IFileSystem fs) : IDatFile
             // for each game in the dat file
             foreach (var gameXml in doc.Root.Elements(gameTag)) {
                 // parse game infos
-                result.Add(GameRom.FromXml(gameXml));
+                result.Add(GameRom.FromXml(gameXml, folder));
             }
         });
 

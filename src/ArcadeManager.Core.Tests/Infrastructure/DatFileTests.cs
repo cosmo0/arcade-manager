@@ -30,7 +30,7 @@ public class DatFileTests
         var datPath = Path.Combine(filesPath, "datfile.xml");
 
         // act
-        var result = await sut.GetRoms(datPath);
+        var result = await sut.GetRoms(datPath, "romset");
 
         // assert: list
         result.Should().HaveCount(4);

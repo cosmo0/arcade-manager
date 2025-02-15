@@ -12,6 +12,7 @@ public interface IDatFile
     /// Gets a roms list from a DAT file
     /// </summary>
     /// <param name="datFilePath">The DAT file path</param>
+    /// <param name="folder">The folder of the rom files</param>
     /// <returns>The roms list</returns>
-    Task<GameRomList> GetRoms(string datFilePath);
+    Task<GameRomList> GetRoms(string datFilePath, string folder);
 }

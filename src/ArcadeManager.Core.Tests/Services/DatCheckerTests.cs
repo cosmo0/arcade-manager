@@ -219,7 +219,9 @@ public class DatCheckerTests
             new GameRomFile {
                 Name = "test.1",
                 Crc = "abcd",
-                Size = 1234
+                Size = 1234,
+                ZipFileName = "test.zip",
+                ZipFileFolder = "roms"
             }
         };
 
@@ -227,14 +229,16 @@ public class DatCheckerTests
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("roms/test.zip");
         A.CallTo(() => fs.PathJoin("fix", "test.zip")).Returns("fix/test.zip");
         A.CallTo(() => fs.FileExists("roms/test.zip")).Returns(true);
-        A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(false);
+        A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(true);
 
         // arrange: this gets called at the end of the check
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns([
             new GameRomFile {
                 Name = "test.1",
                 Crc = "abcd",
-                Size = 1234
+                Size = 1234,
+                ZipFileName = "test.zip",
+                ZipFileFolder = "roms"
             }
         ]);
 
@@ -242,7 +246,7 @@ public class DatCheckerTests
         await sut.FixGame(1, 1, game, args, processed, fixFolder, messageHandler, null);
 
         // assert
-        A.CallTo(() => fs.ReplaceZipFile(A<string>._, A<string>._, "test.1", A<string>._)).MustHaveHappened();
+        A.CallTo(() => fs.ReplaceZipFile(A<System.IO.Compression.ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();
         game.RomFiles[0].ErrorReason.Should().Be(ErrorReason.None);
     }
 }

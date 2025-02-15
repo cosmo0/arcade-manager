@@ -22,7 +22,7 @@ public class GameRomsTests
     public void GameRom_is_created_from_xml()
     {
         // arrange/act
-        var game = GameRom.FromXml(xml);
+        var game = GameRom.FromXml(xml, "romset");
     
         // assert: rom
         game.Name.Should().Be("test1");
@@ -36,13 +36,15 @@ public class GameRomsTests
         file.Size.Should().Be(524288);
         file.Crc.Should().Be("ac44415b");
         file.Sha1.Should().Be("218f8b1886eb72b8547127042b5ae47600e18944");
+        file.ZipFileName.Should().Be("test1.zip");
+        file.ZipFileFolder.Should().Be("romset");
     }
 
     [Fact]
     public void GameRom_is_marked_as_error_missing_rom()
     {
         // arrange
-        var game = GameRom.FromXml(xml);
+        var game = GameRom.FromXml(xml, "romset");
 
         // act
         game.Error(ErrorReason.MissingFile, "Missing whole rom", null);
@@ -56,7 +58,7 @@ public class GameRomsTests
     public void GameRom_is_marked_as_error_missing_bios()
     {
         // arrange
-        var game = GameRom.FromXml(xml);
+        var game = GameRom.FromXml(xml, "romset");
 
         // arrange: fake bios (should be filled with Infrastructure.DatFile.GetRoms)
         game.Bios = new() { Name = "bios.zip" };
@@ -74,7 +76,7 @@ public class GameRomsTests
     public void GameRom_is_marked_as_error_missing_file_in_zip()
     {
         // arrange
-        var game = GameRom.FromXml(xml);
+        var game = GameRom.FromXml(xml, "romset");
 
         // act
         game.Error(ErrorReason.MissingFile, "Missing file", "s92u-23a");
@@ -89,7 +91,7 @@ public class GameRomsTests
     public void GameRom_is_marked_as_error_bad_hash()
     {
         // arrange
-        var game = GameRom.FromXml(xml);
+        var game = GameRom.FromXml(xml, "romset");
 
         // act
         game.Error(ErrorReason.BadHash, "Bad hash", "s92u-23a");

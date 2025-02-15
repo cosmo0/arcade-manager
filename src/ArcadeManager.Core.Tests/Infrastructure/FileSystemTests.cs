@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using ArcadeManager.Infrastructure;
+using ArcadeManager.Models;
 using FakeItEasy;
 using FluentAssertions;
 
@@ -74,26 +75,35 @@ public class FileSystemTests
     {
         // arrange: paths
         var original = Path.Combine(filesPath, "test1.zip");
-        var copyTo = Path.Combine(filesPath, "test1-copy.zip");
-        var copyFrom = Path.Combine(filesPath, "test2.zip");
+        var targetZip = Path.Combine(filesPath, "test1-copy.zip");
+
+        // arrange: file data
+        var sourceFile = new GameRomFile {
+            Name = "test1.txt",
+            ZipFileName = "test2.zip",
+            ZipFileFolder = filesPath,
+            Crc = "8ab2dce2"
+        };
 
         // arrange: cleanup
-        if (File.Exists(copyTo)) {
-            File.Delete(copyTo);
+        if (File.Exists(targetZip)) {
+            File.Delete(targetZip);
         }
 
-        // arrange: copy target file
-        File.Copy(original, copyTo);
+        // arrange: copy original to target file
+        File.Copy(original, targetZip);
+
+        // arrange: open the zip
+        using var zip = sut.OpenZipWrite(targetZip);
 
         // act
-        await sut.ReplaceZipFile(copyFrom, copyTo, "test1.txt");
+        await sut.ReplaceZipFile(zip, sourceFile);
 
         // assert: read the new zip content
-        using var zip = System.IO.Compression.ZipFile.OpenRead(copyTo);
-        var file = zip.GetEntry("test1.txt");
-        file.Should().NotBeNull();
+        var fileInZip = zip.GetEntry("test1.txt");
+        fileInZip.Should().NotBeNull();
         
-        var data = new StreamReader(file!.Open()).ReadToEnd();
+        var data = await new StreamReader(fileInZip!.Open()).ReadToEndAsync();
         data.Should().Be("test1 modified");
     }
 }

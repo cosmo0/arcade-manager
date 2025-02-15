@@ -396,8 +396,9 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         var result = new List<GameRomFile>();
 
         var fileName = FileName(path);
+        var folder = DirectoryName(path);
 
-        using var zip = System.IO.Compression.ZipFile.OpenRead(path);
+        using var zip = ZipFile.OpenRead(path);
 
         // loop on entry, skipping folders (which are entries with size 0 and no name)
         foreach (var entry in zip.Entries.Where(e => e.Length > 0 && !string.IsNullOrEmpty(e.Name)))
@@ -405,6 +406,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
             result.Add(new GameRomFile
             {
                 ZipFileName = fileName,
+                ZipFileFolder = folder,
                 Name = entry.Name,
                 Path = Path.GetDirectoryName(entry.FullName),
                 Size = (int)entry.Length,
@@ -417,6 +419,16 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     }
 
     /// <summary>
+    /// Opens a zip for writing
+    /// </summary>
+    /// <param name="path">The path to the zip</param>
+    /// <returns>The opened zip file</returns>
+    public ZipArchive OpenZipWrite(string path) {
+        var mode = FileExists(path) ? ZipArchiveMode.Update : ZipArchiveMode.Create;
+        return ZipFile.Open(path, mode);
+    }
+
+    /// <summary>
     /// Replaces a file in a zip with another file
     /// </summary>
     /// <param name="sourceZip">The source zip to copy the file from</param>
@@ -424,24 +436,23 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="fileName">The file name to replace</param>
     /// <param name="sourceFilePath">The source file path, if any</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    public async Task<bool> ReplaceZipFile(string sourceZip, string targetZip, string fileName, string sourceFilePath = "")
+    public async Task<bool> ReplaceZipFile(ZipArchive target, GameRomFile file)
     {
-        if (!FileExists(sourceZip)) {
+        if (!FileExists(file.ZipFilePath)) {
             return false;
         }
 
-        using var source = ZipFile.OpenRead(sourceZip);
-        var mode = FileExists(targetZip) ? ZipArchiveMode.Update : ZipArchiveMode.Create;
-        using var target = ZipFile.Open(targetZip, mode);
+        using var source = ZipFile.OpenRead(file.ZipFilePath);
 
-        // overwrite the entry
-        var sourceEntry = source.GetEntry(string.IsNullOrEmpty(sourceFilePath) ? fileName : $"{sourceFilePath}/{fileName}");
+        // get the source entry
+        var sourceEntry = source.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
         if (sourceEntry == null) {
             // maybe I should throw, but I have very bad exception management
             return false;
         }
 
-        var targetEntry = target.GetEntry(fileName);
+        // open first in read mode to check the file data (opening in write mode is MUCH slower)
+        var targetEntry = target.GetEntry(file.Name);
 
         // check if we have to replace it
         if (targetEntry != null && targetEntry.Length == sourceEntry.Length && targetEntry.Crc32 == sourceEntry.Crc32)
@@ -451,7 +462,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
 
         // recreate the entry
         targetEntry?.Delete();
-        targetEntry = target.CreateEntry(fileName);
+        targetEntry = target.CreateEntry(file.Name);
 
         // write content
         using var targetStream = targetEntry.Open();

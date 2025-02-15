@@ -142,8 +142,9 @@ public class GameRom {
     /// Creates a new game rom info from an XML node from the DAT
     /// </summary>
     /// <param name="gameXml">The game XML infos from the DAT</param>
+    /// <param name="folder">The game folder</param>
     /// <returns>The game rom infos</returns>
-    public static GameRom FromXml(XElement gameXml) {
+    public static GameRom FromXml(XElement gameXml, string folder) {
         var game = new GameRom {
             Name = gameXml.Attribute("name").Value,
             ParentName = gameXml.Attribute("cloneof")?.Value,
@@ -156,7 +157,7 @@ public class GameRom {
 
         // add the files
         foreach (var romXml in gameXml.Descendants("rom")) {
-            game.RomFiles.Add(GameRomFile.FromXml(game.Name, romXml));
+            game.RomFiles.Add(GameRomFile.FromXml(game.Name, romXml, folder));
         }
 
         return game;
@@ -192,6 +193,16 @@ public class GameRomFile {
     /// Gets or sets the zip file name
     /// </summary>
     public string ZipFileName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the zip file folder
+    /// </summary>
+    public string ZipFileFolder { get; set; }
+
+    /// <summary>
+    /// Gets the full zip file path
+    /// </summary>
+    public string ZipFilePath => System.IO.Path.Join(ZipFileFolder, ZipFileName);
 
     /// <summary>
     /// Gets or sets the file name (including extension)
@@ -243,8 +254,9 @@ public class GameRomFile {
     /// </summary>
     /// <param name="game">The game name</param>
     /// <param name="romXml">The XML node from the DAT</param>
+    /// <param name="folder">The rom file folder</param>
     /// <returns>The file infos</returns>
-    public static GameRomFile FromXml(string game, XElement romXml) {
+    public static GameRomFile FromXml(string game, XElement romXml, string folder) {
         var name = romXml.Attribute("name").Value;
 
         var crc = romXml.Attribute("crc")?.Value;
@@ -255,6 +267,7 @@ public class GameRomFile {
 
         return new GameRomFile() {
             ZipFileName = $"{game}.zip",
+            ZipFileFolder = folder,
             Name = name,
             Size = long.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
             Crc = crc,

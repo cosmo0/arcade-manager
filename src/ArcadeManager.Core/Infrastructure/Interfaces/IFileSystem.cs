@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Threading.Tasks;
 using ArcadeManager.Models;
 
@@ -205,14 +206,19 @@ public interface IFileSystem {
     IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1);
 
     /// <summary>
+    /// Opens a zip in write mode (create or update)
+    /// </summary>
+    /// <param name="path">The path of the zip to open</param>
+    /// <returns>The zip archive data</returns>
+    ZipArchive OpenZipWrite(string path);
+
+    /// <summary>
     /// Replaces a file in a zip with another file
     /// </summary>
-    /// <param name="sourceZip">The source zip to copy the file from</param>
-    /// <param name="targetZip">The target zip to copy the file to</param>
-    /// <param name="fileName">The file name to replace</param>
-    /// <param name="sourceFilePath">The source file path, if any</param>
+    /// <param name="target">The target zip to write to</param>
+    /// <param name="file">The file to replace</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    Task<bool> ReplaceZipFile(string sourceZip, string targetZip, string fileName, string sourceFilePath = "");
+    Task<bool> ReplaceZipFile(ZipArchive target, GameRomFile file);
 
     /// <summary>
     /// Deletes a file in a zip

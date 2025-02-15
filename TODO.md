@@ -1,5 +1,11 @@
 # TODO
 
+## DAT check
+
+* Add some timers to see what's taking so long during check
+* Merge fix and conversion
+* Remove useless "check bios"
+
 ## UI
 
 * Alter the DOM instead of rebuilding it
@@ -9,4 +15,5 @@
 
 ## Other
 
+* Actually use the logger to do something
 * Create unit tests for all missing services
