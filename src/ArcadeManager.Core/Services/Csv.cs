@@ -16,7 +16,11 @@ namespace ArcadeManager.Services;
 /// <summary>
 /// CSV files management
 /// </summary>
-public class Csv : ICsv {
+/// <remarks>
+/// Initializes a new instance of the <see cref="Csv"/> class.
+/// </remarks>
+/// <param name="fs">The file system.</param>
+public class Csv(IFileSystem fs) : ICsv {
 
     /// <summary>
     /// The default delimiter
@@ -43,16 +47,6 @@ public class Csv : ICsv {
     /// The "name" column name
     /// </summary>
     private static readonly string nameColumn = "name";
-
-    private readonly IFileSystem fs;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Csv"/> class.
-    /// </summary>
-    /// <param name="fs">The file system.</param>
-    public Csv(IFileSystem fs) {
-        this.fs = fs;
-    }
 
     /// <summary>
     /// Converts a DAT file.
@@ -432,7 +426,7 @@ public class Csv : ICsv {
         });
     }
 
-    private async Task ReadIniFile(StreamReader source, Dictionary<string, List<IniEntry>> data, long fileSize, IMessageHandler messageHandler) {
+    private static async Task ReadIniFile(StreamReader source, Dictionary<string, List<IniEntry>> data, long fileSize, IMessageHandler messageHandler) {
         var isFolderSetting = false;
         var currentSection = "";
 
@@ -462,26 +456,34 @@ public class Csv : ICsv {
 
             // found a section
             if (line.StartsWith('[')) {
-                currentSection = line;
-
-                // add to data
-                if (!data.ContainsKey(currentSection)) {
-                    data.Add(currentSection, []);
-                }
+                currentSection = ReadSection(line, data);
 
                 continue;
             }
 
             // we're in a section data
-            if (line.Contains('=', StringComparison.InvariantCultureIgnoreCase)) {
-                // game=value
-                var split = line.Split("=", StringSplitOptions.TrimEntries);
-                data[currentSection].Add(new IniEntry { game = split[0], value = split[1] });
-            }
-            else {
-                // simple games list
-                data[currentSection].Add(new IniEntry { game = line });
-            }
+            ReadLine(line, data, currentSection);
+        }
+    }
+
+    private static string ReadSection(string line, Dictionary<string, List<IniEntry>> data) {
+        // add to data
+        if (!data.ContainsKey(line)) {
+            data.Add(line, []);
+        }
+
+        return line;
+    }
+
+    private static void ReadLine(string line, Dictionary<string, List<IniEntry>> data, string currentSection) {
+        if (line.Contains('=', StringComparison.InvariantCultureIgnoreCase)) {
+            // game=value
+            var split = line.Split("=", StringSplitOptions.TrimEntries);
+            data[currentSection].Add(new IniEntry { game = split[0], value = split[1] });
+        }
+        else {
+            // simple games list
+            data[currentSection].Add(new IniEntry { game = line });
         }
     }
 
