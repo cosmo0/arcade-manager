@@ -6,11 +6,6 @@
 public class Progress {
 
 	/// <summary>
-	/// Gets or sets a value indicating whether the operation can be cancelled
-	/// </summary>
-	public bool CanCancel { get; set; } = false;
-
-	/// <summary>
 	/// Gets or sets a value indicating whether the operation has been cancelled
 	/// </summary>
 	public bool Cancelled { get; set; } = false;

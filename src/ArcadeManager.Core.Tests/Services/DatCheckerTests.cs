@@ -59,7 +59,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -86,7 +86,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.FileExists("test.zip")).Returns(false);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -133,7 +133,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -179,7 +179,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(1, 1, game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler, null);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -239,7 +239,7 @@ public class DatCheckerTests
         ]);
 
         // act
-        await sut.FixGame(1, 1, game, args, processed, fixFolder, messageHandler, null);
+        await sut.FixGame(game, args, processed, fixFolder, messageHandler, null);
 
         // assert
         A.CallTo(() => fs.ReplaceZipFile(A<System.IO.Compression.ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();

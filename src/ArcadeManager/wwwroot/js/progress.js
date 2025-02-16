@@ -8,7 +8,7 @@ $(() => {
 
         if (data.init) {
             console.log('Init: ' + data.label);
-            progressInit(data.label, data.canCancel);
+            progressInit(data.label);
         }
         else if (data.end) {
             console.log('Done: ' + data.label);
@@ -78,10 +78,8 @@ $(() => {
  * Shows the progression modal
  *
  * @param {String} title The modal title
- * @param {Boolean} canCancel Whether the user can cancel the operation
  */
-function progressInit(title, canCancel) {
-    if (typeof canCancel === 'undefined') { canCancel = false; }
+function progressInit(title) {
     let p = $('#progress');
 
     // display modal
@@ -92,11 +90,7 @@ function progressInit(title, canCancel) {
     p.find('.progress, .details').removeClass('d-none');
 
     // display or hide cancel button
-    if (canCancel) {
-        p.find('.stop').removeClass('d-none');
-    } else {
-        p.find('.stop').addClass('d-none');
-    }
+    p.find('.stop').removeClass('d-none');
 
     // reset texts
     p.find('.modal-title').text(title);

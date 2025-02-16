@@ -271,6 +271,7 @@ public class Startup(IConfiguration configuration)
             container.Register<Services.ILocalizer, Services.Localizer>(Lifestyle.Singleton);
             container.Register<Services.IWizard, Services.Wizard>(Lifestyle.Singleton);
             container.Register<Services.IDatChecker, Services.DatChecker>(Lifestyle.Singleton);
+            container.Register<Services.IServiceProvider, Services.ServiceProvider>(Lifestyle.Singleton);
 
             // message handler (SimpleInjector returns the same singleton if it's the same implementation)
             container.Register<IMessageHandler, ElectronMessageHandler>(Lifestyle.Singleton);

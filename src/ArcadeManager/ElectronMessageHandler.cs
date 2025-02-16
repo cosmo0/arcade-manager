@@ -24,15 +24,10 @@ namespace ArcadeManager;
 /// <param name="fs">The file system service</param>
 /// <param name="environment">The environment accessor</param>
 public partial class ElectronMessageHandler(
-    ICsv csvService,
-    IDownloader downloaderService,
-    IOverlays overlaysService,
-    IRoms romsService,
-    IUpdater updaterService,
-    IFileSystem fs,
-    IDatChecker datChecker,
-    IEnvironment environment) : IElectronMessageHandler {
-
+    Services.IServiceProvider services,
+    IEnvironment environment,
+    IFileSystem fs) : IElectronMessageHandler {
+    private const string ProgressChannel = "progress";
     private BrowserWindow window;
 
     /// <summary>
@@ -41,12 +36,40 @@ public partial class ElectronMessageHandler(
     public bool MustCancel { get; set; }
 
     /// <summary>
+    /// Gets or sets the total number of items
+    /// </summary>
+    public int TotalItems { get; set; }
+
+    /// <summary>
+    /// Gets or sets the total number of steps
+    /// </summary>
+    public int TotalSteps { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current item index
+    /// </summary>
+    public int CurrentItem { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current step index
+    /// </summary>
+    public int CurrentStep { get; set; }
+
+    /// <summary>
     /// Sends an "init" progress message
     /// </summary>
     /// <param name="label">The label.</param>
     public void Init(string label) {
         MustCancel = false;
-        Electron.IpcMain.Send(window, "progress", new Progress { Label = label, Init = true, CanCancel = true });
+        Electron.IpcMain.Send(window, ProgressChannel, new Progress { Label = label, Init = true });
+    }
+
+    /// <summary>
+    /// Sends a progression message
+    /// </summary>
+    /// <param name="label">The label to display</param>
+    public void Progress(string label) {
+        Electron.IpcMain.Send(window, ProgressChannel, new Progress { Label = label, Total = this.TotalItems, Current = this.CurrentItem });
     }
 
     /// <summary>
@@ -56,7 +79,9 @@ public partial class ElectronMessageHandler(
     /// <param name="total">The total number of items.</param>
     /// <param name="current">The current item number.</param>
     public void Progress(string label, int total, int current) {
-        Electron.IpcMain.Send(window, "progress", new Progress { Label = label, Total = total, Current = current });
+        this.TotalItems = total;
+        this.CurrentItem = current;
+        Electron.IpcMain.Send(window, ProgressChannel, new Progress { Label = label, Total = total, Current = current });
     }
 
     /// <summary>
@@ -67,10 +92,10 @@ public partial class ElectronMessageHandler(
     public void Done(string label, string folder) {
         // display result
         if (MustCancel) {
-            Electron.IpcMain.Send(window, "progress", new Progress { Label = $"Operation cancelled! - {label}", End = true, Cancelled = true });
+            Electron.IpcMain.Send(window, ProgressChannel, new Progress { Label = $"Operation cancelled! - {label}", End = true, Cancelled = true });
         }
         else {
-            Electron.IpcMain.Send(window, "progress", new Progress { Label = label, End = true, Folder = folder });
+            Electron.IpcMain.Send(window, ProgressChannel, new Progress { Label = label, End = true, Folder = folder });
         }
 
         MustCancel = false;
@@ -81,7 +106,7 @@ public partial class ElectronMessageHandler(
     /// </summary>
     /// <param name="ex">The exception.</param>
     public void Error(Exception ex) {
-        Electron.IpcMain.Send(window, "progress", new Progress { Label = $"An error has occurred: {ex.Message}", End = true });
+        Electron.IpcMain.Send(window, ProgressChannel, new Progress { Label = $"An error has occurred: {ex.Message}", End = true });
         
         MustCancel = false;
     }
@@ -217,7 +242,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.ConvertDat(data.Main, data.Target, this);
+        await services.Csv.ConvertDat(data.Main, data.Target, this);
     }
 
     /// <summary>
@@ -228,7 +253,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.ConvertIni(data.Main, data.Target, this);
+        await services.Csv.ConvertIni(data.Main, data.Target, this);
     }
 
     /// <summary>
@@ -239,7 +264,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.Keep(data.Main, data.Secondary, data.Target, this);
+        await services.Csv.Keep(data.Main, data.Secondary, data.Target, this);
     }
 
     /// <summary>
@@ -250,7 +275,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.ListFiles(data.Main, data.Target, this);
+        await services.Csv.ListFiles(data.Main, data.Target, this);
     }
 
     /// <summary>
@@ -261,7 +286,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.Merge(data.Main, data.Secondary, data.Target, this);
+        await services.Csv.Merge(data.Main, data.Secondary, data.Target, this);
     }
 
     /// <summary>
@@ -272,7 +297,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await csvService.Remove(data.Main, data.Secondary, data.Target, this);
+        await services.Csv.Remove(data.Main, data.Secondary, data.Target, this);
     }
 
     /// <summary>
@@ -283,7 +308,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        await downloaderService.DownloadFile(data.Repository, data.Path, data.LocalFile);
+        await services.Downloader.DownloadFile(data.Repository, data.Path, data.LocalFile);
 
         Electron.IpcMain.Send(window, "download-file-reply", true);
     }
@@ -321,7 +346,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        Electron.IpcMain.Send(window, "download-getlist-reply", await downloaderService.GetList(data));
+        Electron.IpcMain.Send(window, "download-getlist-reply", await services.Downloader.GetList(data));
     }
 
     /// <summary>
@@ -332,7 +357,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        Electron.IpcMain.Send(window, "local-getlist-reply", downloaderService.GetLocalList(data));
+        Electron.IpcMain.Send(window, "local-getlist-reply", services.Downloader.GetLocalList(data));
     }
 
     /// <summary>
@@ -400,7 +425,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<OverlaysAction>(args);
         MustCancel = false;
 
-        await overlaysService.Download(data, this);
+        await services.Overlays.Download(data, this);
     }
 
     /// <summary>
@@ -411,7 +436,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        string[] missing = await romsService.Check(data, this);
+        string[] missing = await services.Roms.Check(data, this);
         // why is this method the ONLY one where the result is not wrapped into an array?
         Electron.IpcMain.Send(window, "roms-check-reply", [missing]);
     }
@@ -424,7 +449,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await romsService.Add(data, this);
+        await services.Roms.Add(data, this);
     }
 
     /// <summary>
@@ -435,7 +460,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await romsService.AddFromWizard(data, this);
+        await services.Roms.AddFromWizard(data, this);
     }
 
     /// <summary>
@@ -446,7 +471,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await romsService.Delete(data, this);
+        await services.Roms.Delete(data, this);
     }
 
     /// <summary>
@@ -457,7 +482,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await romsService.Keep(data, this);
+        await services.Roms.Keep(data, this);
     }
 
     /// <summary>
@@ -468,7 +493,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsActionCheckDat>(args);
         MustCancel = false;
 
-        await datChecker.CheckDat(data, this);
+        await services.DatChecker.CheckDat(data, this);
     }
 
     /// <summary>
@@ -492,7 +517,7 @@ public partial class ElectronMessageHandler(
     private async Task UpdateCheck() {
         var current = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        var update = await updaterService.CheckUpdate(current);
+        var update = await services.Updater.CheckUpdate(current);
         if (update != null) {
             update.Current = current;
         }
