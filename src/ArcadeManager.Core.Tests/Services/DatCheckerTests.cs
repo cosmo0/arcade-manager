@@ -41,8 +41,7 @@ public class DatCheckerTests
         });
         var args = new RomsActionCheckDat {
             Action = "check",
-            Romset = "roms",
-            CheckBios = false
+            Romset = "roms"
         };
         var processed = new GameRomList();
 
@@ -78,7 +77,6 @@ public class DatCheckerTests
         var args = new RomsActionCheckDat {
             Action = "check",
             Romset = "roms",
-            CheckBios = false,
             ReportAll = true
         };
         var processed = new GameRomList();
@@ -117,8 +115,7 @@ public class DatCheckerTests
         ]);
         var args = new RomsActionCheckDat {
             Action = "check",
-            Romset = "roms",
-            CheckBios = false
+            Romset = "roms"
         };
         var processed = new GameRomList();
 
@@ -164,8 +161,7 @@ public class DatCheckerTests
         ]);
         var args = new RomsActionCheckDat {
             Action = "check",
-            Romset = "roms",
-            CheckBios = false
+            Romset = "roms"
         };
         var processed = new GameRomList();
 

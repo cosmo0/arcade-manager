@@ -53,11 +53,6 @@ public class RomsActionCheckDat
     public string CsvFilter { get; set; }
     
     /// <summary>
-    /// Gets or sets a value indicating whether to check for missing BIOS files
-    /// </summary>
-    public bool CheckBios { get; set; }
-    
-    /// <summary>
     /// Gets or sets the path to another folder to fix/rebuild the romset with
     /// </summary>
     public string OtherFolder { get; set; }
