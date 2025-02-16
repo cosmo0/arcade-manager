@@ -26,12 +26,14 @@ jobs:
           node-version: 22.x
       - name: Setup ElectronNET
         run: dotnet tool install --global ElectronNET.CLI
+      - name: Setup coverage
+        run: dotnet tool install --global dotnet-coverage
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        run: dotnet test
+        run: dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
       - name: Electronize ARM
         run: electronize build /target osx /electron-arch arm64
       - name: Upload binaries
