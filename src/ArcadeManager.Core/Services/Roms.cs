@@ -320,31 +320,39 @@ public class Roms : IRoms
                 copied++;
             }
 
-            // try to copy additional files for games if it's used and can be found
-            List<string> additionalFiles = [.. this.biosmatch.GetBiosesForGame(game), .. this.devicematch.GetDevicesForGame(game)];
-            foreach (var af in additionalFiles)
+            copied = CopyAdditionalFiles(total, i, game, ext, args, copied, messageHandler);
+        }
+
+        return copied;
+    }
+
+    private int CopyAdditionalFiles(int total, int i, string game, string ext, RomsAction args, int copied, IMessageHandler messageHandler) {
+        // try to copy additional files for games if it's used and can be found
+        List<string> additionalFiles = [.. this.biosmatch.GetBiosesForGame(game), .. this.devicematch.GetDevicesForGame(game)];
+        foreach (var af in additionalFiles)
+        {
+            if (messageHandler.MustCancel) { return copied; }
+            
+            var sourceaf = fs.PathJoin(args.Romset, $"{af}.{ext}");
+            var destaf = fs.PathJoin(args.Selection, $"{af}.{ext}");
+            // never overwrite
+            if (fs.FileExists(sourceaf) && !fs.FileExists(destaf))
             {
-                var sourceaf = fs.PathJoin(args.Romset, $"{af}.{ext}");
-                var destaf = fs.PathJoin(args.Selection, $"{af}.{ext}");
-                // never overwrite
-                if (fs.FileExists(sourceaf) && !fs.FileExists(destaf))
-                {
-                    fs.FileCopy(sourceaf, destaf, false);
-                    copied++;
-                }
+                fs.FileCopy(sourceaf, destaf, false);
+                copied++;
             }
+        }
 
-            // try to copy chd if it can be found
-            var sourceChd = fs.PathJoin(args.Romset, game);
-            var targetChd = fs.PathJoin(args.Selection, game);
-            if (fs.DirectoryExists(sourceChd))
-            {
-                if (messageHandler.MustCancel) { break; }
+        // try to copy chd if it can be found
+        var sourceChd = fs.PathJoin(args.Romset, game);
+        var targetChd = fs.PathJoin(args.Selection, game);
+        if (fs.DirectoryExists(sourceChd))
+        {
+            if (messageHandler.MustCancel) { return copied; }
 
-                messageHandler.Progress($"Copying {game} CHD ({fs.HumanSize(fs.DirectorySize(sourceChd))})", total, i);
+            messageHandler.Progress($"Copying {game} CHD ({fs.HumanSize(fs.DirectorySize(sourceChd))})", total, i);
 
-                copied += fs.DirectoryCopy(sourceChd, targetChd, args.Overwrite, false);
-            }
+            copied += fs.DirectoryCopy(sourceChd, targetChd, args.Overwrite, false);
         }
 
         return copied;

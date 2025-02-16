@@ -66,88 +66,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             var installed = 0;
 
             foreach (var r in romsToProcess.OrderBy(r => r.Game)) {
-                if (messageHandler.MustCancel) { throw cancel; }
-
-                current++;
-
-                var game = r.Game;
-
-                messageHandler.Progress($"{game}: download overlay (rom config)", total, current);
-
-                // download the rom config and extract the overlay file name
-                var romConfigContent = string.Empty;
-                foreach (var romFolder in r.TargetFolder) {
-                    if (messageHandler.MustCancel) { throw cancel; }
-
-                    var romConfigFile = fs.PathJoin(romCfgFolder ?? romFolder, $"{game}{r.Extension}.cfg");
-
-                    // get rom config content
-                    if (string.IsNullOrEmpty(romConfigContent)) {
-                        if (data.Overwrite || !fs.FileExists(romConfigFile)) {
-                            // file doesn't exist or we'll overwrite it
-                            romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{game}{r.Extension}.cfg");
-
-                            // fix resolution and paths
-                            romConfigContent = ChangeResolution(romConfigContent, data.Ratio);
-                            romConfigContent = FixPaths(romConfigContent, pack);
-                        }
-                        else {
-                            // file exist, we don"t overwrite: read it
-                            romConfigContent = await fs.FileReadAsync(romConfigFile);
-                        }
-                    }
-
-                    // write rom config
-                    if (data.Overwrite || !fs.FileExists(romConfigFile)) {
-                        if (messageHandler.MustCancel) { throw cancel; }
-
-                        await fs.FileWriteAsync(romConfigFile, romConfigContent);
-                        installed++;
-                    }
-                }
-
-                if (messageHandler.MustCancel) { throw cancel; }
-
-                messageHandler.Progress($"{game}: download overlay (config)", total, current);
-
-                // extract the overlay file name
-                var overlayPath = GetCfgData(romConfigContent, "input_overlay");
-                if (string.IsNullOrWhiteSpace(overlayPath)) { throw new PathNotFoundException($"Unable to parse rom config {game} to find overlay (input_overlay)"); }
-                var overlayFi = fs.FileName(overlayPath);
-                var overlayConfigDest = fs.PathJoin(data.ConfigFolder, overlayFi);
-
-                // download the overlay file name and extract the image file name
-                var overlayConfigContent = string.Empty;
-                if (data.Overwrite || !fs.FileExists(overlayConfigDest)) {
-                    if (messageHandler.MustCancel) { throw cancel; }
-
-                    overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFi}");
-
-                    // fix path
-                    overlayConfigContent = FixPaths(overlayConfigContent, pack);
-
-                    await fs.FileWriteAsync(overlayConfigDest, overlayConfigContent);
-                }
-                else {
-                    overlayConfigContent = await fs.FileReadAsync(overlayConfigDest);
-                }
-
-                if (messageHandler.MustCancel) { throw cancel; }
-
-                messageHandler.Progress($"{game}: download overlay (image)", total, current);
-
-                // extract the image file name
-                var imagePath = GetCfgData(overlayConfigContent, "overlay0_overlay");
-                if (string.IsNullOrWhiteSpace(imagePath)) { throw new PathNotFoundException($"Unable to parse overlay config {game} to find image (overlay0_overlay)"); }
-                var imageFi = fs.FileName(imagePath);
-                var imageDest = fs.PathJoin(data.ConfigFolder, imageFi);
-
-                // download the image
-                if (data.Overwrite || !fs.FileExists(imageDest)) {
-                    if (messageHandler.MustCancel) { throw cancel; }
-
-                    await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi}", imageDest);
-                }
+                installed += await DownloadOverlayForRom(total, current, r, pack, data, romCfgFolder, messageHandler);
             }
 
             messageHandler.Done($"Installed {installed} overlays", "");
@@ -155,6 +74,104 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         catch (Exception ex) {
             messageHandler.Error(ex);
         }
+    }
+
+    private async Task<int> DownloadOverlayForRom(int total, int current, RomToProcess rom, OverlayBundle pack, Actions.OverlaysAction data, string romCfgFolder, IMessageHandler messageHandler) {
+        if (messageHandler.MustCancel) { throw cancel; }
+
+        current++;
+
+        var game = rom.Game;
+
+        messageHandler.Progress($"{game}: download overlay (rom config)", total, current);
+
+        // download the rom config and extract the overlay file name
+        var (romConfigContent, installed) = await GetRomConfigContent(pack, rom, data, romCfgFolder, messageHandler);
+
+        if (messageHandler.MustCancel) { throw cancel; }
+
+        messageHandler.Progress($"{game}: download overlay (config)", total, current);
+
+        // extract the overlay file name
+        var overlayPath = GetCfgData(romConfigContent, "input_overlay");
+        if (string.IsNullOrWhiteSpace(overlayPath)) { throw new PathNotFoundException($"Unable to parse rom config {game} to find overlay (input_overlay)"); }
+        var overlayFileName = fs.FileName(overlayPath);
+        var overlayConfigDest = fs.PathJoin(data.ConfigFolder, overlayFileName);
+
+        // download the overlay file name and extract the image file name
+        var overlayConfigContent = await GetOverlayConfigContent(data, pack, overlayConfigDest, overlayFileName, messageHandler);
+
+        if (messageHandler.MustCancel) { throw cancel; }
+
+        messageHandler.Progress($"{game}: download overlay (image)", total, current);
+
+        // extract the image file name
+        var imagePath = GetCfgData(overlayConfigContent, "overlay0_overlay");
+        if (string.IsNullOrWhiteSpace(imagePath)) { throw new PathNotFoundException($"Unable to parse overlay config {game} to find image (overlay0_overlay)"); }
+        var imageFi = fs.FileName(imagePath);
+        var imageDest = fs.PathJoin(data.ConfigFolder, imageFi);
+
+        // download the image
+        if (data.Overwrite || !fs.FileExists(imageDest)) {
+            if (messageHandler.MustCancel) { throw cancel; }
+
+            await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi}", imageDest);
+        }
+
+        return installed;
+    }
+
+    private async Task<(string Content, int Installed)> GetRomConfigContent(OverlayBundle pack, RomToProcess rom, Actions.OverlaysAction data, string romCfgFolder, IMessageHandler messageHandler) {
+        var romConfigContent = string.Empty;
+        var installed = 0;
+        foreach (var romFolder in rom.TargetFolder) {
+            if (messageHandler.MustCancel) { throw cancel; }
+
+            var romConfigFile = fs.PathJoin(romCfgFolder ?? romFolder, $"{rom.Game}{rom.Extension}.cfg");
+
+            // get rom config content
+            if (data.Overwrite || !fs.FileExists(romConfigFile)) {
+                // file doesn't exist or we'll overwrite it
+                romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{rom.Game}{rom.Extension}.cfg");
+
+                // fix resolution and paths
+                romConfigContent = ChangeResolution(romConfigContent, data.Ratio);
+                romConfigContent = FixPaths(romConfigContent, pack);
+            }
+            else {
+                // file exist, we don"t overwrite: read it
+                romConfigContent = await fs.FileReadAsync(romConfigFile);
+            }
+
+            // write rom config
+            if (data.Overwrite || !fs.FileExists(romConfigFile)) {
+                if (messageHandler.MustCancel) { throw cancel; }
+
+                await fs.FileWriteAsync(romConfigFile, romConfigContent);
+                installed++;
+            }
+        }
+
+        return (romConfigContent, installed);
+    }
+
+    private async Task<string> GetOverlayConfigContent(Actions.OverlaysAction data, OverlayBundle pack, string overlayConfigDest, string overlayFileName, IMessageHandler messageHandler) {
+        var overlayConfigContent = string.Empty;
+        if (data.Overwrite || !fs.FileExists(overlayConfigDest)) {
+            if (messageHandler.MustCancel) { throw cancel; }
+
+            overlayConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Overlays.Src}/{overlayFileName}");
+
+            // fix path
+            overlayConfigContent = FixPaths(overlayConfigContent, pack);
+
+            await fs.FileWriteAsync(overlayConfigDest, overlayConfigContent);
+        }
+        else {
+            overlayConfigContent = await fs.FileReadAsync(overlayConfigDest);
+        }
+
+        return overlayConfigContent;
     }
 
     /// <summary>
