@@ -200,10 +200,27 @@ public interface IFileSystem {
     /// <summary>
     /// Lists the files inside a zip
     /// </summary>
+    /// <param name="zip">The zip archive</param>
+    /// <param name="fileName">The file name of the zip</param>
+    /// <param name="folder">The folder of the zip</param>
+    /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
+    /// <returns>The zip file infos</returns>
+    IEnumerable<GameRomFile> GetZipFiles(ZipArchive zip, string fileName, string folder, bool getSha1);
+
+    /// <summary>
+    /// Lists the files inside a zip
+    /// </summary>
     /// <param name="path">The path to the zip file</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
     IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1);
+
+    /// <summary>
+    /// Opens a zip in read mode
+    /// </summary>
+    /// <param name="path">The path of the zip to open</param>
+    /// <returns>The zip archive data</returns>
+    ZipArchive OpenZipRead(string path);
 
     /// <summary>
     /// Opens a zip in write mode (create or update)
@@ -223,7 +240,7 @@ public interface IFileSystem {
     /// <summary>
     /// Deletes a file in a zip
     /// </summary>
-    /// <param name="zipFile">The path to the zip file</param>
+    /// <param name="zip">The zip file</param>
     /// <param name="files">The list of files to delete</param>
-    void DeleteZipFile(string zipFile, IEnumerable<GameRomFile> files);
+    void DeleteZipFile(ZipArchive zip, IEnumerable<GameRomFile> files);
 }

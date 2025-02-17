@@ -98,6 +98,9 @@ public class FileSystemTests
 
         // act
         await sut.ReplaceZipFile(zip, sourceFile);
+        
+        // act a second time to simulate what can happen in the rebuild process
+        await sut.ReplaceZipFile(zip, sourceFile);
 
         // assert: read the new zip content
         var fileInZip = zip.GetEntry("test1.txt");

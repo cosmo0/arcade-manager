@@ -388,20 +388,16 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <summary>
     /// Lists the files inside a zip
     /// </summary>
-    /// <param name="path">The path to the zip file</param>
+    /// <param name="zip">The zip archive</param>
+    /// <param name="fileName">The file name of the zip</param>
+    /// <param name="folder">The folder of the zip</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
-    public IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1)
-    {
+    public IEnumerable<GameRomFile> GetZipFiles(ZipArchive zip, string fileName, string folder, bool getSha1) {
         var result = new List<GameRomFile>();
 
-        var fileName = FileName(path);
-        var folder = DirectoryName(path);
-
-        using var zip = ZipFile.OpenRead(path);
-
-        // loop on entry, skipping folders (which are entries with size 0 and no name)
-        foreach (var entry in zip.Entries.Where(e => e.Length > 0 && !string.IsNullOrEmpty(e.Name)))
+        // loop on entry, skipping folders (which are entries with no short name)
+        foreach (var entry in zip.Entries.Where(e => !string.IsNullOrEmpty(e.Name)))
         {
             result.Add(new GameRomFile
             {
@@ -409,13 +405,37 @@ public class FileSystem(IEnvironment environment) : IFileSystem
                 ZipFileFolder = folder,
                 Name = entry.Name,
                 Path = Path.GetDirectoryName(entry.FullName),
-                Size = (int)entry.Length,
+                Size = zip.Mode == ZipArchiveMode.Read ? entry.Length : 0,
                 Crc = entry.Crc32.ToString("X4").PadLeft(8, '0').ToLower(),
                 Sha1 = getSha1 ? GetZipFileSha1(entry) : null
             });
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Lists the files inside a zip
+    /// </summary>
+    /// <param name="path">The path to the zip file</param>
+    /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
+    /// <returns>The zip file infos</returns>
+    public IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1)
+    {
+        var fileName = FileName(path);
+        var folder = DirectoryName(path);
+
+        using var zip = OpenZipRead(path);
+        return GetZipFiles(zip, fileName, folder, getSha1);
+    }
+
+    /// <summary>
+    /// Opens a zip in read mode
+    /// </summary>
+    /// <param name="path">The path of the zip to open</param>
+    /// <returns>The zip archive data</returns>
+    public ZipArchive OpenZipRead(string path) {
+        return ZipFile.OpenRead(path);
     }
 
     /// <summary>
@@ -442,7 +462,11 @@ public class FileSystem(IEnvironment environment) : IFileSystem
             return false;
         }
 
-        using var source = ZipFile.OpenRead(file.ZipFilePath);
+        if (target.Mode == ZipArchiveMode.Read) {
+            throw new ArgumentException("Zip archive is opened in read mode");
+        }
+
+        using var source = OpenZipRead(file.ZipFilePath);
 
         // get the source entry
         var sourceEntry = source.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
@@ -451,18 +475,11 @@ public class FileSystem(IEnvironment environment) : IFileSystem
             return false;
         }
 
-        // open first in read mode to check the file data (opening in write mode is MUCH slower)
-        var targetEntry = target.GetEntry(file.Name);
-
-        // check if we have to replace it
-        if (targetEntry != null && targetEntry.Length == sourceEntry.Length && targetEntry.Crc32 == sourceEntry.Crc32)
-        {
-            return false;
+        if (target.Mode == ZipArchiveMode.Update) {
+            target.GetEntry(file.Name)?.Delete();
         }
 
-        // recreate the entry
-        targetEntry?.Delete();
-        targetEntry = target.CreateEntry(file.Name);
+        var targetEntry = target.CreateEntry(file.Name);
 
         // write content
         using var targetStream = targetEntry.Open();
@@ -476,15 +493,9 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <summary>
     /// Deletes a file in a zip
     /// </summary>
-    /// <param name="zipFile">The path to the zip file</param>
+    /// <param name="zip">The zip file</param>
     /// <param name="files">The list of files to delete</param>
-    public void DeleteZipFile(string zipFile, IEnumerable<GameRomFile> files) {
-        if (!FileExists(zipFile)) {
-            return;
-        }
-
-        using var zip = ZipFile.Open(zipFile, ZipArchiveMode.Update);
-
+    public void DeleteZipFile(ZipArchive zip, IEnumerable<GameRomFile> files) {
         foreach (var file in files) {
             var entry = zip.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
             entry?.Delete();

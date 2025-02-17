@@ -101,4 +101,23 @@ public class GameRomsTests
         game.RomFiles.HasError.Should().BeTrue();
         game.RomFiles["s92u-23a"].HasError.Should().BeTrue();
     }
+
+    [Fact]
+    public void GameRomFile_is_removed()
+    {
+        // arrange
+        var data = new GameRomFilesList {
+            new() { Name = "a" },
+            new() { Name = "b" },
+            new() { Name = "a", Path = "sub" },
+            new() { Name = "b", Path = "sub" }
+        };
+    
+        // act
+        data.RemoveFile("b");
+        data.RemoveFile("a", "sub");
+    
+        // assert
+        data.Should().HaveCount(2);
+    }
 }

@@ -183,6 +183,25 @@ public class GameRomFilesList : List<GameRomFile> {
     /// Gets a value indicating whether any rom file has an error
     /// </summary>
     public bool HasError => this.Any(rf => rf.HasError);
+
+    /// <summary>
+    /// Removes a file from the list
+    /// </summary>
+    /// <param name="fileName">The file name</param>
+    /// <param name="filePath">The file path, if any</param>
+    public void RemoveFile(string fileName, string filePath = null) {
+        this.RemoveAll(f => f.Name == fileName && ((string.IsNullOrEmpty(f.Path) && string.IsNullOrEmpty(filePath)) || f.Path == filePath));
+    }
+
+    /// <summary>
+    /// Replaces a file in this collection with the specified one
+    /// </summary>
+    /// <param name="file">The file to replace</param>
+    /// <param name="game">The related game infos</param>
+    public void ReplaceFile(GameRomFile file, GameRom game) {
+        this.RemoveFile(file.Name, file.Path);
+        this.Add(file.CloneFor(game));
+    }
 }
 
 /// <summary>
@@ -248,6 +267,26 @@ public class GameRomFile {
     /// Gets or sets the error details
     /// </summary>
     public string ErrorDetails { get; set; }
+
+    /// <summary>
+    /// Clones a rom file object by replacing some data for the specified game
+    /// </summary>
+    /// <param name="game">The game to use data of</param>
+    /// <returns>The cloned GameRomFile</returns>
+    public GameRomFile CloneFor(GameRom game) {
+        return new GameRomFile {
+            ZipFileName = $"{game.Name}.zip",
+            ZipFileFolder = game.RomFiles.FirstOrDefault()?.ZipFileFolder,
+            Name = this.Name,
+            Size = this.Size,
+            Crc = this.Crc,
+            Status = this.Status,
+            Sha1 = this.Sha1,
+            Path = this.Path,
+            ErrorDetails = this.ErrorDetails,
+            ErrorReason = this.ErrorReason
+        };
+    }
 
     /// <summary>
     /// Creates a new rom file info from a XML node from the DAT

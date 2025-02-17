@@ -102,14 +102,10 @@
         <label class="form-check-label" for="actionReport">@Localizer["ROMS_CHECKDAT_ACTION_REPORT"]</label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="action" value="fix" id="actionFix">
-        <label class="form-check-label" for="actionFix">@Localizer["ROMS_CHECKDAT_ACTION_FIX"]</label>
-    </div>
-    <div class="form-check">
         <input class="form-check-input" type="radio" name="action" value="change" id="actionChange">
         <label class="form-check-label" for="actionChange">@Localizer["ROMS_CHECKDAT_ACTION_CHANGE"]</label>
     </div>
-    <div class="text-muted mt-3">
+    <div class="text-muted">
         <small>
             @Html.Raw(Localizer["ROMS_CHECKDAT_ACTION_CHANGE_EXPLANATION"])
         </small>
@@ -211,7 +207,7 @@ $(() => {
             romset: $('#romset').val(),
             datfile: $('input[name=datfilePre]:checked').val(),
             datfilePath: $('#datfileCustom').val(),
-            action: $('input[name=action]:checked').val(),
+            changeType: $('#actionChange').is(':checked'),
             targetFolder: $('#fixFolder').val(),
             reportAll: $('#actionReportAll').is(':checked'),
             speed: $('input[name=speed]:checked').val(),
@@ -222,7 +218,7 @@ $(() => {
         // check options are coherent
         if (options.romset === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOFULLSET"))'); return; }
         if (options.datfilePre === 'custom' && options.datfileCustom === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NODAT"))'); return; }
-        if (options.action !== 'report' && options.targetFolder === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
+        if (options.changeType && options.targetFolder === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
         if (options.romset === options.targetFolder) { window.alert('@Html.Raw(Localizer.Js("ERROR_SAMESOURCETARGET"))'); return; }
 
         ipc("roms-checkdat", options);

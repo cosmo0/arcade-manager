@@ -7,7 +7,7 @@
 
 ## Other
 
+* Use the total and progress properties of MessageHandler
+* Translate progression messages
 * Actually use the logger to do something
 * Create unit tests for all missing services
-* Move total and progress to MessageHandler properties so I don't have to pass them around
-* Translate progression messages

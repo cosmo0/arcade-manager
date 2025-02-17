@@ -23,9 +23,9 @@ public class RomsActionCheckDat
     public string DatFilePath { get; set; }
     
     /// <summary>
-    /// Gets or sets the action to execute
+    /// Gets or sets a value indicating whether to change the type of the romset; otherwise, it simply checks it
     /// </summary>
-    public string Action { get; set; }
+    public bool ChangeType { get; set; }
     
     /// <summary>
     /// Gets or sets the target folder for fixes

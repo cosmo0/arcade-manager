@@ -6,6 +6,7 @@ using ArcadeManager.Services;
 using ArcadeManager.Infrastructure;
 using ArcadeManager.Models;
 using ArcadeManager.Actions;
+using System.IO.Compression;
 
 namespace ArcadeManager.Core.Tests.Services;
 
@@ -40,7 +41,7 @@ public class DatCheckerTests
             Size = 1234
         });
         var args = new RomsActionCheckDat {
-            Action = "check",
+            ChangeType = false,
             Romset = "roms"
         };
         var processed = new GameRomList();
@@ -56,10 +57,10 @@ public class DatCheckerTests
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(true);
-        A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
+        A.CallTo(() => fs.GetZipFiles(A<ZipArchive>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -75,7 +76,7 @@ public class DatCheckerTests
             Name = "test"
         };
         var args = new RomsActionCheckDat {
-            Action = "check",
+            ChangeType = false,
             Romset = "roms",
             ReportAll = true
         };
@@ -86,7 +87,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.FileExists("test.zip")).Returns(false);
 
         // act
-        sut.CheckGame(game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -114,7 +115,7 @@ public class DatCheckerTests
             }
         ]);
         var args = new RomsActionCheckDat {
-            Action = "check",
+            ChangeType = false,
             Romset = "roms"
         };
         var processed = new GameRomList();
@@ -130,10 +131,10 @@ public class DatCheckerTests
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(true);
-        A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
+        A.CallTo(() => fs.GetZipFiles(A<ZipArchive>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -160,7 +161,7 @@ public class DatCheckerTests
             }
         ]);
         var args = new RomsActionCheckDat {
-            Action = "check",
+            ChangeType = false,
             Romset = "roms"
         };
         var processed = new GameRomList();
@@ -176,10 +177,10 @@ public class DatCheckerTests
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(true);
-        A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns(zipFiles);
+        A.CallTo(() => fs.GetZipFiles(A<ZipArchive>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
-        sut.CheckGame(game, args, processed, this.messageHandler, null);
+        sut.CheckGame(game, args, processed, this.messageHandler);
 
         // assert
         processed.Should().NotBeEmpty();
@@ -203,13 +204,11 @@ public class DatCheckerTests
             ErrorReason = ErrorReason.MissingFile
         });
         var args = new RomsActionCheckDat {
-            Action = "fix",
+            ChangeType = true,
             Romset = "roms",
             TargetFolder = "fix"
         };
-        var processed = new GameRomList() {
-            game
-        };
+        GameRomList processed = [game];
 
         var fixFolder = new GameRomFilesList {
             new GameRomFile {
@@ -227,19 +226,8 @@ public class DatCheckerTests
         A.CallTo(() => fs.FileExists("roms/test.zip")).Returns(true);
         A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(true);
 
-        // arrange: this gets called at the end of the check
-        A.CallTo(() => fs.GetZipFiles(A<string>._, A<bool>._)).Returns([
-            new GameRomFile {
-                Name = "test.1",
-                Crc = "abcd",
-                Size = 1234,
-                ZipFileName = "test.zip",
-                ZipFileFolder = "roms"
-            }
-        ]);
-
-        // act
-        await sut.FixGame(game, args, processed, fixFolder, messageHandler, null);
+        // act (the game.RomFiles is re-cast so the list is cloned)
+        await sut.FixGame(null, game, [..game.RomFiles], args, processed, fixFolder, messageHandler);
 
         // assert
         A.CallTo(() => fs.ReplaceZipFile(A<System.IO.Compression.ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();

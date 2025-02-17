@@ -26,8 +26,6 @@ jobs:
           node-version: 22.x
       - name: Setup ElectronNET
         run: dotnet tool install --global ElectronNET.CLI
-      - name: Setup coverage
-        run: dotnet tool install --global dotnet-coverage
       - name: Setup Snapcraft
         run: sudo snap install snapcraft --classic
       - name: Restore dependencies
@@ -35,7 +33,7 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        run: dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+        run: dotnet test
       - name: Electronize
         run: electronize build /target linux
       - name: Upload binaries
