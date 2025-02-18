@@ -109,4 +109,34 @@ public class FileSystemTests
         var data = await new StreamReader(fileInZip!.Open()).ReadToEndAsync();
         data.Should().Be("test1 modified");
     }
+
+    [Fact]
+    public void Zip_files_are_deleted()
+    {
+        // arrange
+        var targetZip = Path.Combine(filesPath, "testdelete-copy.zip");
+        File.Copy(Path.Combine(filesPath, "testdelete.zip"), targetZip, true);
+
+        // arrange: files list
+        GameRomFilesList files = [
+            new() { Name = "test1.txt" },
+            new() { Name = "test3.txt", Path = "testfolder" }
+        ];
+
+        // arrange: read zip
+        using (var zip = sut.OpenZipWrite(targetZip)) {
+            // act
+            foreach (var file in files) {
+                sut.DeleteZipFile(zip, file);
+            }
+
+            sut.DeleteZipFile(zip, new() { Name = "testfolder/" });
+        }
+
+        // assert: re-read zip and check remaining files
+        using var zipRead = sut.OpenZipRead(targetZip);
+        zipRead.Entries.Should().HaveCount(2);
+        zipRead.GetEntry("test2.txt").Should().NotBeNull();
+        zipRead.GetEntry("test3.txt").Should().NotBeNull();
+    }
 }

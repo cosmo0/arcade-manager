@@ -292,8 +292,8 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         // list all the folders (arcade, fba, mame...)
         foreach (var folder in romFolders) {
             // get all rom files
-            var files = fs.GetFiles(folder, "*.zip");
-            files.AddRange(fs.GetFiles(folder, "*.7z"));
+            var files = fs.FilesGetList(folder, "*.zip");
+            files.AddRange(fs.FilesGetList(folder, "*.7z"));
             foreach (var fi in files) {
                 var game = fs.FileNameWithoutExtension(fi);
                 var directoryName = fs.DirectoryName(fi);

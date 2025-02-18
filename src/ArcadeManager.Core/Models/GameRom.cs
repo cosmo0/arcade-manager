@@ -80,9 +80,9 @@ public class GameRom {
     }
 
     /// <summary>
-    /// Gets or sets the error reasons
+    /// Gets the error reason
     /// </summary>
-    public ErrorReason ErrorReason { get => _ownError; }
+    public ErrorReason ErrorReason => _ownError;
 
     /// <summary>
     /// Gets or sets the error details, if any
@@ -121,6 +121,7 @@ public class GameRom {
         if (fileName == $"{this.BiosName}.zip")
         {
             this.Bios?.Error(reason, details, fileName);
+            this.ErrorDetails = details;
             return;
         }
 
@@ -156,7 +157,7 @@ public class GameRom {
         }
 
         // add the files
-        foreach (var romXml in gameXml.Descendants("rom")) {
+        foreach (var romXml in gameXml.Descendants("rom").Where(r => r.Attribute("status")?.Value != "nodump")) {
             game.RomFiles.Add(GameRomFile.FromXml(game.Name, romXml, folder));
         }
 
@@ -249,11 +250,6 @@ public class GameRomFile {
     public string Sha1 { get; set; }
 
     /// <summary>
-    /// Gets or sets the file status, if any
-    /// </summary>
-    public string Status { get; set; }
-
-    /// <summary>
     /// Gets a value indicating whether this rom file has an error
     /// </summary>
     public bool HasError => ErrorReason != ErrorReason.None;
@@ -280,7 +276,6 @@ public class GameRomFile {
             Name = this.Name,
             Size = this.Size,
             Crc = this.Crc,
-            Status = this.Status,
             Sha1 = this.Sha1,
             Path = this.Path,
             ErrorDetails = this.ErrorDetails,
@@ -310,7 +305,6 @@ public class GameRomFile {
             Name = name,
             Size = long.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
             Crc = crc,
-            Status = status,
             Sha1 = romXml.Attribute("sha1")?.Value,
         };
     }

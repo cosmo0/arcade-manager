@@ -16,7 +16,13 @@ public interface IFileSystem {
     /// Creates the specified directory.
     /// </summary>
     /// <param name="path">The path.</param>
-    void CreateDirectory(string path);
+    void DirectoryCreate(string path);
+
+    /// <summary>
+    /// Removes all files in the specified directory
+    /// </summary>
+    /// <param name="path">The path to the directory</param>
+    void DirectoryEmpty(string path);
 
     /// <summary>
     /// Copies a directory
@@ -55,7 +61,7 @@ public interface IFileSystem {
     /// Makes sure that a folder exists
     /// </summary>
     /// <param name="targetFolder">The target folder.</param>
-    void EnsureDirectory(string targetFolder);
+    void DirectoryEnsure(string targetFolder);
 
     /// <summary>
     /// Checks if a path exists
@@ -77,6 +83,13 @@ public interface IFileSystem {
     /// </summary>
     /// <param name="filePath">The file path.</param>
     void FileDelete(string filePath);
+
+    /// <summary>
+    /// Moves a file to a folder
+    /// </summary>
+    /// <param name="filePath">The path to the file</param>
+    /// <param name="toFolder">The path to the folder to move it to</param>
+    void FileMove(string filePath, string toFolder);
 
     /// <summary>
     /// Checks if a file exists
@@ -147,7 +160,7 @@ public interface IFileSystem {
     /// <param name="path">The directory path.</param>
     /// <param name="pattern">The file matching pattern.</param>
     /// <returns>The list of files</returns>
-    List<string> GetFiles(string path, string pattern);
+    List<string> FilesGetList(string path, string pattern);
 
     /// <summary>
     /// Gets the invalid file name characters.
@@ -232,6 +245,15 @@ public interface IFileSystem {
     /// <summary>
     /// Replaces a file in a zip with another file
     /// </summary>
+    /// <param name="source">The source zip to read the file from</param>
+    /// <param name="target">The target zip to write to</param>
+    /// <param name="file">The file to replace</param>
+    /// <returns>A value indicating whether the file has been replaced</returns>
+    Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, GameRomFile file);
+
+    /// <summary>
+    /// Replaces a file in a zip with another file
+    /// </summary>
     /// <param name="target">The target zip to write to</param>
     /// <param name="file">The file to replace</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
@@ -241,6 +263,6 @@ public interface IFileSystem {
     /// Deletes a file in a zip
     /// </summary>
     /// <param name="zip">The zip file</param>
-    /// <param name="files">The list of files to delete</param>
-    void DeleteZipFile(ZipArchive zip, IEnumerable<GameRomFile> files);
+    /// <param name="file">A file to delete</param>
+    void DeleteZipFile(ZipArchive zip, GameRomFile file);
 }

@@ -233,4 +233,30 @@ public class DatCheckerTests
         A.CallTo(() => fs.ReplaceZipFile(A<System.IO.Compression.ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();
         game.RomFiles[0].ErrorReason.Should().Be(ErrorReason.None);
     }
+
+    [Fact]
+    public void Cleanup_removes_excess_files()
+    {
+        // arrange: game
+        var game = new GameRom {
+            Name = "test"
+        };
+        game.RomFiles.Add(new() { Name = "a" });
+        game.RomFiles.Add(new() { Name = "b" });
+
+        // arrange: zip files
+        var zipFiles = new GameRomFilesList {
+            new() { Name = "a" },
+            new() { Name = "b" },
+            new() { Name = "c" }
+        };
+    
+        // act
+        sut.CleanupFilesOfGame(null, game, zipFiles);
+    
+        // assert: one file has been deleted
+        A.CallTo(() => fs.DeleteZipFile(A<ZipArchive>._, A<GameRomFile>._)).MustHaveHappenedOnceExactly();
+
+        zipFiles.Should().HaveCount(2);
+    }
 }

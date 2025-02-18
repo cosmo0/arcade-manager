@@ -121,15 +121,6 @@ public partial class ElectronMessageHandler(
     }
 
     /// <summary>
-    /// Sends a game fixed message
-    /// </summary>
-    /// <param name="game"></param>
-    public void Fixed(Models.GameRom game) {
-        if (game == null) { return; }
-        Electron.IpcMain.Send(window, "progress-fixed", Serializer.Serialize(game)); 
-    }
-
-    /// <summary>
     /// Initializes the message handling for the specified window
     /// </summary>
     /// <param name="window">The window.</param>

@@ -57,7 +57,7 @@ public class Roms : IRoms
             // check files and folders
             if (!fs.FileExists(args.Main)) { throw new PathNotFoundException($"Unable to find main CSV file {args.Main}"); }
             if (!fs.DirectoryExists(args.Romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.Romset}"); }
-            if (!fs.DirectoryExists(args.Selection)) { fs.CreateDirectory(args.Selection); }
+            if (!fs.DirectoryExists(args.Selection)) { fs.DirectoryCreate(args.Selection); }
 
             // read CSV file
             var content = await csvService.ReadFile(args.Main, false);
@@ -91,7 +91,7 @@ public class Roms : IRoms
         {
             // check files and folders
             if (!fs.DirectoryExists(args.Romset)) { throw new PathNotFoundException($"Unable to find romset folder {args.Romset}"); }
-            if (!fs.DirectoryExists(args.Selection)) { fs.CreateDirectory(args.Selection); }
+            if (!fs.DirectoryExists(args.Selection)) { fs.DirectoryCreate(args.Selection); }
 
             // read CSV files
             Models.CsvGamesList content = new();
@@ -233,8 +233,8 @@ public class Roms : IRoms
             var content = await csvService.ReadFile(args.Main, false);
 
             // get list of files
-            var files = fs.GetFiles(args.Selection, "*.zip");
-            files.AddRange(fs.GetFiles(args.Selection, "*.7z"));
+            var files = fs.FilesGetList(args.Selection, "*.zip");
+            files.AddRange(fs.FilesGetList(args.Selection, "*.7z"));
 
             var total = content.Games.Count;
             var i = 0;

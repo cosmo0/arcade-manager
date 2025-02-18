@@ -196,8 +196,8 @@ public class Csv(IFileSystem fs) : ICsv {
             await fs.WriteFileStream(target, async output => {
                 await output.WriteLineAsync($"{nameColumn}{defaultDelimiter}");
 
-                var files = fs.GetFiles(main, "*.zip");
-                files.AddRange(fs.GetFiles(main, "*.7z"));
+                var files = fs.FilesGetList(main, "*.zip");
+                files.AddRange(fs.FilesGetList(main, "*.7z"));
                 var total = files.Count;
                 var i = 0;
 

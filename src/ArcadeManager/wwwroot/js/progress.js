@@ -27,13 +27,6 @@ $(() => {
         progressProcessed(data);
     });
 
-    // bind display of files fixed
-    ipcRenderer.on('progress-fixed', (origin, data) => {
-        data = !data ? {} : data[0];
-        
-        progressFixed(data);
-    });
-
     // bind errors
     window.onerror = (msg, url, line, col, error) => {
         let extra = !col ? '' : ' ; column: ' + col;
@@ -182,22 +175,6 @@ function progressProcessed(raw) {
 
     const data = JSON.parse(raw);
 
-    // add to the list if it doesn't exist
-    if (!processed.some(g => g.name === data.name)) {
-        processed.push(data);
-
-        displayGame(data, $('#processedOnlyErrors').is(':checked'));
-    }
-}
-
-/**
- * Updates a fixed game
- * 
- * @param {String} raw the raw string of the fixed game
- */
-function progressFixed(raw) {
-    const data = JSON.parse(raw);
-
     // update the list
     const idx = processed.findIndex(g => g.name === data.name);
     if (idx < 0) {
@@ -230,21 +207,14 @@ function displayGame(data, onlyErrors) {
  * @param {Boolean} onlyErrors whether to display only the errors
  */
 function displayGameList(game, onlyErrors) {
-    const target = $('#processedList');
-
-    let item = $(`#game-${game.name}`);
-    
     // no error
+    const existing = $(`#game-${game.name}`);
     if (onlyErrors && !game.haserror && !game.romfiles.some(rf => rf.haserror)) {
-        item.remove();
+        existing.remove();
         return;
     }
 
-    if (item.length === 0) {
-        item = $(`<div id="game-${game.name}"></div>\n`);
-    } else {
-        item.empty();
-    }
+    const item = $(`<div id="game-${game.name}"></div>\n`);
 
     // game line
     const className = game.haserror ? 'text-danger' : '';
@@ -270,7 +240,11 @@ function displayGameList(game, onlyErrors) {
         }
     }
 
-    target.append(item);
+    if (existing.length > 0) {
+        existing.replaceWith(item);
+    } else {
+        $('#processedList').append(item);
+    }
 }
 
 /**

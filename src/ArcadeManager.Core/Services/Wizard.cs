@@ -24,7 +24,7 @@ public class Wizard : IWizard {
     /// <param name="emulator">The emulator.</param>
     /// <returns>The games in each list</returns>
     public Dictionary<string, int> CountGamesInLists(string emulator) {
-        var files = fs.GetFiles(fs.GetDataPath("csv", emulator), "*.csv");
+        var files = fs.FilesGetList(fs.GetDataPath("csv", emulator), "*.csv");
         var result = new Dictionary<string, int>();
         foreach (var f in files) {
             var lines = fs.ReadAllLines(f);

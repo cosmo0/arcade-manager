@@ -104,7 +104,7 @@ public class Downloader(IWebClientFactory webclientfactory, IFileSystem fs, ILoc
     /// <param name="progress">A method called when a file is downloaded.</param>
     /// <returns></returns>
     public async Task<IEnumerable<string>> DownloadFolder(string repository, string folder, string targetFolder, bool overwrite, Action<GithubTree.Entry> progress) {
-        fs.EnsureDirectory(targetFolder);
+        fs.DirectoryEnsure(targetFolder);
 
         var result = new List<string>();
 

@@ -20,9 +20,27 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// Creates the specified directory.
     /// </summary>
     /// <param name="path">The path.</param>
-    public void CreateDirectory(string path)
+    public void DirectoryCreate(string path)
     {
         Directory.CreateDirectory(path);
+    }
+
+    /// <summary>
+    /// Removes all files in the specified directory
+    /// </summary>
+    /// <param name="path">The path to the directory</param>
+    public void DirectoryEmpty(string path) {
+        if (!DirectoryExists(path)) { return; }
+
+        DirectoryInfo di = new(path);
+        foreach (FileInfo file in di.EnumerateFiles())
+        {
+            file.Delete(); 
+        }
+        foreach (DirectoryInfo dir in di.EnumerateDirectories())
+        {
+            dir.Delete(true); 
+        }
     }
 
     /// <summary>
@@ -135,7 +153,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// Makes sure that a folder exists
     /// </summary>
     /// <param name="targetFolder">The target folder.</param>
-    public void EnsureDirectory(string targetFolder)
+    public void DirectoryEnsure(string targetFolder)
     {
         if (string.IsNullOrEmpty(targetFolder)) {
             return;
@@ -172,7 +190,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="overwrite">if set to <c>true</c> overwrite existing file.</param>
     public void FileCopy(string source, string dest, bool overwrite)
     {
-        if (!File.Exists(dest) || overwrite)
+        if (File.Exists(source) && (!File.Exists(dest) || overwrite))
         {
             File.Copy(source, dest, overwrite);
         }
@@ -185,6 +203,15 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     public void FileDelete(string filePath)
     {
         File.Delete(filePath);
+    }
+
+    /// <summary>
+    /// Moves a file to a folder
+    /// </summary>
+    /// <param name="filePath">The path to the file</param>
+    /// <param name="toFolder">The path to the folder to move it to</param>
+    public void FileMove(string filePath, string toFolder) {
+        File.Move(filePath, PathJoin(toFolder, FileName(filePath)));
     }
 
     /// <summary>
@@ -287,7 +314,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="path">The directory path.</param>
     /// <param name="pattern">The file matching pattern.</param>
     /// <returns>The list of files</returns>
-    public List<string> GetFiles(string path, string pattern)
+    public List<string> FilesGetList(string path, string pattern)
     {
         return Directory.GetFiles(path, pattern, new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive }).ToList();
     }
@@ -309,7 +336,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <remarks>From stackoverflow.com/a/4975942/6776</remarks>
     public string HumanSize(long size)
     {
-        string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
+        string[] suf = ["B", "KB", "MB", "GB", "TB", "PB", "EB"]; //Longs run out around EB
         if (size == 0)
             return $"0 {suf[0]}";
         long bytes = Math.Abs(size);
@@ -451,22 +478,14 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <summary>
     /// Replaces a file in a zip with another file
     /// </summary>
-    /// <param name="sourceZip">The source zip to copy the file from</param>
-    /// <param name="targetZip">The target zip to copy the file to</param>
-    /// <param name="fileName">The file name to replace</param>
-    /// <param name="sourceFilePath">The source file path, if any</param>
+    /// <param name="source">The source zip to read the file from</param>
+    /// <param name="target">The target zip to write to</param>
+    /// <param name="file">The file to replace</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    public async Task<bool> ReplaceZipFile(ZipArchive target, GameRomFile file)
-    {
-        if (!FileExists(file.ZipFilePath)) {
-            return false;
-        }
-
+    public async Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, GameRomFile file) {
         if (target.Mode == ZipArchiveMode.Read) {
             throw new ArgumentException("Zip archive is opened in read mode");
         }
-
-        using var source = OpenZipRead(file.ZipFilePath);
 
         // get the source entry
         var sourceEntry = source.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
@@ -491,15 +510,34 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     }
 
     /// <summary>
+    /// Replaces a file in a zip with another file
+    /// </summary>
+    /// <param name="sourceZip">The source zip to copy the file from</param>
+    /// <param name="targetZip">The target zip to copy the file to</param>
+    /// <param name="fileName">The file name to replace</param>
+    /// <param name="sourceFilePath">The source file path, if any</param>
+    /// <returns>A value indicating whether the file has been replaced</returns>
+    public async Task<bool> ReplaceZipFile(ZipArchive target, GameRomFile file)
+    {
+        if (!FileExists(file.ZipFilePath)) {
+            return false;
+        }
+
+        using var source = OpenZipRead(file.ZipFilePath);
+
+        return await ReplaceZipFile(source, target, file);
+    }
+
+    /// <summary>
     /// Deletes a file in a zip
     /// </summary>
     /// <param name="zip">The zip file</param>
-    /// <param name="files">The list of files to delete</param>
-    public void DeleteZipFile(ZipArchive zip, IEnumerable<GameRomFile> files) {
-        foreach (var file in files) {
-            var entry = zip.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
-            entry?.Delete();
-        }
+    /// <param name="file">A file to delete</param>
+    public void DeleteZipFile(ZipArchive zip, GameRomFile file) {
+        if (zip.Mode != ZipArchiveMode.Update) { return; }
+        
+        var entry = zip.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
+        entry?.Delete();
     }
 
     private static string GetZipFileSha1(ZipArchiveEntry entry)

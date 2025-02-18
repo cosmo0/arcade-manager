@@ -68,10 +68,4 @@ public interface IMessageHandler
     /// </summary>
     /// <param name="game">The processed game</param>
     void Processed(GameRom game);
-
-    /// <summary>
-    /// Sends a game fixed message
-    /// </summary>
-    /// <param name="game"></param>
-    void Fixed(GameRom game);
 }
