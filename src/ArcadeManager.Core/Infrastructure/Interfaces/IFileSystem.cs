@@ -252,14 +252,6 @@ public interface IFileSystem {
     Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, GameRomFile file);
 
     /// <summary>
-    /// Replaces a file in a zip with another file
-    /// </summary>
-    /// <param name="target">The target zip to write to</param>
-    /// <param name="file">The file to replace</param>
-    /// <returns>A value indicating whether the file has been replaced</returns>
-    Task<bool> ReplaceZipFile(ZipArchive target, GameRomFile file);
-
-    /// <summary>
     /// Deletes a file in a zip
     /// </summary>
     /// <param name="zip">The zip file</param>

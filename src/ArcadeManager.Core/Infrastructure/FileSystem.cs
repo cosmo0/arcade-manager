@@ -488,7 +488,8 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         }
 
         // get the source entry
-        var sourceEntry = source.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
+        var entryPath = string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}";
+        var sourceEntry = source.Entries.FirstOrDefault(e => e.FullName == entryPath);
         if (sourceEntry == null) {
             // maybe I should throw, but I have very bad exception management
             return false;
@@ -507,25 +508,6 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         await sourceStream.CopyToAsync(targetStream);
 
         return true;
-    }
-
-    /// <summary>
-    /// Replaces a file in a zip with another file
-    /// </summary>
-    /// <param name="sourceZip">The source zip to copy the file from</param>
-    /// <param name="targetZip">The target zip to copy the file to</param>
-    /// <param name="fileName">The file name to replace</param>
-    /// <param name="sourceFilePath">The source file path, if any</param>
-    /// <returns>A value indicating whether the file has been replaced</returns>
-    public async Task<bool> ReplaceZipFile(ZipArchive target, GameRomFile file)
-    {
-        if (!FileExists(file.ZipFilePath)) {
-            return false;
-        }
-
-        using var source = OpenZipRead(file.ZipFilePath);
-
-        return await ReplaceZipFile(source, target, file);
     }
 
     /// <summary>

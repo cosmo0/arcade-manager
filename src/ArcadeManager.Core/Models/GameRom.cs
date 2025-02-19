@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
@@ -23,6 +24,7 @@ public class GameRomList : List<GameRom> {
 /// <summary>
 /// A game rom (zip)
 /// </summary>
+[DebuggerDisplay("{Name}")]
 public class GameRom {
     private ErrorReason _ownError = ErrorReason.None;
 
@@ -198,16 +200,17 @@ public class GameRomFilesList : List<GameRomFile> {
     /// Replaces a file in this collection with the specified one
     /// </summary>
     /// <param name="file">The file to replace</param>
-    /// <param name="game">The related game infos</param>
-    public void ReplaceFile(GameRomFile file, GameRom game) {
+    /// <param name="zipFilePath">The path to the zip file we're processing</param>
+    public void ReplaceFile(GameRomFile file, string zipFilePath) {
         this.RemoveFile(file.Name, file.Path);
-        this.Add(file.CloneFor(game));
+        this.Add(file.CloneFor(zipFilePath));
     }
 }
 
 /// <summary>
 /// A game rom file (rom files inside the zip)
 /// </summary>
+[DebuggerDisplay("{Name} ({Crc})")]
 public class GameRomFile {
     /// <summary>
     /// Gets or sets the zip file name
@@ -267,12 +270,12 @@ public class GameRomFile {
     /// <summary>
     /// Clones a rom file object by replacing some data for the specified game
     /// </summary>
-    /// <param name="game">The game to use data of</param>
+    /// <param name="zipFilePath">The path to the zip file we're processing</param>
     /// <returns>The cloned GameRomFile</returns>
-    public GameRomFile CloneFor(GameRom game) {
+    public GameRomFile CloneFor(string zipFilePath) {
         return new GameRomFile {
-            ZipFileName = $"{game.Name}.zip",
-            ZipFileFolder = game.RomFiles.FirstOrDefault()?.ZipFileFolder,
+            ZipFileName = System.IO.Path.GetFileName(zipFilePath),
+            ZipFileFolder = System.IO.Path.GetDirectoryName(zipFilePath),
             Name = this.Name,
             Size = this.Size,
             Crc = this.Crc,

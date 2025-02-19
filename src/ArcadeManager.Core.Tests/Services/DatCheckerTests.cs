@@ -203,11 +203,6 @@ public class DatCheckerTests
             Size = 1234,
             ErrorReason = ErrorReason.MissingFile
         });
-        var args = new RomsActionCheckDat {
-            ChangeType = true,
-            Romset = "roms",
-            TargetFolder = "fix"
-        };
         GameRomList processed = [game];
 
         var fixFolder = new GameRomFilesList {
@@ -227,7 +222,7 @@ public class DatCheckerTests
         A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(true);
 
         // act (the game.RomFiles is re-cast so the list is cloned)
-        await sut.FixGame(null, game, [..game.RomFiles], args, processed, fixFolder, messageHandler);
+        await sut.FixGame(null, "roms/test.zip", game, [..game.RomFiles], processed, fixFolder, messageHandler);
 
         // assert
         A.CallTo(() => fs.ReplaceZipFile(A<System.IO.Compression.ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();
