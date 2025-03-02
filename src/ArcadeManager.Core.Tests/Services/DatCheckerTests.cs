@@ -220,12 +220,13 @@ public class DatCheckerTests
         A.CallTo(() => fs.PathJoin("fix", "test.zip")).Returns("fix/test.zip");
         A.CallTo(() => fs.FileExists("roms/test.zip")).Returns(true);
         A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(true);
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipArchive>._, A<ZipArchive>._, A<GameRomFile>._)).Returns(true);
 
         // act (the game.RomFiles is re-cast so the list is cloned)
         await sut.FixGame(null, "roms/test.zip", game, [..game.RomFiles], processed, fixFolder, messageHandler);
 
         // assert
-        A.CallTo(() => fs.ReplaceZipFile(A<System.IO.Compression.ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipArchive>._, A<ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();
         game.RomFiles[0].ErrorReason.Should().Be(ErrorReason.None);
     }
 

@@ -75,6 +75,7 @@ public class FileSystemTests
     {
         // arrange: paths
         var original = Path.Combine(filesPath, "test1.zip");
+        var sourceZip = Path.Combine(filesPath, "test2.zip");
         var targetZip = Path.Combine(filesPath, "test1-copy.zip");
 
         // arrange: file data
@@ -94,20 +95,21 @@ public class FileSystemTests
         File.Copy(original, targetZip);
 
         // arrange: open the zip
-        using var zip = sut.OpenZipWrite(targetZip);
+        using var sourceZipFile = sut.OpenZipWrite(sourceZip);
+        using var targetZipFile = sut.OpenZipWrite(targetZip);
 
         // act
-        var replaced = await sut.ReplaceZipFile(zip, sourceFile);
+        var replaced = await sut.ReplaceZipFile(sourceZipFile, targetZipFile, sourceFile);
         
         // act a second time to simulate what can happen in the rebuild process
-        var replacedTwice = await sut.ReplaceZipFile(zip, sourceFile);
+        var replacedTwice = await sut.ReplaceZipFile(sourceZipFile, targetZipFile, sourceFile);
 
         // assert: file has been replaced
         replaced.Should().BeTrue();
         replacedTwice.Should().BeTrue();
 
         // assert: read the new zip content
-        var fileInZip = zip.GetEntry("test1.txt");
+        var fileInZip = targetZipFile.GetEntry("test1.txt");
         fileInZip.Should().NotBeNull();
         
         var data = await new StreamReader(fileInZip!.Open()).ReadToEndAsync();
