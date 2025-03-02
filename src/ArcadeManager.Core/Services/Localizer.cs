@@ -11,7 +11,7 @@ namespace ArcadeManager.Services;
 /// Localization management
 /// </summary>
 public class Localizer : ILocalizer {
-    private static readonly List<string> _locales = ["en", "fr"];
+    private static readonly List<string> _locales = ["en", "fr", "sv"];
 
     private readonly Dictionary<string, Dictionary<string, string>> translations = [];
 
