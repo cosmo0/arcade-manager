@@ -31,7 +31,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build -c Release --no-restore
       - name: Test
         run: dotnet test
       - name: Electronize
@@ -42,3 +42,8 @@ jobs:
         with:
           name: ArcadeManager-linux
           path: ./src/ArcadeManager/bin/Desktop/*.*
+      - name: Upload console binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArcadeManager-linux-console
+          path: ./src/ArcadeManager.Console/bin/Release/net8.0/*.*
