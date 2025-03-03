@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcadeManager.Core", "Arcad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcadeManager.Core.Tests", "ArcadeManager.Core.Tests\ArcadeManager.Core.Tests.csproj", "{73460E1D-AA4D-49F0-899D-C363762EAA7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcadeManager.Console", "ArcadeManager.Console\ArcadeManager.Console.csproj", "{5956DA38-7CC7-4195-8FFA-9B17B3B8A27E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{73460E1D-AA4D-49F0-899D-C363762EAA7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73460E1D-AA4D-49F0-899D-C363762EAA7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73460E1D-AA4D-49F0-899D-C363762EAA7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5956DA38-7CC7-4195-8FFA-9B17B3B8A27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5956DA38-7CC7-4195-8FFA-9B17B3B8A27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5956DA38-7CC7-4195-8FFA-9B17B3B8A27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5956DA38-7CC7-4195-8FFA-9B17B3B8A27E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
