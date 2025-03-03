@@ -36,8 +36,7 @@ jobs:
         run: dotnet test
       - name: Electronize
         run: electronize build /target linux
-        with:
-          path: ./src/ArcadeManager
+        working-directory: ./src/ArcadeManager
       - name: Upload binaries
         uses: actions/upload-artifact@v4
         with:
