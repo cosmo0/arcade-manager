@@ -380,22 +380,26 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             {
                 messageHandler.Progress($"Fixing {game.Name} - file {romFile.Name}");
 
-                var sourceZipPath = repairFile.ZipFilePath;
-                using var sourceZip = fs.OpenZipRead(sourceZipPath);
-
-                if (await fs.ReplaceZipFile(sourceZip, targetZip, repairFile)) {
-                    // update the metadata
-                    romFile.ErrorReason = ErrorReason.None;
-                    romFile.ErrorDetails = null;
-
-                    // update the fileFixedZipFiles list
-                    fileFixedZipFiles.ReplaceFile(romFile, targetZipPath);
-                } else {
-                    Console.WriteLine($"failed to replace {repairFile.Name} from {sourceZipPath} to {targetZipPath}");
-                }
+                await FixGameFile(repairFile, targetZip, targetZipPath, romFile, fileFixedZipFiles);
 
                 if (messageHandler.MustCancel) { return; }
             }
+        }
+    }
+
+    public async Task FixGameFile(GameRomFile repairFile, ZipArchive targetZip, string targetZipPath, GameRomFile romFile, GameRomFilesList fileFixedZipFiles) {
+        var sourceZipPath = repairFile.ZipFilePath;
+        using var sourceZip = fs.OpenZipRead(sourceZipPath);
+
+        if (await fs.ReplaceZipFile(sourceZip, targetZip, repairFile)) {
+            // update the metadata
+            romFile.ErrorReason = ErrorReason.None;
+            romFile.ErrorDetails = null;
+
+            // update the fileFixedZipFiles list
+            fileFixedZipFiles.ReplaceFile(romFile, targetZipPath);
+        } else {
+            Console.WriteLine($"did not replace {repairFile.Name} from {sourceZipPath} to {targetZipPath}");
         }
     }
 
