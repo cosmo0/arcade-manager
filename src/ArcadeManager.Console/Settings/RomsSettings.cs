@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using ArcadeManager.Actions;
 using Spectre.Console.Cli;
 
 namespace ArcadeManager.Console.Settings;
@@ -21,4 +22,14 @@ public class RomsSettings : CommandSettings
     [Description("Whether to overwrite existing files")]
     [CommandOption("-o|--overwrite")]
 	public bool Overwrite { get; set; }
+
+    public RomsAction ToAction()
+    {
+        return new Actions.RomsAction() {
+            Main = Csv,
+            Romset = Romset,
+            Selection = Selection,
+            Overwrite = Overwrite
+        };
+    }
 }

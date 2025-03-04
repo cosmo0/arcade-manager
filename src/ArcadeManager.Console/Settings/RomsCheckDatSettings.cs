@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using ArcadeManager.Actions;
 using Spectre.Console.Cli;
 
 namespace ArcadeManager.Console.Settings;
@@ -37,4 +38,19 @@ public class RomsCheckDatSettings : CommandSettings
     [Description("The path to another folder to rebuild the romset (for example, a recent romset to rebuild an older one)")]
     [CommandOption("--otherfolder <OTHERFOLDER>")]
     public string? OtherFolder { get; set; }
+
+    public RomsActionCheckDat ToAction()
+    {
+        return new() {
+            Romset = this.Romset,
+            DatFile = "custom",
+            DatFilePath = this.DatFile,
+            ChangeType = this.ChangeType,
+            TargetFolder = this.TargetFolder,
+            OtherFolder = this.OtherFolder,
+            CsvFilter = this.CsvFilter,
+            ReportAll = this.ReportAll,
+            Speed = this.CheckSha1 ? "slow" : "fast"
+        };
+    }
 }

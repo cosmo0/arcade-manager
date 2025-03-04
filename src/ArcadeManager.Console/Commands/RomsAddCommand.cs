@@ -1,14 +1,15 @@
 using System;
 using ArcadeManager.Console.Settings;
+using ArcadeManager.Services;
 using Spectre.Console.Cli;
 
 namespace ArcadeManager.Console.Commands;
 
-public class RomsAddCommand : Command<RomsSettings>
+public class RomsAddCommand(IRoms roms, IMessageHandler messageHandler) : AsyncCommand<RomsSettings>
 {
-    public override int Execute(CommandContext context, RomsSettings settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, RomsSettings settings)
     {
-        System.Console.WriteLine("RomsAddCommand");
+        await roms.Add(settings.ToAction(), messageHandler);
         return 0;
     }
 }

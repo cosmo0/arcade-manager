@@ -15,8 +15,8 @@ public static class Program
         {
             config.AddBranch<CsvSettings>("csv", csv =>
             {
-                csv.AddCommand<CsvAddCommand>("add");
-                csv.AddCommand<CsvDeleteCommand>("delete");
+                csv.AddCommand<CsvAddCommand>("merge");
+                csv.AddCommand<CsvDeleteCommand>("remove");
                 csv.AddCommand<CsvKeepCommand>("keep");
                 csv.AddCommand<CsvConvertDatCommand>("convertdat");
                 csv.AddCommand<CsvConvertIniCommand>("convertini");

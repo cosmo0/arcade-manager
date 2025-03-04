@@ -1,14 +1,15 @@
 using System;
 using ArcadeManager.Console.Settings;
+using ArcadeManager.Services;
 using Spectre.Console.Cli;
 
 namespace ArcadeManager.Console.Commands;
 
-public class CsvAddCommand : Command<CsvSettings>
+public class CsvAddCommand(ICsv csv, IMessageHandler messageHandler) : AsyncCommand<CsvSettings>
 {
-    public override int Execute(CommandContext context, CsvSettings settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, CsvSettings settings)
     {
-        System.Console.WriteLine("CsvAddCommand");
+        await csv.Merge(settings.Main, settings.Secondary, settings.Target, messageHandler);
         return 0;
     }
 }

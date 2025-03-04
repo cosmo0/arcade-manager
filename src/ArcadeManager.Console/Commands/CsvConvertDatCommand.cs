@@ -1,13 +1,14 @@
 using ArcadeManager.Console.Settings;
+using ArcadeManager.Services;
 using Spectre.Console.Cli;
 
 namespace ArcadeManager.Console.Commands;
 
-public class CsvConvertDatCommand : Command<CsvSettings>
+public class CsvConvertDatCommand(ICsv csv, IMessageHandler messageHandler) : AsyncCommand<CsvSettings>
 {
-    public override int Execute(CommandContext context, CsvSettings settings)
+    public override async Task<int> ExecuteAsync(CommandContext context, CsvSettings settings)
     {
-        System.Console.WriteLine("CsvConvertDatCommand");
+        await csv.ConvertDat(settings.Main, settings.Target, messageHandler);
         return 0;
     }
 }
