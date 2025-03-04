@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using ArcadeManager.Console.Commands;
+﻿using ArcadeManager.Console.Commands;
 using ArcadeManager.Console.Settings;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -11,9 +9,7 @@ public static class Program
 {
     public static int Main(string[] args)
     {
-        System.Console.ReadLine();
-
-        var app = new CommandApp();
+        var app = new CommandApp(new TypeRegistrar());
 
         app.Configure(config =>
         {
