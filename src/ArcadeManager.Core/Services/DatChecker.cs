@@ -250,7 +250,8 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         fs.DirectoryEmpty(errorsFolder);
 
         // first, copy all bioses, so that the checks after rebuilding each file don't trigger "missing bios" error
-        foreach (var bios in allGames.Where(g => !string.IsNullOrEmpty(g.BiosName)).Select(g => g.BiosName).Distinct()) {
+        foreach (var bios in allGames.Where(g => !string.IsNullOrEmpty(g.BiosName)).Select(g => g.BiosName).Distinct())
+        {
             fs.FileCopy(fs.PathJoin(args.Romset, $"{bios}.zip"), fs.PathJoin(args.TargetFolder, $"{bios}.zip"), true);
         }
 
@@ -295,11 +296,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private void RebuildGameHandleResult(GameRom game, IEnumerable<GameRomFile> zipFiles, string gameFileFixed, string errorsFolder, IMessageHandler messageHandler) {
-        if (!zipFiles.Any()) {
+    private void RebuildGameHandleResult(GameRom game, IEnumerable<GameRomFile> zipFiles, string gameFileFixed, string errorsFolder, IMessageHandler messageHandler)
+    {
+        if (!zipFiles.Any())
+        {
             // if the zip has been created but no file has been added inside
             fs.FileDelete(gameFileFixed);
-            messageHandler.Processed(new() { Name = game.Name  });
+            messageHandler.Processed(new() { Name = game.Name });
         }
         else if (game.HasError)
         {
@@ -307,7 +310,8 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             fs.FileMove(gameFileFixed, errorsFolder);
             messageHandler.Processed(game);
         }
-        else {
+        else
+        {
             // no error
             messageHandler.Processed(game);
         }
@@ -365,7 +369,8 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
                 .FirstOrDefault(f => !f.HasError && f.Name == romFile.Name && f.Crc == romFile.Crc);
 
             // TODO: find out why allGames files have been modified with a non-existing path
-            if (repairFile != null && !fs.FileExists(repairFile.ZipFilePath)) {
+            if (repairFile != null && !fs.FileExists(repairFile.ZipFilePath))
+            {
                 repairFile = null;
             }
 
@@ -387,18 +392,22 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    public async Task FixGameFile(GameRomFile repairFile, ZipArchive targetZip, string targetZipPath, GameRomFile romFile, GameRomFilesList fileFixedZipFiles) {
+    public async Task FixGameFile(GameRomFile repairFile, ZipArchive targetZip, string targetZipPath, GameRomFile romFile, GameRomFilesList fileFixedZipFiles)
+    {
         var sourceZipPath = repairFile.ZipFilePath;
         using var sourceZip = fs.OpenZipRead(sourceZipPath);
 
-        if (await fs.ReplaceZipFile(sourceZip, targetZip, repairFile)) {
+        if (await fs.ReplaceZipFile(sourceZip, targetZip, repairFile))
+        {
             // update the metadata
             romFile.ErrorReason = ErrorReason.None;
             romFile.ErrorDetails = null;
 
             // update the fileFixedZipFiles list
             fileFixedZipFiles.ReplaceFile(romFile, targetZipPath);
-        } else {
+        }
+        else
+        {
             Console.WriteLine($"did not replace {repairFile.Name} from {sourceZipPath} to {targetZipPath}");
         }
     }
@@ -463,7 +472,8 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private async Task ExtractClone(ZipArchive parentZip, GameRom game, string cloneName, string targetFolder, GameRomFilesList targetZipFiles, IMessageHandler messageHandler) {
+    private async Task ExtractClone(ZipArchive parentZip, GameRom game, string cloneName, string targetFolder, GameRomFilesList targetZipFiles, IMessageHandler messageHandler)
+    {
         // get the files related to the clone
         foreach (var cloneZipFile in targetZipFiles.Where(tf => tf.Path == cloneName))
         {
@@ -475,12 +485,15 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             var cloneFile = game.Clones[cloneName].RomFiles.FirstOrDefault(cf => cf.Name == cloneZipFile.Name && cf.Crc == cloneZipFile.Crc);
             if (cloneFile == null) { continue; }
 
-            if (await fs.ReplaceZipFile(parentZip, targetCloneZip, cloneZipFile)) {
+            if (await fs.ReplaceZipFile(parentZip, targetCloneZip, cloneZipFile))
+            {
                 cloneZipFile.ErrorReason = ErrorReason.None;
                 cloneZipFile.ErrorDetails = null;
 
                 game.Clones[cloneName].RomFiles.ReplaceFile(cloneZipFile, targetCloneZipPath);
-            } else {
+            }
+            else
+            {
                 Console.WriteLine($"failed to replace {cloneZipFile.Name} from {cloneZipFile.ZipFilePath} to {targetCloneZipPath}");
             }
 
@@ -497,10 +510,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         // get the missing files from the parent that are not already in the clone
         foreach (var missingFile in filesOnlyInParent.Where(pf => !targetZipFiles.Any(zf => zf.Name == pf.Name && zf.Crc == pf.Crc)))
         {
-            if (await fs.ReplaceZipFile(sourceZip, targetZip, missingFile)) {
+            if (await fs.ReplaceZipFile(sourceZip, targetZip, missingFile))
+            {
                 // update targetZipFiles
                 targetZipFiles.ReplaceFile(missingFile, targetZipPath);
-            } else {
+            }
+            else
+            {
                 Console.WriteLine($"failed to replace {missingFile.Name} from {sourceZipPath} to {targetZipPath}");
             }
 
@@ -525,10 +541,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             {
                 using var sourceZip = fs.OpenZipRead(otherFile.ZipFilePath);
 
-                if (await fs.ReplaceZipFile(sourceZip, targetZip, otherFile)) {
+                if (await fs.ReplaceZipFile(sourceZip, targetZip, otherFile))
+                {
                     // update targetZipFiles
                     targetZipFiles.ReplaceFile(otherFile, targetZipPath);
-                } else {
+                }
+                else
+                {
                     Console.WriteLine($"failed to replace {missingFile.Name} from {missingFile.ZipFilePath} to {targetZipPath}");
                 }
             }
@@ -543,13 +562,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
         // the list of files in the current rom
         var romFiles = GetAllFilesOfGame(game);
-        
+
         // get folders to remove
         var folders = zipFiles.Where(f => !string.IsNullOrEmpty(f.Path)).Select(f => f.Path).Distinct().ToList();
 
         // get the files that are in the zip but shouldn't
         var excessFiles = zipFiles.Where(zf => !romFiles.Any(rf => rf.Name == zf.Name)).ToList(); // The ToList() clones the list so the zipFiles collection can be modified
-        
+
         foreach (var f in excessFiles)
         {
             // remove them
@@ -557,10 +576,11 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
             zipFiles.RemoveFile(f.Name, f.Path);
         }
-        
+
         // remove remaining folders
-        foreach (var folder in folders) {
-            fs.DeleteZipFile(zip, new() { Name = folder.EndsWith('/') ? folder : $"{folder}/" });
+        foreach (var folder in folders)
+        {
+            fs.DeleteZipFile(zip, new("", "") { Name = folder.EndsWith('/') ? folder : $"{folder}/" });
         }
     }
 

@@ -211,16 +211,16 @@ public class GameRomFilesList : List<GameRomFile> {
 /// A game rom file (rom files inside the zip)
 /// </summary>
 [DebuggerDisplay("{Name} ({Crc})")]
-public class GameRomFile {
+public class GameRomFile(string zipFileName, string zipFileFolder) {
     /// <summary>
     /// Gets or sets the zip file name
     /// </summary>
-    public string ZipFileName { get; set; }
+    public string ZipFileName => zipFileName;
 
     /// <summary>
     /// Gets or sets the zip file folder
     /// </summary>
-    public string ZipFileFolder { get; set; }
+    public string ZipFileFolder => zipFileFolder;
 
     /// <summary>
     /// Gets the full zip file path
@@ -273,9 +273,7 @@ public class GameRomFile {
     /// <param name="zipFilePath">The path to the zip file we're processing</param>
     /// <returns>The cloned GameRomFile</returns>
     public GameRomFile CloneFor(string zipFilePath) {
-        return new GameRomFile {
-            ZipFileName = System.IO.Path.GetFileName(zipFilePath),
-            ZipFileFolder = System.IO.Path.GetDirectoryName(zipFilePath),
+        return new GameRomFile(System.IO.Path.GetFileName(zipFilePath), System.IO.Path.GetDirectoryName(zipFilePath)) {
             Name = this.Name,
             Size = this.Size,
             Crc = this.Crc,
@@ -302,9 +300,7 @@ public class GameRomFile {
             throw new ArgumentNullException($"No crc for file {name} in game {game}");
         }
 
-        return new GameRomFile() {
-            ZipFileName = $"{game}.zip",
-            ZipFileFolder = folder,
+        return new GameRomFile($"{game}.zip", folder) {
             Name = name,
             Size = long.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
             Crc = crc,
