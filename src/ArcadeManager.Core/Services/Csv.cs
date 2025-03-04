@@ -332,9 +332,9 @@ public class Csv(IFileSystem fs) : ICsv {
 
         foreach (var d in delimiters) {
             // ",name," OR "name," OR ",name"
-            var hasKeyword = new Regex($"{d}{nameColumn}{d}|^{nameColumn}{d}|{d}{nameColumn}$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var hasKeyword = new Regex($"{d}{nameColumn}{d}|^{nameColumn}{d}|{d}{nameColumn}$", RegexOptions.Multiline | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
             // single column with just "name" and nothing else
-            var hasKeywordAlone = new Regex($"^{d}$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var hasKeywordAlone = new Regex($"^{d}$", RegexOptions.Multiline | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
 
             if (hasKeyword.IsMatch(line)) {
                 return (true, d.Replace("\\", ""));
@@ -365,7 +365,7 @@ public class Csv(IFileSystem fs) : ICsv {
         string invalidChars = Regex.Escape(new string(fs.GetInvalidFileNameChars()));
         string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
-        return Regex.Replace(name, invalidRegStr, "_");
+        return Regex.Replace(name, invalidRegStr, "_", RegexOptions.None, TimeSpan.FromSeconds(1));
     }
 
     /// <summary>

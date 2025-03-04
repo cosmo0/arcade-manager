@@ -206,7 +206,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         };
 
         foreach (var p in parameters) {
-            var regex = new Regex(BuildCfgRegex(p), RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            var regex = new Regex(BuildCfgRegex(p), RegexOptions.Multiline | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
             var foundValue = regex.Match(content).Groups[1].Value;
             if (double.TryParse(foundValue, out var value)) {
                 value = Math.Round(value * ratio, 0);
@@ -238,8 +238,8 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
     /// <param name="key">The key to look for.</param>
     /// <returns>The config value</returns>
     private static string GetCfgData(string fileContent, string key) {
-        var match = Regex.Match(fileContent, BuildCfgRegex(key), RegexOptions.Multiline);
-        if (match.Success && match.Captures.Any()) {
+        var match = Regex.Match(fileContent, BuildCfgRegex(key), RegexOptions.Multiline, TimeSpan.FromSeconds(1));
+        if (match.Success && match.Captures.Count != 0) {
             return match.Groups[1].Value.Trim();
         }
 
