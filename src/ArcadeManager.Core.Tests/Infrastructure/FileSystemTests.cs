@@ -79,10 +79,8 @@ public class FileSystemTests
         var targetZip = Path.Combine(filesPath, "test1-copy.zip");
 
         // arrange: file data
-        var sourceFile = new GameRomFile {
+        var sourceFile = new GameRomFile("test2.zip", filesPath) {
             Name = "test1.txt",
-            ZipFileName = "test2.zip",
-            ZipFileFolder = filesPath,
             Crc = "8ab2dce2"
         };
 
@@ -125,8 +123,8 @@ public class FileSystemTests
 
         // arrange: files list
         GameRomFilesList files = [
-            new() { Name = "test1.txt" },
-            new() { Name = "test3.txt", Path = "testfolder" }
+            new("", "") { Name = "test1.txt" },
+            new("", "") { Name = "test3.txt", Path = "testfolder" }
         ];
 
         // arrange: read zip
@@ -136,7 +134,7 @@ public class FileSystemTests
                 sut.DeleteZipFile(zip, file);
             }
 
-            sut.DeleteZipFile(zip, new() { Name = "testfolder/" });
+            sut.DeleteZipFile(zip, new("", "") { Name = "testfolder/" });
         }
 
         // assert: re-read zip and check remaining files

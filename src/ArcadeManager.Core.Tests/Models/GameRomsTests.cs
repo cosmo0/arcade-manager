@@ -107,10 +107,10 @@ public class GameRomsTests
     {
         // arrange
         var data = new GameRomFilesList {
-            new() { Name = "a" },
-            new() { Name = "b" },
-            new() { Name = "a", Path = "sub" },
-            new() { Name = "b", Path = "sub" }
+            new("", "") { Name = "a" },
+            new("", "") { Name = "b" },
+            new("", "") { Name = "a", Path = "sub" },
+            new("", "") { Name = "b", Path = "sub" }
         };
     
         // act

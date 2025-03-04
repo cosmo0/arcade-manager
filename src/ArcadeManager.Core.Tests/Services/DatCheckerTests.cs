@@ -35,7 +35,7 @@ public class DatCheckerTests
         var game = new GameRom {
             Name = "test"
         };
-        game.RomFiles.Add(new GameRomFile {
+        game.RomFiles.Add(new GameRomFile("", "") {
             Name = "test.1",
             Crc = "abcd",
             Size = 1234
@@ -47,7 +47,7 @@ public class DatCheckerTests
         var processed = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
-            new GameRomFile {
+            new GameRomFile("", "") {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
@@ -103,12 +103,12 @@ public class DatCheckerTests
             Name = "test"
         };
         game.RomFiles.AddRange([
-            new GameRomFile {
+            new GameRomFile("", "") {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
             },
-            new GameRomFile {
+            new GameRomFile("", "") {
                 Name = "test.2",
                 Crc = "def",
                 Size = 456
@@ -121,7 +121,7 @@ public class DatCheckerTests
         var processed = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
-            new GameRomFile {
+            new GameRomFile("", "") {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
@@ -154,7 +154,7 @@ public class DatCheckerTests
             Name = "test"
         };
         game.RomFiles.AddRange([
-            new GameRomFile {
+            new GameRomFile("", "") {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
@@ -167,7 +167,7 @@ public class DatCheckerTests
         var processed = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
-            new GameRomFile {
+            new GameRomFile("", "") {
                 Name = "test.1",
                 Crc = "def",
                 Size = 1234
@@ -197,7 +197,7 @@ public class DatCheckerTests
         var game = new GameRom {
             Name = "test"
         };
-        game.RomFiles.Add(new GameRomFile {
+        game.RomFiles.Add(new GameRomFile("", "") {
             Name = "test.1",
             Crc = "abcd",
             Size = 1234,
@@ -206,12 +206,10 @@ public class DatCheckerTests
         GameRomList processed = [game];
 
         var fixFolder = new GameRomFilesList {
-            new GameRomFile {
+            new GameRomFile("test.zip", "roms") {
                 Name = "test.1",
                 Crc = "abcd",
-                Size = 1234,
-                ZipFileName = "test.zip",
-                ZipFileFolder = "roms"
+                Size = 1234
             }
         };
 
@@ -237,14 +235,14 @@ public class DatCheckerTests
         var game = new GameRom {
             Name = "test"
         };
-        game.RomFiles.Add(new() { Name = "a" });
-        game.RomFiles.Add(new() { Name = "b" });
+        game.RomFiles.Add(new("", "") { Name = "a" });
+        game.RomFiles.Add(new("", "") { Name = "b" });
 
         // arrange: zip files
         var zipFiles = new GameRomFilesList {
-            new() { Name = "a" },
-            new() { Name = "b" },
-            new() { Name = "c" }
+            new("", "") { Name = "a" },
+            new("", "") { Name = "b" },
+            new("", "") { Name = "c" }
         };
     
         // act
