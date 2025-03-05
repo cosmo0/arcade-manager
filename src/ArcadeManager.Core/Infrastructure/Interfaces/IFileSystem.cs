@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using ArcadeManager.Models;
+using ArcadeManager.Models.Roms;
 
 namespace ArcadeManager.Infrastructure;
 
@@ -249,12 +250,12 @@ public interface IFileSystem {
     /// <param name="target">The target zip to write to</param>
     /// <param name="file">The file to replace</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, GameRomFile file);
+    Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, IGameRomFile file);
 
     /// <summary>
     /// Deletes a file in a zip
     /// </summary>
     /// <param name="zip">The zip file</param>
     /// <param name="file">A file to delete</param>
-    void DeleteZipFile(ZipArchive zip, GameRomFile file);
+    void DeleteZipFile(ZipArchive zip, IGameRomFile file);
 }

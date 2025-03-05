@@ -1,5 +1,6 @@
 ﻿using ArcadeManager.Actions;
 using ArcadeManager.Infrastructure;
+using ArcadeManager.Models.Roms;
 using ArcadeManager.Services;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
@@ -115,7 +116,7 @@ public partial class ElectronMessageHandler(
     /// Sets the list of successfully processed games
     /// </summary>
     /// <param name="game">The processed game</param>
-    public void Processed(Models.GameRom game) {
+    public void Processed(GameRom game) {
         if (game == null) { return; }
         Electron.IpcMain.Send(window, "progress-processed", Serializer.Serialize(game));
     }

@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using ArcadeManager.Models;
+using ArcadeManager.Models.Roms;
 
 namespace ArcadeManager.Infrastructure;
 

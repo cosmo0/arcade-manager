@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using ArcadeManager.Infrastructure;
 using ArcadeManager.Models;
+using ArcadeManager.Models.Roms;
 using FakeItEasy;
 using FluentAssertions;
 
@@ -134,7 +135,7 @@ public class FileSystemTests
                 sut.DeleteZipFile(zip, file);
             }
 
-            sut.DeleteZipFile(zip, new("", "") { Name = "testfolder/" });
+            sut.DeleteZipFile(zip, new GameRomFile("", "") { Name = "testfolder/" });
         }
 
         // assert: re-read zip and check remaining files

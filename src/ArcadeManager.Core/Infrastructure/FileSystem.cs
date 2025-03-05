@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using ArcadeManager.Models;
+using ArcadeManager.Models.Roms;
 
 namespace ArcadeManager.Infrastructure;
 
@@ -480,7 +481,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="target">The target zip to write to</param>
     /// <param name="file">The file to replace</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    public async Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, GameRomFile file) {
+    public async Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, IGameRomFile file) {
         if (target.Mode == ZipArchiveMode.Read) {
             throw new ArgumentException("Zip archive is opened in read mode");
         }
@@ -513,7 +514,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// </summary>
     /// <param name="zip">The zip file</param>
     /// <param name="file">A file to delete</param>
-    public void DeleteZipFile(ZipArchive zip, GameRomFile file) {
+    public void DeleteZipFile(ZipArchive zip, IGameRomFile file) {
         if (zip.Mode != ZipArchiveMode.Update) { return; }
         
         var entry = zip.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");

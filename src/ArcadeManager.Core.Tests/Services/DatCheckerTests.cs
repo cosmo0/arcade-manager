@@ -7,6 +7,7 @@ using ArcadeManager.Infrastructure;
 using ArcadeManager.Models;
 using ArcadeManager.Actions;
 using System.IO.Compression;
+using ArcadeManager.Models.Roms;
 
 namespace ArcadeManager.Core.Tests.Services;
 
@@ -205,13 +206,9 @@ public class DatCheckerTests
         });
         GameRomList processed = [game];
 
-        var fixFolder = new GameRomFilesList {
-            new GameRomFile("test.zip", "roms") {
-                Name = "test.1",
-                Crc = "abcd",
-                Size = 1234
-            }
-        };
+        var fixFolder = new ReadOnlyGameRomFileList(new List<ReadOnlyGameRomFile>() {
+            new ReadOnlyGameRomFile("test.zip", "roms", "test.1", "", 1234, "abcd", "")
+        });
 
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("roms/test.zip");
