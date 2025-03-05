@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using ArcadeManager.Core;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Roms;
+using ArcadeManager.Core.Models.Zip;
 
 namespace ArcadeManager.Core.Infrastructure;
 
@@ -422,7 +422,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="folder">The folder of the zip</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
-    public IEnumerable<GameRomFile> GetZipFiles(ZipArchive zip, string fileName, string folder, bool getSha1) {
+    public IEnumerable<GameRomFile> GetZipFiles(ZipFile zip, string fileName, string folder, bool getSha1) {
         var result = new List<GameRomFile>();
 
         // loop on entry, skipping folders (which are entries with no short name)
@@ -432,9 +432,9 @@ public class FileSystem(IEnvironment environment) : IFileSystem
             {
                 Name = entry.Name,
                 Path = Path.GetDirectoryName(entry.FullName),
-                Size = zip.Mode == ZipArchiveMode.Read ? entry.Length : 0,
-                Crc = entry.Crc32.ToString("X4").PadLeft(8, '0').ToLower(),
-                Sha1 = getSha1 ? GetZipFileSha1(entry) : null
+                Size = zip.Mode == ZipFileMode.Read ? entry.Length : 0,
+                Crc = entry.Crc,
+                Sha1 = getSha1 ? entry.GetSha1() : null
             });
         }
 
@@ -461,7 +461,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// </summary>
     /// <param name="path">The path of the zip to open</param>
     /// <returns>The zip archive data</returns>
-    public ZipArchive OpenZipRead(string path) {
+    public ZipFile OpenZipRead(string path) {
         return ZipFile.OpenRead(path);
     }
 
@@ -470,8 +470,8 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// </summary>
     /// <param name="path">The path to the zip</param>
     /// <returns>The opened zip file</returns>
-    public ZipArchive OpenZipWrite(string path) {
-        var mode = FileExists(path) ? ZipArchiveMode.Update : ZipArchiveMode.Create;
+    public ZipFile OpenZipWrite(string path) {
+        var mode = FileExists(path) ? ZipFileMode.Update : ZipFileMode.Create;
         return ZipFile.Open(path, mode);
     }
 
@@ -482,8 +482,8 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="target">The target zip to write to</param>
     /// <param name="file">The file to replace</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    public async Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, IGameRomFile file) {
-        if (target.Mode == ZipArchiveMode.Read) {
+    public async Task<bool> ReplaceZipFile(ZipFile source, ZipFile target, IGameRomFile file) {
+        if (target.Mode == ZipFileMode.Read) {
             throw new ArgumentException("Zip archive is opened in read mode");
         }
 
@@ -495,7 +495,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
             return false;
         }
 
-        if (target.Mode == ZipArchiveMode.Update) {
+        if (target.Mode == ZipFileMode.Update) {
             target.GetEntry(file.Name)?.Delete();
         }
 
@@ -515,25 +515,10 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// </summary>
     /// <param name="zip">The zip file</param>
     /// <param name="file">A file to delete</param>
-    public void DeleteZipFile(ZipArchive zip, IGameRomFile file) {
-        if (zip.Mode != ZipArchiveMode.Update) { return; }
+    public void DeleteZipFile(ZipFile zip, IGameRomFile file) {
+        if (zip.Mode != ZipFileMode.Update) { return; }
         
         var entry = zip.GetEntry(string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}");
         entry?.Delete();
-    }
-
-    private static string GetZipFileSha1(ZipArchiveEntry entry)
-    {
-        var sha1 = SHA1.Create();
-
-        // see https://stackoverflow.com/questions/1993903
-        byte[] hash = sha1.ComputeHash(entry.Open());
-        StringBuilder formatted = new(2 * hash.Length);
-        foreach (byte b in hash)
-        {
-            formatted.AppendFormat("{0:X2}", b);
-        }
-
-        return formatted.ToString().ToLower();
     }
 }

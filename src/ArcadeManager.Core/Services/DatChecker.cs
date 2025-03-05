@@ -1,10 +1,10 @@
 using System;
-using System.IO.Compression;
 using ArcadeManager.Core;
 using ArcadeManager.Core.Actions;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models;
 using ArcadeManager.Core.Models.Roms;
+using ArcadeManager.Core.Models.Zip;
 using ArcadeManager.Core.Services.Interfaces;
 
 namespace ArcadeManager.Core.Services;
@@ -142,15 +142,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         messageHandler.Processed(game);
     }
 
-    /// <summary>
-    /// Checks the files of a game
-    /// </summary>
-    /// <param name="zip">The zip file to check</param>
-    /// <param name="game">The game infos to check the files of</param>
-    /// <param name="filePath">The folder of the roms</param>
-    /// <param name="checkSha1">Whether to check the SHA1</param>
-    /// <param name="messageHandler">The message handler</param>
-    public IEnumerable<GameRomFile> CheckFilesOfGame(ZipArchive zip, GameRom game, string filePath, bool checkSha1, IMessageHandler messageHandler)
+    public IEnumerable<GameRomFile> CheckFilesOfGame(ZipFile zip, GameRom game, string filePath, bool checkSha1, IMessageHandler messageHandler)
     {
         if (!fs.FileExists(filePath)) { return []; }
 
@@ -330,7 +322,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     /// <param name="otherFolderFiles">The list of files in the additional folder</param>
     /// <param name="messageHandler">The message handler</param>
     /// <returns>The new progress value</returns>
-    public async Task FixGame(ZipArchive targetZip, string targetZipPath, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
+    public async Task FixGame(ZipFile targetZip, string targetZipPath, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         // no error in the files
         if (!game.HasError && !game.RomFiles.HasError) { return; }
@@ -361,7 +353,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     /// <param name="allGames">All the games informations</param>
     /// <param name="otherFolderFiles">The list of files in the additional folder</param>
     /// <param name="messageHandler">The message handler</param>
-    public async Task FixGameFiles(ZipArchive targetZip, string targetZipPath, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
+    public async Task FixGameFiles(ZipFile targetZip, string targetZipPath, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         foreach (var romFile in game.RomFiles.Where(f => f.HasError))
         {
@@ -396,7 +388,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    public async Task FixGameFile(GameRomFile repairFile, ZipArchive targetZip, string targetZipPath, GameRomFile romFile, GameRomFilesList fileFixedZipFiles)
+    public async Task FixGameFile(GameRomFile repairFile, ZipFile targetZip, string targetZipPath, GameRomFile romFile, GameRomFilesList fileFixedZipFiles)
     {
         var sourceZipPath = repairFile.ZipFilePath;
         using var sourceZip = fs.OpenZipRead(sourceZipPath);
@@ -423,7 +415,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     /// <param name="args">The action arguments</param>
     /// <param name="otherFolderFiles">The path </param>
     /// <param name="messageHandler">The message handler</param>
-    public async Task ChangeGame(ZipArchive targetZip, GameRom game, GameRomFilesList fileFixedZipFiles, RomsActionCheckDat args, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
+    public async Task ChangeGame(ZipFile targetZip, GameRom game, GameRomFilesList fileFixedZipFiles, RomsActionCheckDat args, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         // build path
         var targetRom = fs.PathJoin(args.TargetFolder, $"{game.Name}.zip");
@@ -465,7 +457,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private async Task ExtractClones(ZipArchive parentZip, GameRom game, string targetFolder, GameRomFilesList targetZipFiles, IMessageHandler messageHandler)
+    private async Task ExtractClones(ZipFile parentZip, GameRom game, string targetFolder, GameRomFilesList targetZipFiles, IMessageHandler messageHandler)
     {
         // get the clones inside the zip
         foreach (var cloneName in targetZipFiles.Where(f => !string.IsNullOrEmpty(f.Path)).Select(f => f.Path).Distinct())
@@ -476,7 +468,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private async Task ExtractClone(ZipArchive parentZip, GameRom game, string cloneName, string targetFolder, GameRomFilesList targetZipFiles, IMessageHandler messageHandler)
+    private async Task ExtractClone(ZipFile parentZip, GameRom game, string cloneName, string targetFolder, GameRomFilesList targetZipFiles, IMessageHandler messageHandler)
     {
         // get the files related to the clone
         foreach (var cloneZipFile in targetZipFiles.Where(tf => tf.Path == cloneName))
@@ -505,7 +497,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private async Task RebuildFromParent(ZipArchive targetZip, string sourceZipPath, string targetZipPath, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, IMessageHandler messageHandler)
+    private async Task RebuildFromParent(ZipFile targetZip, string sourceZipPath, string targetZipPath, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, IMessageHandler messageHandler)
     {
         if (sourceZipPath == targetZipPath || !fs.FileExists(sourceZipPath)) { return; }
 
@@ -528,7 +520,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private async Task RebuildFromParentUsingOther(ZipArchive targetZip, string targetZipPath, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
+    private async Task RebuildFromParentUsingOther(ZipFile targetZip, string targetZipPath, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         if (otherFolderFiles == null || otherFolderFiles.Count == 0)
         {
@@ -560,7 +552,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    public void CleanupFilesOfGame(ZipArchive zip, GameRom game, GameRomFilesList zipFiles)
+    public void CleanupFilesOfGame(ZipFile zip, GameRom game, GameRomFilesList zipFiles)
     {
         if (!zipFiles.Any()) { return; }
 

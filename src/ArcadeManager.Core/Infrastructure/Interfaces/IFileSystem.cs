@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Threading.Tasks;
 using ArcadeManager.Core.Models.Roms;
+using ArcadeManager.Core.Models.Zip;
 
 namespace ArcadeManager.Core.Infrastructure.Interfaces;
 
@@ -218,7 +218,7 @@ public interface IFileSystem {
     /// <param name="folder">The folder of the zip</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
-    IEnumerable<GameRomFile> GetZipFiles(ZipArchive zip, string fileName, string folder, bool getSha1);
+    IEnumerable<GameRomFile> GetZipFiles(ZipFile zip, string fileName, string folder, bool getSha1);
 
     /// <summary>
     /// Lists the files inside a zip
@@ -233,14 +233,14 @@ public interface IFileSystem {
     /// </summary>
     /// <param name="path">The path of the zip to open</param>
     /// <returns>The zip archive data</returns>
-    ZipArchive OpenZipRead(string path);
+    ZipFile OpenZipRead(string path);
 
     /// <summary>
     /// Opens a zip in write mode (create or update)
     /// </summary>
     /// <param name="path">The path of the zip to open</param>
     /// <returns>The zip archive data</returns>
-    ZipArchive OpenZipWrite(string path);
+    ZipFile OpenZipWrite(string path);
 
     /// <summary>
     /// Replaces a file in a zip with another file
@@ -249,12 +249,12 @@ public interface IFileSystem {
     /// <param name="target">The target zip to write to</param>
     /// <param name="file">The file to replace</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    Task<bool> ReplaceZipFile(ZipArchive source, ZipArchive target, IGameRomFile file);
+    Task<bool> ReplaceZipFile(ZipFile source, ZipFile target, IGameRomFile file);
 
     /// <summary>
     /// Deletes a file in a zip
     /// </summary>
     /// <param name="zip">The zip file</param>
     /// <param name="file">A file to delete</param>
-    void DeleteZipFile(ZipArchive zip, IGameRomFile file);
+    void DeleteZipFile(ZipFile zip, IGameRomFile file);
 }
