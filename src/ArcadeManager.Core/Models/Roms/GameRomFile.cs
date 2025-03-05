@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Xml.Linq;
 
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 /// <summary>
 /// A game rom file (rom files inside the zip)
@@ -73,13 +73,13 @@ public class GameRomFile(string zipFileName, string zipFileFolder) : IGameRomFil
     {
         return new GameRomFile(System.IO.Path.GetFileName(zipFilePath), System.IO.Path.GetDirectoryName(zipFilePath))
         {
-            Name = this.Name,
-            Size = this.Size,
-            Crc = this.Crc,
-            Sha1 = this.Sha1,
-            Path = this.Path,
-            ErrorDetails = this.ErrorDetails,
-            ErrorReason = this.ErrorReason
+            Name = Name,
+            Size = Size,
+            Crc = Crc,
+            Sha1 = Sha1,
+            Path = Path,
+            ErrorDetails = ErrorDetails,
+            ErrorReason = ErrorReason
         };
     }
 

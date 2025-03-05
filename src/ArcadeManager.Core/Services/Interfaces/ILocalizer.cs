@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services.Interfaces;
 
 /// <summary>
 /// Interface for localization

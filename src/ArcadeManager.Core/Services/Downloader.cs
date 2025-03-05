@@ -1,17 +1,20 @@
-﻿using ArcadeManager.Actions;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
+﻿using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.Github;
+using ArcadeManager.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 /// <summary>
 /// The downloader service
 /// </summary>
-/// <seealso cref="ArcadeManager.Services.IDownloader"/>
+/// <seealso cref="IDownloader"/>
 /// <remarks>
 /// Initializes a new instance of the <see cref="Downloader"/> class.
 /// </remarks>

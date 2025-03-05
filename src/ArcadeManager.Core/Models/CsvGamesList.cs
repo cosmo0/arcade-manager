@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ArcadeManager.Models;
+namespace ArcadeManager.Core.Models;
 
 /// <summary>
 /// A CSV games list
@@ -41,7 +41,7 @@ public class CsvGamesList {
     /// <param name="name">The name.</param>
     /// <param name="values">The additional values.</param>
     public void Add(string name, Dictionary<string, string> values) {
-        this.Add(new GameEntry(this, name, values));
+        Add(new GameEntry(this, name, values));
     }
 
     /// <summary>
@@ -51,11 +51,11 @@ public class CsvGamesList {
     public void Add(GameEntry entry) {
         // make sure all headers exist in the main list
         foreach (var h in entry.Values.Keys.Where(k => !string.IsNullOrEmpty(k))) {
-            this.Headers.Add(h); // SortedList won't add a duplicate key
+            Headers.Add(h); // SortedList won't add a duplicate key
         }
 
         // add entry
-        this.entries.Add(new GameEntry(this, entry));
+        entries.Add(new GameEntry(this, entry));
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class CsvGamesList {
     /// </summary>
     /// <param name="names">The game names.</param>
     public void AddRange(IEnumerable<string> names) {
-        this.AddRange(names.Select(n => new GameEntry(this, n, new Dictionary<string, string>())));
+        AddRange(names.Select(n => new GameEntry(this, n, new Dictionary<string, string>())));
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class CsvGamesList {
 
         // let's assume they all have the same headers for performances reasons
         foreach (var h in entries.First().Values.Keys.Where(k => !string.IsNullOrEmpty(k))) {
-            this.Headers.Add(h); // SortedList won't add a duplicate key
+            Headers.Add(h); // SortedList won't add a duplicate key
         }
 
         // adds the items to the internal list
@@ -102,7 +102,7 @@ public class CsvGamesList {
             entry.CopyFrom(copyFrom);
         }
         else {
-            this.Add(copyFrom);
+            Add(copyFrom);
         }
     }
 
@@ -112,10 +112,10 @@ public class CsvGamesList {
     public void DeDuplicate() {
         // make sure to keep the ToList to copy the list now (otherwise during AddRange the source
         // will be empty when the expression is evaluated)
-        var items = this.entries.DistinctBy(entry => entry.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
+        var items = entries.DistinctBy(entry => entry.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
 
-        this.entries.Clear();
-        this.entries.AddRange(items);
+        entries.Clear();
+        entries.AddRange(items);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public class CsvGamesList {
     /// <param name="delimiter">The delimiter.</param>
     /// <returns>The CSV header line</returns>
     public string GetHeaderLine(string firstColumn, string delimiter) {
-        return string.Concat(firstColumn, delimiter, string.Join(delimiter, this.Headers));
+        return string.Concat(firstColumn, delimiter, string.Join(delimiter, Headers));
     }
 
     /// <summary>
@@ -141,9 +141,9 @@ public class CsvGamesList {
         /// <param name="list">The reference list.</param>
         /// <param name="copyFrom">The entry to copy from.</param>
         public GameEntry(CsvGamesList list, GameEntry copyFrom) {
-            this.listRef = list;
-            this.Name = copyFrom.Name;
-            this.Values = copyFrom.Values;
+            listRef = list;
+            Name = copyFrom.Name;
+            Values = copyFrom.Values;
         }
 
         /// <summary>
@@ -153,9 +153,9 @@ public class CsvGamesList {
         /// <param name="name">The name.</param>
         /// <param name="values">The values.</param>
         public GameEntry(CsvGamesList list, string name, IDictionary<string, string> values) {
-            this.listRef = list ?? throw new ArgumentNullException(nameof(list));
-            this.Name = name;
-            this.Values = new SortedDictionary<string, string>(values);
+            listRef = list ?? throw new ArgumentNullException(nameof(list));
+            Name = name;
+            Values = new SortedDictionary<string, string>(values);
         }
 
         /// <summary>
@@ -174,8 +174,8 @@ public class CsvGamesList {
         /// <param name="copyFrom">The entity to copy from.</param>
         public void CopyFrom(GameEntry copyFrom) {
             foreach (var v in copyFrom.Values) {
-                if (!this.Values.ContainsKey(v.Key)) {
-                    this.Values.Add(v.Key, v.Value);
+                if (!Values.ContainsKey(v.Key)) {
+                    Values.Add(v.Key, v.Value);
                 }
             }
         }

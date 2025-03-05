@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 /// <summary>
 /// A game rom (zip)
@@ -57,12 +57,12 @@ public class GameRom
                 return true;
             }
 
-            if (this.Bios != null && this.Bios.HasError)
+            if (Bios != null && Bios.HasError)
             {
                 return true;
             }
 
-            if (this.RomFiles.Any(f => f.HasError))
+            if (RomFiles.Any(f => f.HasError))
             {
                 return true;
             }
@@ -97,29 +97,29 @@ public class GameRom
         if (string.IsNullOrEmpty(fileName))
         {
             // if no file name
-            this._ownError = reason;
-            this.ErrorDetails = details;
+            _ownError = reason;
+            ErrorDetails = details;
             return;
         }
 
         // missing whole file
-        if (fileName == $"{this.Name}.zip")
+        if (fileName == $"{Name}.zip")
         {
-            this._ownError = reason;
-            this.ErrorDetails = details;
+            _ownError = reason;
+            ErrorDetails = details;
             return;
         }
 
         // missing bios
-        if (fileName == $"{this.BiosName}.zip")
+        if (fileName == $"{BiosName}.zip")
         {
-            this.Bios?.Error(reason, details, fileName);
-            this.ErrorDetails = details;
+            Bios?.Error(reason, details, fileName);
+            ErrorDetails = details;
             return;
         }
 
         // missing file inside
-        var file = this.RomFiles[fileName];
+        var file = RomFiles[fileName];
         if (file != null)
         {
             file.ErrorReason = reason;
@@ -128,8 +128,8 @@ public class GameRom
         }
 
         // default: assign error to the game
-        this._ownError = reason;
-        this.ErrorDetails = details;
+        _ownError = reason;
+        ErrorDetails = details;
     }
 
     /// <summary>

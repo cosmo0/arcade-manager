@@ -1,6 +1,10 @@
-﻿using ArcadeManager.Exceptions;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
+﻿using ArcadeManager.Core;
+using ArcadeManager.Core.Exceptions;
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.DataFile;
+using ArcadeManager.Core.Services.Interfaces;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
@@ -11,7 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 /// <summary>
 /// CSV files management
@@ -69,7 +73,7 @@ public class Csv(IFileSystem fs) : ICsv {
                 // output file
                 await fs.WriteFileStream(target, async outStreamWriter => {
                     // deserialize DAT file
-                    var datFile = Serializer.DeserializeXml<Models.DatFile.Datafile>(xmlReader);
+                    var datFile = Serializer.DeserializeXml<Datafile>(xmlReader);
 
                     // output stream
                     await outStreamWriter.WriteLineAsync(headerDatRow);
@@ -141,7 +145,7 @@ public class Csv(IFileSystem fs) : ICsv {
                 path = finalPath;
 
                 // progress from 50%
-                messageHandler.Progress($"Creating file {name}", 100, 50 + (i / data.Count * 50));
+                messageHandler.Progress($"Creating file {name}", 100, 50 + i / data.Count * 50);
 
                 // write into file
                 await fs.WriteFileStream(path, async output => {
@@ -260,7 +264,7 @@ public class Csv(IFileSystem fs) : ICsv {
 
             // back to the beginning of the file
             reader.DiscardBufferedData();
-            reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+            reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
             // build CSV read options
             var conf = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture) {

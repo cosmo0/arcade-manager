@@ -1,10 +1,12 @@
 ﻿using System.Runtime.InteropServices;
-using ArcadeManager.Actions;
-using ArcadeManager.Exceptions;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
+using ArcadeManager.Core;
+using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Exceptions;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Services.Interfaces;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 /// <summary>
 /// Roms management
@@ -27,14 +29,14 @@ public class Roms : IRoms
         this.csvService = csvService;
         this.fs = fs;
 
-        this.bioslist = [.. fs.ReadAllLines(fs.GetDataPath("bioslist.txt"))];
-        this.biosmatch.AddRange(
+        bioslist = [.. fs.ReadAllLines(fs.GetDataPath("bioslist.txt"))];
+        biosmatch.AddRange(
             fs.ReadAllLines(fs.GetDataPath("biosmatch.csv"))
                 .Select(l => l.Split(";".ToCharArray()))
                 .Select(l => new BiosMatch(l[0], l[1], l[2]))
         );
 
-        this.devicematch.AddRange(
+        devicematch.AddRange(
             fs.ReadAllLines(fs.GetDataPath("devices.csv"))
                 .Select(l => l.Split(";".ToCharArray()))
                 .Select(l => new DeviceMatch(l[0], [.. l.Skip(1)]))
@@ -48,7 +50,7 @@ public class Roms : IRoms
     /// <param name="messageHandler">The message handler.</param>
     /// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
     /// <exception cref="DirectoryNotFoundException">Unable to find romset folder {args.romset}</exception>
-    public async Task Add(Actions.RomsAction args, IMessageHandler messageHandler)
+    public async Task Add(RomsAction args, IMessageHandler messageHandler)
     {
         messageHandler.Init("Copying roms");
 
@@ -94,7 +96,7 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Selection)) { fs.DirectoryCreate(args.Selection); }
 
             // read CSV files
-            Models.CsvGamesList content = new();
+            CsvGamesList content = new();
             foreach (var file in files)
             {
                 string filepath = fs.GetDataPath("csv", emulator, $"{file}.csv");
@@ -159,7 +161,7 @@ public class Roms : IRoms
     /// <param name="messageHandler">The message handler.</param>
     /// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
     /// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-    public async Task Delete(Actions.RomsAction args, IMessageHandler messageHandler)
+    public async Task Delete(RomsAction args, IMessageHandler messageHandler)
     {
         messageHandler.Init("Deleting roms");
 
@@ -219,7 +221,7 @@ public class Roms : IRoms
     /// <param name="messageHandler">The message handler.</param>
     /// <exception cref="FileNotFoundException">Unable to find main CSV file</exception>
     /// <exception cref="DirectoryNotFoundException">Unable to find selection folder {args.selection}</exception>
-    public async Task Keep(Actions.RomsAction args, IMessageHandler messageHandler)
+    public async Task Keep(RomsAction args, IMessageHandler messageHandler)
     {
         messageHandler.Init("Filtering roms");
 
@@ -251,7 +253,7 @@ public class Roms : IRoms
                 messageHandler.Progress(nameNoExt, total, i);
 
                 // don't auto-delete bios files
-                if (this.bioslist.Contains(nameNoExt, StringComparer.InvariantCultureIgnoreCase))
+                if (bioslist.Contains(nameNoExt, StringComparer.InvariantCultureIgnoreCase))
                 {
                     continue;
                 }
@@ -272,7 +274,7 @@ public class Roms : IRoms
         }
     }
 
-    private int CopyGamesList(Actions.RomsAction args, Models.CsvGamesList content, IMessageHandler messageHandler)
+    private int CopyGamesList(RomsAction args, CsvGamesList content, IMessageHandler messageHandler)
     {
         var total = content.Games.Count;
         var i = 0;
@@ -328,7 +330,7 @@ public class Roms : IRoms
 
     private int CopyAdditionalFiles(int total, int i, string game, string ext, RomsAction args, int copied, IMessageHandler messageHandler) {
         // try to copy additional files for games if it's used and can be found
-        List<string> additionalFiles = [.. this.biosmatch.GetBiosesForGame(game), .. this.devicematch.GetDevicesForGame(game)];
+        List<string> additionalFiles = [.. biosmatch.GetBiosesForGame(game), .. devicematch.GetDevicesForGame(game)];
         foreach (var af in additionalFiles)
         {
             if (messageHandler.MustCancel) { return copied; }

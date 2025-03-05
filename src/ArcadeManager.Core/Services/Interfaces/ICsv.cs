@@ -1,7 +1,8 @@
-﻿using ArcadeManager.Models;
+﻿using ArcadeManager.Core;
+using ArcadeManager.Core.Models;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services.Interfaces;
 
 /// <summary>
 /// Interface for the CSV service

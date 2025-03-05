@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace ArcadeManager.Models;
+namespace ArcadeManager.Core.Models.Github;
 
 /// <summary>
 /// A Github release

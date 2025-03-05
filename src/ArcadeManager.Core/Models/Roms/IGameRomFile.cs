@@ -1,6 +1,6 @@
 using System;
 
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 public interface IGameRomFile
 {

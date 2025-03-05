@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ArcadeManager.Models;
+namespace ArcadeManager.Core.Models;
 
 /// <summary>
 /// The application settings

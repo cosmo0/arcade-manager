@@ -1,4 +1,4 @@
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 /// <summary>
 /// A reason of an error on a game or file

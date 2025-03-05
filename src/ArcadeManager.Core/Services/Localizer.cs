@@ -1,11 +1,12 @@
-﻿using ArcadeManager.Infrastructure;
+﻿using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 /// <summary>
 /// Localization management
@@ -131,7 +132,7 @@ public class Localizer : ILocalizer {
     /// <param name="locale">The locale.</param>
     /// <returns><c>true</c> if it is the current locale; otherwise, <c>false</c>.</returns>
     public bool IsCurrentLocale(string locale) {
-        return CurrentLocale().Equals(locale, System.StringComparison.InvariantCultureIgnoreCase);
+        return CurrentLocale().Equals(locale, StringComparison.InvariantCultureIgnoreCase);
     }
 
     /// <summary>

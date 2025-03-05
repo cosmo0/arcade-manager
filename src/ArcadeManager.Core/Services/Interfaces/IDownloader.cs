@@ -1,10 +1,11 @@
-﻿using ArcadeManager.Actions;
-using ArcadeManager.Models;
+﻿using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.Github;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services.Interfaces;
 
 /// <summary>
 /// Interface for the downloader

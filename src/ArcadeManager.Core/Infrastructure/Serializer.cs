@@ -2,7 +2,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace ArcadeManager.Infrastructure;
+namespace ArcadeManager.Core.Infrastructure;
 
 /// <summary>
 /// Serializer provider

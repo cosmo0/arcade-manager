@@ -1,7 +1,8 @@
 using System;
-using ArcadeManager.Actions;
+using ArcadeManager.Core;
+using ArcadeManager.Core.Actions;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services.Interfaces;
 
 /// <summary>
 /// Interface for DAT file checker

@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using ArcadeManager.Infrastructure;
+using ArcadeManager.Core.Infrastructure;
 using FakeItEasy;
 using FluentAssertions;
 

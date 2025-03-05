@@ -1,5 +1,5 @@
-﻿using ArcadeManager.Models;
-using ArcadeManager.Services;
+﻿using ArcadeManager.Core.Services.Interfaces;
+using ArcadeManager.Models;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

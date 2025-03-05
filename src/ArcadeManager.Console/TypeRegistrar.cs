@@ -1,5 +1,9 @@
 using System;
-using ArcadeManager;
+using ArcadeManager.Core;
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Services;
+using ArcadeManager.Core.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
@@ -18,20 +22,20 @@ public sealed class TypeRegistrar : ITypeRegistrar
         builder.AddSingleton<IEnvironment, ConsoleEnvironment>();
 
         // infrastructure
-        builder.AddSingleton<Infrastructure.IWebClientFactory, Infrastructure.WebClientFactory>();
-        builder.AddSingleton<Infrastructure.IFileSystem, Infrastructure.FileSystem>();
-        builder.AddSingleton<Infrastructure.IDatFile, Infrastructure.DatFile>();
+        builder.AddSingleton<IWebClientFactory, WebClientFactory>();
+        builder.AddSingleton<IFileSystem, FileSystem>();
+        builder.AddSingleton<IDatFile, DatFile>();
 
         // services
-        builder.AddSingleton<Services.IDownloader, Services.Downloader>();
-        builder.AddSingleton<Services.ICsv, Services.Csv>();
-        builder.AddSingleton<Services.IOverlays, Services.Overlays>();
-        builder.AddSingleton<Services.IRoms, Services.Roms>();
-        builder.AddSingleton<Services.IUpdater, Services.Updater>();
-        builder.AddSingleton<Services.ILocalizer, Services.Localizer>();
-        builder.AddSingleton<Services.IWizard, Services.Wizard>();
-        builder.AddSingleton<Services.IDatChecker, Services.DatChecker>();
-        builder.AddSingleton<Services.IServiceProvider, Services.ServiceProvider>();
+        builder.AddSingleton<IDownloader, Downloader>();
+        builder.AddSingleton<ICsv, Csv>();
+        builder.AddSingleton<IOverlays, Overlays>();
+        builder.AddSingleton<IRoms, Roms>();
+        builder.AddSingleton<IUpdater, Updater>();
+        builder.AddSingleton<ILocalizer, Localizer>();
+        builder.AddSingleton<IWizard, Wizard>();
+        builder.AddSingleton<IDatChecker, DatChecker>();
+        builder.AddSingleton<Core.Services.Interfaces.IServiceProvider, Core.Services.ServiceProvider>();
 
         builder.AddSingleton<IMessageHandler, ConsoleMessageHandler>();
     }

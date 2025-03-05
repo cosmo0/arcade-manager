@@ -6,10 +6,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using ArcadeManager.Models;
-using ArcadeManager.Models.Roms;
+using ArcadeManager.Core;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models.Roms;
 
-namespace ArcadeManager.Infrastructure;
+namespace ArcadeManager.Core.Infrastructure;
 
 /// <summary>
 /// File system utilities

@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Infrastructure;
+﻿namespace ArcadeManager.Core.Infrastructure.Interfaces;
 
 /// <summary>
 /// Interface for a web client factory

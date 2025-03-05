@@ -1,6 +1,6 @@
 using System;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services.Interfaces;
 
 /// <summary>
 /// Interface for the service provider

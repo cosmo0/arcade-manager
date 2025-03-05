@@ -1,12 +1,13 @@
-﻿using ArcadeManager.Infrastructure;
+﻿using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Services.Interfaces;
 using System.Collections.Generic;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 /// <summary>
 /// The wizard service
 /// </summary>
-/// <seealso cref="ArcadeManager.Services.IWizard"/>
+/// <seealso cref="IWizard"/>
 public class Wizard : IWizard {
     private readonly IFileSystem fs;
 

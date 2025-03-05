@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
-using ArcadeManager.Models;
-using ArcadeManager.Models.Roms;
+using ArcadeManager.Core.Models.Roms;
 
-namespace ArcadeManager.Infrastructure;
+namespace ArcadeManager.Core.Infrastructure.Interfaces;
 
 /// <summary>
 /// Interface for file system access

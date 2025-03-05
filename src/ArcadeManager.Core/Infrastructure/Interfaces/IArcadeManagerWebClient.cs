@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Infrastructure;
+namespace ArcadeManager.Core.Infrastructure.Interfaces;
 
 /// <summary>
 /// Interface for a custom web client
 /// </summary>
-/// <seealso cref="System.IDisposable"/>
+/// <seealso cref="IDisposable"/>
 public interface IArcadeManagerWebClient : IDisposable {
 
     /// <summary>

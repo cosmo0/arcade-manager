@@ -1,16 +1,18 @@
 using System;
+using ArcadeManager.Core.Services.Interfaces;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "S107:Constructor has 8 parameters, which is greater than the 7 authorized.", Justification = "The only place where this should be")]
-public class ServiceProvider(ICsv csv,
+public class ServiceProvider(
+    ICsv csv,
     IDatChecker datChecker,
     IDownloader downloader,
     ILocalizer localizer,
     IOverlays overlays,
     IRoms roms,
     IUpdater updater,
-    IWizard wizard) : IServiceProvider
+    IWizard wizard) : Interfaces.IServiceProvider
 {
     /// <summary>
     /// Gets the CSV service

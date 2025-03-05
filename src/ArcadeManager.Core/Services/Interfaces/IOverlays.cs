@@ -1,7 +1,8 @@
-﻿using ArcadeManager.Actions;
+﻿using ArcadeManager.Core;
+using ArcadeManager.Core.Actions;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services.Interfaces;
 
 /// <summary>
 /// Interface for the overlays service

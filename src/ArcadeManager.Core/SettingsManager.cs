@@ -1,7 +1,7 @@
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Models;
 
-namespace ArcadeManager;
+namespace ArcadeManager.Core;
 
 /// <summary>
 /// Settings manager

@@ -1,8 +1,7 @@
 using System;
 using System.Reflection;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
-using ArcadeManager.Models.Roms;
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Models.Roms;
 using FakeItEasy;
 using FluentAssertions;
 

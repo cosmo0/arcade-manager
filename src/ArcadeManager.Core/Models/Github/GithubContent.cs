@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Models;
+﻿namespace ArcadeManager.Core.Models.Github;
 
 /// <summary>
 /// A Github content entry

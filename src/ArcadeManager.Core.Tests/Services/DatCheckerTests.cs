@@ -2,12 +2,12 @@ using System;
 using Xunit;
 using FakeItEasy;
 using FluentAssertions;
-using ArcadeManager.Services;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
-using ArcadeManager.Actions;
 using System.IO.Compression;
-using ArcadeManager.Models.Roms;
+using ArcadeManager.Core.Services;
+using ArcadeManager.Core.Services.Interfaces;
+using ArcadeManager.Core.Models.Roms;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Actions;
 
 namespace ArcadeManager.Core.Tests.Services;
 

@@ -1,10 +1,14 @@
-﻿using ArcadeManager.Infrastructure;
+﻿using ArcadeManager.Core;
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models.Github;
+using ArcadeManager.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 /// <summary>
 /// Application update
@@ -22,9 +26,9 @@ public class Updater(IDownloader downloaderService, IFileSystem fs, IEnvironment
     /// </summary>
     /// <param name="currentVersion">The current version.</param>
     /// <returns>The new release details, if any</returns>
-    public async Task<Models.GithubRelease> CheckUpdate(string currentVersion) {
+    public async Task<GithubRelease> CheckUpdate(string currentVersion) {
         try {
-            var releases = Serializer.Deserialize<IEnumerable<Models.GithubRelease>>(await downloaderService.DownloadApiUrl("cosmo0/arcade-manager", "releases"));
+            var releases = Serializer.Deserialize<IEnumerable<GithubRelease>>(await downloaderService.DownloadApiUrl("cosmo0/arcade-manager", "releases"));
             if (releases != null && releases.Any()) {
                 // get latest version
                 var release = releases.First(r => !r.Draft && !r.Prerelease);
@@ -43,7 +47,7 @@ public class Updater(IDownloader downloaderService, IFileSystem fs, IEnvironment
                     a.HumanSize = fs.HumanSize(a.Size);
                 }
 
-                if ((new Version(version)) > (new Version(currentVersion))) {
+                if (new Version(version) > new Version(currentVersion)) {
                     return release;
                 }
             }

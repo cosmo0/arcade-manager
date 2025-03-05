@@ -1,4 +1,4 @@
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 /// <summary>
 /// A list of rom files (inside a zip)
@@ -30,7 +30,7 @@ public class GameRomFilesList : List<GameRomFile>
     /// <param name="filePath">The file path, if any</param>
     public void RemoveFile(string fileName, string filePath = null)
     {
-        this.RemoveAll(f => f.Name == fileName && ((string.IsNullOrEmpty(f.Path) && string.IsNullOrEmpty(filePath)) || f.Path == filePath));
+        RemoveAll(f => f.Name == fileName && (string.IsNullOrEmpty(f.Path) && string.IsNullOrEmpty(filePath) || f.Path == filePath));
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class GameRomFilesList : List<GameRomFile>
     /// <param name="zipFilePath">The path to the zip file we're processing</param>
     public void ReplaceFile(GameRomFile file, string zipFilePath)
     {
-        this.RemoveFile(file.Name, file.Path);
-        this.Add(file.CloneFor(zipFilePath));
+        RemoveFile(file.Name, file.Path);
+        Add(file.CloneFor(zipFilePath));
     }
 }

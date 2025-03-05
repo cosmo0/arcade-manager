@@ -5,7 +5,7 @@ namespace ArcadeManager.Models;
 /// <summary>
 /// Model for the wizard
 /// </summary>
-public class Wizard {
+public class WizardViewModel {
 
     /// <summary>
     /// Gets or sets a value indicating whether to do the overlays install.

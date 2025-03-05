@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace ArcadeManager.Models;
+namespace ArcadeManager.Core.Models.Github;
 
 /// <summary>
 /// Represents a list of entries in a Github folder
@@ -45,7 +45,7 @@ public class GithubTree {
         /// </summary>
         public bool IsFile {
             get {
-                return this.Type == "file" || this.Type == "blob";
+                return Type == "file" || Type == "blob";
             }
         }
 

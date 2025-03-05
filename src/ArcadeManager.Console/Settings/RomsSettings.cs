@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using ArcadeManager.Actions;
+using ArcadeManager.Core.Actions;
 using Spectre.Console.Cli;
 
 namespace ArcadeManager.Console.Settings;
@@ -25,7 +25,7 @@ public class RomsSettings : CommandSettings
 
     public RomsAction ToAction()
     {
-        return new Actions.RomsAction() {
+        return new RomsAction() {
             Main = Csv,
             Romset = Romset,
             Selection = Selection,

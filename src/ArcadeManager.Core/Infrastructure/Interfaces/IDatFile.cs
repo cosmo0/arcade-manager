@@ -1,8 +1,7 @@
 using System;
-using ArcadeManager.Models;
-using ArcadeManager.Models.Roms;
+using ArcadeManager.Core.Models.Roms;
 
-namespace ArcadeManager.Infrastructure;
+namespace ArcadeManager.Core.Infrastructure.Interfaces;
 
 /// <summary>
 /// Interface for the DAT file processing

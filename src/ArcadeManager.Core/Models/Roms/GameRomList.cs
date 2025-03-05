@@ -1,4 +1,4 @@
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 /// <summary>
 /// A list of game roms (zip)

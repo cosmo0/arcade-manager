@@ -1,7 +1,7 @@
 using System;
-using ArcadeManager.Models;
+using ArcadeManager.Core.Models;
 
-namespace ArcadeManager;
+namespace ArcadeManager.Core;
 
 /// <summary>
 /// Interface for environment data injection

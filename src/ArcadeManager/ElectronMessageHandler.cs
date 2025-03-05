@@ -1,7 +1,8 @@
-﻿using ArcadeManager.Actions;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models.Roms;
-using ArcadeManager.Services;
+﻿using ArcadeManager.Core;
+using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models.Roms;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using System;
@@ -25,7 +26,7 @@ namespace ArcadeManager;
 /// <param name="fs">The file system service</param>
 /// <param name="environment">The environment accessor</param>
 public partial class ElectronMessageHandler(
-    Services.IServiceProvider services,
+    Core.Services.Interfaces.IServiceProvider services,
     IEnvironment environment,
     IFileSystem fs) : IElectronMessageHandler {
     private const string ProgressChannel = "progress";

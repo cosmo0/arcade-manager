@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
+using ArcadeManager.Core.Models.Github;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services.Interfaces;
 
 /// <summary>
 /// Interface for the app updater
@@ -13,5 +14,5 @@ public interface IUpdater {
     /// <param name="currentVersion">The current version.</param>
     /// <param name="messageHandler">The message handler.</param>
     /// <returns>The new release details, if any</returns>
-    Task<Models.GithubRelease> CheckUpdate(string currentVersion);
+    Task<GithubRelease> CheckUpdate(string currentVersion);
 }

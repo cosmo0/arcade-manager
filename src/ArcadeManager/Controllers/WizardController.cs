@@ -1,4 +1,5 @@
-﻿using ArcadeManager.Models;
+﻿using ArcadeManager.Core.Services.Interfaces;
+using ArcadeManager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -11,14 +12,14 @@ namespace ArcadeManager.Controllers;
 /// Initializes a new instance of the <see cref="WizardController"/> class.
 /// </remarks>
 /// <param name="logger">The logger.</param>
-public class WizardController(ILogger<WizardController> logger, Services.IWizard wizardService) : BaseController(logger) {
+public class WizardController(ILogger<WizardController> logger, IWizard wizardService) : BaseController(logger) {
 
     /// <summary>
     /// Emulator view: choose the emulator
     /// </summary>
     /// <param name="model">The model.</param>
     /// <returns>THe view</returns>
-    public IActionResult Emulator(Wizard model) => ModelState.IsValid ? View(model) : null;
+    public IActionResult Emulator(WizardViewModel model) => ModelState.IsValid ? View(model) : null;
 
     /// <summary>
     /// Index view: selection of actions (install roms/install overlays)
@@ -31,7 +32,7 @@ public class WizardController(ILogger<WizardController> logger, Services.IWizard
     /// </summary>
     /// <param name="model">The model.</param>
     /// <returns>The view</returns>
-    public IActionResult ListSelection(Wizard model) {
+    public IActionResult ListSelection(WizardViewModel model) {
         if (!ModelState.IsValid) { return null; }
 
         // get number of games in each csv file
@@ -51,7 +52,7 @@ public class WizardController(ILogger<WizardController> logger, Services.IWizard
     /// </summary>
     /// <param name="model">The model.</param>
     /// <returns>The view</returns>
-    public IActionResult Paths(Wizard model) => ModelState.IsValid ? View(model) : null;
+    public IActionResult Paths(WizardViewModel model) => ModelState.IsValid ? View(model) : null;
 
     /// <summary>
     /// Postback for the emulator
@@ -59,7 +60,7 @@ public class WizardController(ILogger<WizardController> logger, Services.IWizard
     /// <param name="model">The model.</param>
     /// <returns>Redirects to the next page</returns>
     [HttpPost]
-    public IActionResult PostEmulator(Wizard model) {
+    public IActionResult PostEmulator(WizardViewModel model) {
         if (!ModelState.IsValid) { return null; }
 
         return RedirectToAction("ListSelection", model);
@@ -73,7 +74,7 @@ public class WizardController(ILogger<WizardController> logger, Services.IWizard
     /// <returns>Redirects to the next page</returns>
     [HttpPost]
     public IActionResult PostIndex(string roms, string overlays) {
-        var model = new Wizard {
+        var model = new WizardViewModel {
             DoRoms = !string.IsNullOrEmpty(roms),
             DoOverlays = !string.IsNullOrEmpty(overlays)
         };
@@ -92,7 +93,7 @@ public class WizardController(ILogger<WizardController> logger, Services.IWizard
     /// <param name="model">The model.</param>
     /// <returns>Redirects to the next page</returns>
     [HttpPost]
-    public IActionResult PostListSelection(string[] list, Wizard model) {
+    public IActionResult PostListSelection(string[] list, WizardViewModel model) {
         if (!ModelState.IsValid) { return null; }
         
         model.Lists = list;

@@ -1,12 +1,13 @@
 using System;
 using System.IO.Compression;
-using ArcadeManager.Actions;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
-using ArcadeManager.Models.Roms;
-using ArcadeManager.Services;
+using ArcadeManager.Core;
+using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.Roms;
+using ArcadeManager.Core.Services.Interfaces;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDatChecker
 {

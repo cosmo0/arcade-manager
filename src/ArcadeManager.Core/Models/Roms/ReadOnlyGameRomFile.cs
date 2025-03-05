@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 /// <summary>
 /// A game rom file (rom files inside the zip)
@@ -41,11 +41,11 @@ public class ReadOnlyGameRomFile(
         }
 
         return new GameRomFile(fileName, fileFolder) {
-            Name = this.Name,
-            Path = this.Path,
-            Crc = this.Crc,
-            Sha1 = this.Sha1,
-            Size = this.Size,
+            Name = Name,
+            Path = Path,
+            Crc = Crc,
+            Sha1 = Sha1,
+            Size = Size,
             ErrorReason = ErrorReason.None
         };
     }

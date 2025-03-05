@@ -1,4 +1,4 @@
-using ArcadeManager.Services;
+using ArcadeManager.Core.Services;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;

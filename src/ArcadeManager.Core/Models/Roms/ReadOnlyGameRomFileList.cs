@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace ArcadeManager.Models.Roms;
+namespace ArcadeManager.Core.Models.Roms;
 
 public class ReadOnlyGameRomFileList(IEnumerable<ReadOnlyGameRomFile> roms) : IReadOnlyList<ReadOnlyGameRomFile>
 {

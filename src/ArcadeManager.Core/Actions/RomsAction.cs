@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Actions; 
+﻿namespace ArcadeManager.Core.Actions; 
 
 /// <summary>
 /// Rom adding action

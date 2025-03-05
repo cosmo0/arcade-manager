@@ -1,6 +1,9 @@
-﻿using ArcadeManager.Exceptions;
-using ArcadeManager.Infrastructure;
-using ArcadeManager.Models;
+﻿using ArcadeManager.Core;
+using ArcadeManager.Core.Exceptions;
+using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.Github;
+using ArcadeManager.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,12 +11,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Services;
+namespace ArcadeManager.Core.Services;
 
 /// <summary>
 /// The overlays service
 /// </summary>
-/// <seealso cref="ArcadeManager.Services.IOverlays"/>
+/// <seealso cref="IOverlays"/>
 /// <remarks>
 /// Initializes a new instance of the <see cref="Overlays"/> class.
 /// </remarks>

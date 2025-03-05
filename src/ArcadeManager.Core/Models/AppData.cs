@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ArcadeManager.Models;
+namespace ArcadeManager.Core.Models;
 
 /// <summary>
 /// Represents the application data
@@ -156,7 +156,7 @@ public class OverlayBundle {
         /// <returns>The distribution value</returns>
         public string this[string distribution] {
             get {
-                var prop = this.GetType()
+                var prop = GetType()
                     .GetProperties()
                     .FirstOrDefault(p => p.Name.Equals(distribution, StringComparison.InvariantCultureIgnoreCase));
 

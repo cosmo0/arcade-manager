@@ -1,8 +1,7 @@
 using System;
-using ArcadeManager.Models;
-using ArcadeManager.Models.Roms;
+using ArcadeManager.Core.Models.Roms;
 
-namespace ArcadeManager;
+namespace ArcadeManager.Core;
 
 public interface IMessageHandler
 {    
