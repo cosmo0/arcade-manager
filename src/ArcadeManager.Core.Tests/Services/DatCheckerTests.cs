@@ -2,12 +2,12 @@ using System;
 using Xunit;
 using FakeItEasy;
 using FluentAssertions;
-using System.IO.Compression;
 using ArcadeManager.Core.Services;
 using ArcadeManager.Core.Services.Interfaces;
 using ArcadeManager.Core.Models.Roms;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Models.Zip;
 
 namespace ArcadeManager.Core.Tests.Services;
 
@@ -58,7 +58,7 @@ public class DatCheckerTests
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(true);
-        A.CallTo(() => fs.GetZipFiles(A<ZipArchive>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
+        A.CallTo(() => fs.GetZipFiles(A<ZipFile>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
         sut.CheckGame(game, args, processed, this.messageHandler);
@@ -132,7 +132,7 @@ public class DatCheckerTests
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(true);
-        A.CallTo(() => fs.GetZipFiles(A<ZipArchive>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
+        A.CallTo(() => fs.GetZipFiles(A<ZipFile>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
         sut.CheckGame(game, args, processed, this.messageHandler);
@@ -178,7 +178,7 @@ public class DatCheckerTests
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("test.zip");
         A.CallTo(() => fs.FileExists("test.zip")).Returns(true);
-        A.CallTo(() => fs.GetZipFiles(A<ZipArchive>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
+        A.CallTo(() => fs.GetZipFiles(A<ZipFile>._, A<string>._, A<string>._, A<bool>._)).Returns(zipFiles);
 
         // act
         sut.CheckGame(game, args, processed, this.messageHandler);
@@ -215,13 +215,13 @@ public class DatCheckerTests
         A.CallTo(() => fs.PathJoin("fix", "test.zip")).Returns("fix/test.zip");
         A.CallTo(() => fs.FileExists("roms/test.zip")).Returns(true);
         A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(true);
-        A.CallTo(() => fs.ReplaceZipFile(A<ZipArchive>._, A<ZipArchive>._, A<GameRomFile>._)).Returns(true);
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<GameRomFile>._)).Returns(true);
 
         // act (the game.RomFiles is re-cast so the list is cloned)
-        await sut.FixGame(null, "roms/test.zip", game, [..game.RomFiles], processed, fixFolder, messageHandler);
+        await sut.FixGame(null, game, [..game.RomFiles], processed, fixFolder, messageHandler);
 
         // assert
-        A.CallTo(() => fs.ReplaceZipFile(A<ZipArchive>._, A<ZipArchive>._, A<GameRomFile>._)).MustHaveHappened();
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<GameRomFile>._)).MustHaveHappened();
         game.RomFiles[0].ErrorReason.Should().Be(ErrorReason.None);
     }
 
@@ -246,7 +246,7 @@ public class DatCheckerTests
         sut.CleanupFilesOfGame(null, game, zipFiles);
     
         // assert: one file has been deleted
-        A.CallTo(() => fs.DeleteZipFile(A<ZipArchive>._, A<GameRomFile>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => fs.DeleteZipFile(A<ZipFile>._, A<GameRomFile>._)).MustHaveHappenedOnceExactly();
 
         zipFiles.Should().HaveCount(2);
     }

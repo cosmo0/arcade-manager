@@ -462,7 +462,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="path">The path of the zip to open</param>
     /// <returns>The zip archive data</returns>
     public ZipFile OpenZipRead(string path) {
-        return ZipFile.OpenRead(path);
+        return ZipFile.Open(path, ZipFileMode.Read);
     }
 
     /// <summary>

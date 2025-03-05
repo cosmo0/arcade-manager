@@ -99,14 +99,6 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    /// <summary>
-    /// Checks the specified game
-    /// </summary>
-    /// <param name="game">The game to check</param>
-    /// <param name="args">The action arguments</param>
-    /// <param name="processed">The list of already processed games</param>
-    /// <param name="messageHandler">The message handler</param>
-    /// <returns>The new progress value</returns>
     public void CheckGame(GameRom game, RomsActionCheckDat args, GameRomList processed, IMessageHandler messageHandler)
     {
         if (messageHandler.MustCancel) { return; }
@@ -137,18 +129,15 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         if (messageHandler.MustCancel) { return; }
 
         using var zip = fs.OpenZipRead(gameFile);
-        CheckFilesOfGame(zip, game, gameFile, args.CheckSha1, messageHandler);
+        CheckFilesOfGame(zip, game, args.CheckSha1, messageHandler);
 
         messageHandler.Processed(game);
     }
 
-    public IEnumerable<GameRomFile> CheckFilesOfGame(ZipFile zip, GameRom game, string filePath, bool checkSha1, IMessageHandler messageHandler)
+    public IEnumerable<GameRomFile> CheckFilesOfGame(ZipFile zip, GameRom game, bool checkSha1, IMessageHandler messageHandler)
     {
-        if (!fs.FileExists(filePath)) { return []; }
-
-        // open the zip
-        var fileName = fs.FileName(filePath);
-        var fileFolder = fs.DirectoryName(filePath);
+        var fileName = fs.FileName(zip?.FilePath);
+        var fileFolder = fs.DirectoryName(zip?.FilePath);
 
         var zipFiles = fs.GetZipFiles(zip, fileName, fileFolder, checkSha1);
 
@@ -269,7 +258,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
                 if (messageHandler.MustCancel) { break; }
 
                 // try to fix the rom
-                await FixGame(targetZip, gameFileFixed, game, fileFixedZipFiles, allGames, otherFolderFiles, messageHandler);
+                await FixGame(targetZip, game, fileFixedZipFiles, allGames, otherFolderFiles, messageHandler);
 
                 if (messageHandler.MustCancel) { break; }
 
@@ -283,7 +272,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             IEnumerable<GameRomFile> zipFiles;
             using (var fixedZip = fs.OpenZipRead(gameFileFixed))
             {
-                zipFiles = CheckFilesOfGame(fixedZip, game, gameFileFixed, args.CheckSha1, messageHandler);
+                zipFiles = CheckFilesOfGame(fixedZip, game, args.CheckSha1, messageHandler);
             } // close the file, again, so we can delete or move it if needed
 
             RebuildGameHandleResult(game, zipFiles, gameFileFixed, errorsFolder, messageHandler);
@@ -311,18 +300,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    /// <summary>
-    /// Fixes the specified game
-    /// </summary>
-    /// <param name="targetZip">The target zip to fix</param>
-    /// <param name="targetZipPath">The path to the target zip</param>
-    /// <param name="game">The game to check</param>
-    /// <param name="fileFixedZipFiles">The list of files in the fixed zip</param>
-    /// <param name="allGames">The list of all games in the DAT</param>
-    /// <param name="otherFolderFiles">The list of files in the additional folder</param>
-    /// <param name="messageHandler">The message handler</param>
-    /// <returns>The new progress value</returns>
-    public async Task FixGame(ZipFile targetZip, string targetZipPath, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
+    public async Task FixGame(ZipFile targetZip, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         // no error in the files
         if (!game.HasError && !game.RomFiles.HasError) { return; }
@@ -337,23 +315,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         {
             if (messageHandler.MustCancel) { return; }
 
-            await FixGameFiles(targetZip, targetZipPath, game, fileFixedZipFiles, allGames, otherFolderFiles, messageHandler);
+            await FixGameFiles(targetZip, game, fileFixedZipFiles, allGames, otherFolderFiles, messageHandler);
         }
 
         messageHandler.Processed(game);
     }
 
-    /// <summary>
-    /// Fixes the files of a game
-    /// </summary>
-    /// <param name="targetZip">The target zip to fix</param>
-    /// <param name="targetZipPath">The path to the target zip</param>
-    /// <param name="game">The gmae informations</param>
-    /// <param name="fileFixedZipFiles">The list of files in the fixed zip</param>
-    /// <param name="allGames">All the games informations</param>
-    /// <param name="otherFolderFiles">The list of files in the additional folder</param>
-    /// <param name="messageHandler">The message handler</param>
-    public async Task FixGameFiles(ZipFile targetZip, string targetZipPath, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
+    public async Task FixGameFiles(ZipFile targetZip, GameRom game, GameRomFilesList fileFixedZipFiles, GameRomList allGames, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         foreach (var romFile in game.RomFiles.Where(f => f.HasError))
         {
@@ -362,7 +330,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
                 .SelectMany(r => r.RomFiles)
                 .FirstOrDefault(f => !f.HasError && f.Name == romFile.Name && f.Crc == romFile.Crc);
 
-            // TODO: find out why allGames files have been modified with a non-existing path
+            // this shouldn't happen, but it does. My code is a mess.
             if (repairFile != null && !fs.FileExists(repairFile.ZipFilePath))
             {
                 repairFile = null;
@@ -381,14 +349,14 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             {
                 messageHandler.Progress($"Fixing {game.Name} - file {romFile.Name}");
 
-                await FixGameFile(repairFile, targetZip, targetZipPath, romFile, fileFixedZipFiles);
+                await FixGameFile(repairFile, targetZip, romFile, fileFixedZipFiles);
 
                 if (messageHandler.MustCancel) { return; }
             }
         }
     }
 
-    public async Task FixGameFile(GameRomFile repairFile, ZipFile targetZip, string targetZipPath, GameRomFile romFile, GameRomFilesList fileFixedZipFiles)
+    public async Task FixGameFile(GameRomFile repairFile, ZipFile targetZip, GameRomFile romFile, GameRomFilesList fileFixedZipFiles)
     {
         var sourceZipPath = repairFile.ZipFilePath;
         using var sourceZip = fs.OpenZipRead(sourceZipPath);
@@ -400,21 +368,14 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             romFile.ErrorDetails = null;
 
             // update the fileFixedZipFiles list
-            fileFixedZipFiles.ReplaceFile(romFile, targetZipPath);
+            fileFixedZipFiles.ReplaceFile(romFile, targetZip?.FilePath);
         }
         else
         {
-            Console.WriteLine($"did not replace {repairFile.Name} from {sourceZipPath} to {targetZipPath}");
+            Console.WriteLine($"did not replace {repairFile.Name} from {sourceZipPath} to {targetZip?.FilePath}");
         }
     }
 
-    /// <summary>
-    /// Changes a game to a non-merged romset
-    /// </summary>
-    /// <param name="game">The game to process</param>
-    /// <param name="args">The action arguments</param>
-    /// <param name="otherFolderFiles">The path </param>
-    /// <param name="messageHandler">The message handler</param>
     public async Task ChangeGame(ZipFile targetZip, GameRom game, GameRomFilesList fileFixedZipFiles, RomsActionCheckDat args, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         // build path
@@ -445,11 +406,11 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             var filesOnlyInParent = GetFilesOnlyInParent(game);
 
             var romsetParentPath = fs.PathJoin(args.Romset, $"{game.Parent.Name}.zip");
-            await RebuildFromParent(targetZip, romsetParentPath, targetRom, fileFixedZipFiles, filesOnlyInParent, messageHandler);
+            await RebuildFromParent(targetZip, romsetParentPath, fileFixedZipFiles, filesOnlyInParent, messageHandler);
 
             if (messageHandler.MustCancel) { return; }
 
-            await RebuildFromParentUsingOther(targetZip, targetRom, fileFixedZipFiles, filesOnlyInParent, otherFolderFiles, messageHandler);
+            await RebuildFromParentUsingOther(targetZip, fileFixedZipFiles, filesOnlyInParent, otherFolderFiles, messageHandler);
 
             if (messageHandler.MustCancel) { return; }
 
@@ -497,9 +458,9 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
     }
 
-    private async Task RebuildFromParent(ZipFile targetZip, string sourceZipPath, string targetZipPath, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, IMessageHandler messageHandler)
+    private async Task RebuildFromParent(ZipFile targetZip, string sourceZipPath, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, IMessageHandler messageHandler)
     {
-        if (sourceZipPath == targetZipPath || !fs.FileExists(sourceZipPath)) { return; }
+        if (sourceZipPath == targetZip.FilePath || !fs.FileExists(sourceZipPath)) { return; }
 
         using var sourceZip = fs.OpenZipRead(sourceZipPath);
 
@@ -509,18 +470,18 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             if (await fs.ReplaceZipFile(sourceZip, targetZip, missingFile))
             {
                 // update targetZipFiles
-                targetZipFiles.ReplaceFile(missingFile, targetZipPath);
+                targetZipFiles.ReplaceFile(missingFile, targetZip.FilePath);
             }
             else
             {
-                Console.WriteLine($"failed to replace {missingFile.Name} from {sourceZipPath} to {targetZipPath}");
+                Console.WriteLine($"failed to replace {missingFile.Name} from {sourceZipPath} to {targetZip.FilePath}");
             }
 
             if (messageHandler.MustCancel) { return; }
         }
     }
 
-    private async Task RebuildFromParentUsingOther(ZipFile targetZip, string targetZipPath, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
+    private async Task RebuildFromParentUsingOther(ZipFile targetZip, GameRomFilesList targetZipFiles, IEnumerable<GameRomFile> filesOnlyInParent, ReadOnlyGameRomFileList otherFolderFiles, IMessageHandler messageHandler)
     {
         if (otherFolderFiles == null || otherFolderFiles.Count == 0)
         {
@@ -540,11 +501,11 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
                 if (await fs.ReplaceZipFile(sourceZip, targetZip, otherFile))
                 {
                     // update targetZipFiles
-                    targetZipFiles.ReplaceFile(otherFile.ToGameRomFile(targetZipPath), targetZipPath);
+                    targetZipFiles.ReplaceFile(otherFile.ToGameRomFile(targetZip.FilePath), targetZip.FilePath);
                 }
                 else
                 {
-                    Console.WriteLine($"failed to replace {missingFile.Name} from {missingFile.ZipFilePath} to {targetZipPath}");
+                    Console.WriteLine($"failed to replace {missingFile.Name} from {missingFile.ZipFilePath} to {targetZip.FilePath}");
                 }
             }
 
@@ -610,7 +571,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         {
             // check that the files match the expected values; if not it will be rebuilt in the next step
             using var zip = fs.OpenZipRead(gameFileFixed);
-            CheckFilesOfGame(zip, game, gameFileFixed, args.CheckSha1, messageHandler);
+            CheckFilesOfGame(zip, game, args.CheckSha1, messageHandler);
             return [.. fs.GetZipFiles(zip, $"{game.Name}.zip", fs.DirectoryName(gameFileFixed), args.CheckSha1)];
         }
 
@@ -689,11 +650,6 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         return dat;
     }
 
-    /// <summary>
-    /// Gets all the files of a game rom + its parent if it exists
-    /// </summary>
-    /// <param name="game">The game to get the rom files of</param>
-    /// <returns>The rom files</returns>
     private static List<GameRomFile> GetAllFilesOfGame(GameRom game)
     {
         var romFiles = game.RomFiles.ToList(); // ToList does a copy
