@@ -1,18 +1,13 @@
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace ArcadeManager.Core.Models.Zip;
 
-public class ZipEntry
+[DebuggerDisplay("{FullName} ({Crc})")]
+public class ZipEntry(ZipArchiveEntry entry)
 {
-    private readonly ZipArchiveEntry entry;
-
-    public ZipEntry(ZipArchiveEntry entry)
-    {
-        this.entry = entry;
-    }
-
     public string Name => entry?.Name;
 
     public string FullName => entry?.FullName;

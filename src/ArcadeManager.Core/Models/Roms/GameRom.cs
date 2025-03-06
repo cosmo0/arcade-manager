@@ -85,6 +85,11 @@ public class GameRom
     /// Gets the list of rom files
     /// </summary>
     public GameRomFilesList RomFiles { get; } = [];
+    
+    /// <summary>
+    /// Gets a value indicating whether the game itself has an error (ex the whole file is missing)
+    /// </summary>
+    public bool HasOwnError => _ownError != ErrorReason.None;
 
     /// <summary>
     /// Sets an error on the game
@@ -155,7 +160,7 @@ public class GameRom
         // add the files
         foreach (var romXml in gameXml.Descendants("rom").Where(r => r.Attribute("status")?.Value != "nodump"))
         {
-            game.RomFiles.Add(GameRomFile.FromXml(game.Name, romXml, folder));
+            game.RomFiles.Add(GameRomFile.FromXml(game, romXml));
         }
 
         return game;

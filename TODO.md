@@ -2,7 +2,12 @@
 
 ## DAT check
 
-* Create a Zip infrastructure layer and a corresponding model to abstract away the ZipArchive (it will also allow to pass only this model with a path property and not both the zip and path as two parameters targetZip/targetZipPath)
+* Fix/rebuild:
+  * if no error: copy
+  * get the list of required files
+  * search the romset and other if they exist
+  * if any required file is missing skip the game
+  * rebuild the zip
 * Have a progress bar for the steps and a progress bar for the items in the step
 * Move the localizer service to the web app
 

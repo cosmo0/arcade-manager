@@ -5,7 +5,7 @@ namespace ArcadeManager.Core.Models.Roms;
 /// <summary>
 /// A game rom file (rom files inside the zip)
 /// </summary>
-[DebuggerDisplay("{Name} ({Crc})")]
+[DebuggerDisplay("{Path}\\{Name} ({Crc})")]
 public class ReadOnlyGameRomFile(
     string zipFileName,
     string zipFileFolder,
@@ -31,16 +31,8 @@ public class ReadOnlyGameRomFile(
 
     public string Sha1 => sha1;
 
-    public GameRomFile ToGameRomFile(string zipPath) {
-        var fileName = zipFileName;
-        var fileFolder = zipFileFolder;
-
-        if (!string.IsNullOrEmpty(zipPath)) {
-            fileName = System.IO.Path.GetFileName(zipPath);
-            fileFolder = System.IO.Path.GetDirectoryName(zipPath);
-        }
-
-        return new GameRomFile(fileName, fileFolder) {
+    public GameRomFile ToGameRomFile() {
+        return new GameRomFile {
             Name = Name,
             Path = Path,
             Crc = Crc,

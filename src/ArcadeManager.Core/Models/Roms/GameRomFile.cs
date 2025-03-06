@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 
 namespace ArcadeManager.Core.Models.Roms;
@@ -6,23 +7,11 @@ namespace ArcadeManager.Core.Models.Roms;
 /// <summary>
 /// A game rom file (rom files inside the zip)
 /// </summary>
-[DebuggerDisplay("{Name} ({Crc})")]
-public class GameRomFile(string zipFileName, string zipFileFolder) : IGameRomFile
+[DebuggerDisplay("{Path} \\ {Name} ({Crc})")]
+public class GameRomFile : IGameRomFile
 {
-    /// <summary>
-    /// Gets or sets the zip file name
-    /// </summary>
-    public string ZipFileName => zipFileName;
-
-    /// <summary>
-    /// Gets or sets the zip file folder
-    /// </summary>
-    public string ZipFileFolder => zipFileFolder;
-
-    /// <summary>
-    /// Gets the full zip file path
-    /// </summary>
-    public string ZipFilePath => System.IO.Path.Join(ZipFileFolder, ZipFileName);
+    [JsonIgnore]
+    public GameRom Rom { get; set; }
 
     /// <summary>
     /// Gets or sets the file name (including extension)
@@ -64,33 +53,20 @@ public class GameRomFile(string zipFileName, string zipFileFolder) : IGameRomFil
     /// </summary>
     public string ErrorDetails { get; set; }
 
-    /// <summary>
-    /// Clones a rom file object by replacing some data for the specified game
-    /// </summary>
-    /// <param name="zipFilePath">The path to the zip file we're processing</param>
-    /// <returns>The cloned GameRomFile</returns>
-    public GameRomFile CloneFor(string zipFilePath)
-    {
-        return new GameRomFile(System.IO.Path.GetFileName(zipFilePath), System.IO.Path.GetDirectoryName(zipFilePath))
-        {
-            Name = Name,
-            Size = Size,
-            Crc = Crc,
-            Sha1 = Sha1,
-            Path = Path,
-            ErrorDetails = ErrorDetails,
-            ErrorReason = ErrorReason
-        };
+    public ReadOnlyGameRomFile ToReadOnly(string filePath) {
+        var fileName = System.IO.Path.GetFileName(filePath);
+        var folderName = System.IO.Path.GetDirectoryName(filePath);
+
+        return new ReadOnlyGameRomFile(fileName, folderName, Name, Path, Size, Crc, Sha1);
     }
 
     /// <summary>
     /// Creates a new rom file info from a XML node from the DAT
     /// </summary>
-    /// <param name="game">The game name</param>
+    /// <param name="game">The game</param>
     /// <param name="romXml">The XML node from the DAT</param>
-    /// <param name="folder">The rom file folder</param>
     /// <returns>The file infos</returns>
-    public static GameRomFile FromXml(string game, XElement romXml, string folder)
+    public static GameRomFile FromXml(GameRom game, XElement romXml)
     {
         var name = romXml.Attribute("name").Value;
 
@@ -98,15 +74,16 @@ public class GameRomFile(string zipFileName, string zipFileFolder) : IGameRomFil
         var status = romXml.Attribute("status")?.Value;
         if (crc == null && status != "nodump")
         {
-            throw new ArgumentNullException($"No crc for file {name} in game {game}");
+            throw new ArgumentNullException($"No crc for file {name} in game {game.Name}");
         }
 
-        return new GameRomFile($"{game}.zip", folder)
+        return new GameRomFile()
         {
             Name = name,
-            Size = long.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game}")),
+            Size = long.Parse(romXml.Attribute("size")?.Value ?? throw new ArgumentNullException($"No size for file {name} in game {game.Name}")),
             Crc = crc,
             Sha1 = romXml.Attribute("sha1")?.Value,
+            Rom = game
         };
     }
 }

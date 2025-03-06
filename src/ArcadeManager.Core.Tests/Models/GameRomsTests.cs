@@ -36,8 +36,6 @@ public class GameRomsTests
         file.Size.Should().Be(524288);
         file.Crc.Should().Be("ac44415b");
         file.Sha1.Should().Be("218f8b1886eb72b8547127042b5ae47600e18944");
-        file.ZipFileName.Should().Be("test1.zip");
-        file.ZipFileFolder.Should().Be("romset");
     }
 
     [Fact]
@@ -107,10 +105,10 @@ public class GameRomsTests
     {
         // arrange
         var data = new GameRomFilesList {
-            new("", "") { Name = "a" },
-            new("", "") { Name = "b" },
-            new("", "") { Name = "a", Path = "sub" },
-            new("", "") { Name = "b", Path = "sub" }
+            new() { Name = "a" },
+            new() { Name = "b" },
+            new() { Name = "a", Path = "sub" },
+            new() { Name = "b", Path = "sub" }
         };
     
         // act

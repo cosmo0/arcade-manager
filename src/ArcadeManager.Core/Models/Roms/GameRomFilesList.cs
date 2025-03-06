@@ -1,3 +1,4 @@
+
 namespace ArcadeManager.Core.Models.Roms;
 
 /// <summary>
@@ -34,13 +35,15 @@ public class GameRomFilesList : List<GameRomFile>
     }
 
     /// <summary>
-    /// Replaces a file in this collection with the specified one
+    /// Marks a rom file as fixed
     /// </summary>
-    /// <param name="file">The file to replace</param>
-    /// <param name="zipFilePath">The path to the zip file we're processing</param>
-    public void ReplaceFile(GameRomFile file, string zipFilePath)
+    /// <param name="romFileName">The name of the rom file to mark as fixed</param>
+    public void Fixed(string romFileName)
     {
-        RemoveFile(file.Name, file.Path);
-        Add(file.CloneFor(zipFilePath));
+        var file = this[romFileName];
+        if (file != null) {
+            file.ErrorDetails = null;
+            file.ErrorReason = ErrorReason.None;
+        }
     }
 }

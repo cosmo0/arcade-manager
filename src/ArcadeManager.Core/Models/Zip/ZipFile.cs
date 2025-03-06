@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.IO.Compression;
 
 namespace ArcadeManager.Core.Models.Zip;
 
+[DebuggerDisplay("{FilePath}")]
 public class ZipFile : IDisposable
 {
     private readonly ZipArchive archive;
@@ -14,7 +16,7 @@ public class ZipFile : IDisposable
         this.FilePath = path;
         this.Mode = mode;
 
-        if (mode == ZipFileMode.Read) {
+        if (mode == ZipFileMode.Read /*&& System.IO.File.Exists(path)*/) {
             archive = System.IO.Compression.ZipFile.OpenRead(path);
         } else {
             archive = System.IO.Compression.ZipFile.Open(path, mode == ZipFileMode.Create ? ZipArchiveMode.Create : ZipArchiveMode.Update);

@@ -428,7 +428,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         // loop on entry, skipping folders (which are entries with no short name)
         foreach (var entry in zip.Entries.Where(e => !string.IsNullOrEmpty(e.Name)))
         {
-            result.Add(new GameRomFile(fileName, folder)
+            result.Add(new GameRomFile
             {
                 Name = entry.Name,
                 Path = Path.GetDirectoryName(entry.FullName),

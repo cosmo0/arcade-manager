@@ -36,7 +36,7 @@ public class DatCheckerTests
         var game = new GameRom {
             Name = "test"
         };
-        game.RomFiles.Add(new GameRomFile("", "") {
+        game.RomFiles.Add(new GameRomFile() {
             Name = "test.1",
             Crc = "abcd",
             Size = 1234
@@ -48,7 +48,7 @@ public class DatCheckerTests
         var processed = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
-            new GameRomFile("", "") {
+            new GameRomFile() {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
@@ -104,12 +104,12 @@ public class DatCheckerTests
             Name = "test"
         };
         game.RomFiles.AddRange([
-            new GameRomFile("", "") {
+            new GameRomFile() {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
             },
-            new GameRomFile("", "") {
+            new GameRomFile() {
                 Name = "test.2",
                 Crc = "def",
                 Size = 456
@@ -122,7 +122,7 @@ public class DatCheckerTests
         var processed = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
-            new GameRomFile("", "") {
+            new GameRomFile() {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
@@ -155,7 +155,7 @@ public class DatCheckerTests
             Name = "test"
         };
         game.RomFiles.AddRange([
-            new GameRomFile("", "") {
+            new GameRomFile() {
                 Name = "test.1",
                 Crc = "abcd",
                 Size = 1234
@@ -168,7 +168,7 @@ public class DatCheckerTests
         var processed = new GameRomList();
 
         var zipFiles = new GameRomFilesList {
-            new GameRomFile("", "") {
+            new GameRomFile() {
                 Name = "test.1",
                 Crc = "def",
                 Size = 1234
@@ -198,7 +198,7 @@ public class DatCheckerTests
         var game = new GameRom {
             Name = "test"
         };
-        game.RomFiles.Add(new GameRomFile("", "") {
+        game.RomFiles.Add(new GameRomFile() {
             Name = "test.1",
             Crc = "abcd",
             Size = 1234,
@@ -206,22 +206,22 @@ public class DatCheckerTests
         });
         GameRomList processed = [game];
 
-        var fixFolder = new ReadOnlyGameRomFileList(new List<ReadOnlyGameRomFile>() {
-            new ReadOnlyGameRomFile("test.zip", "roms", "test.1", "", 1234, "abcd", "")
-        });
+        var fixFolder = new ReadOnlyGameRomFileList([
+            new("test.zip", "roms", "test.1", "", 1234, "abcd", "")
+        ]);
 
         // arrange: services
         A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("roms/test.zip");
         A.CallTo(() => fs.PathJoin("fix", "test.zip")).Returns("fix/test.zip");
         A.CallTo(() => fs.FileExists("roms/test.zip")).Returns(true);
         A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(true);
-        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<GameRomFile>._)).Returns(true);
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._)).Returns(true);
 
         // act (the game.RomFiles is re-cast so the list is cloned)
-        await sut.FixGame(null, game, [..game.RomFiles], processed, fixFolder, messageHandler);
+        await sut.FixGame(null, game, [..game.RomFiles], processed, fixFolder, new(), messageHandler);
 
         // assert
-        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<GameRomFile>._)).MustHaveHappened();
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._)).MustHaveHappened();
         game.RomFiles[0].ErrorReason.Should().Be(ErrorReason.None);
     }
 
@@ -232,14 +232,14 @@ public class DatCheckerTests
         var game = new GameRom {
             Name = "test"
         };
-        game.RomFiles.Add(new("", "") { Name = "a" });
-        game.RomFiles.Add(new("", "") { Name = "b" });
+        game.RomFiles.Add(new() { Name = "a" });
+        game.RomFiles.Add(new() { Name = "b" });
 
         // arrange: zip files
         var zipFiles = new GameRomFilesList {
-            new("", "") { Name = "a" },
-            new("", "") { Name = "b" },
-            new("", "") { Name = "c" }
+            new() { Name = "a" },
+            new() { Name = "b" },
+            new() { Name = "c" }
         };
     
         // act
