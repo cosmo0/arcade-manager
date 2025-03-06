@@ -192,40 +192,6 @@ public class DatCheckerTests
     }
 
     [Fact]
-    public async Task Rom_is_fixed()
-    {
-        // arrange: data
-        var game = new GameRom {
-            Name = "test"
-        };
-        game.RomFiles.Add(new GameRomFile() {
-            Name = "test.1",
-            Crc = "abcd",
-            Size = 1234,
-            ErrorReason = ErrorReason.MissingFile
-        });
-        GameRomList processed = [game];
-
-        var fixFolder = new ReadOnlyGameRomFileList([
-            new("test.zip", "roms", "test.1", "", 1234, "abcd", "")
-        ]);
-
-        // arrange: services
-        A.CallTo(() => fs.PathJoin("roms", "test.zip")).Returns("roms/test.zip");
-        A.CallTo(() => fs.PathJoin("fix", "test.zip")).Returns("fix/test.zip");
-        A.CallTo(() => fs.FileExists("roms/test.zip")).Returns(true);
-        A.CallTo(() => fs.FileExists("fix/test.zip")).Returns(true);
-        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._)).Returns(true);
-
-        // act (the game.RomFiles is re-cast so the list is cloned)
-        await sut.FixGame(null, game, [..game.RomFiles], processed, fixFolder, new(), messageHandler);
-
-        // assert
-        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._)).MustHaveHappened();
-        game.RomFiles[0].ErrorReason.Should().Be(ErrorReason.None);
-    }
-
-    [Fact]
     public void Cleanup_removes_excess_files()
     {
         // arrange: game

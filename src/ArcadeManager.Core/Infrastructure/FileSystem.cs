@@ -422,7 +422,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="folder">The folder of the zip</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
-    public IEnumerable<GameRomFile> GetZipFiles(ZipFile zip, string fileName, string folder, bool getSha1) {
+    public List<GameRomFile> GetZipFiles(ZipFile zip, string fileName, string folder, bool getSha1) {
         var result = new List<GameRomFile>();
 
         // loop on entry, skipping folders (which are entries with no short name)
@@ -447,7 +447,7 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// <param name="path">The path to the zip file</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
-    public IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1)
+    public List<GameRomFile> GetZipFiles(string path, bool getSha1)
     {
         var fileName = FileName(path);
         var folder = DirectoryName(path);

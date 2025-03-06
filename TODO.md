@@ -2,14 +2,11 @@
 
 ## DAT check
 
-* Fix/rebuild:
-  * if no error: copy
-  * get the list of required files
-  * search the romset and other if they exist
-  * if any required file is missing skip the game
-  * rebuild the zip
+* regenerate or download non-merged xml for mame 258 & remove GetAllFilesOfGame
+* warn the user that the rebuild will be based on the provided dat file & that the included files are non-merged
+* compare rom files based only on crc and/or sha1 in case the name has changed - handle the rename when rebuilding
+* unit tests for RebuildGame
 * Have a progress bar for the steps and a progress bar for the items in the step
-* Move the localizer service to the web app
 
 ## Other
 

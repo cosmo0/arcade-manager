@@ -218,7 +218,7 @@ public interface IFileSystem {
     /// <param name="folder">The folder of the zip</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
-    IEnumerable<GameRomFile> GetZipFiles(ZipFile zip, string fileName, string folder, bool getSha1);
+    List<GameRomFile> GetZipFiles(ZipFile zip, string fileName, string folder, bool getSha1);
 
     /// <summary>
     /// Lists the files inside a zip
@@ -226,7 +226,7 @@ public interface IFileSystem {
     /// <param name="path">The path to the zip file</param>
     /// <param name="getSha1">Whether to get the SHA1 hash of the file</param>
     /// <returns>The zip file infos</returns>
-    IEnumerable<GameRomFile> GetZipFiles(string path, bool getSha1);
+    List<GameRomFile> GetZipFiles(string path, bool getSha1);
 
     /// <summary>
     /// Opens a zip in read mode
