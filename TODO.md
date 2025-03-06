@@ -4,6 +4,7 @@
 
 * Create a Zip infrastructure layer and a corresponding model to abstract away the ZipArchive (it will also allow to pass only this model with a path property and not both the zip and path as two parameters targetZip/targetZipPath)
 * Have a progress bar for the steps and a progress bar for the items in the step
+* Move the localizer service to the web app
 
 ## Other
 
