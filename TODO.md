@@ -2,7 +2,6 @@
 
 ## DAT check
 
-* unit tests for RebuildGame
 * Have a progress bar for the steps and a progress bar for the items in the step
 
 ## Other

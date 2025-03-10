@@ -333,7 +333,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
                 if (!await fs.ReplaceZipFile(sourceZip, targetZip, sourceFile, romFile))
                 {
-                    Console.WriteLine($"warning: did not replace {sourceFile.Name} from {sourceZip.FilePath} to {targetZip.FilePath}");
+                    Console.WriteLine($"warning: did not replace {sourceFile.Name} from {sourceZip?.FilePath} to {targetZip?.FilePath}");
                 }
             }
         }

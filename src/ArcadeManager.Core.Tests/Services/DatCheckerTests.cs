@@ -8,6 +8,7 @@ using ArcadeManager.Core.Models.Roms;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Actions;
 using ArcadeManager.Core.Models.Zip;
+using FluentAssertions.Extensions;
 
 namespace ArcadeManager.Core.Tests.Services;
 
@@ -215,5 +216,69 @@ public class DatCheckerTests
         A.CallTo(() => fs.DeleteZipFile(A<ZipFile>._, A<GameRomFile>._)).MustHaveHappenedOnceExactly();
 
         zipFiles.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task Rom_is_rebuilt_crc()
+    {
+        // arrange: arguments
+        var args = new RomsActionCheckDat { Speed = "fast" };
+
+        // arrange: found files matching the game files in the romset
+        var foundFiles = new ReadOnlyGameRomFileList([
+            new ReadOnlyGameRomFile("rom1.zip", "romset", "file1.a", "", 123, "abc", ""),
+            new ReadOnlyGameRomFile("rom1.zip", "romset", "file2.a", "", 123, "def", ""),
+            new ReadOnlyGameRomFile("rom2.zip", "romset", "file3.a", "", 123, "ghi", "")
+        ]);
+
+        // arrange: expected files in the game
+        var gameFiles = new GameRomFilesList() {
+            new GameRomFile { Name = "file1.a", Size = 123, Crc = "abc" },
+            new GameRomFile { Name = "file2.a", Size = 123, Crc = "def" },
+            new GameRomFile { Name = "file3.a", Size = 123, Crc = "ghi" }
+        };
+
+        // arrange: assume file replace works
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._, A<IGameRomFile>._))
+            .Returns(true);
+
+        // act
+        await sut.RebuildGame("rom.zip", foundFiles, gameFiles, args);
+
+        // assert
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._, A<IGameRomFile>._))
+            .MustHaveHappened(3, Times.Exactly);
+    }
+    
+    [Fact]
+    public async Task Rom_is_rebuilt_sha1()
+    {
+        // arrange
+        var args = new RomsActionCheckDat { Speed = "slow" };
+
+        // arrange: found files in the romset
+        var foundFiles = new ReadOnlyGameRomFileList([
+            new ReadOnlyGameRomFile("rom1.zip", "romset", "file1.a", "", 123, "abc", "1"),
+            new ReadOnlyGameRomFile("rom1.zip", "romset", "file2.a", "", 123, "def", "2"),
+            new ReadOnlyGameRomFile("rom2.zip", "romset", "file3.a", "", 123, "ghi", "3")
+        ]);
+
+        // arrange: expected files in the game
+        var gameFiles = new GameRomFilesList() {
+            new GameRomFile { Name = "file1.a", Size = 123, Crc = "abc", Sha1 = "1" },
+            new GameRomFile { Name = "file2.a", Size = 123, Crc = "def", Sha1 = "2" },
+            new GameRomFile { Name = "file3.a", Size = 123, Crc = "ghi", Sha1 = "3" }
+        };
+
+        // arrange: assume file replace works
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._, A<IGameRomFile>._))
+            .Returns(true);
+
+        // act
+        await sut.RebuildGame("rom.zip", foundFiles, gameFiles, args);
+
+        // assert
+        A.CallTo(() => fs.ReplaceZipFile(A<ZipFile>._, A<ZipFile>._, A<IGameRomFile>._, A<IGameRomFile>._))
+            .MustHaveHappened(3, Times.Exactly);
     }
 }
