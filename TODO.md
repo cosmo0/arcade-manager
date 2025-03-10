@@ -2,7 +2,7 @@
 
 ## DAT check
 
-* regenerate or download non-merged xml for mame 258 & remove GetAllFilesOfGame
+* list https://www.progettosnaps.net/dats/MAME/ as source for XML files in the help
 * warn the user that the rebuild will be based on the provided dat file & that the included files are non-merged
 * compare rom files based only on crc and/or sha1 in case the name has changed - handle the rename when rebuilding
 * unit tests for RebuildGame

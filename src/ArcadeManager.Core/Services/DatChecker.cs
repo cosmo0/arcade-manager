@@ -201,15 +201,13 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
 
     private static void CheckFilesOfParent(GameRom game, IEnumerable<GameRomFile> zipFiles, bool checkSha1, IMessageHandler messageHandler)
     {
-        var filesOnlyInParent = GetFilesOnlyInParent(game);
-        foreach (var fip in filesOnlyInParent)
+        foreach (var fip in game.RomFiles)
         {
             if (messageHandler.MustCancel) { return; }
 
             var zipFile = zipFiles.FirstOrDefault(zf => zf.Name.Equals(fip.Name, StringComparison.InvariantCultureIgnoreCase));
             if (zipFile != null)
             {
-                // don't trigger file missing error if it's not a merged set
                 CheckFileOfGame(game, fip, zipFile, checkSha1);
             }
         }
@@ -296,14 +294,11 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
                 continue;
             }
 
-            // get the list of required files
-            List<GameRomFile> requiredFiles = GetAllFilesOfGame(game);
-
-            // search the romset and other if they exist
-            ReadOnlyGameRomFileList foundFiles = FindFilesOfGame(requiredFiles, allFiles);
+            // search the romset and other if the game files exist
+            ReadOnlyGameRomFileList foundFiles = FindFilesOfGame(game.RomFiles, allFiles);
 
             // if any required file is missing skip the game
-            if (requiredFiles.Count != foundFiles.Count)
+            if (game.RomFiles.Count != foundFiles.Count)
             {
                 continue;
             }
@@ -392,14 +387,11 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     {
         if (!zipFiles.Any()) { return; }
 
-        // the list of files in the current rom
-        var romFiles = GetAllFilesOfGame(game);
-
         // get folders to remove
         var folders = zipFiles.Where(f => !string.IsNullOrEmpty(f.Path)).Select(f => f.Path).Distinct().ToList();
 
         // get the files that are in the zip but shouldn't
-        var excessFiles = zipFiles.Where(zf => !romFiles.Any(rf => rf.Name == zf.Name)).ToList(); // The ToList() clones the list so the zipFiles collection can be modified
+        var excessFiles = zipFiles.Where(zf => !game.RomFiles.Any(rf => rf.Name == zf.Name)).ToList(); // The ToList() clones the list so the zipFiles collection can be modified
 
         foreach (var f in excessFiles)
         {
@@ -485,25 +477,6 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
         }
 
         return dat;
-    }
-
-    private static List<GameRomFile> GetAllFilesOfGame(GameRom game)
-    {
-        var romFiles = game.RomFiles.ToList(); // ToList does a copy
-        if (game.Parent != null)
-        {
-            // add the roms of the parent that are not in the clone
-            romFiles.AddRange(game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name)));
-        }
-
-        return romFiles;
-    }
-
-    private static IEnumerable<GameRomFile> GetFilesOnlyInParent(GameRom game)
-    {
-        if (game.Parent == null) { return []; }
-
-        return game.Parent.RomFiles.Where(pf => !game.RomFiles.Any(cf => cf.Name == pf.Name));
     }
 
     private static GameRomList KeepCsvGames(GameRomList allGames, CsvGamesList csv)
