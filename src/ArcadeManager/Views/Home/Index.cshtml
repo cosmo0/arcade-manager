@@ -127,7 +127,7 @@
                     window.location.href = '@Url.Action("Os", "Home")';
                 }
 
-                if (os === 'none') {
+                if (os === 'none' || os === 'batocera') {
                     // disable overlays entry if no OS has been selected
                     $('.mainmenu .overlays')
                         .prop('disabled', true)

@@ -65,6 +65,11 @@
                 "win32": "\\\\recalbox\\share\\roms\\",
                 "darwin": "/Volumes/share/roms/",
                 "linux": "/mnt/recalbox/share/roms/"
+            },
+            "batocera": {
+                "win32": "\\\\batocera\\share\\roms\\",
+                "darwin": "/Volumes/share/roms/",
+                "linux": "/mnt/batocera/share/roms/"
             }
         },
         "configs": {
@@ -77,11 +82,17 @@
                 "win32": "\\\\recalbox\\share\\",
                 "darwin": "/Volumes/share/",
                 "linux": "/mnt/recalbox/share/"
+            },
+            "batocera": {
+                "win32": "\\\\batocera\\share\\",
+                "darwin": "/Volumes/share/",
+                "linux": "/mnt/batocera/share/"
             }
         },
         "romFolders": {
             "retropie": [ "arcade", "fba", "mame", "mame-libretro", "neogeo" ],
-            "recalbox": [ "fba", "fbneo", "mame" ]
+            "recalbox": [ "fba", "fbneo", "mame" ],
+            "batocera": [ "fba", "fbneo", "mame" ]
         }
     }
 }

@@ -9,18 +9,18 @@
 @Html.Raw(Localizer["HOME_OS_INTRO"])
 
 <div class="row mainmenu">
-    <div class="col-4">
-        <a asp-controller="Home" asp-action="Index" class="navmenu os" data-os="retropie">
+    <div class="col-3">
+        <a asp-controller="Home" asp-action="Index" class="navmenu os" data-os="batocera">
             <div class="card text-center border-primary">
-                <img class="card-img-top" src="/img/retropie.png" alt="Retropie">
+                <img class="card-img-top" src="/img/batocera.png" alt="Batocera">
                 <div class="card-footer">
-                    Retropie
+                    Batocera
                 </div>
             </div>
         </a>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
         <a asp-controller="Home" asp-action="Index" class="navmenu os" data-os="recalbox">
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="/img/recalbox.png" alt="Recalbox">
@@ -31,7 +31,18 @@
         </a>
     </div>
 
-    <div class="col-4">
+    <div class="col-3">
+        <a asp-controller="Home" asp-action="Index" class="navmenu os" data-os="retropie">
+            <div class="card text-center border-primary">
+                <img class="card-img-top" src="/img/retropie.png" alt="Retropie">
+                <div class="card-footer">
+                    Retropie
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-3">
         <a asp-controller="Home" asp-action="Index" class="navmenu os" data-os="none">
             <div class="card text-center border-primary">
                 <img class="card-img-top" src="/img/unknown.png" alt="@Localizer["HOME_OS_NOTSURE"]">
