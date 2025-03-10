@@ -480,15 +480,16 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     /// </summary>
     /// <param name="source">The source zip to read the file from</param>
     /// <param name="target">The target zip to write to</param>
-    /// <param name="file">The file to replace</param>
+    /// <param name="sourceFile">The file to read</param>
+    /// <param name="targetFile">The file to write</param>
     /// <returns>A value indicating whether the file has been replaced</returns>
-    public async Task<bool> ReplaceZipFile(ZipFile source, ZipFile target, IGameRomFile file) {
+    public async Task<bool> ReplaceZipFile(ZipFile source, ZipFile target, IGameRomFile sourceFile, IGameRomFile targetFile) {
         if (target.Mode == ZipFileMode.Read) {
             throw new ArgumentException("Zip archive is opened in read mode");
         }
 
         // get the source entry
-        var entryPath = string.IsNullOrEmpty(file.Path) ? file.Name : $"{file.Path}/{file.Name}";
+        var entryPath = string.IsNullOrEmpty(sourceFile.Path) ? sourceFile.Name : $"{sourceFile.Path}/{sourceFile.Name}";
         var sourceEntry = source.Entries.FirstOrDefault(e => e.FullName == entryPath);
         if (sourceEntry == null) {
             // maybe I should throw, but I have very bad exception management
@@ -496,10 +497,10 @@ public class FileSystem(IEnvironment environment) : IFileSystem
         }
 
         if (target.Mode == ZipFileMode.Update) {
-            target.GetEntry(file.Name)?.Delete();
+            target.GetEntry(sourceFile.Name)?.Delete();
         }
 
-        var targetEntry = target.CreateEntry(file.Name);
+        var targetEntry = target.CreateEntry(targetFile.Name);
 
         // write content
         using var targetStream = targetEntry.Open();
