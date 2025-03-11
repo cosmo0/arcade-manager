@@ -24,8 +24,9 @@ The latest version is available here: <https://github.com/cosmo0/arcade-manager/
 ## Features
 
 * Multi-platform, works on Windows, MacOS and Linux
+* Multi-language (check "translating" if you want to help)
 * User-friendly, easy to use interface
-* Wizard with pre-built lists of "best games"
+* Wizard with various pre-built lists of "best games"
 * Manage rom files: copy or cleanup a selection of roms
 * Checks and fixes a romset, and converts it to non-merged (other types are not supported)
 * Download and install an overlays pack (Retropie or Recalbox)
