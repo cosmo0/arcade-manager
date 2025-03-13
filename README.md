@@ -93,7 +93,7 @@ electronize build /target osx /electron-arch arm64
 electronize build /target linux
 ````
 
-Windows and Linux ARM64 are not currently supported.  
+Windows ARM and Linux ARM are not currently supported.  
 MacOS x86 is not supported anymore.
 
 If you want to build for another architecture, edit the file `src\ArcadeManager\electron.manifest.json`, scroll down to "build", locate your platform (win, osx, linux), and in "target", change the "arch" property to your architecture (x64 or arm64). Don't forget to build using the matching `/electron-arch` parameter.
