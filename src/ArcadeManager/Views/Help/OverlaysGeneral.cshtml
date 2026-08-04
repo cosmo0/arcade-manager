@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Overlays - general informations";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index" class="navmenu">Help</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Overlays - general informations</li>
+    </ol>
+</nav>
+
+<h2>Overlays - general informations</h2>
+
+<p>
+    Overlays, also called bezels, are images that are placed around the game screen to either add decoration to
+    the parts of the screen that would otherwise be black, or give the impression that the game is run in a
+    period-accurate setting (like an old school TV border).
+</p>
+
+<p>
+    Historically, in arcade cabinets, the screen was encased in a wooden or plastic box, behind a plexiglass
+    panel, and to hide the screen border and make the cabinet more attractive, some images would be placed on
+    the plexiglass: these are called <strong>bezels</strong>. Over time, they would disappear with generic
+    cabinets (like the famous Sega Astro City) mostly replacing custom ones.
+</p>
+
+<p>
+    In very old games, especially in black & white (most notably Space Invaders but it was far from the only one)
+    developers added color by simply sticking semi-transparent tape on the screen: this would make some parts
+    always of the same color, like the lines of invaders in Space Invaders, or the bricks in Breakout: these are
+    called <strong>overlays</strong>. Sometimes they were used to display decorative images, like the moon in some
+    versions of Space Invaders, or even part of the game, like Dark Planet 3D.
+</p>
+
+<p>
+    RetroArch, particularly on mobile devices, displays images atop the game to show the controls (d-pad and
+    buttons) on a touch screen. This system is also used to display a bezel around the game screen and overlays
+    above it, but I'm not sure that it was its initial purpose.
+</p>
+
+<p>
+    Mame is more concerned with reproducing the full experience of an arcade cabinet, and their bezel system
+    is much more complex, allowing parts that can move or change depending on the game action (like something
+    lighting up), interactive elements (like special switches), etc. However, these complex bezels are rare and
+    they usually only display a single image.
+</p>

@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "How the Retroarch overlays work";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="navmenu">Home</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Help" asp-action="Index" class="navmenu">Help</a></li>
+        <li class="breadcrumb-item active" aria-current="page">How the Retroarch overlays work</li>
+    </ol>
+</nav>
+
+<h2>How the Retroarch overlays work</h2>
+
+<div class="alert alert-warning">
+    It's possible that these informations have become outdated by the time you read them. I have
+    not and will not check regularly to update them. They were right circa 2022.
+</div>
+
+<p>Retroarch's overlays are composed of 3 files:</p>
+
+<ul>
+    <li>a "rom config" file</li>
+    <li>an "overlay config" file</li>
+    <li>one or more overlay image(s)</li>
+</ul>
+
+<p>The config files use the INI format: <code>key=value</code>, ";" for comments, etc.</p>
+
+<h3>The rom config file</h3>
+
+<p>
+    This file describes which overlays is used, and how.<br />
+    Yeah, it's pretty stupid that the "how" is defined here, instead of the overlay file.<br />
+    It's usually placed alongside the rom files, but some configurations allow (or force) you
+    to place them in other folders. In all cases, it should have the same name as the rom file:
+    <code>sf2.zip</code> should have the config file <code>sf2.zip.cfg</code>.
+</p>
+
+<pre class="bg-light rounded border p-2"><code>input_overlay = /path/to/the/overlay/config/file.cfg
+input_overlay_enable = true
+input_overlay_opacity = 0.900000
+input_overlay_scale = 1.000000
+custom_viewport_width = 1434
+custom_viewport_height = 1074
+custom_viewport_x = 243
+custom_viewport_y = 2
+aspect_ratio_index = 23
+video_force_aspect = true
+video_scale_integer = false</code></pre>
+
+<p>Most parameters should be pretty self-explanatory. Here are some details:</p>
+
+<ul>
+    <li><code>input_overlay</code> points to the overlay config file, with an absolute path (relative
+        paths don't work).</li>
+    <li><code>custom_viewport_xxx</code> define the position of the game's screen.</li>
+    <li><code>aspect_ratio_index</code> defines the target aspect ratio (16/9, 4/3, etc). You want to
+        look for the "custom" value (here 23), but be warned that not all distros (RA/Windows,
+        Retropie, Recalbox, Batocera...) use the same values. Thanks a lot.</li>
+    <li><code>video_scale_integer</code> will force viewport width/height to the closest pixel-perfect
+        aspect ratios.</li>
+</ul>
+
+<h3>The overlay config file</h3>
+
+<p>
+    This file describes the overlay images that are used. Multiple images can be superposed on top of
+    each other.<br />
+    They can be located anywhere on the system, as long as RetroArch has access to this path.
+</p>
+
+<pre class="bg-light rounded border p-2"><code>overlays = 1
+overlay0_overlay = file.png
+overlay0_full_screen = true
+overlay0_descs = 0</code></pre>
+
+<p>
+    The <code>overlay0_overlay</code> parameter here uses a relative path. Why here and not in the rom
+    config file, it's all a mystery.
+</p>
+
+<h3>The overlay image</h3>
+
+<p>The overlay images are displayed on top of the game screen, using the parameters in the config files.</p>
+
+<p>Obviously you should use images in PNG format, so that they have transparency. Otherwise your screen will be masked.</p>
