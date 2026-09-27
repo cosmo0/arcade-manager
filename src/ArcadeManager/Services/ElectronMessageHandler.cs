@@ -1,5 +1,6 @@
 ﻿using ArcadeManager.Core;
 using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Actions.Overlays;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Roms;
@@ -8,7 +9,6 @@ using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -116,6 +116,10 @@ public partial class ElectronMessageHandler(
 
             // overlays action
             await Electron.IpcMain.On("overlays-download", async (args) => await OverlaysDownload(args));
+            await Electron.IpcMain.On("overlays-generate", async (args) => await OverlaysGenerate(args));
+            await Electron.IpcMain.On("overlays-check", async (args) => await OverlaysCheck(args));
+            await Electron.IpcMain.On("overlays-mametora", async (args) => await OverlaysMameToRa(args));
+            await Electron.IpcMain.On("overlays-ratomame", async (args) => await OverlaysRaToMame(args));
 
             // check for update
             await Electron.IpcMain.On("update-check", async (_) => await UpdateCheck());
@@ -184,6 +188,15 @@ public partial class ElectronMessageHandler(
     {
         MustCancel = false;
         Electron.IpcMain.Send(window, ProgressChannel, new Progress { Label = label, Init = true });
+    }
+
+    /// <summary>
+    /// Sends a generic message to append to a list of messages
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public void ProgressMessage(string message)
+    {
+        Electron.IpcMain.Send(window, ProgressChannel, new Progress { Message = message });
     }
 
     /// <summary>
@@ -491,15 +504,63 @@ public partial class ElectronMessageHandler(
     }
 
     /// <summary>
+    /// Checks overlays configurations
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    private async Task OverlaysCheck(object args)
+    {
+        var data = ConvertArgs<CheckAction>(args);
+        MustCancel = false;
+
+        await services.Overlays.Check(data, this);
+    }
+
+    /// <summary>
     /// Downloads overlays
     /// </summary>
     /// <param name="args">The arguments</param>
     private async Task OverlaysDownload(object args)
     {
-        var data = ConvertArgs<OverlaysAction>(args);
+        var data = ConvertArgs<InstallOverlaysAction>(args);
         MustCancel = false;
 
         await services.Overlays.Download(data, this);
+    }
+
+    /// <summary>
+    /// Generates overlays based on images
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    private async Task OverlaysGenerate(object args)
+    {
+        var data = ConvertArgs<GenerateAction>(args);
+        MustCancel = false;
+
+        await services.Overlays.Generate(data, this);
+    }
+
+    /// <summary>
+    /// Converts Mame bezels to RA overlays
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    private async Task OverlaysMameToRa(object args)
+    {
+        var data = ConvertArgs<MameToRaAction>(args);
+        MustCancel = false;
+
+        await services.Overlays.ConvertMameToRa(data, this);
+    }
+
+    /// <summary>
+    /// Converts RA overlays to Mame bezels
+    /// </summary>
+    /// <param name="args">The arguments.</param>
+    private async Task OverlaysRaToMame(object args)
+    {
+        var data = ConvertArgs<RaToMameAction>(args);
+        MustCancel = false;
+
+        await services.Overlays.ConvertRaToMame(data, this);
     }
 
     /// <summary>

@@ -9,3 +9,152 @@
         <li class="breadcrumb-item active" aria-current="page">@Localizer["BREADCRUMB_OVERLAYS_GENERATE"]</li>
     </ol>
 </nav>
+
+<h2>
+    @Localizer["OVERLAYS_GENERATE_PAGETITLE"]
+</h2>
+
+<p>
+    @Html.Raw(Localizer["OVERLAYS_GENERATE_INTRO"])
+</p>
+
+<div class="alert alert-warning">
+    @Html.Raw(Localizer["OVERLAYS_GENERATE_ONLYRA"])
+</div>
+
+<!-- Path to the images -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="imagesPath">@Localizer["OVERLAYS_GENERATE_IMAGES"]</label>
+    </div>
+    <input type="text" class="form-control" id="imagesPath">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="imagesPath">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_GENERATE_IMAGES_DESC"]</small>
+</p>
+
+<!-- Path to the roms folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="romsPath">@Localizer["OVERLAYS_GENERATE_ROMS"]</label>
+    </div>
+    <input type="text" class="form-control" id="romsPath">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="romsPath">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_GENERATE_ROMS_DESC"]</small>
+</p>
+
+<!-- Resolution -->
+<div class="input-group">
+    <input type="text" class="form-control" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920" aria-label="@Localizer["OVERLAYS_WIDTH"]">
+    <div class="input-group-append input-group-prepend">
+        <span class="input-group-text">&times;</span>
+    </div>
+    <input type="text" class="form-control" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080" aria-label="@Localizer["OVERLAYS_HEIGHT"]">
+</div>
+<div>
+    <small>
+        <a href="#" class="setsize" data-width="2560" data-height="1440">1440p</a>
+        /
+        <a href="#" class="setsize" data-width="1920" data-height="1080">1080p</a>
+        /
+        <a href="#" class="setsize" data-width="1280" data-height="720">720p</a>
+    </small>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_SIZE_DESC"]</small>
+</p>
+
+<!-- Crop or resize -->
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="cropresize" id="cropResizeCrop" value="crop" checked>
+    <label class="form-check-label" for="cropResizeCrop">@Localizer["OVERLAYS_GENERATE_CROPRESIZE_CROP"]</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="cropresize" id="cropResizeResize" value="resize">
+    <label class="form-check-label" for="cropResizeResize">@Localizer["OVERLAYS_GENERATE_CROPRESIZE_RESIZE"]</label>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_GENERATE_CROPRESIZE_DESC"]</small>
+</p>
+
+<!-- Margin -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="margin">@Localizer["OVERLAYS_MARGIN"]</label>
+    </div>
+    <input type="text" class="form-control" id="margin">
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_MARGIN_DESC"]</small>
+</p>
+
+<!-- Debug folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="debug">@Localizer["OVERLAYS_DEBUG"]</label>
+    </div>
+    <input type="text" class="form-control" id="debug">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="debug">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_DEBUG_DESC"]</small>
+</p>
+
+<!-- Overwrite -->
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
+    <label class="form-check-label" for="overwriteYes">@Localizer["OVERWRITE_YES"]</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
+    <label class="form-check-label" for="overwriteNo">@Localizer["OVERWRITE_NO"]</label>
+</div>
+
+<!-- GO -->
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["OVERLAYS_GENERATE_GENERATE"]</button>
+</p>
+
+@section Scripts {
+<script>
+$(() => {
+    // handle click on resolution presets
+    $('a.setsize').on('click', (e) => {
+        let link = $(e.currentTarget);
+        $('#width').val(link.data('width'));
+        $('#height').val(link.data('height'));
+    });
+
+    // run
+    $('#buttonOk').on('click', () => {
+        // get paths from file inputs
+        const imagesFolder = $('#imagesPath').val(),
+            romsFolder = $('#romsPath').val(),
+            width = $('#width').val() || 1920,
+            height = $('#height').val() || 1080,
+            margin = $('#margin').val() || 0,
+            cropresize = $('input[name=cropresize]:checked').val(),
+            outputDebug = $('#debug').val(),
+            overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
+
+        const targetResolution = `${width}x${height}`;
+
+        // check every path is filled
+        if (imagesPath === '') { window.alert('@Html.Raw(Localizer.Js("OVERLAYS_GENERATE_ERROR_NOIMAGE"))'); return; }
+        if (romsPath === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
+
+        ipc("overlays-generate", { imagesPath, romsPath, width, height, margin, cropresize, debug, overwrite });
+    });
+});
+
+</script>
+}

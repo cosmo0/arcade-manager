@@ -123,6 +123,7 @@ public class Startup(IConfiguration configuration)
             container.Register<IWebClientFactory, WebClientFactory>(Lifestyle.Singleton);
             container.Register<IFileSystem, FileSystem>(Lifestyle.Singleton);
             container.Register<IDatFile, DatFile>(Lifestyle.Singleton);
+            container.Register<IImageProcessor, ImageProcessor>(Lifestyle.Singleton);
 
             // core services
             container.Register<IDownloader, Downloader>(Lifestyle.Singleton);

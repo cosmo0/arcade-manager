@@ -10,7 +10,7 @@ using System.IO;
 
 namespace ArcadeManager.Core.Infrastructure;
 
-public class BezelImageProcessor(IFileSystem fs) : IBezelImageProcessor
+public class ImageProcessor(IFileSystem fs) : IImageProcessor
 {
     /// <summary>
     /// Draws a debug rectangle on the overlay image

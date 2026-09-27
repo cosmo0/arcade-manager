@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Core.Actions.Bezels;
+﻿namespace ArcadeManager.Core.Actions.Overlays;
 
 /// <summary>
 /// Base options for conversion

@@ -225,6 +225,25 @@ OVERLAYS_PACK_REALISTIC_DESC=Realistic-looking overlays, with scratches, reflect
 OVERLAYS_PACK_ARTWORK_NAME=Artworks
 OVERLAYS_PACK_ARTWORK_DESC=Artwork-style overlays, as clean as possible, with a large screen area
 
+OVERLAYS_MARGIN=Screen margin
+OVERLAYS_MARGIN_DESC=Adds some margin to the screen in the overlay: a positive value will crop the screen a bit, it will go under the overlay; a negative value will add a bit of space between the screen and the image
+OVERLAYS_DEBUG=Debug files
+OVERLAYS_DEBUG_DESC=Outputs images with a red square where the screen will be. Leave empty to ignore.
+OVERLAYS_SIZE_DESC=Resizes the overlays to the target resolution if their size differs
+
+OVERLAYS_GENERATE_PAGETITLE=Generate overlays / bezels
+OVERLAYS_GENERATE_INTRO=Generate overlays based on simple PNG images without associated configurations. It scans the image for a transparent area and sets the screen at those coordinates.
+OVERLAYS_GENERATE_ONLYRA=This tool is currently only capable of generating RetroArch overlays, but you can then convert them to Mame if you want.
+OVERLAYS_GENERATE_IMAGES=Source images
+OVERLAYS_GENERATE_IMAGES_DESC=The folder containing the images to generate the overlays for. They should have the same name as the roms, ex "sf2.png"
+OVERLAYS_GENERATE_ROMS=Target roms
+OVERLAYS_GENERATE_ROMS_DESC=The folder where the rom config files will be saved. It's usually the same as the roms.
+OVERLAYS_GENERATE_CROPRESIZE_CROP=Crop the overlays
+OVERLAYS_GENERATE_CROPRESIZE_RESIZE=Resize the overlays
+OVERLAYS_GENERATE_CROPRESIZE_DESC=What to do if the overlays do not match the target resolution
+OVERLAYS_GENERATE_GENERATE=Generate overlays
+OVERLAYS_GENERATE_ERROR_NOIMAGE=Please select a path to the images
+
 WIZARD_TITLE=Wizard
 WIZARD_INTRO=<p> This wizard will help you to manage your games. Use this if you're not sure what games you want to play exactly, or just want "the best games" but don't know what they are. You will still be able to add more games later.</p><p>To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose in the next step.</p><p>To install overlays, you will need a Retropie or Recalbox installation.</p>
 WIZARD_ACTION_ROMS=Copy roms

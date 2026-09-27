@@ -1,4 +1,3 @@
-using System;
 using ArcadeManager.Core;
 using ArcadeManager.Core.Models.Roms;
 
@@ -19,7 +18,7 @@ public class ConsoleMessageHandler : IMessageHandler
 
     public void Progress(string label, int total, int current)
     {
-        System.Console.WriteLine(label);
+        System.Console.WriteLine($"{current}/{total} - {label}");
     }
 
     public void ProgressDone(string label, string folder)
@@ -40,7 +39,12 @@ public class ConsoleMessageHandler : IMessageHandler
 
     public void ProgressInit(string label)
     {
-        System.Console.WriteLine(label);
+        System.Console.WriteLine($"=== Initializing - {label}");
+    }
+
+    public void ProgressMessage(string message)
+    {
+        System.Console.WriteLine(message);
     }
 
     public void ProgressProcessed(GameRom game)

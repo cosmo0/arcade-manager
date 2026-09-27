@@ -15,6 +15,9 @@ $(() => {
             console.log('Done: ' + data.label);
             progressDone(data.label, data.folder);
         }
+        else if (data.message) {
+            progressMessage(data.message);
+        }
         else {
             console.log('Progress: ' + data.total);
             progress(data.total, data.current, data.label);
@@ -90,6 +93,7 @@ function progressInit(title) {
     // reset texts
     p.find('.modal-title').text(title);
     p.find('.details, .log, #processedList').text('');
+    p.find('#messages').empty();
 
     // reset styles
     p.find('.progress .progress-bar').width('0%');
@@ -112,10 +116,10 @@ function progressInit(title) {
  *
  * @param {Number} total The total number of items
  * @param {Number} current The current item number
- * @param {String} details The details to display
+ * @param {String} item The item name being processed
  */
 function progress(total, current, item) {
-    let p = $('#progress');
+    const p = $('#progress');
 
     // set texts
     p.find('.details').text('Processing ' + item);
@@ -123,6 +127,16 @@ function progress(total, current, item) {
     // calculate current percentage
     let percent = current != 0 ? current / total * 100 : 0;
     p.find('.progress .progress-bar').width(percent + '%');
+}
+
+/**
+ * Adds a generic message to the modal
+ * 
+ * @param {String} message the message to display
+ */
+function progressMessage(message) {
+    const messages = $('#messages');
+    messages.removeClass('d-none').append(`<div>${message}</div>`);
 }
 
 /**

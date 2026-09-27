@@ -1,7 +1,7 @@
 ﻿using ArcadeManager.Core.Models.Bezels;
 using System;
 
-namespace ArcadeManager.Core.Actions.Bezels;
+namespace ArcadeManager.Core.Actions.Overlays;
 
 /// <summary>
 /// Command line base option arguments
@@ -9,12 +9,7 @@ namespace ArcadeManager.Core.Actions.Bezels;
 public abstract class BaseAction
 {
     private string targetResolution = "1920x1080";
-
-    /// <summary>
-    /// Gets or sets the path to the error lists file
-    /// </summary>
-    public string ErrorFile { get; set; }
-
+    
     /// <summary>
     /// Gets or sets the margins applied to the screen after conversion.
     /// </summary>

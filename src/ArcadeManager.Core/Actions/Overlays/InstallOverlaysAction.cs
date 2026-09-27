@@ -1,9 +1,9 @@
-﻿namespace ArcadeManager.Core.Actions; 
+﻿namespace ArcadeManager.Core.Actions.Overlays; 
 
 /// <summary>
 /// An overlay action
 /// </summary>
-public class OverlaysAction {
+public class InstallOverlaysAction {
 
 	/// <summary>
 	/// Gets or sets the path to the configs folder

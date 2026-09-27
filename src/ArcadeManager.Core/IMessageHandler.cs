@@ -4,7 +4,17 @@ using ArcadeManager.Core.Models.Roms;
 namespace ArcadeManager.Core;
 
 public interface IMessageHandler
-{    
+{
+    /// <summary>
+    /// Gets or sets the current item index
+    /// </summary>
+    int CurrentItem { get; set; }
+
+    /// <summary>
+    /// Gets or sets the current step index
+    /// </summary>
+    int CurrentStep { get; set; }
+
     /// <summary>
     /// Gets or sets the cancellation token
     /// </summary>
@@ -21,14 +31,18 @@ public interface IMessageHandler
     int TotalSteps { get; set; }
 
     /// <summary>
-    /// Gets or sets the current item index
+    /// Sends a progression message
     /// </summary>
-    int CurrentItem { get; set; }
+    /// <param name="label">The label to display</param>
+    void Progress(string label);
 
     /// <summary>
-    /// Gets or sets the current step index
+    /// Sends a progression message
     /// </summary>
-    int CurrentStep { get; set; }
+    /// <param name="label">The label.</param>
+    /// <param name="total">The total number of items.</param>
+    /// <param name="current">The current item number.</param>
+    void Progress(string label, int total, int current);
 
     /// <summary>
     /// Sends a "done" progress message
@@ -50,18 +64,10 @@ public interface IMessageHandler
     void ProgressInit(string label);
 
     /// <summary>
-    /// Sends a progression message
+    /// Sends a generic message to append to a list of messages
     /// </summary>
-    /// <param name="label">The label to display</param>
-    void Progress(string label);
-
-    /// <summary>
-    /// Sends a progression message
-    /// </summary>
-    /// <param name="label">The label.</param>
-    /// <param name="total">The total number of items.</param>
-    /// <param name="current">The current item number.</param>
-    void Progress(string label, int total, int current);
+    /// <param name="message">The message.</param>
+    void ProgressMessage(string message);
 
     /// <summary>
     /// Sends a game processed message

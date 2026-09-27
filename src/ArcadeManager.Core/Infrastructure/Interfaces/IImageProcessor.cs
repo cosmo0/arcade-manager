@@ -2,7 +2,7 @@
 
 namespace ArcadeManager.Core.Infrastructure.Interfaces;
 
-public interface IBezelImageProcessor
+public interface IImageProcessor
 {
     /// <summary>
     /// Draws a debug rectangle on the overlay image

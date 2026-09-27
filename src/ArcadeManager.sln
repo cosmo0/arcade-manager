@@ -17,6 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcadeManager.Core.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArcadeManager.Console", "ArcadeManager.Console\ArcadeManager.Console.csproj", "{5956DA38-7CC7-4195-8FFA-9B17B3B8A27E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{81148130-E384-4EB2-BBC7-CCF2EFF4CC68}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\linux.yml = ..\.github\workflows\linux.yml
+		..\.github\workflows\mac.yml = ..\.github\workflows\mac.yml
+		..\.github\workflows\win.yml = ..\.github\workflows\win.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

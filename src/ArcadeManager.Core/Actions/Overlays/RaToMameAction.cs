@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Core.Actions.Bezels;
+﻿namespace ArcadeManager.Core.Actions.Overlays;
 
 /// <summary>
 /// Converts a Retroarch overlay to a MAME bezel
