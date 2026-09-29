@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Core.Actions;
+﻿namespace ArcadeManager.Core.Models.Actions;
 
 /// <summary>
 /// An action progression

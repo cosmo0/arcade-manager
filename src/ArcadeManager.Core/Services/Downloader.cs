@@ -1,7 +1,7 @@
-﻿using ArcadeManager.Core.Actions;
-using ArcadeManager.Core.Infrastructure;
+﻿using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.Actions;
 using ArcadeManager.Core.Models.Github;
 using ArcadeManager.Core.Services.Interfaces;
 using System;

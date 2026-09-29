@@ -1,5 +1,5 @@
 ﻿using ArcadeManager.Core;
-using ArcadeManager.Core.Actions.Overlays;
+using ArcadeManager.Core.Models.Actions.Overlays;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Services.Interfaces;

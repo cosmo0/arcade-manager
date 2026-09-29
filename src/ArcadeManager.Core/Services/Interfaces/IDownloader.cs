@@ -1,5 +1,5 @@
-﻿using ArcadeManager.Core.Actions;
-using ArcadeManager.Core.Models;
+﻿using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.Actions;
 using ArcadeManager.Core.Models.Github;
 using System;
 using System.Collections.Generic;

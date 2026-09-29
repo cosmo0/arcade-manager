@@ -1,7 +1,7 @@
-﻿using ArcadeManager.Core.Actions.Overlays;
-using ArcadeManager.Core.Exceptions;
+﻿using ArcadeManager.Core.Exceptions;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models.Actions.Overlays;
 using ArcadeManager.Core.Models.Bezels;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace ArcadeManager.Core.Domain;
 
-public class MameOverlaysProcessor(IFileSystem fs)
+public class MameOverlay(IFileSystem fs)
 {
     /// <summary>
     /// Factory for the MAME processor

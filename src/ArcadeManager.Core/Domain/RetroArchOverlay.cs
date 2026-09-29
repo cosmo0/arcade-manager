@@ -1,5 +1,5 @@
-﻿using ArcadeManager.Core.Actions.Overlays;
-using ArcadeManager.Core.Infrastructure.Interfaces;
+﻿using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models.Actions.Overlays;
 using ArcadeManager.Core.Models.Bezels;
 using System;
 using System.Text.RegularExpressions;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Domain;
 
-public class RetroArchOverlaysProcessor(IFileSystem fs)
+public class RetroArchOverlay(IFileSystem fs)
 {
     /// <summary>
     /// Gets the bounds written in a config file

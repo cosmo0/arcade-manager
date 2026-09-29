@@ -1,4 +1,4 @@
-﻿using ArcadeManager.Core.Actions;
+﻿using ArcadeManager.Core.Models.Actions;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Services.Interfaces;

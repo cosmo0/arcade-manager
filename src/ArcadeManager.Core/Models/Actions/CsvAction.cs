@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Core.Actions;
+﻿namespace ArcadeManager.Core.Models.Actions;
 
 /// <summary>
 /// Represents a CSV action message

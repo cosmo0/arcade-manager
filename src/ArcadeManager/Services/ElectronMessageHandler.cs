@@ -1,8 +1,8 @@
 ﻿using ArcadeManager.Core;
-using ArcadeManager.Core.Actions;
-using ArcadeManager.Core.Actions.Overlays;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
+using ArcadeManager.Core.Models.Actions;
+using ArcadeManager.Core.Models.Actions.Overlays;
 using ArcadeManager.Core.Models.Roms;
 using ArcadeManager.Services.Interfaces;
 using ElectronNET.API;

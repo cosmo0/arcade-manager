@@ -6,7 +6,7 @@ using ArcadeManager.Core.Services;
 using ArcadeManager.Core.Services.Interfaces;
 using ArcadeManager.Core.Models.Roms;
 using ArcadeManager.Core.Infrastructure.Interfaces;
-using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Models.Actions;
 using ArcadeManager.Core.Models.Zip;
 using FluentAssertions.Extensions;
 

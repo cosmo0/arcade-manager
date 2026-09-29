@@ -1,9 +1,9 @@
 ﻿using ArcadeManager.Core;
-using ArcadeManager.Core.Actions.Overlays;
 using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Exceptions;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.Actions.Overlays;
 using ArcadeManager.Core.Models.Bezels;
 using ArcadeManager.Core.Models.Github;
 using ArcadeManager.Core.Services.Interfaces;
@@ -31,9 +31,9 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 {
     private static readonly OperationCanceledException cancel = new("Operation cancelled");
 
-    private readonly MameOverlaysProcessor mameProcessor = new(fs);
+    private readonly MameOverlay mameProcessor = new(fs);
 
-    private readonly RetroArchOverlaysProcessor raProcessor = new(fs);
+    private readonly RetroArchOverlay raProcessor = new(fs);
 
     /// <summary>
     /// Checks the Retroarch configuration files.
@@ -67,7 +67,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             configs.Add(romConfEntry);
 
             var cfgContent = await fs.FileReadAsync(f);
-            var overlayPath = RetroArchOverlaysProcessor.GetCfgData(cfgContent, "input_overlay");
+            var overlayPath = RetroArchOverlay.GetCfgData(cfgContent, "input_overlay");
 
             // no overlay image
             if (string.IsNullOrWhiteSpace(overlayPath))
@@ -80,7 +80,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             messageHandler.Progress($"Processing rom config {fileName}", total, current);
 
             // make sure a Windows path is converted to Unix under *nix, and vice versa
-            var overlayFileName = fs.FileName(RetroArchOverlaysProcessor.NormalizePath(overlayPath));
+            var overlayFileName = fs.FileName(RetroArchOverlay.NormalizePath(overlayPath));
 
             // check that there is an matching overlay file at the expected localtion
             if (fs.FileExists(fs.PathJoin(options.OverlaysConfigFolder, overlayFileName)))
@@ -104,7 +104,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 {
                     if (options.AutoFix)
                     {
-                        cfgContent = RetroArchOverlaysProcessor.SetCfgData(cfgContent, "input_overlay", overlayShouldBe);
+                        cfgContent = RetroArchOverlay.SetCfgData(cfgContent, "input_overlay", overlayShouldBe);
 
                         await fs.FileWriteAsync(f, cfgContent);
 
@@ -130,7 +130,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             var game = fileName.Replace(".cfg", "");
 
             var cfgContent = await fs.FileReadAsync(f);
-            var overlayFileName = RetroArchOverlaysProcessor.GetCfgData(cfgContent, "overlay0_overlay");
+            var overlayFileName = RetroArchOverlay.GetCfgData(cfgContent, "overlay0_overlay");
 
             messageHandler.Progress($"Processing overlay config {fileName}", total, current);
 
@@ -278,7 +278,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
             // get overlay file name
             var romContent = await fs.FileReadAsync(f);
-            var overlayFileName = RetroArchOverlaysProcessor.GetCfgData(romContent, "input_overlay");
+            var overlayFileName = RetroArchOverlay.GetCfgData(romContent, "input_overlay");
             if (string.IsNullOrWhiteSpace(overlayFileName))
             {
                 messageHandler.ProgressMessage($"{game} - fixing screen: rom config doesn't have an input_overlay");
@@ -286,7 +286,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 return;
             }
 
-            var overlayFile = fs.FileName(RetroArchOverlaysProcessor.NormalizePath(overlayFileName));
+            var overlayFile = fs.FileName(RetroArchOverlay.NormalizePath(overlayFileName));
             var overlayPath = fs.PathJoin(options.OverlaysConfigFolder, overlayFile);
 
             if (!fs.FileExists(overlayPath))
@@ -297,7 +297,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             }
 
             var overlayContent = await fs.FileReadAsync(overlayPath);
-            var imageFile = RetroArchOverlaysProcessor.GetCfgData(overlayContent, "overlay0_overlay");
+            var imageFile = RetroArchOverlay.GetCfgData(overlayContent, "overlay0_overlay");
             var imagePath = fs.PathJoin(options.OverlaysConfigFolder, imageFile);
 
             if (!fs.FileExists(imagePath))
@@ -313,7 +313,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
             // get bounds
             var boundsInImage = imageProcessor.FindScreen(imageContent, 0);
-            var boundsInConf = RetroArchOverlaysProcessor.GetBoundsFromConfig(romContent);
+            var boundsInConf = RetroArchOverlay.GetBoundsFromConfig(romContent);
 
             // make sure the bounds match
             if (!CheckCoordinate(boundsInImage.X, boundsInConf.X, options.ErrorMargin)
@@ -651,7 +651,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             : await mameProcessor.ExtractFiles(game, fsEntry, cfgFile, options);
 
         // extracts the data from the MAME files
-        var mameBezel = MameOverlaysProcessor.MameGetBezel(options, lay, cfg);
+        var mameBezel = MameOverlay.MameGetBezel(options, lay, cfg);
 
         if (messageHandler.MustCancel) { return; }
 

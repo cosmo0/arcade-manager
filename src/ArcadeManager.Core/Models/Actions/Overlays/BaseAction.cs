@@ -1,7 +1,7 @@
 ﻿using ArcadeManager.Core.Models.Bezels;
 using System;
 
-namespace ArcadeManager.Core.Actions.Overlays;
+namespace ArcadeManager.Core.Models.Actions.Overlays;
 
 /// <summary>
 /// Command line base option arguments

@@ -1,6 +1,6 @@
 using System;
 
-namespace ArcadeManager.Core.Actions;
+namespace ArcadeManager.Core.Models.Actions;
 
 /// <summary>
 /// Rom check action

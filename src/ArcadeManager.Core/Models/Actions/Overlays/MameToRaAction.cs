@@ -1,4 +1,4 @@
-﻿namespace ArcadeManager.Core.Actions.Overlays;
+﻿namespace ArcadeManager.Core.Models.Actions.Overlays;
 
 /// <summary>
 /// Options for conversion from MAME to Retroarch

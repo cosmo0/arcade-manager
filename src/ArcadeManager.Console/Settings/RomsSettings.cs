@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Models.Actions;
 using Spectre.Console.Cli;
 
 namespace ArcadeManager.Console.Settings;

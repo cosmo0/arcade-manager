@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using ArcadeManager.Core;
-using ArcadeManager.Core.Actions;
+using ArcadeManager.Core.Models.Actions;
 
 namespace ArcadeManager.Core.Services.Interfaces;
 
