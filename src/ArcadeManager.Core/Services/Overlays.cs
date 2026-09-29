@@ -1,5 +1,4 @@
-﻿using ArcadeManager.Core;
-using ArcadeManager.Core.Domain;
+﻿using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Exceptions;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models;
@@ -31,6 +30,8 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 {
     private static readonly OperationCanceledException cancel = new("Operation cancelled");
 
+    private static readonly string inputOverlayProperty = "input_overlay";
+
     private readonly MameOverlay mameProcessor = new(fs);
 
     private readonly RetroArchOverlay raProcessor = new(fs);
@@ -55,303 +56,66 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         var errorsNb = 0;
         var fixedNb = 0;
 
-        // read all the rom config files and check the ones that have an overlay defined
-        await Parallel.ForEachAsync(romConfigs, async (f, cancellationToken) =>
+        try
         {
-            if (messageHandler.MustCancel) { return; }
-
+            // read all the rom config files and check the ones that have an overlay defined
+            await Parallel.ForEachAsync(romConfigs, async (f, cancellationToken) =>
+        {
             current++;
-            var fileName = fs.FileName(f);
-            var game = fileName.Replace(".zip.cfg", "").Replace(".cfg", "");
-            var romConfEntry = new Config() { Rom = fileName };
-            configs.Add(romConfEntry);
-
-            var cfgContent = await fs.FileReadAsync(f);
-            var overlayPath = RetroArchOverlay.GetCfgData(cfgContent, "input_overlay");
-
-            // no overlay image
-            if (string.IsNullOrWhiteSpace(overlayPath))
-            {
-                messageHandler.ProgressMessage($"{game} - rom has no overlay config");
-                errorsNb++;
-                return;
-            }
-
-            messageHandler.Progress($"Processing rom config {fileName}", total, current);
-
-            // make sure a Windows path is converted to Unix under *nix, and vice versa
-            var overlayFileName = fs.FileName(RetroArchOverlay.NormalizePath(overlayPath));
-
-            // check that there is an matching overlay file at the expected localtion
-            if (fs.FileExists(fs.PathJoin(options.OverlaysConfigFolder, overlayFileName)))
-            {
-                romConfEntry.Overlay = overlayFileName;
-            }
-            else
-            {
-                messageHandler.ProgressMessage($"{game} - rom points to a non-existing overlay: {overlayFileName}");
-                errorsNb++;
-            }
-
             if (messageHandler.MustCancel) { return; }
+            messageHandler.Progress($"Processing rom config {fs.FileName(f)}", total, current);
 
-            // check that the path in the rom config is valid
-            if (!string.IsNullOrEmpty(options.InputOverlayConfigPathInRomConfig))
-            {
-                var separator = options.InputOverlayConfigPathInRomConfig.EndsWith('/') ? "" : "/";
-                var overlayShouldBe = $"{options.InputOverlayConfigPathInRomConfig}{separator}{overlayFileName}";
-                if (!overlayPath.Equals(overlayShouldBe, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (options.AutoFix)
-                    {
-                        cfgContent = RetroArchOverlay.SetCfgData(cfgContent, "input_overlay", overlayShouldBe);
+            (Config conf, int err, int fix) = await CheckOrFixRomConfigPaths(options, f, messageHandler);
 
-                        await fs.FileWriteAsync(f, cfgContent);
-
-                        messageHandler.ProgressMessage($"{game} - fixed overlay path in rom config: {overlayShouldBe}");
-                        fixedNb++;
-                    }
-                    else
-                    {
-                        messageHandler.ProgressMessage($"{game} - rom has a wrong overlay path: {overlayPath}");
-                        errorsNb++;
-                    }
-                }
-            }
+            configs.Add(conf);
+            errorsNb += err;
+            fixedNb += fix;
         });
 
-        // check overlay config files
-        await Parallel.ForEachAsync(configFiles, async (f, cancellationToken) =>
-        {
-            if (messageHandler.MustCancel) { return; }
-
-            current++;
-            var fileName = fs.FileName(f);
-            var game = fileName.Replace(".cfg", "");
-
-            var cfgContent = await fs.FileReadAsync(f);
-            var overlayFileName = RetroArchOverlay.GetCfgData(cfgContent, "overlay0_overlay");
-
-            messageHandler.Progress($"Processing overlay config {fileName}", total, current);
-
-            // check that the overlay is used
-            var cfgEntry = configs.FirstOrDefault(c => c.Overlay != null && c.Overlay.Equals(fileName, StringComparison.InvariantCultureIgnoreCase));
-            if (cfgEntry == null)
+            // check overlay config files
+            await Parallel.ForEachAsync(configFiles, async (f, cancellationToken) =>
             {
-                if (options.AutoFix)
-                {
-                    // create a rom
-                    var romFile = fileName.Replace(".cfg", ".zip.cfg");
-                    var dest = fs.PathJoin(options.RomsConfigFolder, romFile);
-                    if (fs.FileExists(dest))
-                    {
-                        messageHandler.ProgressMessage($"{game} - overlay matches rom file but is not used by it: {romFile}");
-                        errorsNb++;
-                    }
-                    else
-                    {
-                        messageHandler.ProgressMessage($"{game} - creating rom config file for unused overlay at {dest}");
+                current++;
+                if (messageHandler.MustCancel) { return; }
+                messageHandler.Progress($"Processing overlay config {fs.FileName(f)}", total, current);
 
-                        if (messageHandler.MustCancel) { return; }
+                var (err, fix) = await CheckOrFixOverlayConfig(options, configs, f, messageHandler);
+                errorsNb += err;
+                fixedNb += fix;
+            });
 
-                        var imgFileName = fs.PathJoin(options.OverlaysConfigFolder, overlayFileName);
-                        if (fs.FileExists(imgFileName))
-                        {
-                            // get bounds
-                            var img = await fs.FileReadBinaryAsync(imgFileName);
-                            var bounds = imageProcessor.FindScreen(img, options.Margin);
-
-                            await raProcessor.CreateConfig(options.TemplateRom, game, dest, bounds, options.TargetResolutionBounds);
-
-                            cfgEntry = new Config { Rom = romFile, Overlay = fileName, Image = overlayFileName };
-                            configs.Add(cfgEntry);
-
-                            fixedNb++;
-                        }
-                        else
-                        {
-                            messageHandler.ProgressMessage($"{game} - overlay points to a non-existing image: {imgFileName}");
-                            errorsNb++;
-                        }
-                    }
-                }
-                else
-                {
-                    messageHandler.ProgressMessage($"{game} - overlay is not used by any game");
-                }
-            }
-
-            // check that the image exists
-            if (!fs.FileExists(fs.PathJoin(options.OverlaysConfigFolder, overlayFileName)))
+            // check that all images have an associated overlay config
+            await Parallel.ForEachAsync(images, async (f, cancellationToken) =>
             {
-                messageHandler.ProgressMessage($"{game} - overlay points to a non-existing image: {overlayFileName}");
-                errorsNb++;
-            }
-            else
+                current++;
+                if (messageHandler.MustCancel) { return; }
+                messageHandler.Progress($"Processing image {fs.FileName(f)}", total, current);
+
+                (int err, int fix) = await CheckOrFixImages(options, configs, f, messageHandler);
+                errorsNb += err;
+                fixedNb += fix;
+            });
+
+            // get list of roms configs, again (in case some have been created)
+            romConfigs = fs.FilesGetList(options.RomsConfigFolder, "*.cfg");
+            await Parallel.ForEachAsync(romConfigs, async (f, cancellationToken) =>
             {
-                if (cfgEntry == null)
-                {
-                    configs.Add(new Config { Overlay = fileName, Image = overlayFileName });
-                }
-            }
-        });
-
-        // check that all images have an associated overlay config
-        await Parallel.ForEachAsync(images, async (f, cancellationToken) =>
-        {
-            if (messageHandler.MustCancel) { return; }
-
-            current++;
-            var fileName = fs.FileName(f);
-            var game = fileName.Replace(".png", "");
-
-            messageHandler.Progress($"Processing image {f}", total, current);
-
-            // check that the image is used by an overlay
-            var cfgEntry = configs.FirstOrDefault(c => c.Image != null && c.Image.Equals(fileName, StringComparison.InvariantCultureIgnoreCase));
-            if (cfgEntry == null)
-            {
-                if (options.AutoFix)
-                {
-                    var cfgFilesName = $"{game}.cfg";
-                    var dest = fs.PathJoin(options.OverlaysConfigFolder, cfgFilesName);
-                    if (fs.FileExists(dest))
-                    {
-                        messageHandler.ProgressMessage($"{game} - trying to create overlay {dest} but file already exists");
-                        errorsNb++;
-                    }
-                    else
-                    {
-                        if (messageHandler.MustCancel) { return; }
-
-                        messageHandler.ProgressMessage($"{game} - creating overlay config for orphan image at {dest}");
-                        await raProcessor.CreateConfig(options.TemplateOverlay, game, dest, null, options.TargetResolutionBounds);
-
-                        var romDest = fs.PathJoin(options.RomsConfigFolder, cfgFilesName);
-                        messageHandler.ProgressMessage($"{game} - creating rom config for orphan image at {romDest}");
-
-                        // create the config
-                        var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), options.Margin);
-                        await raProcessor.CreateConfig(options.TemplateRom, game, romDest, bounds, options.TargetResolutionBounds);
-
-                        configs.Add(new Config { Rom = cfgFilesName, Overlay = cfgFilesName, Image = fileName });
-
-                        fixedNb++;
-                    }
-                }
-                else
-                {
-                    messageHandler.ProgressMessage($"{game} - image is not used by any overlay: {fileName}");
-                    errorsNb++;
-                }
-            }
-
-            // check that image is not too large
-            var imgSize = imageProcessor.GetSize(f);
-            if (imgSize.Width > options.TargetResolutionBounds.Width || imgSize.Height > options.TargetResolutionBounds.Height)
-            {
-                if (options.AutoFix)
-                {
-                    messageHandler.ProgressMessage($"{game} - resizing image (previous size: {imgSize.Width}x{imgSize.Height})");
-                    imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
-                    fixedNb++;
-                }
-                else
-                {
-                    messageHandler.ProgressMessage($"{game} - image has wrong size: {imgSize.Width}x{imgSize.Height}");
-                    errorsNb++;
-                }
-            }
-        });
-
-        // get list of roms configs, again (in case some have been created)
-        romConfigs = fs.FilesGetList(options.RomsConfigFolder, "*.cfg");
-        await Parallel.ForEachAsync(romConfigs, async (f, cancellationToken) =>
-        {
-            if (messageHandler.MustCancel) { return; }
-
-            // TODO: total and current are now out of sync with what's happening
-            var fileName = fs.FileName(f);
-            var game = fileName.Replace(".cfg", "").Replace(".zip", "");
-
-            messageHandler.Progress($"Processing config {f}", total, current);
-
-            // get overlay file name
-            var romContent = await fs.FileReadAsync(f);
-            var overlayFileName = RetroArchOverlay.GetCfgData(romContent, "input_overlay");
-            if (string.IsNullOrWhiteSpace(overlayFileName))
-            {
-                messageHandler.ProgressMessage($"{game} - fixing screen: rom config doesn't have an input_overlay");
-                errorsNb++;
-                return;
-            }
-
-            var overlayFile = fs.FileName(RetroArchOverlay.NormalizePath(overlayFileName));
-            var overlayPath = fs.PathJoin(options.OverlaysConfigFolder, overlayFile);
-
-            if (!fs.FileExists(overlayPath))
-            {
-                messageHandler.ProgressMessage($"{game} - fixing screen: overlay file does not exist: {overlayPath}");
-                errorsNb++;
-                return;
-            }
-
-            var overlayContent = await fs.FileReadAsync(overlayPath);
-            var imageFile = RetroArchOverlay.GetCfgData(overlayContent, "overlay0_overlay");
-            var imagePath = fs.PathJoin(options.OverlaysConfigFolder, imageFile);
-
-            if (!fs.FileExists(imagePath))
-            {
-                messageHandler.ProgressMessage($"{game} - fixing screen: image file does not exist: {imagePath}");
-                errorsNb++;
-                return;
-            }
-
-            if (messageHandler.MustCancel) { return; }
-
-            var imageContent = await fs.FileReadBinaryAsync(imagePath);
-
-            // get bounds
-            var boundsInImage = imageProcessor.FindScreen(imageContent, 0);
-            var boundsInConf = RetroArchOverlay.GetBoundsFromConfig(romContent);
-
-            // make sure the bounds match
-            if (!CheckCoordinate(boundsInImage.X, boundsInConf.X, options.ErrorMargin)
-                || !CheckCoordinate(boundsInImage.Y, boundsInConf.Y, options.ErrorMargin)
-                || !CheckCoordinate(boundsInImage.Width, boundsInConf.Width, options.ErrorMargin * 2)
-                || !CheckCoordinate(boundsInImage.Height, boundsInConf.Height, options.ErrorMargin * 2))
-            {
-                boundsInImage = boundsInImage.ApplyMargin(options.Margin);
-
-                if (!string.IsNullOrWhiteSpace(options.OutputDebug))
-                {
-                    // output debug whether fixing or not
-                    if (boundsInConf.Width > 0 && boundsInConf.Height > 0)
-                    {
-                        imageProcessor.DebugDraw($"{game}_conf", options.OutputDebug, imagePath, boundsInConf, options.TargetResolutionBounds);
-                    }
-
-                    imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, imagePath, boundsInImage, null);
-                }
-
+                // TODO: total and current are now out of sync with what's happening because we may be processing new files
                 if (messageHandler.MustCancel) { return; }
 
-                // fix the image
-                if (options.AutoFix)
-                {
-                    await raProcessor.SetBounds(f, game, boundsInImage, options.TargetResolutionBounds);
-                    messageHandler.ProgressMessage($"{game} - Fixed screen position in config");
-                    fixedNb++;
-                }
-                else
-                {
-                    messageHandler.ProgressMessage($"{game} - image has wrong coordinates in config");
-                    errorsNb++;
-                }
-            }
-        });
+                messageHandler.Progress($"Processing config {fs.FileName(f)}", total, current);
 
-        messageHandler.ProgressDone($"Processed {total} files: {errorsNb} errors, {fixedNb} fixed", options.RomsConfigFolder);
+                (int err, int fix) = await CheckOrFixRomConfigScreen(options, f, messageHandler);
+                errorsNb += err;
+                fixedNb += fix;
+            });
+
+            messageHandler.ProgressDone($"Processed {total} files: {errorsNb} errors, {fixedNb} fixed", options.RomsConfigFolder);
+        }
+        catch (Exception ex)
+        {
+            messageHandler.ProgressError(ex);
+        }
     }
 
     /// <summary>
@@ -622,6 +386,263 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         return null;
     }
 
+    private async Task<(int err, int fix)> CheckOrFixBounds(CheckAction options, string game, string f, string imagePath, string romContent, IMessageHandler messageHandler)
+    {
+        int err = 0;
+        int fix = 0;
+
+        var imageContent = await fs.FileReadBinaryAsync(imagePath);
+
+        // get bounds
+        var boundsInImage = imageProcessor.FindScreen(imageContent, 0);
+        var boundsInConf = RetroArchOverlay.GetBoundsFromConfig(romContent);
+
+        // make sure the bounds match
+        if (!CheckCoordinate(boundsInImage.X, boundsInConf.X, options.ErrorMargin)
+            || !CheckCoordinate(boundsInImage.Y, boundsInConf.Y, options.ErrorMargin)
+            || !CheckCoordinate(boundsInImage.Width, boundsInConf.Width, options.ErrorMargin * 2)
+            || !CheckCoordinate(boundsInImage.Height, boundsInConf.Height, options.ErrorMargin * 2))
+        {
+            boundsInImage = boundsInImage.ApplyMargin(options.Margin);
+
+            if (!string.IsNullOrWhiteSpace(options.OutputDebug))
+            {
+                // output debug whether fixing or not
+                if (boundsInConf.Width > 0 && boundsInConf.Height > 0)
+                {
+                    imageProcessor.DebugDraw($"{game}_conf", options.OutputDebug, imagePath, boundsInConf, options.TargetResolutionBounds);
+                }
+
+                imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, imagePath, boundsInImage, null);
+            }
+
+            if (messageHandler.MustCancel) { throw cancel; }
+
+            // fix the image
+            if (options.AutoFix)
+            {
+                await raProcessor.SetBounds(f, game, boundsInImage, options.TargetResolutionBounds);
+                messageHandler.ProgressMessage($"{game} - Fixed screen position in config");
+                fix++;
+            }
+            else
+            {
+                messageHandler.ProgressMessage($"{game} - image has wrong coordinates in config");
+                err++;
+            }
+        }
+
+        return (err, fix);
+    }
+
+    private async Task<(int err, int fix)> CheckOrFixImages(CheckAction options, ConcurrentBag<Config> configs, string f, IMessageHandler messageHandler)
+    {
+        int err = 0;
+        int fix = 0;
+
+        var fileName = fs.FileName(f);
+        var game = fileName.Replace(".png", "");
+
+        // check that the image is used by an overlay
+        var cfgEntry = configs.FirstOrDefault(c => c.Image != null && c.Image.Equals(fileName, StringComparison.InvariantCultureIgnoreCase));
+        if (cfgEntry == null)
+        {
+            if (options.AutoFix)
+            {
+                if (messageHandler.MustCancel) { throw cancel; }
+
+                var (err2, fix2) = await CreateConfigForOverlay(options, f, game, configs, messageHandler);
+                err += err2;
+                fix += fix2;
+            }
+            else
+            {
+                messageHandler.ProgressMessage($"{game} - image is not used by any overlay: {fileName}");
+                err++;
+            }
+        }
+
+        if (messageHandler.MustCancel) { throw cancel; }
+
+        // check that image is not too large
+        var imgSize = imageProcessor.GetSize(f);
+        if (imgSize.Width > options.TargetResolutionBounds.Width || imgSize.Height > options.TargetResolutionBounds.Height)
+        {
+            if (options.AutoFix)
+            {
+                messageHandler.ProgressMessage($"{game} - resizing image (previous size: {imgSize.Width}x{imgSize.Height})");
+                imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
+                fix++;
+            }
+            else
+            {
+                messageHandler.ProgressMessage($"{game} - image has wrong size: {imgSize.Width}x{imgSize.Height}");
+                err++;
+            }
+        }
+
+        return (err, fix);
+    }
+
+    private async Task<(int err, int fix)> CheckOrFixOverlayConfig(CheckAction options, ConcurrentBag<Config> configs, string f, IMessageHandler messageHandler)
+    {
+        int err = 0;
+        int fix = 0;
+
+        var fileName = fs.FileName(f);
+        var game = fileName.Replace(".cfg", "");
+
+        var cfgContent = await fs.FileReadAsync(f);
+        var overlayFileName = RetroArchOverlay.GetCfgData(cfgContent, "overlay0_overlay");
+
+        // check that the overlay is used
+        var cfgEntry = configs.FirstOrDefault(c => c.Overlay != null && c.Overlay.Equals(fileName, StringComparison.InvariantCultureIgnoreCase));
+        if (cfgEntry == null)
+        {
+            if (options.AutoFix)
+            {
+                (Config cfg, int err2, int fix2) = await CreateRomConfig(options, game, fileName, overlayFileName, messageHandler);
+                err += err2;
+                fix += fix2;
+                if (cfg != null) cfgEntry = cfg;
+            }
+            else
+            {
+                messageHandler.ProgressMessage($"{game} - overlay is not used by any game");
+            }
+        }
+
+        // check that the image exists
+        if (!fs.FileExists(fs.PathJoin(options.OverlaysConfigFolder, overlayFileName)))
+        {
+            messageHandler.ProgressMessage($"{game} - overlay points to a non-existing image: {overlayFileName}");
+            err++;
+        }
+        else
+        {
+            if (cfgEntry == null)
+            {
+                configs.Add(new Config { Overlay = fileName, Image = overlayFileName });
+            }
+        }
+
+        return (err, fix);
+    }
+
+    private async Task<(Config conf, int err, int fix)> CheckOrFixRomConfigPaths(CheckAction options, string f, IMessageHandler messageHandler)
+    {
+        int err = 0;
+        int fix = 0;
+
+        var fileName = fs.FileName(f);
+        var game = fileName.Replace(".zip.cfg", "").Replace(".cfg", "");
+        var romConfEntry = new Config() { Rom = fileName };
+
+        var cfgContent = await fs.FileReadAsync(f);
+        var overlayPath = RetroArchOverlay.GetCfgData(cfgContent, inputOverlayProperty);
+
+        // no overlay image
+        if (string.IsNullOrWhiteSpace(overlayPath))
+        {
+            messageHandler.ProgressMessage($"{game} - rom has no overlay config");
+            err++;
+            return (romConfEntry, err, fix);
+        }
+
+        // make sure a Windows path is converted to Unix under *nix, and vice versa
+        var overlayFileName = fs.FileName(RetroArchOverlay.NormalizePath(overlayPath));
+
+        // check that there is an matching overlay file at the expected localtion
+        if (fs.FileExists(fs.PathJoin(options.OverlaysConfigFolder, overlayFileName)))
+        {
+            romConfEntry.Overlay = overlayFileName;
+        }
+        else
+        {
+            messageHandler.ProgressMessage($"{game} - rom points to a non-existing overlay: {overlayFileName}");
+            err++;
+        }
+
+        if (messageHandler.MustCancel) { throw cancel; }
+
+        // check that the path in the rom config is valid
+        if (!string.IsNullOrEmpty(options.InputOverlayConfigPathInRomConfig))
+        {
+            var separator = options.InputOverlayConfigPathInRomConfig.EndsWith('/') ? "" : "/";
+            var overlayShouldBe = $"{options.InputOverlayConfigPathInRomConfig}{separator}{overlayFileName}";
+            if (!overlayPath.Equals(overlayShouldBe, StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (options.AutoFix)
+                {
+                    cfgContent = RetroArchOverlay.SetCfgData(cfgContent, inputOverlayProperty, overlayShouldBe);
+
+                    await fs.FileWriteAsync(f, cfgContent);
+
+                    messageHandler.ProgressMessage($"{game} - fixed overlay path in rom config: {overlayShouldBe}");
+                    fix++;
+                }
+                else
+                {
+                    messageHandler.ProgressMessage($"{game} - rom has a wrong overlay path: {overlayPath}");
+                    err++;
+                }
+            }
+        }
+
+        return (romConfEntry, err, fix);
+    }
+
+    private async Task<(int err, int fix)> CheckOrFixRomConfigScreen(CheckAction options, string f, IMessageHandler messageHandler)
+    {
+        int err = 0;
+        int fix = 0;
+
+        var fileName = fs.FileName(f);
+        var game = fileName.Replace(".cfg", "").Replace(".zip", "");
+
+        // get overlay file name
+        var romContent = await fs.FileReadAsync(f);
+        var overlayFileName = RetroArchOverlay.GetCfgData(romContent, inputOverlayProperty);
+        if (string.IsNullOrWhiteSpace(overlayFileName))
+        {
+            messageHandler.ProgressMessage($"{game} - fixing screen: rom config doesn't have an input_overlay");
+            err++;
+
+            return (err, fix);
+        }
+
+        var overlayFile = fs.FileName(RetroArchOverlay.NormalizePath(overlayFileName));
+        var overlayPath = fs.PathJoin(options.OverlaysConfigFolder, overlayFile);
+
+        if (!fs.FileExists(overlayPath))
+        {
+            messageHandler.ProgressMessage($"{game} - fixing screen: overlay file does not exist: {overlayPath}");
+            err++;
+
+            return (err, fix);
+        }
+
+        var overlayContent = await fs.FileReadAsync(overlayPath);
+        var imageFile = RetroArchOverlay.GetCfgData(overlayContent, "overlay0_overlay");
+        var imagePath = fs.PathJoin(options.OverlaysConfigFolder, imageFile);
+
+        if (!fs.FileExists(imagePath))
+        {
+            messageHandler.ProgressMessage($"{game} - fixing screen: image file does not exist: {imagePath}");
+            err++;
+
+            return (err, fix);
+        }
+
+        if (messageHandler.MustCancel) { throw cancel; }
+
+        (int err2, int fix2) = await CheckOrFixBounds(options, game, f, imagePath, romContent, messageHandler);
+        err += err2;
+        fix += fix2;
+
+        return (err, fix);
+    }
+
     /// <summary>
     /// Processes a Mame file
     /// </summary>
@@ -644,7 +665,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         messageHandler.Progress($"{game} processing start", total, current);
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         var (lay, cfg, bezel) = isFolder
             ? await mameProcessor.MameReadFiles(game, fsEntry, cfgFile, options)
@@ -652,8 +673,6 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         // extracts the data from the MAME files
         var mameBezel = MameOverlay.MameGetBezel(options, lay, cfg);
-
-        if (messageHandler.MustCancel) { return; }
 
         // resize the bezel image
         bezel = imageProcessor.Resize(
@@ -663,13 +682,13 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         Bounds newPosition = ConvertPosition(options, bezel, mameBezel);
 
-        if (messageHandler.MustCancel) { return; }
-
         if (newPosition.Width <= 0 || newPosition.Height <= 0)
         {
             messageHandler.ProgressMessage($"{game} - Width/height of screen are invalid: {newPosition}");
             return;
         }
+
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // get bezel image
         var outputImage = fs.PathJoin(options.OutputOverlays, $"{game}.png");
@@ -686,14 +705,14 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         // debug: draw target position
         imageProcessor.DebugDraw(game, options.OutputDebug, outputImage, newPosition, options.TargetResolutionBounds);
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // create game config files
         var outputGameCfg = fs.PathJoin(options.OutputRoms, $"{game}.zip.cfg");
         fs.FileCopy(options.TemplateGameCfg, outputGameCfg, options.Overwrite);
         await raProcessor.FillTemplate(outputGameCfg, game, newPosition, options.TargetResolutionBounds);
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // create overlay config files
         var outputOverlayCfg = fs.PathJoin(options.OutputOverlays, $"{game}.cfg");
@@ -736,7 +755,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         var target = fs.PathJoin(options.Output, game);
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // get RA processor
         var processor = await raProcessor.GetRetroArchConfig(romFile, options);
@@ -752,7 +771,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             newPosition = processor.SourceScreenPosition;
         }
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // create destination folder
         if (options.Overwrite && fs.DirectoryExists(target)) { fs.DirectoryDelete(target, true); }
@@ -767,19 +786,19 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             (int)processor.SourceResolution.Width,
             (int)processor.SourceResolution.Height);
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // debug: draw target position
         imageProcessor.DebugDraw(game, options.OutputDebug, processor.OverlayImagePath, newPosition, options.TargetResolutionBounds);
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // create lay file
         var outputLay = fs.PathJoin(target, "default.lay");
         fs.FileCopy(options.Template, outputLay, options.Overwrite);
         await raProcessor.FillTemplate(outputLay, game, newPosition, processor.SourceResolution);
 
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // zip overlay
         if (options.Zip)
@@ -789,6 +808,81 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             fs.CompressFolderContent(target, targetZip);
             fs.DirectoryDelete(target, true);
         }
+    }
+
+    private async Task<(int err, int fix)> CreateConfigForOverlay(CheckAction options, string f, string game, ConcurrentBag<Config> configs, IMessageHandler messageHandler)
+    {
+        int err = 0;
+        int fix = 0;
+
+        var cfgFilesName = $"{game}.cfg";
+        var dest = fs.PathJoin(options.OverlaysConfigFolder, cfgFilesName);
+        if (fs.FileExists(dest))
+        {
+            messageHandler.ProgressMessage($"{game} - trying to create overlay {dest} but file already exists");
+            err++;
+        }
+        else
+        {
+            messageHandler.ProgressMessage($"{game} - creating overlay config for orphan image at {dest}");
+            await raProcessor.CreateConfig(options.TemplateOverlay, game, dest, null, options.TargetResolutionBounds);
+
+            var romDest = fs.PathJoin(options.RomsConfigFolder, cfgFilesName);
+            messageHandler.ProgressMessage($"{game} - creating rom config for orphan image at {romDest}");
+
+            // create the config
+            var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), options.Margin);
+            await raProcessor.CreateConfig(options.TemplateRom, game, romDest, bounds, options.TargetResolutionBounds);
+
+            configs.Add(new Config { Rom = cfgFilesName, Overlay = cfgFilesName, Image = fs.FileName(f) });
+
+            fix++;
+        }
+
+        return (err, fix);
+    }
+
+    private async Task<(Config cfg, int err, int fix)> CreateRomConfig(CheckAction options, string game, string fileName, string overlayFileName, IMessageHandler messageHandler)
+    {
+        int err = 0;
+        int fix = 0;
+        Config cfgEntry = null;
+
+        // create a rom
+        var romFile = fileName.Replace(".cfg", ".zip.cfg");
+        var dest = fs.PathJoin(options.RomsConfigFolder, romFile);
+        if (fs.FileExists(dest))
+        {
+            messageHandler.ProgressMessage($"{game} - overlay matches rom file but is not used by it: {romFile}");
+            err++;
+        }
+        else
+        {
+            messageHandler.ProgressMessage($"{game} - creating rom config file for unused overlay at {dest}");
+
+            if (messageHandler.MustCancel) { throw cancel; }
+
+            var imgFileName = fs.PathJoin(options.OverlaysConfigFolder, overlayFileName);
+            if (fs.FileExists(imgFileName))
+            {
+                // get bounds
+                var img = await fs.FileReadBinaryAsync(imgFileName);
+                var bounds = imageProcessor.FindScreen(img, options.Margin);
+
+                await raProcessor.CreateConfig(options.TemplateRom, game, dest, bounds, options.TargetResolutionBounds);
+
+                cfgEntry = new Config { Rom = romFile, Overlay = fileName, Image = overlayFileName };
+
+                fix++;
+            }
+            else
+            {
+                messageHandler.ProgressMessage($"{game} - overlay points to a non-existing image: {imgFileName}");
+                err++;
+            }
+        }
+
+        return (cfgEntry, err, fix);
     }
 
     /// <summary>
@@ -803,7 +897,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
     /// <param name="current">The current item number.</param>
     private async Task DownloadCommon(OverlayBundle pack, string destination, bool overwrite, float ratio, IMessageHandler messageHandler, int total, int current)
     {
-        if (messageHandler.MustCancel) { return; }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         if (pack.Common != null && !string.IsNullOrEmpty(pack.Common.Src))
         {
@@ -848,7 +942,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         messageHandler.Progress($"{game}: download overlay (config)", total, current);
 
         // extract the overlay file name
-        var overlayPath = GetCfgData(romConfigContent, "input_overlay");
+        var overlayPath = GetCfgData(romConfigContent, inputOverlayProperty);
         if (string.IsNullOrWhiteSpace(overlayPath)) { throw new PathNotFoundException($"Unable to parse rom config {game} to find overlay (input_overlay)"); }
         var overlayFileName = fs.FileName(overlayPath);
         var overlayConfigDest = fs.PathJoin(data.ConfigFolder, overlayFileName);
@@ -902,7 +996,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         messageHandler.Progress($"{game} generating config", total, current);
 
-        if (messageHandler.MustCancel) { return (0, 0); }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // resize
         imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
@@ -925,7 +1019,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             createdNb++;
         }
 
-        if (messageHandler.MustCancel) { return (createdNb, errorsNb); }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // generate rom
         var rom = fs.PathJoin(options.RomsFolder, $"{game}.zip.cfg");
@@ -942,7 +1036,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             createdNb++;
         }
 
-        if (messageHandler.MustCancel) { return (createdNb, errorsNb); }
+        if (messageHandler.MustCancel) { throw cancel; }
 
         // debug
         if (!string.IsNullOrWhiteSpace(options.OutputDebug))
