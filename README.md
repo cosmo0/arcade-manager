@@ -73,7 +73,8 @@ You can also contribute using [Weblate](https://hosted.weblate.org/projects/arca
 
 ### Build and run
 
-Use Visual Studio or VSCode and use the debug profile "Electron (unpackaged)".
+Use Visual Studio or VSCode and use the debug profile "ASP.Net (unpackaged)" to debug .Net code, or "Electron (unpackaged)" to debug the Electron process.
+See <https://github.com/ElectronNET/Electron.NET/wiki/Debugging> for more infos.
 
 Run `.\samples\generate-samples.ps1` in Powershell to generate a fake romset in `tmp\roms` (empty zip files with the right names).
 

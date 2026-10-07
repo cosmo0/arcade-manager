@@ -19,14 +19,4 @@ public class GenerateAction : BaseAction
     /// Gets or sets the path to the roms folder.
     /// </summary>
     public string RomsFolder { get; set; }
-
-    /// <summary>
-    /// Gets or sets the path to the overlay template.
-    /// </summary>
-    public string TemplateOverlay { get; set; }
-
-    /// <summary>
-    /// Gets or sets the path to the rom template.
-    /// </summary>
-    public string TemplateRom { get; set; }
 }

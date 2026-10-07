@@ -59,21 +59,21 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         try
         {
             // read all the rom config files and check the ones that have an overlay defined
-            await Parallel.ForEachAsync(romConfigs, async (f, cancellationToken) =>
-        {
-            current++;
-            if (messageHandler.MustCancel) { return; }
-            messageHandler.Progress($"Processing rom config {fs.FileName(f)}", total, current);
+            foreach (var f in romConfigs)
+            {
+                current++;
+                if (messageHandler.MustCancel) { return; }
+                messageHandler.Progress($"Processing rom config {fs.FileName(f)}", total, current);
 
-            (Config conf, int err, int fix) = await CheckOrFixRomConfigPaths(options, f, messageHandler);
+                (Config conf, int err, int fix) = await CheckOrFixRomConfigPaths(options, f, messageHandler);
 
-            configs.Add(conf);
-            errorsNb += err;
-            fixedNb += fix;
-        });
+                configs.Add(conf);
+                errorsNb += err;
+                fixedNb += fix;
+            }
 
             // check overlay config files
-            await Parallel.ForEachAsync(configFiles, async (f, cancellationToken) =>
+            foreach (var f in configFiles)
             {
                 current++;
                 if (messageHandler.MustCancel) { return; }
@@ -82,10 +82,10 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 var (err, fix) = await CheckOrFixOverlayConfig(options, configs, f, messageHandler);
                 errorsNb += err;
                 fixedNb += fix;
-            });
+            }
 
             // check that all images have an associated overlay config
-            await Parallel.ForEachAsync(images, async (f, cancellationToken) =>
+            foreach (var f in images)
             {
                 current++;
                 if (messageHandler.MustCancel) { return; }
@@ -94,11 +94,11 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 (int err, int fix) = await CheckOrFixImages(options, configs, f, messageHandler);
                 errorsNb += err;
                 fixedNb += fix;
-            });
+            }
 
             // get list of roms configs, again (in case some have been created)
             romConfigs = fs.FilesGetList(options.RomsConfigFolder, "*.cfg");
-            await Parallel.ForEachAsync(romConfigs, async (f, cancellationToken) =>
+            foreach (var f in romConfigs)
             {
                 // TODO: total and current are now out of sync with what's happening because we may be processing new files
                 if (messageHandler.MustCancel) { return; }
@@ -108,7 +108,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 (int err, int fix) = await CheckOrFixRomConfigScreen(options, f, messageHandler);
                 errorsNb += err;
                 fixedNb += fix;
-            });
+            }
 
             messageHandler.ProgressDone($"Processed {total} files: {errorsNb} errors, {fixedNb} fixed", options.RomsConfigFolder);
         }
@@ -133,10 +133,10 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         try
         {
-            await Parallel.ForEachAsync(fsEntries, async (f, cancellationToken) =>
+            foreach (var f in fsEntries)
             {
                 await ConvertMameFile(f, options, messageHandler, total, current++);
-            });
+            }
 
             messageHandler.ProgressDone("Done", options.OutputRoms);
         }
@@ -162,10 +162,10 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         try
         {
-            await Parallel.ForEachAsync(romFiles, async (f, cancellationToken) =>
+            foreach (var f in romFiles)
             {
                 await ConvertRetroarchFile(f, options, messageHandler, total, current++);
-            });
+            }
 
             messageHandler.ProgressDone("Done", options.Output);
         }
@@ -247,14 +247,21 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         var createdNb = 0;
         var errorsNb = 0;
 
-        await Parallel.ForEachAsync(images, async (f, cancellationToken) =>
+        try
         {
-            var (created, errors) = await GenerateConfigFile(options, messageHandler, f, total, current++);
-            createdNb += created;
-            errorsNb += errors;
-        });
+            foreach (var f in images)
+            {
+                var (created, errors) = await GenerateConfigFile(options, messageHandler, f, total, current++);
+                createdNb += created;
+                errorsNb += errors;
+            }
 
-        messageHandler.ProgressDone($"{createdNb} game files created ; {errorsNb} errors", options.RomsFolder);
+            messageHandler.ProgressDone($"{createdNb} game files created ; {errorsNb} errors", options.RomsFolder);
+        }
+        catch (Exception ex)
+        {
+            messageHandler.ProgressError(ex);
+        }
     }
 
     /// <summary>
@@ -1014,7 +1021,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         else
         {
             fs.FileDelete(config);
-            await raProcessor.CreateConfig(options.TemplateOverlay, game, config, bounds, options.TargetResolutionBounds);
+            await raProcessor.CreateConfig(fs.GetDataPath("templates", "overlay.cfg"), game, config, bounds, options.TargetResolutionBounds);
             messageHandler.ProgressMessage($"{game} - created config: {config}");
             createdNb++;
         }
@@ -1031,7 +1038,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         else
         {
             fs.FileDelete(rom);
-            await raProcessor.CreateConfig(options.TemplateRom, game, rom, bounds, options.TargetResolutionBounds);
+            await raProcessor.CreateConfig(fs.GetDataPath("templates", "game.cfg"), game, rom, bounds, options.TargetResolutionBounds);
             messageHandler.ProgressMessage($"{game} - created rom config file: {rom}");
             createdNb++;
         }

@@ -59,9 +59,4 @@ public abstract class BaseAction
             };
         }
     }
-
-    /// <summary>
-    /// Gets or sets the number of threads on which to run the conversion
-    /// </summary>
-    public int Threads { get; set; } = 1;
 }

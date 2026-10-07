@@ -149,10 +149,10 @@ $(() => {
         const targetResolution = `${width}x${height}`;
 
         // check every path is filled
-        if (imagesPath === '') { window.alert('@Html.Raw(Localizer.Js("OVERLAYS_GENERATE_ERROR_NOIMAGE"))'); return; }
-        if (romsPath === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
+        if (imagesFolder === '') { window.alert('@Html.Raw(Localizer.Js("OVERLAYS_GENERATE_ERROR_NOIMAGE"))'); return; }
+        if (romsFolder === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
 
-        ipc("overlays-generate", { imagesPath, romsPath, width, height, margin, cropresize, debug, overwrite });
+        ipc("overlays-generate", { imagesFolder, romsFolder, width, height, margin, cropresize, outputDebug, overwrite });
     });
 });
 
