@@ -41,6 +41,8 @@ ERROR_NOTARGETCSV=Please choose the target CSV file
 ERROR_NODAT=Please choose a DAT file
 ERROR_NOTARGET=Please choose a target folder
 ERROR_SAMESOURCETARGET=The source and target are identical
+ERROR_NOSOURCEROM=Please choose a path to the source roms
+ERROR_NOSOURCECONFIG=Please choose a path to the source config files
 
 HOME_ACTION_LANGUAGE=Language
 HOME_ACTION_CSV=Manage games lists
@@ -230,6 +232,7 @@ OVERLAYS_MARGIN_DESC=Adds some margin to the screen in the overlay: a positive v
 OVERLAYS_DEBUG=Debug files
 OVERLAYS_DEBUG_DESC=Outputs images with a red square where the screen will be. Leave empty to ignore.
 OVERLAYS_SIZE_DESC=Resizes the overlays to the target resolution if their size differs
+OVERLAYS_CONVERT_GO=Convert
 
 OVERLAYS_GENERATE_PAGETITLE=Generate overlays / bezels
 OVERLAYS_GENERATE_INTRO=Generate overlays based on simple PNG images without associated configurations. It scans the image for a transparent area and sets the screen at those coordinates.
@@ -238,11 +241,20 @@ OVERLAYS_GENERATE_IMAGES=Source images
 OVERLAYS_GENERATE_IMAGES_DESC=The folder containing the images to generate the overlays for. They should have the same name as the roms, ex "sf2.png"
 OVERLAYS_GENERATE_ROMS=Target roms
 OVERLAYS_GENERATE_ROMS_DESC=The folder where the rom config files will be saved. It's usually the same as the roms.
-OVERLAYS_GENERATE_CROPRESIZE_CROP=Crop the overlays
-OVERLAYS_GENERATE_CROPRESIZE_RESIZE=Resize the overlays
-OVERLAYS_GENERATE_CROPRESIZE_DESC=What to do if the overlays do not match the target resolution
 OVERLAYS_GENERATE_GENERATE=Generate overlays
 OVERLAYS_GENERATE_ERROR_NOIMAGE=Please select a path to the images
+
+OVERLAYS_RATOMAME_PAGETITLE=Convert RetroArch overlays to MAME bezels
+OVERLAYS_RATOMAME_INTRO=Convert overlays used on RetroArch to bezels that can be used in MAME. This is not needed if you use a "libretro" (lr-) MAME core in RetroArch.
+OVERLAYS_RATOMAME_ROMS=Source roms
+OVERLAYS_RATOMAME_ROMS_DESC=The folder containing the roms (and their configs)
+OVERLAYS_RATOMAME_OVERLAYS=Source overlays
+OVERLAYS_RATOMAME_OVERLAYS_DESC=The folder containing the overlays files.
+OVERLAYS_RATOMAME_TARGET=Target folder
+OVERLAYS_RATOMAME_TARGET_DESC=The folder in which to generate the Mame bezels (ex: c\mame\artworks)
+OVERLAYS_RATOMAME_ZIP_ZIP=Zip the bezels
+OVERLAYS_RATOMAME_ZIP_UNZIP=Do not zip the bezels
+OVERLAYS_RATOMAME_ZIP_DESC=Zipping the bezels saves a bit of space but makes editing them harder.
 
 WIZARD_TITLE=Wizard
 WIZARD_INTRO=<p> This wizard will help you to manage your games. Use this if you're not sure what games you want to play exactly, or just want "the best games" but don't know what they are. You will still be able to add more games later.</p><p>To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose in the next step.</p><p>To install overlays, you will need a Retropie or Recalbox installation.</p>

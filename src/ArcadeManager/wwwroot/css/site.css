@@ -91,10 +91,11 @@ h2 img {
 }
 
 /*
-    Overlays download
+    Overlays
 */
 #overlayslinks a:hover,
-#packs a:hover, #packs .active a:hover {
+#packs a:hover,
+#packs .active a:hover {
     text-decoration: none;
     color: #ffffff !important;
     background-color: #007bff !important;
@@ -103,6 +104,10 @@ h2 img {
 #packs .active a {
     color: #007bff !important;
     border-color: #007bff !important;
+}
+
+.size-input {
+    max-width: 10rem;
 }
 
 /*

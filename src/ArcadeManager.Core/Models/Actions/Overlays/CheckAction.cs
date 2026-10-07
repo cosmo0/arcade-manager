@@ -29,14 +29,4 @@ public class CheckAction : BaseAction
     /// Gets or sets the path to the roms configuration folder.
     /// </summary>
     public string RomsConfigFolder { get; set; }
-
-    /// <summary>
-    /// Gets or sets the path to the overlay template.
-    /// </summary>
-    public string TemplateOverlay { get; set; }
-
-    /// <summary>
-    /// Gets or sets the rom template.
-    /// </summary>
-    public string TemplateRom { get; set; }
 }

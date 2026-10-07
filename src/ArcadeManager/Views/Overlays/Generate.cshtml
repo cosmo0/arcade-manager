@@ -52,11 +52,11 @@
 
 <!-- Resolution -->
 <div class="input-group">
-    <input type="text" class="form-control" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920" aria-label="@Localizer["OVERLAYS_WIDTH"]">
+    <input type="text" class="form-control size-input" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920" aria-label="@Localizer["OVERLAYS_WIDTH"]">
     <div class="input-group-append input-group-prepend">
         <span class="input-group-text">&times;</span>
     </div>
-    <input type="text" class="form-control" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080" aria-label="@Localizer["OVERLAYS_HEIGHT"]">
+    <input type="text" class="form-control size-input" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080" aria-label="@Localizer["OVERLAYS_HEIGHT"]">
 </div>
 <div>
     <small>
@@ -71,25 +71,12 @@
     <small class="form-text text-muted">@Localizer["OVERLAYS_SIZE_DESC"]</small>
 </p>
 
-<!-- Crop or resize -->
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="cropresize" id="cropResizeCrop" value="crop" checked>
-    <label class="form-check-label" for="cropResizeCrop">@Localizer["OVERLAYS_GENERATE_CROPRESIZE_CROP"]</label>
-</div>
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="radio" name="cropresize" id="cropResizeResize" value="resize">
-    <label class="form-check-label" for="cropResizeResize">@Localizer["OVERLAYS_GENERATE_CROPRESIZE_RESIZE"]</label>
-</div>
-<p class="mt-0 mb-3">
-    <small class="form-text text-muted">@Localizer["OVERLAYS_GENERATE_CROPRESIZE_DESC"]</small>
-</p>
-
 <!-- Margin -->
 <div class="input-group mb-0">
     <div class="input-group-prepend">
         <label class="input-group-text" for="margin">@Localizer["OVERLAYS_MARGIN"]</label>
     </div>
-    <input type="text" class="form-control" id="margin">
+    <input type="text" class="form-control size-input" id="margin">
 </div>
 <p class="mt-0 mb-3">
     <small class="form-text text-muted">@Localizer["OVERLAYS_MARGIN_DESC"]</small>
@@ -142,7 +129,6 @@ $(() => {
             width = $('#width').val() || 1920,
             height = $('#height').val() || 1080,
             margin = $('#margin').val() || 0,
-            cropresize = $('input[name=cropresize]:checked').val(),
             outputDebug = $('#debug').val(),
             overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
 
@@ -152,7 +138,7 @@ $(() => {
         if (imagesFolder === '') { window.alert('@Html.Raw(Localizer.Js("OVERLAYS_GENERATE_ERROR_NOIMAGE"))'); return; }
         if (romsFolder === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
 
-        ipc("overlays-generate", { imagesFolder, romsFolder, width, height, margin, cropresize, outputDebug, overwrite });
+        ipc("overlays-generate", { imagesFolder, romsFolder, width, height, margin, outputDebug, overwrite });
     });
 });
 

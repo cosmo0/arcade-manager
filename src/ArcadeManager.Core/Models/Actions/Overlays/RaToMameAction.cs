@@ -21,11 +21,6 @@ public class RaToMameAction : BaseConvertAction
     public string SourceRoms { get; set; }
 
     /// <summary>
-    /// Gets or sets the path to the game config template
-    /// </summary>
-    public string Template { get; set; }
-
-    /// <summary>
     /// Gets or sets a value indicating whether the bezels will be zipped
     /// </summary>
     public bool Zip { get; set; } = false;
