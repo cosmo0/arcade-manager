@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["title"] = Localizer["OVERLAYS_CONVERT_MAMETORA_PAGETITLE"];
+    ViewData["title"] = Localizer["OVERLAYS_MAMETORA_PAGETITLE"];
 }
 
 <nav aria-label="breadcrumb">
@@ -10,40 +10,178 @@
     </ol>
 </nav>
 
+<h2>
+    @Localizer["OVERLAYS_MAMETORA_PAGETITLE"]
+</h2>
 
-SOURCE FOLDER
+<p>
+    @Html.Raw(Localizer["OVERLAYS_MAMETORA_INTRO"])
+</p>
 
+<!-- Path to the source folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="sourcePath">@Localizer["OVERLAYS_MAMETORA_SOURCE"]</label>
+    </div>
+    <input type="text" class="form-control" id="sourcePath">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="sourcePath">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_MAMETORA_SOURCE_DESC"]</small>
+</p>
 
-CONFIGURATION SOURCE FOLDER
+<!-- Path to the mame config folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="mameconfigPath">@Localizer["OVERLAYS_MAMETORA_MAMECONFIG"]</label>
+    </div>
+    <input type="text" class="form-control" id="mameconfigPath">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="mameconfigPath">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_MAMETORA_MAMECONFIG_DESC"]</small>
+</p>
 
+<!-- Path to the target roms folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="targetRoms">@Localizer["OVERLAYS_MAMETORA_TARGETROMS"]</label>
+    </div>
+    <input type="text" class="form-control" id="targetRoms">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="targetRoms">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_MAMETORA_TARGETROMS_DESC"]</small>
+</p>
 
-OUTPUT FOLDER OVERLAYS
+<!-- Path to the target configs folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="targetConfigs">@Localizer["OVERLAYS_MAMETORA_TARGETCONFIGS"]</label>
+    </div>
+    <input type="text" class="form-control" id="targetConfigs">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="targetConfigs">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_MAMETORA_TARGETCONFIGS_DESC"]</small>
+</p>
 
+<!-- scan the bezel -->
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="scanbezel" id="scanbezelscan" value="yes" checked>
+    <label class="form-check-label" for="scanbezelscan">@Localizer["OVERLAYS_SCANBEZEL_SCAN"]</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="scanbezel" id="scanbezelconvert" value="no">
+    <label class="form-check-label" for="scanbezelconvert">@Localizer["OVERLAYS_SCANBEZEL_CONVERT"]</label>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_SCANBEZEL_DESC"]</small>
+</p>
 
-OUTPUT FOLDER ROMS
+<!-- Resolution -->
+<div class="input-group">
+    <input type="text" class="form-control size-input" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920" aria-label="@Localizer["OVERLAYS_WIDTH"]">
+    <div class="input-group-append input-group-prepend">
+        <span class="input-group-text">&times;</span>
+    </div>
+    <input type="text" class="form-control size-input" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080" aria-label="@Localizer["OVERLAYS_HEIGHT"]">
+</div>
+<div>
+    <small>
+        <a href="#" class="setsize" data-width="2560" data-height="1440">1440p</a>
+        /
+        <a href="#" class="setsize" data-width="1920" data-height="1080">1080p</a>
+        /
+        <a href="#" class="setsize" data-width="1280" data-height="720">720p</a>
+    </small>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_SIZE_DESC"]</small>
+</p>
 
+<!-- Margin -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="margin">@Localizer["OVERLAYS_MARGIN"]</label>
+    </div>
+    <input type="text" class="form-control size-input" id="margin">
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_MARGIN_DESC"]</small>
+</p>
 
-OVERLAY TEMPLATE
+<!-- Debug folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="debug">@Localizer["OVERLAYS_DEBUG"]</label>
+    </div>
+    <input type="text" class="form-control" id="debug">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="debug">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_DEBUG_DESC"]</small>
+</p>
 
+<!-- Overwrite -->
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteYes" value="yes">
+    <label class="form-check-label" for="overwriteYes">@Localizer["OVERWRITE_YES"]</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="overwrite" id="overwriteNo" value="no" checked>
+    <label class="form-check-label" for="overwriteNo">@Localizer["OVERWRITE_NO"]</label>
+</div>
 
-ROM CONFIG TEMPLATE
+<!-- GO -->
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["OVERLAYS_CONVERT_GO"]</button>
+</p>
 
+@section Scripts {
+<script>
+$(() => {
+    // handle click on resolution presets
+    $('a.setsize').on('click', (e) => {
+        let link = $(e.currentTarget);
+        $('#width').val(link.data('width'));
+        $('#height').val(link.data('height'));
+    });
 
-SCAN BEZEL FOR SCREEN COORDINATE
+    // run
+    $('#buttonOk').on('click', () => {
+        // get paths from file inputs
+        const source = $('#sourcePath').val(),
+            sourceConfigs = $('#mameconfigPath').val(),
+            outputRoms = $('#targetRoms').val(),
+            outputOverlays = $('#targetConfigs').val(),
+            scanBezelForScreenCoordinates = $('input[name=scanbezel]:checked').val() == 'yes' ? true : false,
+            width = $('#width').val() || 1920,
+            height = $('#height').val() || 1080,
+            margin = $('#margin').val() || 0,
+            outputDebug = $('#debug').val(),
+            overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
 
+        const targetResolution = `${width}x${height}`;
 
-USE THE FIRST VIEW FOUND IN THE BEZEL
+        // check every path is filled
+        if (source === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSOURCEROM"))'); return; }
+        if (outputRoms === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
+        if (outputOverlays === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
 
+        ipc("overlays-mametora", { source, sourceConfigs, outputRoms, outputOverlays, width, height, margin, outputDebug, overwrite, scanBezelForScreenCoordinates });
+    });
+});
 
-OVERWRITE
-
-
-TARGET RESOLUTION
-
-CROP OR RESIZE
-
-
-MARGIN TO ADD TO THE SCREEN POSITION
-
-
-DEBUG FOLDER
+</script>
+}

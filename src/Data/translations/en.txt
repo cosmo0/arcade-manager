@@ -221,6 +221,9 @@ OVERLAYS_INSTALL=Download and install
 OVERLAYS_ERROR_NOOVERLAY=Please select an overlay pack
 OVERLAYS_ERROR_NOROMS=Please select the roms folder
 OVERLAYS_ERROR_NOCONFIG=Please fill the path to the config share
+OVERLAYS_SCANBEZEL_SCAN=Scan the image to find the screen position
+OVERLAYS_SCANBEZEL_CONVERT=Convert the screen position from the source configuration file
+OVERLAYS_SCANBEZEL_DESC=Scanning the image takes longer but is more accurate; converting is much faster but sometimes results in mis-positioned screens.
 
 OVERLAYS_PACK_REALISTIC_NAME=Realistic
 OVERLAYS_PACK_REALISTIC_DESC=Realistic-looking overlays, with scratches, reflections, and CRT shader
@@ -255,6 +258,17 @@ OVERLAYS_RATOMAME_TARGET_DESC=The folder in which to generate the Mame bezels (e
 OVERLAYS_RATOMAME_ZIP_ZIP=Zip the bezels
 OVERLAYS_RATOMAME_ZIP_UNZIP=Do not zip the bezels
 OVERLAYS_RATOMAME_ZIP_DESC=Zipping the bezels saves a bit of space but makes editing them harder.
+
+OVERLAYS_MAMETORA_PAGETITLE=Convert MAME bezels to RetroArch overlays
+OVERLAYS_MAMETORA_INTRO=Convert bezels used by MAME to overlays that can be used in RetroArch.
+OVERLAYS_MAMETORA_SOURCE=Source artworks
+OVERLAYS_MAMETORA_SOURCE_DESC=The folder containing the artworks to convert (ex: c:\mame\artworks)
+OVERLAYS_MAMETORA_MAMECONFIG=Source configs
+OVERLAYS_MAMETORA_MAMECONFIG_DESC=The folder containing the MAME configs (ex: c:\mame\cfg); you can leave empty but coordinates conversion may be wrong (in that case use the image scan option)
+OVERLAYS_MAMETORA_TARGETROMS=Target roms
+OVERLAYS_MAMETORA_TARGETROMS_DESC=The folder containing the roms
+OVERLAYS_MAMETORA_TARGETCONFIGS=Target configs
+OVERLAYS_MAMETORA_TARGETCONFIGS_DESC=The folder containing the RetroArch configs
 
 WIZARD_TITLE=Wizard
 WIZARD_INTRO=<p> This wizard will help you to manage your games. Use this if you're not sure what games you want to play exactly, or just want "the best games" but don't know what they are. You will still be able to add more games later.</p><p>To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose in the next step.</p><p>To install overlays, you will need a Retropie or Recalbox installation.</p>

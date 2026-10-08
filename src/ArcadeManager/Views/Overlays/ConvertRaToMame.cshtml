@@ -60,6 +60,19 @@
     <small class="form-text text-muted">@Localizer["OVERLAYS_RATOMAME_TARGET_DESC"]</small>
 </p>
 
+<!-- scan the bezel -->
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="scanbezel" id="scanbezelscan" value="yes" checked>
+    <label class="form-check-label" for="scanbezelscan">@Localizer["OVERLAYS_SCANBEZEL_SCAN"]</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="scanbezel" id="scanbezelconvert" value="no">
+    <label class="form-check-label" for="scanbezelconvert">@Localizer["OVERLAYS_SCANBEZEL_CONVERT"]</label>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_SCANBEZEL_DESC"]</small>
+</p>
+
 <!-- Zip the result -->
 <div class="form-check form-check-inline">
     <input class="form-check-input" type="radio" name="zip" id="zipzip" value="yes" checked>
@@ -150,6 +163,7 @@ $(() => {
         const sourceRoms = $('#romsPath').val(),
             sourceConfigs = $('#overlaysPath').val(),
             output = $('#targetPath').val(),
+            scanBezelForScreenCoordinates = $('input[name=scanbezel]:checked').val() == 'yes' ? true : false,
             zip = $('input[name=zip]:checked').val() == 'yes' ? true : false,
             width = $('#width').val() || 1920,
             height = $('#height').val() || 1080,
@@ -164,7 +178,7 @@ $(() => {
         if (sourceConfigs === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSOURCECONFIG"))'); return; }
         if (output === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
 
-        ipc("overlays-ratomame", { sourceRoms, sourceConfigs, output, zip, width, height, margin, outputDebug, overwrite });
+        ipc("overlays-ratomame", { sourceRoms, sourceConfigs, output, zip, width, height, margin, outputDebug, overwrite, scanBezelForScreenCoordinates });
     });
 });
 

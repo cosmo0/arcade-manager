@@ -84,7 +84,7 @@ public class MameOverlay(IFileSystem fs)
             }
         }
 
-        cfg = await MameGetConfigFile(cfgFile, game);
+        cfg = await MameGetConfigFile(cfgFile);
 
         return (lay, cfg, bezel);
     }
@@ -100,8 +100,6 @@ public class MameOverlay(IFileSystem fs)
     public async Task<(MameLayFile lay, MameCfgFile cfg, byte[] bezel)> MameReadFiles(string game, string folder, string cfgFile, MameToRaAction options)
     {
         byte[] bezel = null;
-
-        Log($"{game} Reading files from folder {folder}");
 
         // get layout and bezel
         var layFiles = fs.FilesGetList(folder, "default.lay");
@@ -121,19 +119,9 @@ public class MameOverlay(IFileSystem fs)
         }
 
         // get config file
-        MameCfgFile cfg = await MameGetConfigFile(cfgFile, game);
+        MameCfgFile cfg = await MameGetConfigFile(cfgFile);
 
         return (lay, cfg, bezel);
-    }
-
-    protected static void Log(string v)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected static int LogAsk(string v, List<string> views)
-    {
-        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -271,7 +259,7 @@ public class MameOverlay(IFileSystem fs)
                 views.Add($"{i}: {lay.Views[i].Name}");
             }
 
-            int viewIndex = LogAsk("Please choose which bezel you want", [.. views]);
+            int viewIndex = 1; // TODO: ask user which view to use
             view = lay.Views[viewIndex];
         }
         else
@@ -306,20 +294,15 @@ public class MameOverlay(IFileSystem fs)
     /// <param name="cfgFile">The config file</param>
     /// <param name="game">The game name</param>
     /// <returns>The parsed config file</returns>
-    private async Task<MameCfgFile> MameGetConfigFile(string cfgFile, string game)
+    private async Task<MameCfgFile> MameGetConfigFile(string cfgFile)
     {
-        // parse the config file if it exists
-        if (!string.IsNullOrEmpty(cfgFile) && fs.FileExists(cfgFile))
+        if (string.IsNullOrEmpty(cfgFile) || !fs.FileExists(cfgFile))
         {
-            Log($"{game} MAME config file exists");
-
-            var fileContent = await fs.FileReadAsync(cfgFile);
-            return Serializer.Deserialize<MameCfgFile>(fileContent);
-        }
-        else
-        {
-            Log($"{game} doesn't have a MAME config file");
             return null;
         }
+
+        // parse the config file if it exists
+        var fileContent = await fs.FileReadAsync(cfgFile);
+        return Serializer.Deserialize<MameCfgFile>(fileContent);
     }
 }
