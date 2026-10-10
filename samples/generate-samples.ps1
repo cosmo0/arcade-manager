@@ -1,6 +1,6 @@
 $here = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 
-$yn = Read-Host -prompt "Create fake romset in tmp\roms? [y/n]"
+$yn = Read-Host -Prompt "Create fake romset in tmp\roms? [y/n]"
 if ($yn -ne "y") {
     return;
 }
@@ -18,8 +18,8 @@ $list | ForEach-Object {
     $i++
     Write-Progress -Activity "Generating fake roms" -Status "Creating $_" -PercentComplete ($i / $list.Length * 100)
     if (-not(Test-Path $path)) {
-        New-Item -path $path -ItemType File -Force | Out-Null
-        Write-Host -nonewline "."
+        New-Item -Path $path -ItemType File -Force | Out-Null
+        Write-Host -NoNewline "."
     }
 }
 

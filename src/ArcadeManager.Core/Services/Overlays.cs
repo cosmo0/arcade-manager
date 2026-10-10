@@ -33,6 +33,9 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
     private static readonly string inputOverlayProperty = "input_overlay";
 
     private static readonly string templatesFolder = "templates";
+    private static readonly string raRomTemplate = "game.cfg";
+    private static readonly string raOverlayTemplate = "overlay.cfg";
+    private static readonly string mameLayTemplate = "default.lay";
 
     private readonly MameOverlay mameProcessor = new(fs);
 
@@ -718,14 +721,14 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         // create game config files
         var outputGameCfg = fs.PathJoin(options.OutputRoms, $"{game}.zip.cfg");
-        fs.FileCopy(fs.GetDataPath(templatesFolder, "game.cfg"), outputGameCfg, options.Overwrite);
+        fs.FileCopy(fs.GetDataPath(templatesFolder, raRomTemplate), outputGameCfg, options.Overwrite);
         await raProcessor.FillTemplate(outputGameCfg, game, newPosition, options.TargetResolutionBounds);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
         // create overlay config files
         var outputOverlayCfg = fs.PathJoin(options.OutputOverlays, $"{game}.cfg");
-        fs.FileCopy(fs.GetDataPath(templatesFolder, "overlay.cfg"), outputOverlayCfg, options.Overwrite);
+        fs.FileCopy(fs.GetDataPath(templatesFolder, raOverlayTemplate), outputOverlayCfg, options.Overwrite);
         await raProcessor.FillTemplate(outputOverlayCfg, game, newPosition, options.TargetResolutionBounds);
     }
 
@@ -803,8 +806,8 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         if (messageHandler.MustCancel) { throw cancel; }
 
         // create lay file
-        var outputLay = fs.PathJoin(target, "default.lay");
-        fs.FileCopy(fs.GetDataPath(templatesFolder, "default.lay"), outputLay, options.Overwrite);
+        var outputLay = fs.PathJoin(target, mameLayTemplate);
+        fs.FileCopy(fs.GetDataPath(templatesFolder, mameLayTemplate), outputLay, options.Overwrite);
         await raProcessor.FillTemplate(outputLay, game, newPosition, processor.SourceResolution);
 
         if (messageHandler.MustCancel) { throw cancel; }
@@ -834,14 +837,14 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         else
         {
             messageHandler.ProgressMessage($"{game} - creating overlay config for orphan image at {dest}");
-            await raProcessor.CreateConfig(fs.GetDataPath("templates", "overlay.cfg"), game, dest, null, options.TargetResolutionBounds);
+            await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raOverlayTemplate), game, dest, null, options.TargetResolutionBounds);
 
             var romDest = fs.PathJoin(options.RomsConfigFolder, cfgFilesName);
             messageHandler.ProgressMessage($"{game} - creating rom config for orphan image at {romDest}");
 
             // create the config
             var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), options.Margin);
-            await raProcessor.CreateConfig(fs.GetDataPath("templates", "game.cfg"), game, romDest, bounds, options.TargetResolutionBounds);
+            await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raRomTemplate), game, romDest, bounds, options.TargetResolutionBounds);
 
             configs.Add(new Config { Rom = cfgFilesName, Overlay = cfgFilesName, Image = fs.FileName(f) });
 
@@ -878,7 +881,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 var img = await fs.FileReadBinaryAsync(imgFileName);
                 var bounds = imageProcessor.FindScreen(img, options.Margin);
 
-                await raProcessor.CreateConfig(fs.GetDataPath("templates", "game.cfg"), game, dest, bounds, options.TargetResolutionBounds);
+                await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raRomTemplate), game, dest, bounds, options.TargetResolutionBounds);
 
                 cfgEntry = new Config { Rom = romFile, Overlay = fileName, Image = overlayFileName };
 
@@ -1023,7 +1026,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         else
         {
             fs.FileDelete(config);
-            await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, "overlay.cfg"), game, config, bounds, options.TargetResolutionBounds);
+            await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raOverlayTemplate), game, config, bounds, options.TargetResolutionBounds);
             messageHandler.ProgressMessage($"{game} - created config: {config}");
             createdNb++;
         }
@@ -1040,7 +1043,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         else
         {
             fs.FileDelete(rom);
-            await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, "game.cfg"), game, rom, bounds, options.TargetResolutionBounds);
+            await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raRomTemplate), game, rom, bounds, options.TargetResolutionBounds);
             messageHandler.ProgressMessage($"{game} - created rom config file: {rom}");
             createdNb++;
         }

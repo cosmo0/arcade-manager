@@ -6,7 +6,10 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
+using System.Runtime.ExceptionServices;
 
 namespace ArcadeManager.Core.Infrastructure;
 
@@ -197,22 +200,8 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
                 last = y;
             }
 
-            // last transparent pixel has been found
-            if (image[column, y].A == 255 && last > 0)
-            {
-                // arbitrary margin of error in case a transparent pixel (or column) exists
-                // somewhere in the bezel
-                if (last - first < 100)
-                {
-                    // it's an error = reset values
-                    first = 0;
-                    last = 0;
-                }
-                else
-                {
-                    break;
-                }
-            }
+            (first, last, bool shouldBreak) = IsLastTransparentPixel(image[column, y].A, first, last);
+            if (shouldBreak) { break; }
         }
 
         return (first, last);
@@ -246,25 +235,35 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
                     last = x;
                 }
 
-                // last transparent pixel has been found
-                if (pixelRowSpan[x].A == 255 && last > 0)
-                {
-                    // arbitrary margin of error in case a transparent pixel (or column) exists
-                    // somewhere in the bezel
-                    if (last - first < 100)
-                    {
-                        // it's an error = reset values
-                        first = 0;
-                        last = 0;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                (first, last, bool shouldBreak) = IsLastTransparentPixel(pixelRowSpan[x].A, first, last);
+                if (shouldBreak) { break; }
             }
         });
 
         return (first, last);
+    }
+
+    private static (int first, int last, bool shouldBreak) IsLastTransparentPixel(byte alpha, int first, int last)
+    {
+        bool shouldBreak = false;
+
+        // last transparent pixel has been found
+        if (alpha == 255 && last > 0)
+        {
+            // arbitrary margin of error in case a transparent pixel (or column) exists
+            // somewhere in the bezel
+            if (last - first < 100)
+            {
+                // it's an error = reset values
+                first = 0;
+                last = 0;
+            }
+            else
+            {
+                shouldBreak = true;
+            }
+        }
+
+        return (first, last, shouldBreak);
     }
 }

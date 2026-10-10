@@ -34,7 +34,7 @@ h3 a {
 }
 
     .mainmenu a.navmenu .card .card-footer {
-        color: #007bff;
+        color: #0c55a3;
         background-color: #ffffff;
         transition-property: background-color color;
         transition-duration: 0.3s;
@@ -47,7 +47,7 @@ h3 a {
 
     .mainmenu a.navmenu:hover .card .card-footer {
         color: #ffffff;
-        background-color: #007bff;
+        background-color: #0c55a3;
     }
 
 .mainmenu a.disabled:hover {
@@ -98,12 +98,12 @@ h2 img {
 #packs .active a:hover {
     text-decoration: none;
     color: #ffffff !important;
-    background-color: #007bff !important;
+    background-color: #0c55a3 !important;
 }
 
 #packs .active a {
-    color: #007bff !important;
-    border-color: #007bff !important;
+    color: #0c55a3 !important;
+    border-color: #0c55a3 !important;
 }
 
 .size-input {
@@ -116,7 +116,7 @@ h2 img {
 #versionAssets .list-group-item {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    color: #007bff;
+    color: #0c55a3;
 }
 
 /*

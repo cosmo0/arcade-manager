@@ -56,8 +56,8 @@ $(() => {
     });
 
     // bind result list copy
-    $('#filesListCopyLog').off('click').on('click', () => {
-        navigator.clipboard.writeText($('#processedList').text());
+    $('#filesListCopyLog').off('click').on('click', async () => {
+        await navigator.clipboard.writeText($('#processedList').text());
         $('#filesListCopyLogMessage').removeClass('d-none').show().fadeOut(1000);
     });
 

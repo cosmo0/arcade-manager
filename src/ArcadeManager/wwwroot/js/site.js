@@ -49,8 +49,8 @@ $(() => {
     });
 
     // files list modal
-    $('#filesListCopy').on('click', () => {
-        navigator.clipboard.writeText($('#filesList').text());
+    $('#filesListCopy').off('click').on('click', async () => {
+        await navigator.clipboard.writeText($('#filesList').text());
         $('#filesListCopyMessage').removeClass('d-none').fadeOut(1000);
     });
 });

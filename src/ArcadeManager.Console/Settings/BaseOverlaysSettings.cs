@@ -11,7 +11,7 @@ public abstract class BaseOverlaysSettings : CommandSettings
 {
     private string targetResolution = "1920x1080";
 
-    [Description("A margin to apply to the position of the game screen in the overlay (<0 the screen will be cropped, >0 there will be a black border around)")]
+    [Description("A margin to apply to the position of the game screen in the overlay (>0 the screen will be cropped, <0 there will be a black border around)")]
     [CommandOption("-m|--margin")]
     [DefaultValue(0)]
     public int Margin { get; set; } = 0;
