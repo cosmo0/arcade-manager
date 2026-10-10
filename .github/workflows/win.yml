@@ -44,9 +44,10 @@ jobs:
 
     # Build the project
     - name: Build
-      run: dotnet build -c Release --no-restore -p:SixLaborsLicenseKey=$($env:SIXLABOR_LICENCE.Replace(';', '%253B'))
-      with:
+      shell: pwsh
+      env:
         SIXLABOR_LICENCE: ${{ secrets.SIXLABOR_LICENCE }}
+      run: dotnet build -c Release --no-restore "-p:SixLaborsLicenseKey=$($env:SIXLABOR_LICENCE.Replace(';', '%253B'))"
 
     # Run the tests and collect the coverage
     - name: Test

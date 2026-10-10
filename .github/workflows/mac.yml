@@ -40,9 +40,9 @@ jobs:
 
     # Build the app
     - name: Build
-      run: dotnet build -c Release --no-restore -p:SixLaborsLicenseKey=$($env:SIXLABOR_LICENCE.Replace(';', '%253B'))
-      with:
+      env:
         SIXLABOR_LICENCE: ${{ secrets.SIXLABOR_LICENCE }}
+      run: dotnet build -c Release --no-restore "-p:SixLaborsLicenseKey=${$SIXLABOR_LICENCE//;/%253B}"
 
     # Publish and package the app
     - name: Publish
