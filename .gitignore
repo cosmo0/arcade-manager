@@ -1,4 +1,4 @@
-*.lic
+**/sixlabors.lic
 
 # Mac
 .DS_Store
