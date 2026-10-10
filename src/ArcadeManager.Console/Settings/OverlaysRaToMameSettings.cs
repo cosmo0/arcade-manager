@@ -8,7 +8,7 @@ public class OverlaysRaToMameSettings : BaseOverlaysSettings
 {
     [Description("The path to the output bezels")]
     [CommandOption("--output <FOLDER>", true)]
-    public string Output { get; set; }
+    public string? Output { get; set; }
 
     [Description("Whether to overwrite existing files")]
     [CommandOption("--overwrite")]
@@ -22,11 +22,11 @@ public class OverlaysRaToMameSettings : BaseOverlaysSettings
 
     [Description("The path to the source configurations")]
     [CommandOption("--configs <FOLDER>", true)]
-    public string SourceConfigs { get; set; }
+    public string? SourceConfigs { get; set; }
 
     [Description("The path to the source roms")]
     [CommandOption("--roms <FOLDER>", true)]
-    public string SourceRoms { get; set; }
+    public string? SourceRoms { get; set; }
 
     [Description("Whether to zip the output bezels")]
     [CommandOption("--zip")]

@@ -11,11 +11,11 @@ public class OverlaysMameToRaSettings : BaseOverlaysSettings
 {
     [Description("The output folder for the overlays configs")]
     [CommandOption("--overlays <FOLDER>", true)]
-    public string OutputOverlays { get; set; }
+    public string? OutputOverlays { get; set; }
 
     [Description("The output folder for the roms configs")]
     [CommandOption("--roms <FOLDER>", true)]
-    public string OutputRoms { get; set; }
+    public string? OutputRoms { get; set; }
 
     [Description("Whether to overwrite existing files")]
     [CommandOption("--overwrite")]
@@ -29,11 +29,11 @@ public class OverlaysMameToRaSettings : BaseOverlaysSettings
 
     [Description("The source folder of the MAME bezels (ex: c:\\mame\\artwork")]
     [CommandOption("--source <FOLDER>", true)]
-    public string Source { get; set; }
+    public string? Source { get; set; }
 
     [Description("The source folder of the MAME configs (ex: c:\\mame\\cfg ; you can leave empty but it may result in misplaced screens)")]
     [CommandOption("--source-cfg <FOLDER>")]
-    public string SourceConfigs { get; set; }
+    public string? SourceConfigs { get; set; }
 
     public MameToRaAction ToAction()
     {

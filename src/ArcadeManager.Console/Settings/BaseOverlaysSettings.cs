@@ -18,7 +18,7 @@ public abstract class BaseOverlaysSettings : CommandSettings
 
     [Description("A debug folder to generate the overlays images with a red square where the screen will be")]
     [CommandOption("--debug <FOLDER>")]
-    public string OutputDebug { get; set; }
+    public string? OutputDebug { get; set; }
 
     [Description("The target resolution for the overlays, under the form '1920x1080' (default is 1080p)")]
     [CommandOption("--resolution <RESOLUTION>")]

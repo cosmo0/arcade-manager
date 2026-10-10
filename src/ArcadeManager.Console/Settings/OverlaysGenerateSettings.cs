@@ -11,7 +11,7 @@ public class OverlaysGenerateSettings : BaseOverlaysSettings
 {
     [Description("The images folder from which to create overlays from")]
     [CommandOption("-i|--images <FOLDER>", true)]
-    public string ImagesFolder { get; set; }
+    public string? ImagesFolder { get; set; }
 
     [Description("Whether to overwrite existing files")]
     [CommandOption("-o|--overwrite")]
@@ -20,7 +20,7 @@ public class OverlaysGenerateSettings : BaseOverlaysSettings
 
     [Description("To roms folder in which to output the overlays configs")]
     [CommandOption("-r|--roms <FOLDER>", true)]
-    public string RomsFolder { get; set; }
+    public string? RomsFolder { get; set; }
 
     public GenerateAction ToAction()
     {

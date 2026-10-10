@@ -18,15 +18,15 @@ public class OverlaysCheckSettings : BaseOverlaysSettings
 
     [Description("The expected overlay path in the rom config file (leave empty if you don't know)")]
     [CommandOption("--expected-path <EXPECTED>")]
-    public string InputOverlayConfigPathInRomConfig { get; set; }
+    public string? InputOverlayConfigPathInRomConfig { get; set; }
 
     [Description("The overlays configurations folder")]
     [CommandOption("--overlays <FOLDER>", true)]
-    public string OverlaysConfigFolder { get; set; }
+    public string? OverlaysConfigFolder { get; set; }
 
     [Description("The roms configuration folder")]
     [CommandOption("--roms <FOLDER>", true)]
-    public string RomsConfigFolder { get; set; }
+    public string? RomsConfigFolder { get; set; }
 
     public CheckAction ToAction()
     {
