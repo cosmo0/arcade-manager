@@ -44,11 +44,13 @@ jobs:
 
     # Build the project
     - name: Build
-      run: dotnet build -c Release --no-restore
+      run: dotnet build -c Release --no-restore -p:SixLaborsLicenseKey=$($env:SIXLABOR_LICENCE.Replace(';', '%253B'))
+      with:
+        SIXLABOR_LICENCE: ${{ secrets.SIXLABOR_LICENCE }}
 
     # Publish and package the app
     - name: Publish
-      run: dotnet publish -p:PublishProfile=linux-x64 -c Release -r linux-x64
+      run: dotnet publish -p:PublishProfile=linux-x64 --no-build -c Release -r linux-x64
       working-directory: ./src/ArcadeManager
 
     # Upload the binaries of the GUI app
