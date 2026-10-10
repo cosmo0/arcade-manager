@@ -7,7 +7,7 @@ namespace ArcadeManager.Console.Commands;
 
 public class CsvConvertIniCommand(ICsv csv, IMessageHandler messageHandler) : AsyncCommand<CsvSettings>
 {
-    protected override async Task<int> ExecuteAsync(CommandContext context, CsvSettings settings, CancellationToken cancellationToken)
+    public override async Task<int> ExecuteAsync(CommandContext context, CsvSettings settings, CancellationToken cancellationToken)
     {
         await csv.ConvertIni(settings.Main, settings.Target, messageHandler);
         return 0;

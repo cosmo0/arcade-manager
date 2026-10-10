@@ -7,7 +7,7 @@ namespace ArcadeManager.Console.Commands;
 
 public class RomsCheckDatCommand(IDatChecker checker, IMessageHandler messageHandler) : AsyncCommand<RomsCheckDatSettings>
 {
-    protected override async Task<int> ExecuteAsync(CommandContext context, RomsCheckDatSettings settings, CancellationToken cancellationToken)
+    public override async Task<int> ExecuteAsync(CommandContext context, RomsCheckDatSettings settings, CancellationToken cancellationToken)
     {
         await checker.CheckDat(settings.ToAction(), messageHandler);
         return 0;

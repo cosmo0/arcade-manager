@@ -7,7 +7,7 @@ namespace ArcadeManager.Console.Commands;
 
 public class RomsKeepCommand(IRoms roms, IMessageHandler messageHandler) : AsyncCommand<RomsSettings>
 {
-    protected override async Task<int> ExecuteAsync(CommandContext context, RomsSettings settings, CancellationToken cancellationToken)
+    public override async Task<int> ExecuteAsync(CommandContext context, RomsSettings settings, CancellationToken cancellationToken)
     {
         await roms.Keep(settings.ToAction(), messageHandler);
         return 0;
