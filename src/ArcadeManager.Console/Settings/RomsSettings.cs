@@ -8,20 +8,21 @@ namespace ArcadeManager.Console.Settings;
 public class RomsSettings : CommandSettings
 {
     [Description("The path to the CSV file")]
-    [CommandOption("-c|--csv <CSV_FILE>")]
+    [CommandOption("-c|--csv <CSV_FILE>", true)]
     public string? Csv { get; set; }
 
     [Description("The path to the romset folder")]
-    [CommandOption("-r|--romset <ROMSET_FOLDER>")]
+    [CommandOption("-r|--romset <ROMSET_FOLDER>", true)]
 	public string? Romset { get; set; }
 
     [Description("The path to the selection folder")]
-    [CommandOption("-s|--selection <SELECTION_FOLDER>")]
+    [CommandOption("-s|--selection <SELECTION_FOLDER>", true)]
 	public string? Selection { get; set; }
 
     [Description("Whether to overwrite existing files")]
-    [CommandOption("-o|--overwrite")]
-	public bool Overwrite { get; set; }
+    [CommandOption("-o|--overwrite", false)]
+    [DefaultValue(false)]
+    public bool Overwrite { get; set; } = false;
 
     public RomsAction ToAction()
     {

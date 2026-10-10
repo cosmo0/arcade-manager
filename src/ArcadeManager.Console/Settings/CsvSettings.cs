@@ -7,14 +7,14 @@ namespace ArcadeManager.Console.Settings;
 public class CsvSettings : CommandSettings
 {
     [Description("The path to the main file")]
-    [CommandOption("-m|--main <MAIN_FILE>")]
+    [CommandOption("-m|--main <MAIN_FILE>", true)]
     public string? Main { get; set; }
 
     [Description("The path to the secondary file")]
-    [CommandOption("-s|--secondary <SECONDARY_FILE>")]
+    [CommandOption("-s|--secondary <SECONDARY_FILE>", true)]
     public string? Secondary { get; set; }
 
     [Description("The path to the target file")]
-    [CommandOption("-t|--target <TARGET_FILE>")]
+    [CommandOption("-t|--target <TARGET_FILE>", true)]
     public string? Target { get; set; }
 }

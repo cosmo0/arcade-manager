@@ -28,7 +28,15 @@ public static class Program
                 roms.AddCommand<RomsKeepCommand>("keep");
             });
 
-            config.AddCommand<RomsCheckDatCommand>("checkdat");
+            config.AddCommand<CheckDatCommand>("checkdat");
+
+            config.AddBranch("overlays", overlays =>
+            {
+                overlays.AddCommand<OverlaysCheckCommand>("check");
+                overlays.AddCommand<OverlaysGenerateCommand>("generate");
+                overlays.AddCommand<OverlaysMameToRaCommand>("mametora");
+                overlays.AddCommand<OverlaysRaToMameCommand>("ratomame");
+            });
         });
 
         return app.Run(args);
