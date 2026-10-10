@@ -89,11 +89,11 @@
 
 <!-- Resolution -->
 <div class="input-group">
-    <input type="text" class="form-control size-input" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920" aria-label="@Localizer["OVERLAYS_WIDTH"]">
+    <input type="number" class="form-control size-input" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920" aria-label="@Localizer["OVERLAYS_WIDTH"]">
     <div class="input-group-append input-group-prepend">
         <span class="input-group-text">&times;</span>
     </div>
-    <input type="text" class="form-control size-input" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080" aria-label="@Localizer["OVERLAYS_HEIGHT"]">
+    <input type="number" class="form-control size-input" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080" aria-label="@Localizer["OVERLAYS_HEIGHT"]">
 </div>
 <div>
     <small>
@@ -113,7 +113,7 @@
     <div class="input-group-prepend">
         <label class="input-group-text" for="margin">@Localizer["OVERLAYS_MARGIN"]</label>
     </div>
-    <input type="text" class="form-control size-input" id="margin">
+    <input type="number" class="form-control size-input" id="margin">
 </div>
 <p class="mt-0 mb-3">
     <small class="form-text text-muted">@Localizer["OVERLAYS_MARGIN_DESC"]</small>
@@ -179,7 +179,7 @@ $(() => {
         if (outputRoms === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
         if (outputOverlays === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOTARGET"))'); return; }
 
-        ipc("overlays-mametora", { source, sourceConfigs, outputRoms, outputOverlays, width, height, margin, outputDebug, overwrite, scanBezelForScreenCoordinates });
+        ipc("overlays-mametora", { source, sourceConfigs, outputRoms, outputOverlays, targetResolution, margin, outputDebug, overwrite, scanBezelForScreenCoordinates });
     });
 });
 

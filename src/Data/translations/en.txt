@@ -270,6 +270,20 @@ OVERLAYS_MAMETORA_TARGETROMS_DESC=The folder containing the roms
 OVERLAYS_MAMETORA_TARGETCONFIGS=Target configs
 OVERLAYS_MAMETORA_TARGETCONFIGS_DESC=The folder containing the RetroArch configs
 
+OVERLAYS_CHECK_PAGETITLE=Check overlays configuration
+OVERLAYS_CHECK_INTRO=Checks that overlays are properly configured. Can also fix them automatically.
+OVERLAYS_CHECK_ROMS=Roms folder
+OVERLAYS_CHECK_ROMS_DESC=The path to the roms folder
+OVERLAYS_CHECK_OVERLAYS=Overlays configs folder
+OVERLAYS_CHECK_OVERLAYS_DESC=The path to the overlays configurations folder
+OVERLAYS_CHECK_EXPECTEDPATH=Expected path in the config
+OVERLAYS_CHECK_EXPECTEDPATH_DESC=The expected path in the configuration ; get the value from an overlay you know works, or leave empty if you're not sure.
+OVERLAYS_CHECK_ERRORMARGIN=Error margin
+OVERLAYS_CHECK_ERRORMARGIN_DESC=The error margin for the screen position ; 0 is very strict.
+OVERLAYS_CHECK_AUTOFIX_YES=Automatically fix the encountered errors
+OVERLAYS_CHECK_AUTOFIX_NO=Only list the problematic files
+OVERLAYS_CHECK_GO=Check
+
 WIZARD_TITLE=Wizard
 WIZARD_INTRO=<p> This wizard will help you to manage your games. Use this if you're not sure what games you want to play exactly, or just want "the best games" but don't know what they are. You will still be able to add more games later.</p><p>To install games, you will need a working, full romset of roms. Emulators and versions depend on the options you choose in the next step.</p><p>To install overlays, you will need a Retropie or Recalbox installation.</p>
 WIZARD_ACTION_ROMS=Copy roms

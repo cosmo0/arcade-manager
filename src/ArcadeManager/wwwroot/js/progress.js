@@ -38,6 +38,7 @@ $(() => {
         extra += !error ? '' : '<br><br>error: ' + error;
 
         progressLog("Error: " + msg + "<br><br>File: " + url + "<br>line: " + line + extra, true);
+        console.error(`Error: ${msg} - File: ${url} - Line: ${line} - ${extra}`);
 
         return true; // error handled
     };

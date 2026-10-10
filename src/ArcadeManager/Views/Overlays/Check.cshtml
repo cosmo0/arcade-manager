@@ -10,34 +10,168 @@
     </ol>
 </nav>
 
+<h2>
+    @Localizer["OVERLAYS_CHECK_PAGETITLE"]
+</h2>
 
-PATH TO THE OVERLAYS TO CHECK
+<p>
+    @Html.Raw(Localizer["OVERLAYS_CHECK_INTRO"])
+</p>
 
+<!-- Path to the source roms folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="romsPath">@Localizer["OVERLAYS_CHECK_ROMS"]</label>
+    </div>
+    <input type="text" class="form-control" id="romsPath">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="romsPath">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_CHECK_ROMS_DESC"]</small>
+</p>
 
-PATH TO THE ROM CONFIGS FILES
+<!-- Path to the source overlays folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="overlaysPath">@Localizer["OVERLAYS_CHECK_OVERLAYS"]</label>
+    </div>
+    <input type="text" class="form-control" id="overlaysPath">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="overlaysPath">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_CHECK_OVERLAYS_DESC"]</small>
+</p>
 
+<!-- Expected path in overlay config -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="expectedPath">@Localizer["OVERLAYS_CHECK_EXPECTEDPATH"]</label>
+    </div>
+    <input type="text" class="form-control" id="expectedPath">
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_CHECK_EXPECTEDPATH_DESC"]</small>
+</p>
 
-EXPECTED PATH IN THE OVERLAY ROM CONFIG
+<!-- Error margin -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="errorMargin">@Localizer["OVERLAYS_CHECK_ERRORMARGIN"]</label>
+    </div>
+    <input type="number" class="form-control size-input" id="errorMargin" value="10">
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_CHECK_ERRORMARGIN_DESC"]</small>
+</p>
 
+<!-- Auto fix issues -->
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="autoFix" id="autoFixYes" value="yes">
+    <label class="form-check-label" for="autoFixYes">@Localizer["OVERLAYS_CHECK_AUTOFIX_YES"]</label>
+</div>
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="autoFix" id="autoFixNo" value="no" checked>
+    <label class="form-check-label" for="autoFixNo">@Localizer["OVERLAYS_CHECK_AUTOFIX_NO"]</label>
+</div>
 
-TEMPLATE FOR THE OVERLAY
+<!-- Resolution -->
+<div class="input-group mt-3">
+    <input type="number" class="form-control size-input" placeholder="@Localizer["OVERLAYS_WIDTH"]" id="width" value="1920" aria-label="@Localizer["OVERLAYS_WIDTH"]">
+    <div class="input-group-append input-group-prepend">
+        <span class="input-group-text">&times;</span>
+    </div>
+    <input type="number" class="form-control size-input" placeholder="@Localizer["OVERLAYS_HEIGHT"]" id="height" value="1080" aria-label="@Localizer["OVERLAYS_HEIGHT"]">
+</div>
+<div>
+    <small>
+        <a href="#" class="setsize" data-width="2560" data-height="1440">1440p</a>
+        /
+        <a href="#" class="setsize" data-width="1920" data-height="1080">1080p</a>
+        /
+        <a href="#" class="setsize" data-width="1280" data-height="720">720p</a>
+    </small>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_SIZE_DESC"]</small>
+</p>
 
+<!-- Margin -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="margin">@Localizer["OVERLAYS_MARGIN"]</label>
+    </div>
+    <input type="number" class="form-control size-input" id="margin">
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_MARGIN_DESC"]</small>
+</p>
 
-TEMPLATE FOR THE ROM CONFIG
+<!-- Debug folder -->
+<div class="input-group mb-0">
+    <div class="input-group-prepend">
+        <label class="input-group-text" for="debug">@Localizer["OVERLAYS_DEBUG"]</label>
+    </div>
+    <input type="text" class="form-control" id="debug">
+    <div class="input-group-append">
+        <button class="btn btn-outline-primary browse folder" type="button" data-input="debug">@Localizer["BROWSE"]</button>
+    </div>
+</div>
+<p class="mt-0 mb-3">
+    <small class="form-text text-muted">@Localizer["OVERLAYS_DEBUG_DESC"]</small>
+</p>
 
+<!-- GO -->
+<p class="mt-3">
+    <button type="button" id="buttonOk" class="btn btn-primary btn-lg btn-block">@Localizer["OVERLAYS_CHECK_GO"]</button>
+</p>
 
-ERROR MARGIN
+@section Scripts {
+<script>
+$(() => {
+    // handle click on resolution presets
+    $('a.setsize').on('click', (e) => {
+        let link = $(e.currentTarget);
+        $('#width').val(link.data('width'));
+        $('#height').val(link.data('height'));
+    });
 
+    // run
+    $('#buttonOk').on('click', () => {
+        // get paths from file inputs
+        const romsConfigFolder = $('#romsPath').val(),
+            overlaysConfigFolder = $('#overlaysPath').val(),
+            inputOverlayConfigPathInRomConfig = $('#expectedPath').val(),
+            errorMargin = Number($('#errorMargin').val() || 0),
+            autoFix = $('input[name=autoFix]:checked').val() == 'yes' ? true : false,
+            width = $('#width').val() || 1920,
+            height = $('#height').val() || 1080,
+            margin = $('#margin').val() || 0,
+            outputDebug = $('#debug').val(),
+            overwrite = $('input[name=overwrite]:checked').val() == 'yes' ? true : false;
 
-FIX ENCOUNTERED ISSUES
+        const targetResolution = `${width}x${height}`;
 
+        // check every path is filled
+        if (romsConfigFolder === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSELECTION"))'); return; }
+        if (overlaysConfigFolder === '') { window.alert('@Html.Raw(Localizer.Js("ERROR_NOSOURCECONFIG"))'); return; }
 
-TARGET RESOLUTION
+        ipc("overlays-check", {
+            romsConfigFolder,
+            overlaysConfigFolder,
+            inputOverlayConfigPathInRomConfig,
+            errorMargin,
+            autoFix,
+            targetResolution,
+            margin,
+            outputDebug,
+            overwrite
+        });
+    });
+});
 
-CROP OR RESIZE
-
-
-MARGIN TO ADD TO THE SCREEN POSITION
-
-
-DEBUG FOLDER
+</script>
+}
