@@ -6,10 +6,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
-using System.Runtime.ExceptionServices;
 
 namespace ArcadeManager.Core.Infrastructure;
 
@@ -54,6 +51,13 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
         var top = Math.Min(topCenter, Math.Min(topCenterPlus, topCenterMinus));
         var bottom = Math.Max(bottomCenter, Math.Max(bottomCenterMinus, bottomCenterPlus));
         var height = bottom - top;
+
+        if (top == 0 && bottom == 0)
+        {
+            // no transparent area found
+            // TODO: throw an exception and handle it in the UI
+            return new() { X = 0, Y = 0, Width = 0, Height = 0 };
+        }
 
         // screen is found, now scan horizontally based on these positions (it's often not
         // centered vertically)
@@ -112,15 +116,7 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
     {
         using Image image = Image.Load(imagePath);
 
-        if (image.Width > width || image.Height > height)
-        {
-            image.Mutate(x => x.Resize(new ResizeOptions
-            {
-                Size = new Size { Width = width, Height = height },
-                Position = AnchorPositionMode.Center,
-                Mode = ResizeMode.Crop
-            }));
-        }
+        ResizeImageInternal(image, width, height);
 
         image.Save(imagePath);
     }
@@ -135,15 +131,7 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
     {
         using Image<Rgba32> image = Image.Load<Rgba32>(bezel);
 
-        if (image.Width > width || image.Height > height)
-        {
-            image.Mutate(x => x.Resize(new ResizeOptions
-            {
-                Size = new Size { Width = width, Height = height },
-                Position = AnchorPositionMode.Center,
-                Mode = ResizeMode.Crop
-            }));
-        }
+        ResizeImageInternal(image, width, height);
 
         using var ms = new MemoryStream();
 
@@ -265,5 +253,18 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
         }
 
         return (first, last, shouldBreak);
+    }
+
+    private static void ResizeImageInternal(Image image, int width, int height)
+    {
+        if (image.Width > width || image.Height > height)
+        {
+            image.Mutate(x => x.Resize(new ResizeOptions
+            {
+                Size = new Size { Width = width, Height = height },
+                Position = AnchorPositionMode.Center,
+                Mode = ResizeMode.Crop
+            }));
+        }
     }
 }

@@ -25,10 +25,6 @@
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="5.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Roms\" />
-    <Folder Include="Views\Csv\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove=".DS_Store" />
     <None Remove="Assets\*.*" />
     <None Remove="Data\**\*.*" />
