@@ -5,7 +5,7 @@ using FakeItEasy;
 using AwesomeAssertions;
 using ArcadeManager.Core.Domain;
 
-namespace ArcadeManager.Core.Tests.Infrastructure;
+namespace ArcadeManager.Core.Tests.Domain;
 
 public class DatFileTests : TestBase
 {
@@ -24,7 +24,7 @@ public class DatFileTests : TestBase
     public async Task Datfile_is_read()
     {
         // arrange: file path
-        var datPath = GetTestFile("Infrastructure", "datfile.xml");
+        var datPath = GetTestFile("Domain", "datfile.xml");
 
         // act
         var result = await sut.GetRoms(datPath, "romset");
