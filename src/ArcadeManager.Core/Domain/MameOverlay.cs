@@ -11,27 +11,8 @@ using System.Xml;
 
 namespace ArcadeManager.Core.Domain;
 
-public class MameOverlay(IFileSystem fs)
+public class MameOverlay(IFileSystem fs) : IMameOverlay
 {
-    /// <summary>
-    /// Factory for the MAME processor
-    /// </summary>
-    /// <param name="options">The options</param>
-    /// <param name="lay">The LAY file</param>
-    /// <param name="cfg">The CFG file</param>
-    /// <returns>The processor</returns>
-    public static MameBezel MameGetBezel(MameToRaAction options, MameLayFile lay, MameCfgFile cfg)
-    {
-        // extract source data
-        var view = GetView(lay, options.UseFirstView);
-        var sourceRes = GetSourceResolution(view);
-        var bezelFile = MameGetBezelFile(lay, view);
-        var sourceScreenCoordinates = GetSourceScreenCoordinates(view);
-        var off = GetOffset(cfg);
-
-        return new MameBezel(off, sourceRes, sourceScreenCoordinates, bezelFile);
-    }
-
     /// <summary>
     /// Extracts and deserializes the LAY and CFG files
     /// </summary>
@@ -87,6 +68,25 @@ public class MameOverlay(IFileSystem fs)
         cfg = await MameGetConfigFile(cfgFile);
 
         return (lay, cfg, bezel);
+    }
+
+    /// <summary>
+    /// Factory for the MAME processor
+    /// </summary>
+    /// <param name="options">The options</param>
+    /// <param name="lay">The LAY file</param>
+    /// <param name="cfg">The CFG file</param>
+    /// <returns>The processor</returns>
+    public MameBezel MameGetBezel(MameToRaAction options, MameLayFile lay, MameCfgFile cfg)
+    {
+        // extract source data
+        var view = GetView(lay, options.UseFirstView);
+        var sourceRes = GetSourceResolution(view);
+        var bezelFile = MameGetBezelFile(lay, view);
+        var sourceScreenCoordinates = GetSourceScreenCoordinates(view);
+        var off = GetOffset(cfg);
+
+        return new MameBezel(off, sourceRes, sourceScreenCoordinates, bezelFile);
     }
 
     /// <summary>

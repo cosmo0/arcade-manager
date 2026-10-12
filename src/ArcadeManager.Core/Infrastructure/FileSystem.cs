@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Infrastructure;
@@ -405,6 +406,30 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     }
 
     /// <summary>
+    /// Gets a file stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>
+    /// The stream reader
+    /// </returns>
+    public StreamReader GetReadFileStream(string path)
+    {
+        return File.OpenText(path);
+    }
+
+    /// <summary>
+    /// Gets a write file stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>
+    /// The stream writer
+    /// </returns>
+    public StreamWriter GetWriteFileStream(string path)
+    {
+        return new StreamWriter(new FileStream(path, FileMode.Create, FileAccess.Write));
+    }
+
+    /// <summary>
     /// Lists the files inside a zip
     /// </summary>
     /// <param name="zip">The zip archive</param>
@@ -528,18 +553,6 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     }
 
     /// <summary>
-    /// Reads a file using a stream.
-    /// </summary>
-    /// <param name="path">The file path.</param>
-    /// <param name="action">The action to execute on the file stream.</param>
-    public async Task ReadFileStream(string path, Func<StreamReader, Task> action)
-    {
-        using var stream = File.OpenText(path);
-
-        await action(stream);
-    }
-
-    /// <summary>
     /// Replaces a file in a zip with another file
     /// </summary>
     /// <param name="source">The source zip to read the file from</param>
@@ -580,15 +593,16 @@ public class FileSystem(IEnvironment environment) : IFileSystem
     }
 
     /// <summary>
-    /// Writes in a file using a stream.
+    /// Sanitizes a file name
     /// </summary>
-    /// <param name="path">The file path.</param>
-    /// <param name="action">The action to execute on the stream writer.</param>
-    public async Task WriteFileStream(string path, Func<StreamWriter, Task> action)
+    /// <param name="name">The file name</param>
+    /// <returns>The sanitized file name</returns>
+    /// <remarks>Copied from stackoverflow.com/a/847251/6776</remarks>
+    public string Sanitize(string name)
     {
-        using var outStream = new FileStream(path, FileMode.Create, FileAccess.Write);
-        using var outStreamWriter = new StreamWriter(outStream);
+        string invalidChars = Regex.Escape(new string(GetInvalidFileNameChars()));
+        string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
 
-        await action(outStreamWriter);
+        return Regex.Replace(name, invalidRegStr, "_", RegexOptions.None, TimeSpan.FromSeconds(1));
     }
 }

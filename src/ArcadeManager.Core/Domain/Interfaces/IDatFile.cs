@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using ArcadeManager.Core.Models.Roms;
 
-namespace ArcadeManager.Core.Infrastructure.Interfaces;
+namespace ArcadeManager.Core.Domain;
 
 /// <summary>
 /// Interface for the DAT file processing

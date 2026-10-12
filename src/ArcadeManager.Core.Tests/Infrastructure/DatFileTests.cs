@@ -3,6 +3,7 @@ using System.Reflection;
 using ArcadeManager.Core.Infrastructure;
 using FakeItEasy;
 using AwesomeAssertions;
+using ArcadeManager.Core.Domain;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 

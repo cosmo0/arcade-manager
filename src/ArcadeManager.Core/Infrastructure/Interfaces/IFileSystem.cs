@@ -211,6 +211,20 @@ public interface IFileSystem
     char[] GetInvalidFileNameChars();
 
     /// <summary>
+    /// Gets a read file stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>The stream reader</returns>
+    StreamReader GetReadFileStream(string path);
+
+    /// <summary>
+    /// Gets a write file stream.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>The stream writer</returns>
+    StreamWriter GetWriteFileStream(string path);
+
+    /// <summary>
     /// Lists the files inside a zip
     /// </summary>
     /// <param name="zip">The zip archive</param>
@@ -271,13 +285,6 @@ public interface IFileSystem
     string[] ReadAllLines(string path);
 
     /// <summary>
-    /// Reads a file using a stream.
-    /// </summary>
-    /// <param name="path">The file path.</param>
-    /// <param name="action">The action to execute on the file stream.</param>
-    Task ReadFileStream(string path, Func<StreamReader, Task> action);
-
-    /// <summary>
     /// Replaces a file in a zip with another file
     /// </summary>
     /// <param name="source">The source zip to read the file from</param>
@@ -288,9 +295,10 @@ public interface IFileSystem
     Task<bool> ReplaceZipFile(ZipFile source, ZipFile target, IGameRomFile sourceFile, IGameRomFile targetFile);
 
     /// <summary>
-    /// Writes in a file using a stream.
+    /// Sanitizes a file name
     /// </summary>
-    /// <param name="path">The file path.</param>
-    /// <param name="action">The action to execute on the stream writer.</param>
-    Task WriteFileStream(string path, Func<StreamWriter, Task> action);
+    /// <param name="name">The file name</param>
+    /// <returns>The sanitized file name</returns>
+    /// <remarks>Copied from stackoverflow.com/a/847251/6776</remarks>
+    string Sanitize(string name);
 }

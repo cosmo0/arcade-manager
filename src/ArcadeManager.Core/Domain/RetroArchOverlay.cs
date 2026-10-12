@@ -7,86 +7,8 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Domain;
 
-public class RetroArchOverlay(IFileSystem fs)
+public class RetroArchOverlay(IFileSystem fs) : IRetroArchOverlay
 {
-    /// <summary>
-    /// Gets the bounds written in a config file
-    /// </summary>
-    /// <param name="fileContent">The content of the file</param>
-    /// <returns>The rom file content</returns>
-    public static Bounds GetBoundsFromConfig(string fileContent)
-    {
-        if (int.TryParse(GetCfgData(fileContent, "custom_viewport_width"), out int width)
-            && int.TryParse(GetCfgData(fileContent, "custom_viewport_height"), out int height)
-            && int.TryParse(GetCfgData(fileContent, "custom_viewport_x"), out int x)
-            && int.TryParse(GetCfgData(fileContent, "custom_viewport_y"), out int y))
-        {
-            return new Bounds
-            {
-                X = x,
-                Y = y,
-                Width = width,
-                Height = height
-            };
-        }
-
-        return new Bounds { X = 0, Y = 0, Width = 0, Height = 0 };
-    }
-
-    /// <summary>
-    /// Gets data from the specified config file.
-    /// </summary>
-    /// <param name="fileContent">The content of the file.</param>
-    /// <param name="key">The key to look for.</param>
-    /// <returns>The config value</returns>
-    public static string GetCfgData(string fileContent, string key)
-    {
-        var match = Regex.Match(fileContent, BuildCfgRegex(key), RegexOptions.Multiline, TimeSpan.FromSeconds(1));
-        if (match.Success && match.Captures.Count != 0)
-        {
-            return match.Groups[1].Value.Trim();
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Normalizes a path so it's understandable by System.IO.Path
-    /// </summary>
-    /// <param name="path">The path to normalize</param>
-    /// <returns>The normalized path</returns>
-    public static string NormalizePath(string path)
-    {
-        // RetroArch has this weird syntax where ":\" means "at the RA root"
-        path = path.StartsWith(':') ? path[1..] : path;
-
-        // Windows handles *nix slashes fine, the opposite is not true
-        path = path.Replace("\\", "/");
-
-        return path;
-    }
-
-    /// <summary>
-    /// Sets a value in the specified config file
-    /// </summary>
-    /// <param name="fileContent">The contents of the file</param>
-    /// <param name="key">The key to set</param>
-    /// <returns>The modified content</returns>
-    public static string SetCfgData(string fileContent, string key, string value)
-    {
-        var r = BuildCfgRegex(key);
-        var v = $"{key} = {value}";
-
-        // if it exists: replace value
-        if (Regex.IsMatch(fileContent, r, RegexOptions.Multiline, TimeSpan.FromSeconds(1)))
-        {
-            return Regex.Replace(fileContent, r, v, RegexOptions.Multiline, TimeSpan.FromSeconds(1));
-        }
-
-        // if it doesn't exist: add value
-        return $"{fileContent}\n{v}";
-    }
-
     /// <summary>
     /// Creates a config file
     /// </summary>
@@ -122,6 +44,55 @@ public class RetroArchOverlay(IFileSystem fs)
         await fs.FileWriteAsync(configPath, content);
     }
 
+    /// <summary>
+    /// Gets the bounds written in a config file
+    /// </summary>
+    /// <param name="fileContent">The content of the file</param>
+    /// <returns>The rom file content</returns>
+    public Bounds GetBoundsFromConfig(string fileContent)
+    {
+        if (int.TryParse(GetCfgData(fileContent, "custom_viewport_width"), out int width)
+            && int.TryParse(GetCfgData(fileContent, "custom_viewport_height"), out int height)
+            && int.TryParse(GetCfgData(fileContent, "custom_viewport_x"), out int x)
+            && int.TryParse(GetCfgData(fileContent, "custom_viewport_y"), out int y))
+        {
+            return new Bounds
+            {
+                X = x,
+                Y = y,
+                Width = width,
+                Height = height
+            };
+        }
+
+        return new Bounds { X = 0, Y = 0, Width = 0, Height = 0 };
+    }
+
+    /// <summary>
+    /// Gets data from the specified config file.
+    /// </summary>
+    /// <param name="fileContent">The content of the file.</param>
+    /// <param name="key">The key to look for.</param>
+    /// <returns>The config value</returns>
+    public string GetCfgData(string fileContent, string key)
+    {
+        var match = Regex.Match(fileContent, BuildCfgRegex(key), RegexOptions.Multiline, TimeSpan.FromSeconds(1));
+        if (match.Success && match.Captures.Count != 0)
+        {
+            return match.Groups[1].Value.Trim();
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Generates a RetroArch config based on some options
+    /// </summary>
+    /// <param name="romFile">The rom file.</param>
+    /// <param name="options">The options.</param>
+    /// <returns>
+    /// The RetroArch config
+    /// </returns>
     public async Task<RetroArchBezel> GetRetroArchConfig(string romFile, RaToMameAction options)
     {
         // get rom file content
@@ -158,6 +129,22 @@ public class RetroArchOverlay(IFileSystem fs)
     }
 
     /// <summary>
+    /// Normalizes a path so it's understandable by System.IO.Path
+    /// </summary>
+    /// <param name="path">The path to normalize</param>
+    /// <returns>The normalized path</returns>
+    public string NormalizePath(string path)
+    {
+        // RetroArch has this weird syntax where ":\" means "at the RA root"
+        path = path.StartsWith(':') ? path[1..] : path;
+
+        // Windows handles *nix slashes fine, the opposite is not true
+        path = path.Replace("\\", "/");
+
+        return path;
+    }
+
+    /// <summary>
     /// Sets the bounds in the specified config
     /// </summary>
     /// <param name="filePath">The path to the file to set</param>
@@ -176,6 +163,27 @@ public class RetroArchOverlay(IFileSystem fs)
         fileContent = FillTemplateContent(fileContent, game, bounds, resolution);
 
         await fs.FileWriteAsync(filePath, fileContent);
+    }
+
+    /// <summary>
+    /// Sets a value in the specified config file
+    /// </summary>
+    /// <param name="fileContent">The contents of the file</param>
+    /// <param name="key">The key to set</param>
+    /// <returns>The modified content</returns>
+    public string SetCfgData(string fileContent, string key, string value)
+    {
+        var r = BuildCfgRegex(key);
+        var v = $"{key} = {value}";
+
+        // if it exists: replace value
+        if (Regex.IsMatch(fileContent, r, RegexOptions.Multiline, TimeSpan.FromSeconds(1)))
+        {
+            return Regex.Replace(fileContent, r, v, RegexOptions.Multiline, TimeSpan.FromSeconds(1));
+        }
+
+        // if it doesn't exist: add value
+        return $"{fileContent}\n{v}";
     }
 
     private static string BuildCfgRegex(string key)

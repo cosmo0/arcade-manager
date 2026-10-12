@@ -1,5 +1,6 @@
 using System;
 using ArcadeManager.Core;
+using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Services;

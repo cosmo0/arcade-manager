@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Roms;
 
-namespace ArcadeManager.Core.Infrastructure;
+namespace ArcadeManager.Core.Domain;
 
 /// <summary>
 /// DAT file processing
@@ -22,41 +22,47 @@ public class DatFile(IFileSystem fs) : IDatFile
     {
         var result = new GameRomList();
 
-        await fs.ReadFileStream(datFilePath, async (datStream) => {
-            // read DAT file and detect the tags names
-            XDocument doc = await XDocument.LoadAsync(datStream, LoadOptions.None, new CancellationToken());
+        using var datStream = fs.GetReadFileStream(datFilePath);
 
-            // ensure we skip the header, if any (assumes there are at least 2 games in the DAT)
-            string gameTag = doc.Root.Elements().Skip(1).First().Name.LocalName; 
+        // read DAT file and detect the tags names
+        XDocument doc = await XDocument.LoadAsync(datStream, LoadOptions.None, new CancellationToken());
 
-            // for each game in the dat file
-            foreach (var gameXml in doc.Root.Elements(gameTag)) {
-                // parse game infos
-                result.Add(GameRom.FromXml(gameXml));
-            }
-        });
+        // ensure we skip the header, if any (assumes there are at least 2 games in the DAT)
+        string gameTag = doc.Root.Elements().Skip(1).First().Name.LocalName;
+
+        // for each game in the dat file
+        foreach (var gameXml in doc.Root.Elements(gameTag))
+        {
+            // parse game infos
+            result.Add(GameRom.FromXml(gameXml));
+        }
 
         // loop again on the files list to do a bios and clones matching
-        foreach (var game in result) {
+        foreach (var game in result)
+        {
             // get parent
-            if (!string.IsNullOrEmpty(game.ParentName)) {
+            if (!string.IsNullOrEmpty(game.ParentName))
+            {
                 game.Parent = result.FirstOrDefault(g => g.Name == game.ParentName);
 
                 // circular reference
                 game.Parent?.Clones.Add(game);
-                
+
                 // get bios from parent
-                if (!string.IsNullOrEmpty(game.Parent?.BiosName)) {
+                if (!string.IsNullOrEmpty(game.Parent?.BiosName))
+                {
                     game.BiosName = game.Parent.BiosName;
 
-                    if (game.Parent.Bios != null) {
+                    if (game.Parent.Bios != null)
+                    {
                         game.Bios = game.Parent.Bios;
                     }
                 }
             }
 
             // get bios
-            if (game.Bios == null && !string.IsNullOrEmpty(game.BiosName)) {
+            if (game.Bios == null && !string.IsNullOrEmpty(game.BiosName))
+            {
                 game.Bios = result.FirstOrDefault(g => g.Name == game.BiosName);
             }
         }

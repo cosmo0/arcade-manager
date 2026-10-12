@@ -19,27 +19,26 @@ namespace ArcadeManager.Core.Services;
 /// <summary>
 /// The overlays service
 /// </summary>
-/// <seealso cref="IOverlays"/>
 /// <remarks>
-/// Initializes a new instance of the <see cref="Overlays"/> class.
+/// Initializes a new instance of the <see cref="Overlays" /> class.
 /// </remarks>
-/// <param name="downloaderService">The downloader service.</param>
-/// <param name="fs">The file system.</param>
-/// <param name="environment">The environment data</param>
-public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironment environment, IImageProcessor imageProcessor) : IOverlays
+/// <seealso cref="IOverlays" />
+public class Overlays(
+    IDownloader downloaderService,
+    IFileSystem fs,
+    IEnvironment environment,
+    IImageProcessor imageProcessor,
+    IRetroArchOverlay raProcessor,
+    IMameOverlay mameProcessor)
+    : IOverlays
 {
     private static readonly OperationCanceledException cancel = new("Operation cancelled");
 
     private static readonly string inputOverlayProperty = "input_overlay";
-
-    private static readonly string templatesFolder = "templates";
-    private static readonly string raRomTemplate = "game.cfg";
-    private static readonly string raOverlayTemplate = "overlay.cfg";
     private static readonly string mameLayTemplate = "default.lay";
-
-    private readonly MameOverlay mameProcessor = new(fs);
-
-    private readonly RetroArchOverlay raProcessor = new(fs);
+    private static readonly string raOverlayTemplate = "overlay.cfg";
+    private static readonly string raRomTemplate = "game.cfg";
+    private static readonly string templatesFolder = "templates";
 
     /// <summary>
     /// Checks the Retroarch configuration files.
@@ -407,7 +406,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         // get bounds
         var boundsInImage = imageProcessor.FindScreen(imageContent, 0);
-        var boundsInConf = RetroArchOverlay.GetBoundsFromConfig(romContent);
+        var boundsInConf = raProcessor.GetBoundsFromConfig(romContent);
 
         // make sure the bounds match
         if (!CheckCoordinate(boundsInImage.X, boundsInConf.X, options.ErrorMargin)
@@ -505,7 +504,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         var game = fileName.Replace(".cfg", "");
 
         var cfgContent = await fs.FileReadAsync(f);
-        var overlayFileName = RetroArchOverlay.GetCfgData(cfgContent, "overlay0_overlay");
+        var overlayFileName = raProcessor.GetCfgData(cfgContent, "overlay0_overlay");
 
         // check that the overlay is used
         var cfgEntry = configs.FirstOrDefault(c => c.Overlay != null && c.Overlay.Equals(fileName, StringComparison.InvariantCultureIgnoreCase));
@@ -551,7 +550,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         var romConfEntry = new Config() { Rom = fileName };
 
         var cfgContent = await fs.FileReadAsync(f);
-        var overlayPath = RetroArchOverlay.GetCfgData(cfgContent, inputOverlayProperty);
+        var overlayPath = raProcessor.GetCfgData(cfgContent, inputOverlayProperty);
 
         // no overlay image
         if (string.IsNullOrWhiteSpace(overlayPath))
@@ -562,7 +561,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         }
 
         // make sure a Windows path is converted to Unix under *nix, and vice versa
-        var overlayFileName = fs.FileName(RetroArchOverlay.NormalizePath(overlayPath));
+        var overlayFileName = fs.FileName(raProcessor.NormalizePath(overlayPath));
 
         // check that there is an matching overlay file at the expected localtion
         if (fs.FileExists(fs.PathJoin(options.OverlaysConfigFolder, overlayFileName)))
@@ -586,7 +585,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             {
                 if (options.AutoFix)
                 {
-                    cfgContent = RetroArchOverlay.SetCfgData(cfgContent, inputOverlayProperty, overlayShouldBe);
+                    cfgContent = raProcessor.SetCfgData(cfgContent, inputOverlayProperty, overlayShouldBe);
 
                     await fs.FileWriteAsync(f, cfgContent);
 
@@ -614,7 +613,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
 
         // get overlay file name
         var romContent = await fs.FileReadAsync(f);
-        var overlayFileName = RetroArchOverlay.GetCfgData(romContent, inputOverlayProperty);
+        var overlayFileName = raProcessor.GetCfgData(romContent, inputOverlayProperty);
         if (string.IsNullOrWhiteSpace(overlayFileName))
         {
             messageHandler.ProgressMessage($"{game} - fixing screen: rom config doesn't have an input_overlay");
@@ -623,7 +622,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             return (err, fix);
         }
 
-        var overlayFile = fs.FileName(RetroArchOverlay.NormalizePath(overlayFileName));
+        var overlayFile = fs.FileName(raProcessor.NormalizePath(overlayFileName));
         var overlayPath = fs.PathJoin(options.OverlaysConfigFolder, overlayFile);
 
         if (!fs.FileExists(overlayPath))
@@ -635,7 +634,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         }
 
         var overlayContent = await fs.FileReadAsync(overlayPath);
-        var imageFile = RetroArchOverlay.GetCfgData(overlayContent, "overlay0_overlay");
+        var imageFile = raProcessor.GetCfgData(overlayContent, "overlay0_overlay");
         var imagePath = fs.PathJoin(options.OverlaysConfigFolder, imageFile);
 
         if (!fs.FileExists(imagePath))
@@ -684,7 +683,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             : await mameProcessor.ExtractFiles(game, fsEntry, cfgFile, options);
 
         // extracts the data from the MAME files
-        var mameBezel = MameOverlay.MameGetBezel(options, lay, cfg);
+        var mameBezel = mameProcessor.MameGetBezel(options, lay, cfg);
 
         // resize the bezel image
         bezel = await imageProcessor.Resize(

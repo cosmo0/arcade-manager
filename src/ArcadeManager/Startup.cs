@@ -1,4 +1,5 @@
 using ArcadeManager.Core;
+using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Services;
@@ -124,6 +125,12 @@ public class Startup(IConfiguration configuration)
             container.Register<IFileSystem, FileSystem>(Lifestyle.Singleton);
             container.Register<IDatFile, DatFile>(Lifestyle.Singleton);
             container.Register<IImageProcessor, ImageProcessor>(Lifestyle.Singleton);
+
+            // domain
+            container.Register<IRetroArchOverlay, RetroArchOverlay>(Lifestyle.Singleton);
+            container.Register<IMameOverlay, MameOverlay>(Lifestyle.Singleton);
+            container.Register<ICsvFile, CsvFile>(Lifestyle.Singleton);
+            container.Register<IIniFile, IniFile>(Lifestyle.Singleton);
 
             // core services
             container.Register<IDownloader, Downloader>(Lifestyle.Singleton);

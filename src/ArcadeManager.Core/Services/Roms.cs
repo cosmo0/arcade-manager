@@ -1,4 +1,5 @@
-﻿using ArcadeManager.Core.Exceptions;
+﻿using ArcadeManager.Core.Domain;
+using ArcadeManager.Core.Exceptions;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models;
 using ArcadeManager.Core.Models.Actions;
@@ -17,19 +18,17 @@ public class Roms : IRoms
 {
     private readonly List<string> bioslist;
     private readonly BiosMatchList biosmatch = new();
-    private readonly ICsv csvService;
+    private readonly ICsvFile csvFile;
     private readonly DeviceMatchList devicematch = new();
     private readonly IFileSystem fs;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Roms"/> class.
     /// </summary>
-    /// <param name="csvService">The CSV service.</param>
-    /// <param name="fs">The filesystem infrastructure.</param>
-    public Roms(ICsv csvService, IFileSystem fs)
+    public Roms(IFileSystem fs, ICsvFile csvFile)
     {
-        this.csvService = csvService;
         this.fs = fs;
+        this.csvFile = csvFile;
 
         bioslist = [.. fs.ReadAllLines(fs.GetDataPath("bioslist.txt"))];
         biosmatch.AddRange(
@@ -64,7 +63,7 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Selection)) { fs.DirectoryCreate(args.Selection); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.Main, false);
+            var content = await csvFile.ReadFile(args.Main, false);
 
             // copy the games
             var copied = CopyGamesList(args, content, messageHandler);
@@ -102,7 +101,7 @@ public class Roms : IRoms
             foreach (var file in files)
             {
                 string filepath = fs.GetDataPath("csv", emulator, $"{file}.csv");
-                content.AddRange(await csvService.ReadFile(filepath, false));
+                content.AddRange(await csvFile.ReadFile(filepath, false));
             }
 
             content.DeDuplicate();
@@ -133,7 +132,7 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Romset)) { throw new PathNotFoundException($"Unable to find folder {args.Romset}"); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.Main, false);
+            var content = await csvFile.ReadFile(args.Main, false);
 
             // check that all files in the CSV are listed in the folder
             var result = new List<string>();
@@ -174,7 +173,7 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.Main, false);
+            var content = await csvFile.ReadFile(args.Main, false);
 
             var total = content.Games.Count;
             var i = 0;
@@ -229,7 +228,7 @@ public class Roms : IRoms
         if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
         // read CSV file
-        var content = await csvService.ReadFile(args.Main, false);
+        var content = await csvFile.ReadFile(args.Main, false);
 
         foreach (var game in content.Games.Select(g => g.Name))
         {
@@ -274,7 +273,7 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
             // read CSV file
-            var content = await csvService.ReadFile(args.Main, false);
+            var content = await csvFile.ReadFile(args.Main, false);
 
             // get list of files
             var files = fs.FilesGetList(args.Selection, "*.zip").ToList();
@@ -339,7 +338,7 @@ public class Roms : IRoms
         if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
         // read CSV file
-        var content = await csvService.ReadFile(args.Main, false);
+        var content = await csvFile.ReadFile(args.Main, false);
 
         // get list of files
         var files = fs.FilesGetList(args.Selection, "*.zip").ToList();

@@ -1,18 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models;
 using ArcadeManager.Core.Models.Actions;
 using ArcadeManager.Core.Models.Roms;
 using ArcadeManager.Core.Models.Zip;
 using ArcadeManager.Core.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Services;
 
-public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDatChecker
+public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : IDatChecker
 {
     /// <summary>
     /// Checks a romset against a DAT file
@@ -58,7 +59,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
             CsvGamesList csv = await GetCsvData(args.CsvFilter);
 
             messageHandler.Progress("Reading DAT file", 0, 0);
-            IReadOnlyList<GameRom> allGames = KeepCsvGames(await datFile.GetRoms(dat, args.Romset), csv);
+            var allGames = KeepCsvGames(await datFile.GetRoms(dat, args.Romset), csv);
 
             // get the list of files in the repair folder
             List<string> otherFiles = GetOtherFolderFiles(args, messageHandler);
@@ -404,7 +405,7 @@ public class DatChecker(IFileSystem fs, ICsv csvService, IDatFile datFile) : IDa
     {
         if (!string.IsNullOrEmpty(csvfilter) && fs.FileExists(csvfilter))
         {
-            return await csvService.ReadFile(csvfilter, false);
+            return await csvFile.ReadFile(csvfilter, false);
         }
 
         return null;
