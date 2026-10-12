@@ -3,10 +3,8 @@ using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Bezels;
 using FakeItEasy;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
+using ImageMagick;
 using System.Reflection;
-using System.Text;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 
@@ -38,8 +36,10 @@ public class ImageProcessorTests
         outputFolder = Path.Join(sourceFolder, "output");
 
         // reset output folder
-        if (Directory.Exists(outputFolder)) { Directory.Delete(outputFolder, true); }
-        Directory.CreateDirectory(outputFolder);
+        if (!Directory.Exists(outputFolder))
+        {
+            Directory.CreateDirectory(outputFolder);
+        }
     }
 
     [Fact]
@@ -49,28 +49,31 @@ public class ImageProcessorTests
         Bounds screenPosition = new() { X = 674, Y = 184, Width = 575, Height = 734 };
 
         // arrange: expected result
-        var expected = await File.ReadAllBytesAsync(Path.Join(sourceFolder, "expected", "1943_debug.png"));
+        var expected = await File.ReadAllBytesAsync(Path.Join(sourceFolder, "expected", "1943_debug.png"), TestContext.Current.CancellationToken);
+
+        // arrange: cleanup
+        Cleanup(Path.Combine(outputFolder, "1943.png"));
 
         // act
-        sut.DebugDraw("1943", outputFolder, sourceImage, screenPosition, resolution);
-        var result = await File.ReadAllBytesAsync(Path.Join(outputFolder, "1943.png"));
+        await sut.DebugDraw("1943", outputFolder, sourceImage, screenPosition, resolution);
+        var result = await File.ReadAllBytesAsync(Path.Join(outputFolder, "1943.png"), TestContext.Current.CancellationToken);
 
         // assert
-        result.Should().BeEquivalentTo(expected);
+        AssertImagesAreIdentical(result, expected);
     }
 
     [Fact]
     public async Task Image_bytes_is_resized()
     {
         // arrange
-        var content = await File.ReadAllBytesAsync(sourceImage);
-        var expected = await File.ReadAllBytesAsync(Path.Combine(sourceFolder, "expected", "1943_resize.png"));
+        var content = await File.ReadAllBytesAsync(sourceImage, TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(Path.Combine(sourceFolder, "expected", "1943_resize.png"), TestContext.Current.CancellationToken);
 
         // act
-        var result = sut.Resize(content, 1280, 720);
+        var result = await sut.Resize(content, 1280, 720);
 
         // assert
-        result.Should().BeEquivalentTo(expected);
+        AssertImagesAreIdentical(result, expected);
     }
 
     [Fact]
@@ -78,22 +81,23 @@ public class ImageProcessorTests
     {
         // arrange
         var temp = Path.Combine(outputFolder, "resize.png");
-        var expected = await File.ReadAllBytesAsync(Path.Combine(sourceFolder, "expected", "1943_resize.png"));
+        Cleanup(temp);
+        var expected = await File.ReadAllBytesAsync(Path.Combine(sourceFolder, "expected", "1943_resize.png"), TestContext.Current.CancellationToken);
         File.Copy(sourceImage, temp);
 
         // act
-        sut.Resize(temp, 1280, 720);
-        var result = await File.ReadAllBytesAsync(temp);
+        await sut.Resize(temp, 1280, 720);
+        var result = await File.ReadAllBytesAsync(temp, TestContext.Current.CancellationToken);
 
         // assert
-        result.Should().BeEquivalentTo(expected);
+        AssertImagesAreIdentical(result, expected);
     }
 
     [Fact]
     public async Task Screen_is_found_when_transparent_area()
     {
         // arrange
-        var content = await File.ReadAllBytesAsync(sourceImage);
+        var content = await File.ReadAllBytesAsync(sourceImage, TestContext.Current.CancellationToken);
 
         // act
         var result = sut.FindScreen(content, 0);
@@ -106,7 +110,7 @@ public class ImageProcessorTests
     public async Task Screen_is_not_found_when_no_transparent_area()
     {
         // arrange
-        var content = await File.ReadAllBytesAsync(Path.Join(sourceFolder, "nontransparent.png"));
+        var content = await File.ReadAllBytesAsync(Path.Join(sourceFolder, "nontransparent.png"), TestContext.Current.CancellationToken);
 
         // act
         var result = sut.FindScreen(content, 0);
@@ -123,5 +127,20 @@ public class ImageProcessorTests
 
         // assert
         result.Should().BeEquivalentTo(resolution);
+    }
+
+    private static void AssertImagesAreIdentical(byte[] result, byte[] expected)
+    {
+        using MagickImage resultImage = new(result);
+        using MagickImage expectedImage = new(expected);
+
+        var compareResult = resultImage.Compare(expectedImage, ErrorMetric.MeanAbsolute, Channels.RGBA);
+
+        compareResult.Should().Be(0);
+    }
+
+    private static void Cleanup(string path)
+    {
+        if (File.Exists(path)) { File.Delete(path); }
     }
 }

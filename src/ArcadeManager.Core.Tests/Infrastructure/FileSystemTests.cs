@@ -111,7 +111,7 @@ public class FileSystemTests
         var fileInZip = targetZipFile.GetEntry("test1.txt");
         fileInZip.Should().NotBeNull();
         
-        var data = await new StreamReader(await fileInZip!.OpenAsync()).ReadToEndAsync();
+        var data = await new StreamReader(await fileInZip!.OpenAsync()).ReadToEndAsync(TestContext.Current.CancellationToken);
         data.Should().Be("test1 modified");
     }
 
@@ -156,7 +156,7 @@ public class FileSystemTests
         var fileInZip = targetZipFile.GetEntry("renamed.txt");
         fileInZip.Should().NotBeNull();
         
-        var data = await new StreamReader(await fileInZip!.OpenAsync()).ReadToEndAsync();
+        var data = await new StreamReader(await fileInZip!.OpenAsync()).ReadToEndAsync(TestContext.Current.CancellationToken);
         data.Should().Be("test1 modified");
     }
 

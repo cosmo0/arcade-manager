@@ -422,10 +422,10 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
                 // output debug whether fixing or not
                 if (boundsInConf.Width > 0 && boundsInConf.Height > 0)
                 {
-                    imageProcessor.DebugDraw($"{game}_conf", options.OutputDebug, imagePath, boundsInConf, options.TargetResolutionBounds);
+                    await imageProcessor.DebugDraw($"{game}_conf", options.OutputDebug, imagePath, boundsInConf, options.TargetResolutionBounds);
                 }
 
-                imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, imagePath, boundsInImage, null);
+                await imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, imagePath, boundsInImage, null);
             }
 
             if (messageHandler.MustCancel) { throw cancel; }
@@ -483,7 +483,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             if (options.AutoFix)
             {
                 messageHandler.ProgressMessage($"{game} - resizing image (previous size: {imgSize.Width}x{imgSize.Height})");
-                imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
+                await imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
                 fix++;
             }
             else
@@ -687,7 +687,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         var mameBezel = MameOverlay.MameGetBezel(options, lay, cfg);
 
         // resize the bezel image
-        bezel = imageProcessor.Resize(
+        bezel = await imageProcessor.Resize(
             bezel,
             (int)options.TargetResolutionBounds.Width,
             (int)options.TargetResolutionBounds.Height);
@@ -715,7 +715,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         }
 
         // debug: draw target position
-        imageProcessor.DebugDraw(game, options.OutputDebug, outputImage, newPosition, options.TargetResolutionBounds);
+        await imageProcessor.DebugDraw(game, options.OutputDebug, outputImage, newPosition, options.TargetResolutionBounds);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
@@ -738,7 +738,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         if (options.ScanBezelForScreenCoordinates)
         {
             // scan image for transparent pixels
-            newPosition = imageProcessor.FindScreen(bezel, options.Margin);
+            newPosition = imageProcessor.FindScreen(bezel, (uint)options.Margin);
         }
         else
         {
@@ -775,7 +775,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         Bounds newPosition;
         if (options.ScanBezelForScreenCoordinates)
         {
-            newPosition = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(processor.OverlayImagePath), options.Margin);
+            newPosition = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(processor.OverlayImagePath), (uint)options.Margin);
         }
         else
         {
@@ -793,7 +793,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         fs.FileCopy(processor.OverlayImagePath, fs.PathJoin(target, processor.OverlayImageFileName), options.Overwrite);
 
         // resize the bezel image
-        imageProcessor.Resize(
+        await imageProcessor.Resize(
             processor.OverlayImagePath,
             (int)processor.SourceResolution.Width,
             (int)processor.SourceResolution.Height);
@@ -801,7 +801,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         if (messageHandler.MustCancel) { throw cancel; }
 
         // debug: draw target position
-        imageProcessor.DebugDraw(game, options.OutputDebug, processor.OverlayImagePath, newPosition, options.TargetResolutionBounds);
+        await imageProcessor.DebugDraw(game, options.OutputDebug, processor.OverlayImagePath, newPosition, options.TargetResolutionBounds);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
@@ -843,7 +843,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             messageHandler.ProgressMessage($"{game} - creating rom config for orphan image at {romDest}");
 
             // create the config
-            var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), options.Margin);
+            var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), (uint)options.Margin);
             await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raRomTemplate), game, romDest, bounds, options.TargetResolutionBounds);
 
             configs.Add(new Config { Rom = cfgFilesName, Overlay = cfgFilesName, Image = fs.FileName(f) });
@@ -879,7 +879,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             {
                 // get bounds
                 var img = await fs.FileReadBinaryAsync(imgFileName);
-                var bounds = imageProcessor.FindScreen(img, options.Margin);
+                var bounds = imageProcessor.FindScreen(img, (uint)options.Margin);
 
                 await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raRomTemplate), game, dest, bounds, options.TargetResolutionBounds);
 
@@ -1011,10 +1011,10 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         if (messageHandler.MustCancel) { throw cancel; }
 
         // resize
-        imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
+        await imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
 
         // get data from image
-        var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), options.Margin);
+        var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), (uint)options.Margin);
 
         // generate config
         var config = fs.PathJoin(options.ImagesFolder, $"{game}.cfg");
@@ -1053,7 +1053,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         // debug
         if (!string.IsNullOrWhiteSpace(options.OutputDebug))
         {
-            imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, f, bounds, options.TargetResolutionBounds);
+            await imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, f, bounds, options.TargetResolutionBounds);
         }
 
         return (createdNb, errorsNb);

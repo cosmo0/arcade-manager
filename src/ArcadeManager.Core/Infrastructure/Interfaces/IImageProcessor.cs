@@ -1,4 +1,5 @@
 ﻿using ArcadeManager.Core.Models.Bezels;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Infrastructure.Interfaces;
 
@@ -11,7 +12,7 @@ public interface IImageProcessor
     /// <param name="debugFolder">The path to the debug folder</param>
     /// <param name="sourceImagePath">The path to the image</param>
     /// <param name="position">The position of the screen</param>
-    void DebugDraw(string game, string debugFolder, string sourceImagePath, Bounds position, Bounds resolution);
+    Task DebugDraw(string game, string debugFolder, string sourceImagePath, Bounds position, Bounds resolution);
 
     /// <summary>
     /// Finds the screen position in the specified bezel, based on transparency.
@@ -19,7 +20,7 @@ public interface IImageProcessor
     /// <param name="bezel">The bezel file.</param>
     /// <param name="margin">The margins to apply.</param>
     /// <returns>The screen position</returns>
-    Bounds FindScreen(byte[] bezel, int margin);
+    Bounds FindScreen(byte[] bezel, uint margin);
 
     /// <summary>
     /// Gets the image size.
@@ -34,7 +35,7 @@ public interface IImageProcessor
     /// <param name="imagePath">The path to the image</param>
     /// <param name="width">The target width</param>
     /// <param name="height">The target height</param>
-    void Resize(string imagePath, int width, int height);
+    Task Resize(string imagePath, int width, int height);
 
     /// <summary>
     /// Resizes an image to the specified dimension, cropping it if necessary
@@ -42,5 +43,5 @@ public interface IImageProcessor
     /// <param name="image">The image data</param>
     /// <param name="width">The target width</param>
     /// <param name="height">The target height</param>
-    byte[] Resize(byte[] bezel, int width, int height);
+    Task<byte[]> Resize(byte[] bezel, int width, int height);
 }
