@@ -6,16 +6,12 @@ using System.Reflection;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
-public class CsvFileTests
+public class CsvFileTests : TestBase
 {
-    private readonly IFileSystem fs;
-    private readonly string here = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
     private readonly Core.Domain.CsvFile sut;
 
-    public CsvFileTests()
+    public CsvFileTests() : base()
     {
-        fs = A.Fake<IFileSystem>();
-
         sut = new(fs);
     }
 

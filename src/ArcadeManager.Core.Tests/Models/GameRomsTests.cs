@@ -6,14 +6,13 @@ using AwesomeAssertions;
 
 namespace ArcadeManager.Core.Tests.Models;
 
-public class GameRomsTests
+public class GameRomsTests : TestBase
 {
     private readonly XElement xml;
     
-    public GameRomsTests()
+    public GameRomsTests() : base()
     {
-        string here = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        string xmlPath = Path.Combine(here, "Data", "Models", "GameRom.xml");
+        string xmlPath = GetTestFile("Models", "GameRom.xml");
         XDocument xmlData = XDocument.Load(xmlPath);
         xml = xmlData.Root!.Elements().First();
     }

@@ -1,5 +1,4 @@
 using ArcadeManager.Core.Domain;
-using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Actions;
 using ArcadeManager.Core.Models.Roms;
 using ArcadeManager.Core.Models.Zip;
@@ -9,20 +8,16 @@ using FakeItEasy;
 
 namespace ArcadeManager.Core.Tests.Services;
 
-public class DatCheckerTests
+public class DatCheckerTests : TestBase
 {
     private readonly ICsvFile csv;
     private readonly IDatFile dat;
-    private readonly IFileSystem fs;
-    private readonly IMessageHandler messageHandler;
     private readonly DatChecker sut;
 
-    public DatCheckerTests()
+    public DatCheckerTests() : base()
     {
         this.csv = A.Fake<ICsvFile>();
-        this.fs = A.Fake<IFileSystem>();
         this.dat = A.Fake<IDatFile>();
-        this.messageHandler = A.Fake<IMessageHandler>();
 
         this.sut = new DatChecker(this.fs, this.csv, this.dat);
     }

@@ -1,21 +1,18 @@
-using System;
-using System.Reflection;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Models.Roms;
-using FakeItEasy;
 using AwesomeAssertions;
+using FakeItEasy;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 
-public class FileSystemTests
+public class FileSystemTests : TestBase
 {
-    private readonly string filesPath;
     private readonly IEnvironment environment;
+    private readonly string filesPath;
     private readonly FileSystem sut;
 
-    public FileSystemTests()
+    public FileSystemTests() : base()
     {
-        string here = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         filesPath = Path.Combine(here, "Data", "Infrastructure");
 
         this.environment = A.Fake<IEnvironment>();
@@ -24,31 +21,35 @@ public class FileSystemTests
     }
 
     [Fact]
-    public void Zip_files_are_listed_without_sha1()
+    public void Zip_files_are_deleted()
     {
         // arrange
-        var zip = Path.Combine(filesPath, "test1.zip");
+        var targetZip = Path.Combine(filesPath, "testdelete-copy.zip");
+        File.Copy(Path.Combine(filesPath, "testdelete.zip"), targetZip, true);
 
-        // act
-        var result = sut.GetZipFiles(zip, false);
+        // arrange: files list
+        GameRomFilesList files = [
+            new() { Name = "test1.txt" },
+            new() { Name = "test3.txt", Path = "testfolder" }
+        ];
 
-        // assert
-        result.Should().HaveCount(2);
-    }
+        // arrange: read zip
+        using (var zip = sut.OpenZipWrite(targetZip))
+        {
+            // act
+            foreach (var file in files)
+            {
+                sut.DeleteZipFile(zip, file);
+            }
 
-    [Fact]
-    public void Zip_files_are_listed_with_sha1()
-    {
-        // arrange
-        var zip = Path.Combine(filesPath, "test1.zip");
+            sut.DeleteZipFile(zip, new GameRomFile { Name = "testfolder/" });
+        }
 
-        // act
-        var result = sut.GetZipFiles(zip, true);
-
-        // assert
-        result.Should().HaveCount(2);
-        result[0].Sha1.Should().NotBeNullOrEmpty();
-        result[1].Sha1.Should().NotBeNullOrEmpty();
+        // assert: re-read zip and check remaining files
+        using var zipRead = sut.OpenZipRead(targetZip);
+        zipRead.Entries.Should().HaveCount(2);
+        zipRead.GetEntry("test2.txt").Should().NotBeNull();
+        zipRead.GetEntry("test3.txt").Should().NotBeNull();
     }
 
     [Fact]
@@ -71,48 +72,31 @@ public class FileSystemTests
     }
 
     [Fact]
-    public async Task Zip_files_are_replaced()
+    public void Zip_files_are_listed_with_sha1()
     {
-        // arrange: paths
-        var original = Path.Combine(filesPath, "test1.zip");
-        var source = Path.Combine(filesPath, "test2.zip");
-        var sourceZip = Path.Combine(filesPath, "test2-replace.zip");
-        var targetZip = Path.Combine(filesPath, "test1-copy-replace.zip");
+        // arrange
+        var zip = Path.Combine(filesPath, "test1.zip");
 
-        // arrange: cleanup
-        if (File.Exists(targetZip)) { File.Delete(targetZip); }
-        if (File.Exists(sourceZip)) { File.Delete(sourceZip); }
-
-        // arrange: file data
-        var sourceFile = new GameRomFile {
-            Name = "test1.txt",
-            Crc = "8ab2dce2"
-        };
-
-        // arrange: copy files (also the source to bypass xunit parallelism)
-        File.Copy(original, targetZip);
-        File.Copy(source, sourceZip);
-
-        // arrange: open the zip
-        using var targetZipFile = sut.OpenZipWrite(targetZip);
-        using var sourceZipFile = sut.OpenZipWrite(sourceZip);
-        
         // act
-        var replaced = await sut.ReplaceZipFile(sourceZipFile, targetZipFile, sourceFile, sourceFile);
-        
-        // act a second time to simulate what can happen in the rebuild process
-        var replacedTwice = await sut.ReplaceZipFile(sourceZipFile, targetZipFile, sourceFile, sourceFile);
-            
-        // assert: file has been replaced
-        replaced.Should().BeTrue();
-        replacedTwice.Should().BeTrue();
-    
-        // assert: read the new zip content
-        var fileInZip = targetZipFile.GetEntry("test1.txt");
-        fileInZip.Should().NotBeNull();
-        
-        var data = await new StreamReader(await fileInZip!.OpenAsync()).ReadToEndAsync(TestContext.Current.CancellationToken);
-        data.Should().Be("test1 modified");
+        var result = sut.GetZipFiles(zip, true);
+
+        // assert
+        result.Should().HaveCount(2);
+        result[0].Sha1.Should().NotBeNullOrEmpty();
+        result[1].Sha1.Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public void Zip_files_are_listed_without_sha1()
+    {
+        // arrange
+        var zip = Path.Combine(filesPath, "test1.zip");
+
+        // act
+        var result = sut.GetZipFiles(zip, false);
+
+        // assert
+        result.Should().HaveCount(2);
     }
 
     [Fact]
@@ -129,11 +113,13 @@ public class FileSystemTests
         if (File.Exists(sourceZip)) { File.Delete(sourceZip); }
 
         // arrange: file data
-        var sourceFile = new GameRomFile {
+        var sourceFile = new GameRomFile
+        {
             Name = "test1.txt",
             Crc = "8ab2dce2"
         };
-        var targetFile = new GameRomFile {
+        var targetFile = new GameRomFile
+        {
             Name = "renamed.txt",
             Crc = "8ab2dce2"
         };
@@ -145,48 +131,64 @@ public class FileSystemTests
         // arrange: open the zip
         using var targetZipFile = sut.OpenZipWrite(targetZip);
         using var sourceZipFile = sut.OpenZipWrite(sourceZip);
-        
+
         // act
         var replaced = await sut.ReplaceZipFile(sourceZipFile, targetZipFile, sourceFile, targetFile);
-        
+
         // assert: file has been replaced
         replaced.Should().BeTrue();
 
         // assert: read the new zip content
         var fileInZip = targetZipFile.GetEntry("renamed.txt");
         fileInZip.Should().NotBeNull();
-        
+
         var data = await new StreamReader(await fileInZip!.OpenAsync()).ReadToEndAsync(TestContext.Current.CancellationToken);
         data.Should().Be("test1 modified");
     }
 
     [Fact]
-    public void Zip_files_are_deleted()
+    public async Task Zip_files_are_replaced()
     {
-        // arrange
-        var targetZip = Path.Combine(filesPath, "testdelete-copy.zip");
-        File.Copy(Path.Combine(filesPath, "testdelete.zip"), targetZip, true);
+        // arrange: paths
+        var original = Path.Combine(filesPath, "test1.zip");
+        var source = Path.Combine(filesPath, "test2.zip");
+        var sourceZip = Path.Combine(filesPath, "test2-replace.zip");
+        var targetZip = Path.Combine(filesPath, "test1-copy-replace.zip");
 
-        // arrange: files list
-        GameRomFilesList files = [
-            new() { Name = "test1.txt" },
-            new() { Name = "test3.txt", Path = "testfolder" }
-        ];
+        // arrange: cleanup
+        if (File.Exists(targetZip)) { File.Delete(targetZip); }
+        if (File.Exists(sourceZip)) { File.Delete(sourceZip); }
 
-        // arrange: read zip
-        using (var zip = sut.OpenZipWrite(targetZip)) {
-            // act
-            foreach (var file in files) {
-                sut.DeleteZipFile(zip, file);
-            }
+        // arrange: file data
+        var sourceFile = new GameRomFile
+        {
+            Name = "test1.txt",
+            Crc = "8ab2dce2"
+        };
 
-            sut.DeleteZipFile(zip, new GameRomFile { Name = "testfolder/" });
-        }
+        // arrange: copy files (also the source to bypass xunit parallelism)
+        File.Copy(original, targetZip);
+        File.Copy(source, sourceZip);
 
-        // assert: re-read zip and check remaining files
-        using var zipRead = sut.OpenZipRead(targetZip);
-        zipRead.Entries.Should().HaveCount(2);
-        zipRead.GetEntry("test2.txt").Should().NotBeNull();
-        zipRead.GetEntry("test3.txt").Should().NotBeNull();
+        // arrange: open the zip
+        using var targetZipFile = sut.OpenZipWrite(targetZip);
+        using var sourceZipFile = sut.OpenZipWrite(sourceZip);
+
+        // act
+        var replaced = await sut.ReplaceZipFile(sourceZipFile, targetZipFile, sourceFile, sourceFile);
+
+        // act a second time to simulate what can happen in the rebuild process
+        var replacedTwice = await sut.ReplaceZipFile(sourceZipFile, targetZipFile, sourceFile, sourceFile);
+
+        // assert: file has been replaced
+        replaced.Should().BeTrue();
+        replacedTwice.Should().BeTrue();
+
+        // assert: read the new zip content
+        var fileInZip = targetZipFile.GetEntry("test1.txt");
+        fileInZip.Should().NotBeNull();
+
+        var data = await new StreamReader(await fileInZip!.OpenAsync()).ReadToEndAsync(TestContext.Current.CancellationToken);
+        data.Should().Be("test1 modified");
     }
 }

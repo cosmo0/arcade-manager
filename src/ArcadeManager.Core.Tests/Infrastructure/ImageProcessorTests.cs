@@ -1,27 +1,22 @@
 ﻿using ArcadeManager.Core.Infrastructure;
-using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Bezels;
-using FakeItEasy;
 using AwesomeAssertions;
+using FakeItEasy;
 using ImageMagick;
-using System.Reflection;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 
-public class ImageProcessorTests
+public class ImageProcessorTests : TestBase
 {
-    private readonly IFileSystem fs;
-    private readonly string here;
     private readonly string outputFolder;
     private readonly Bounds resolution = new() { Width = 1920, Height = 1080 };
-    private readonly string sourceFolder;
     private readonly string sourceImage;
     private readonly ImageProcessor sut;
 
-    public ImageProcessorTests()
-    {
-        fs = A.Fake<IFileSystem>();
+    private readonly string testFolder = "Infrastructure";
 
+    public ImageProcessorTests() : base()
+    {
         // general fakes
         A.CallTo(() => fs.PathJoin(A<string[]>._)).ReturnsLazily((string[] paths) => Path.Join(paths));
         A.CallTo(() => fs.FileCopy(A<string>._, A<string>._, A<bool>._)).Invokes((string source, string dest, bool ow) => File.Copy(source, dest, ow));
@@ -30,10 +25,8 @@ public class ImageProcessorTests
         sut = new(fs);
 
         // globals
-        here = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        sourceFolder = Path.Join(here, "Data", "Infrastructure");
-        sourceImage = Path.Join(sourceFolder, "1943.png");
-        outputFolder = Path.Join(sourceFolder, "output");
+        sourceImage = GetTestFile(testFolder, "1943.png");
+        outputFolder = GetTestFile(testFolder, "output");
 
         // reset output folder
         if (!Directory.Exists(outputFolder))
@@ -49,14 +42,15 @@ public class ImageProcessorTests
         Bounds screenPosition = new() { X = 674, Y = 184, Width = 575, Height = 734 };
 
         // arrange: expected result
-        var expected = await File.ReadAllBytesAsync(Path.Join(sourceFolder, "expected", "1943_debug.png"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestFile(testFolder, "1943_expected_debug.png"), TestContext.Current.CancellationToken);
 
         // arrange: cleanup
-        Cleanup(Path.Combine(outputFolder, "1943.png"));
+        var outputFile = Path.Combine(outputFolder, "1943.png");
+        Cleanup(outputFile);
 
         // act
         await sut.DebugDraw("1943", outputFolder, sourceImage, screenPosition, resolution);
-        var result = await File.ReadAllBytesAsync(Path.Join(outputFolder, "1943.png"), TestContext.Current.CancellationToken);
+        var result = await File.ReadAllBytesAsync(outputFile, TestContext.Current.CancellationToken);
 
         // assert
         AssertImagesAreIdentical(result, expected);
@@ -67,7 +61,7 @@ public class ImageProcessorTests
     {
         // arrange
         var content = await File.ReadAllBytesAsync(sourceImage, TestContext.Current.CancellationToken);
-        var expected = await File.ReadAllBytesAsync(Path.Combine(sourceFolder, "expected", "1943_resize.png"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestFile(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
 
         // act
         var result = await sut.Resize(content, 1280, 720);
@@ -82,7 +76,7 @@ public class ImageProcessorTests
         // arrange
         var temp = Path.Combine(outputFolder, "resize.png");
         Cleanup(temp);
-        var expected = await File.ReadAllBytesAsync(Path.Combine(sourceFolder, "expected", "1943_resize.png"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestFile(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
         File.Copy(sourceImage, temp);
 
         // act
@@ -110,7 +104,7 @@ public class ImageProcessorTests
     public async Task Screen_is_not_found_when_no_transparent_area()
     {
         // arrange
-        var content = await File.ReadAllBytesAsync(Path.Join(sourceFolder, "nontransparent.png"), TestContext.Current.CancellationToken);
+        var content = await File.ReadAllBytesAsync(GetTestFile(testFolder, "nontransparent.png"), TestContext.Current.CancellationToken);
 
         // act
         var result = sut.FindScreen(content, 0);

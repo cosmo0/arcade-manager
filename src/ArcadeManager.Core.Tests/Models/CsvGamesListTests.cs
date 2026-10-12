@@ -3,7 +3,7 @@ using AwesomeAssertions;
 
 namespace ArcadeManager.Core.Tests.Models;
 
-public class CsvGamesListTests
+public class CsvGamesListTests : TestBase
 {
     [Fact]
     public void CopyFrom_copies_values_when_not_already_exist()

@@ -7,17 +7,13 @@ using ArcadeManager.Core.Domain;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 
-public class DatFileTests
+public class DatFileTests : TestBase
 {
-    private readonly string filesPath;
     private readonly IEnvironment environment;
     private readonly DatFile sut;
 
-    public DatFileTests()
+    public DatFileTests() : base()
     {
-        string here = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        this.filesPath = Path.Combine(here, "Data", "Infrastructure");
-
         this.environment = A.Fake<IEnvironment>();
 
         // we'll inject the real filesystem service because faking the async stream reader is WAY too complicated
@@ -28,7 +24,7 @@ public class DatFileTests
     public async Task Datfile_is_read()
     {
         // arrange: file path
-        var datPath = Path.Combine(filesPath, "datfile.xml");
+        var datPath = GetTestFile("Infrastructure", "datfile.xml");
 
         // act
         var result = await sut.GetRoms(datPath, "romset");
