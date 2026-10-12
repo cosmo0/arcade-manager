@@ -59,7 +59,8 @@ public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : ID
             CsvGamesList csv = await GetCsvData(args.CsvFilter);
 
             messageHandler.Progress("Reading DAT file", 0, 0);
-            var allGames = KeepCsvGames(await datFile.GetRoms(dat, args.Romset), csv);
+            using var datStream = fs.GetReadFileStream(dat);
+            var allGames = KeepCsvGames(await datFile.GetRoms(datStream, args.Romset), csv);
 
             // get the list of files in the repair folder
             List<string> otherFiles = GetOtherFolderFiles(args, messageHandler);
@@ -405,7 +406,8 @@ public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : ID
     {
         if (!string.IsNullOrEmpty(csvfilter) && fs.FileExists(csvfilter))
         {
-            return await csvFile.ReadFile(csvfilter, false);
+            using var stream = fs.GetReadFileStream(csvfilter);
+            return await csvFile.ReadFile(stream, false);
         }
 
         return null;

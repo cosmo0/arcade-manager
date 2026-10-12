@@ -1,6 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using ArcadeManager.Core.Models.Roms;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Domain;
 
@@ -12,8 +12,10 @@ public interface IDatFile
     /// <summary>
     /// Gets a roms list from a DAT file
     /// </summary>
-    /// <param name="datFilePath">The DAT file path</param>
+    /// <param name="datStream">The DAT file stream.</param>
     /// <param name="folder">The folder of the rom files</param>
-    /// <returns>The roms list</returns>
-    Task<GameRomList> GetRoms(string datFilePath, string folder);
+    /// <returns>
+    /// The roms list
+    /// </returns>
+    Task<GameRomList> GetRoms(StreamReader datStream, string folder);
 }

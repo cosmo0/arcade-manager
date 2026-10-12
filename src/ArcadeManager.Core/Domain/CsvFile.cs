@@ -15,7 +15,7 @@ namespace ArcadeManager.Core.Domain;
 /// Converter from a file to a CsvGamesList, and vice-versa
 /// </summary>
 /// <seealso cref="ArcadeManager.Core.Domain.ICsvFile" />
-public class CsvFile(IFileSystem fs) : ICsvFile
+public class CsvFile : ICsvFile
 {
     /// <summary>
     /// The default delimiter
@@ -36,14 +36,14 @@ public class CsvFile(IFileSystem fs) : ICsvFile
     /// <summary>
     /// Reads the provided CSV file
     /// </summary>
-    /// <param name="filepath">The path to the file</param>
+    /// <param name="reader">The stream reader.</param>
     /// <param name="getOtherValues">if set to <c>true</c> get the values other than the name.</param>
-    /// <returns>The list of games in the CSV file</returns>
-    public async Task<CsvGamesList> ReadFile(string filepath, bool getOtherValues)
+    /// <returns>
+    /// The list of games in the CSV file
+    /// </returns>
+    public async Task<CsvGamesList> ReadFile(StreamReader reader, bool getOtherValues)
     {
         CsvGamesList result = new();
-
-        using var reader = fs.GetReadFileStream(filepath);
 
         // check that the first line has a header
         var firstLine = await reader.ReadLineAsync();
@@ -90,12 +90,10 @@ public class CsvFile(IFileSystem fs) : ICsvFile
     /// <summary>
     /// Writes the file to the specified target.
     /// </summary>
+    /// <param name="output">The output stream.</param>
     /// <param name="entries">The entries to write.</param>
-    /// <param name="target">The target to write to.</param>
-    public async Task WriteFile(CsvGamesList entries, string target)
+    public async Task WriteFile(StreamWriter output, CsvGamesList entries)
     {
-        using var output = fs.GetWriteFileStream(target);
-
         // header line
         await output.WriteLineAsync(entries.GetHeaderLine(NameColumn, DefaultDelimiter));
 

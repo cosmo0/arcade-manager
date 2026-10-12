@@ -63,7 +63,8 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Selection)) { fs.DirectoryCreate(args.Selection); }
 
             // read CSV file
-            var content = await csvFile.ReadFile(args.Main, false);
+            using var stream = fs.GetReadFileStream(args.Main);
+            var content = await csvFile.ReadFile(stream, false);
 
             // copy the games
             var copied = CopyGamesList(args, content, messageHandler);
@@ -101,7 +102,9 @@ public class Roms : IRoms
             foreach (var file in files)
             {
                 string filepath = fs.GetDataPath("csv", emulator, $"{file}.csv");
-                content.AddRange(await csvFile.ReadFile(filepath, false));
+                using var fileStream = fs.GetReadFileStream(filepath);
+
+                content.AddRange(await csvFile.ReadFile(fileStream, false));
             }
 
             content.DeDuplicate();
@@ -132,7 +135,8 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Romset)) { throw new PathNotFoundException($"Unable to find folder {args.Romset}"); }
 
             // read CSV file
-            var content = await csvFile.ReadFile(args.Main, false);
+            using var stream = fs.GetReadFileStream(args.Main);
+            var content = await csvFile.ReadFile(stream, false);
 
             // check that all files in the CSV are listed in the folder
             var result = new List<string>();
@@ -173,7 +177,8 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
             // read CSV file
-            var content = await csvFile.ReadFile(args.Main, false);
+            using var stream = fs.GetReadFileStream(args.Main);
+            var content = await csvFile.ReadFile(stream, false);
 
             var total = content.Games.Count;
             var i = 0;
@@ -228,7 +233,8 @@ public class Roms : IRoms
         if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
         // read CSV file
-        var content = await csvFile.ReadFile(args.Main, false);
+        using var stream = fs.GetReadFileStream(args.Main);
+        var content = await csvFile.ReadFile(stream, false);
 
         foreach (var game in content.Games.Select(g => g.Name))
         {
@@ -273,7 +279,8 @@ public class Roms : IRoms
             if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
             // read CSV file
-            var content = await csvFile.ReadFile(args.Main, false);
+            using var stream = fs.GetReadFileStream(args.Main);
+            var content = await csvFile.ReadFile(stream, false);
 
             // get list of files
             var files = fs.FilesGetList(args.Selection, "*.zip").ToList();
@@ -338,7 +345,8 @@ public class Roms : IRoms
         if (!fs.DirectoryExists(args.Selection)) { throw new PathNotFoundException($"Unable to find selection folder {args.Selection}"); }
 
         // read CSV file
-        var content = await csvFile.ReadFile(args.Main, false);
+        using var stream = fs.GetReadFileStream(args.Main);
+        var content = await csvFile.ReadFile(stream, false);
 
         // get list of files
         var files = fs.FilesGetList(args.Selection, "*.zip").ToList();

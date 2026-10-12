@@ -1,8 +1,5 @@
-﻿using ArcadeManager.Core.Infrastructure.Interfaces;
-using ArcadeManager.Core.Models;
+﻿using ArcadeManager.Core.Models;
 using AwesomeAssertions;
-using FakeItEasy;
-using System.Reflection;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
@@ -12,18 +9,17 @@ public class CsvFileTests : TestBase
 
     public CsvFileTests() : base()
     {
-        sut = new(fs);
+        sut = new();
     }
 
     [Fact]
     public async Task ReadFile_with_headers_returns_data()
     {
         // arrange
-        using var stream = File.OpenText(Path.Combine(here, "Data", "Domain", "csvfile-readfile.csv"));
-        A.CallTo(() => fs.GetReadFileStream(A<string>._)).Returns(stream);
+        using var stream = File.OpenText(GetTestFile("Domain", "csvfile-readfile.csv"));
 
         // act
-        var result = await sut.ReadFile("test.csv", true);
+        var result = await sut.ReadFile(stream, true);
 
         // assert
         result.Headers.Should().HaveCount(2);
@@ -40,11 +36,10 @@ public class CsvFileTests : TestBase
     public async Task ReadFile_without_headers_returns_data_without_headers()
     {
         // arrange
-        using var stream = File.OpenText(Path.Combine(here, "Data", "Domain", "csvfile-readfile-noheaders.csv"));
-        A.CallTo(() => fs.GetReadFileStream(A<string>._)).Returns(stream);
+        using var stream = File.OpenText(GetTestFile("Domain", "csvfile-readfile-noheaders.csv"));
 
         // act
-        var result = await sut.ReadFile("test.csv", true);
+        var result = await sut.ReadFile(stream, true);
 
         // assert
         result.Headers.Should().HaveCount(0);
@@ -61,7 +56,7 @@ public class CsvFileTests : TestBase
     public async Task WriteFile_outputs_file()
     {
         // arrange: outfile
-        var outFile = Path.Combine(here, "Data", "Domain", "out.csv");
+        var outFile = GetTestFile("Domain", "out.csv");
 
         // arrange: data
         var data = new CsvGamesList();
@@ -71,10 +66,8 @@ public class CsvFileTests : TestBase
         // arrange: stream
         var outStream = new StreamWriter(new FileStream(outFile, FileMode.Create, FileAccess.Write));
 
-        A.CallTo(() => fs.GetWriteFileStream(A<string>._)).Returns(outStream);
-
         // act
-        await sut.WriteFile(data, outFile);
+        await sut.WriteFile(outStream, data);
         await outStream.DisposeAsync(); // force close the output stream
 
         var result = await File.ReadAllLinesAsync(outFile, TestContext.Current.CancellationToken);

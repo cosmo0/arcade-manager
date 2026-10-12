@@ -1,13 +1,11 @@
-﻿using ArcadeManager.Core.Infrastructure.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Domain;
 
-public class IniFile(IFileSystem fs) : IIniFile
+public class IniFile : IIniFile
 {
     /// <summary>
     /// Represents an INI file entry
@@ -17,17 +15,17 @@ public class IniFile(IFileSystem fs) : IIniFile
     /// <summary>
     /// Reads an ini file and returns the entries.
     /// </summary>
-    /// <param name="path">The path.</param>
-    /// <returns>The ini entries</returns>
-    public async Task<Dictionary<string, List<IniEntry>>> ReadIniFile(string path)
+    /// <param name="source">The source stream.</param>
+    /// <returns>
+    /// The ini entries
+    /// </returns>
+    public async Task<Dictionary<string, List<IniEntry>>> ReadIniFile(StreamReader source)
     {
         var isFolderSetting = false;
         var currentSection = "";
         string line;
 
         Dictionary<string, List<IniEntry>> data = [];
-
-        using var source = fs.GetReadFileStream(path);
 
         while ((line = await source.ReadLineAsync()) is not null)
         {

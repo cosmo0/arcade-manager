@@ -1,9 +1,5 @@
 ﻿using ArcadeManager.Core.Domain;
 using AwesomeAssertions;
-using FakeItEasy;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
@@ -13,15 +9,14 @@ public class IniFileTests : TestBase
     public async Task ReadIniFile_returns_data()
     {
         // arrange: sut
-        var sut = new IniFile(fs);
+        var sut = new IniFile();
 
         // arrange: data
         var testFile = GetTestFile("Domain", "category.ini");
         using var stream = File.OpenText(testFile);
-        A.CallTo(() => fs.GetReadFileStream(A<string>._)).Returns(stream);
 
         // act
-        var result = await sut.ReadIniFile(testFile);
+        var result = await sut.ReadIniFile(stream);
 
         // assert
         result.Keys.Should().BeEquivalentTo("EMPTY_SECTION", "SECTION A", "SECTION B");

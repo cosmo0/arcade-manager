@@ -109,7 +109,8 @@ public class Csv(IFileSystem fs, ICsvFile csvFile, IIniFile iniFile) : ICsv
         {
             var fileName = fs.FileName(main);
 
-            var data = await iniFile.ReadIniFile(main);
+            using var stream = fs.GetReadFileStream(main);
+            var data = await iniFile.ReadIniFile(stream);
 
             // create a file for each non-empty section
             var i = 0;
@@ -297,16 +298,19 @@ public class Csv(IFileSystem fs, ICsvFile csvFile, IIniFile iniFile) : ICsv
             var fiTarget = fs.FileName(target);
 
             messageHandler.Progress($"reading file {fiMain}", steps, ++current);
-            var mainEntries = await csvFile.ReadFile(main, true);
+            using var mainStream = fs.GetReadFileStream(main);
+            var mainEntries = await csvFile.ReadFile(mainStream, true);
 
             messageHandler.Progress($"reading file {fiSecondary}", steps, ++current);
-            var secondaryEntries = await csvFile.ReadFile(secondary, true);
+            using var secondStream = fs.GetReadFileStream(secondary);
+            var secondaryEntries = await csvFile.ReadFile(secondStream, true);
 
             messageHandler.Progress($"action", steps, ++current);
             var result = action(mainEntries, secondaryEntries);
 
             messageHandler.Progress($"save to file {fiTarget}", steps, ++current);
-            await csvFile.WriteFile(result, target);
+            using var outStream = fs.GetWriteFileStream(target);
+            await csvFile.WriteFile(outStream, result);
 
             messageHandler.ProgressDone($"{current}/{steps} - Done! Result has {result.Games.Count} entries", target);
         }

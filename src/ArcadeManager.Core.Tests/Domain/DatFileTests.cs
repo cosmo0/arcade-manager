@@ -9,25 +9,18 @@ namespace ArcadeManager.Core.Tests.Domain;
 
 public class DatFileTests : TestBase
 {
-    private readonly IEnvironment environment;
-    private readonly DatFile sut;
-
-    public DatFileTests() : base()
-    {
-        this.environment = A.Fake<IEnvironment>();
-
-        // we'll inject the real filesystem service because faking the async stream reader is WAY too complicated
-        this.sut = new DatFile(new FileSystem(this.environment));
-    }
-
     [Fact]
     public async Task Datfile_is_read()
     {
+        // arrange: sut
+        var sut = new DatFile();
+
         // arrange: file path
         var datPath = GetTestFile("Domain", "datfile.xml");
+        using var stream = File.OpenText(datPath);
 
         // act
-        var result = await sut.GetRoms(datPath, "romset");
+        var result = await sut.GetRoms(stream, "romset");
 
         // assert: list
         result.Should().HaveCount(4);
