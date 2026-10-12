@@ -29,7 +29,7 @@ public sealed class TypeRegistrar : ITypeRegistrar
 
         // services
         builder.AddSingleton<IDownloader, Downloader>();
-        builder.AddSingleton<ICsv, Csv>();
+        builder.AddSingleton<ICsv, Core.Services.Csv>();
         builder.AddSingleton<IOverlays, Overlays>();
         builder.AddSingleton<IRoms, Roms>();
         builder.AddSingleton<ILocalizer, Localizer>();

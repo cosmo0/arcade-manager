@@ -1,6 +1,5 @@
 ﻿using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models;
-using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ArcadeManager.Core.Domain;
 
@@ -53,38 +53,35 @@ public class CsvFile(IFileSystem fs) : ICsvFile
         reader.DiscardBufferedData();
         reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
-        // build CSV read options
-        var conf = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            Delimiter = delimiter,
-            HasHeaderRecord = hasHeader,
-            IgnoreBlankLines = true
-        };
-
         // read the file
-        using var csv = new CsvReader(reader, conf);
-        var entries = csv.GetRecordsAsync<dynamic>();
-
-        if (hasHeader)
+        var options = new Csv.CsvOptions
         {
-            await foreach (var e in entries)
+            HeaderMode = hasHeader ? Csv.HeaderMode.HeaderPresent : Csv.HeaderMode.HeaderAbsent,
+            Separator = delimiter[0]
+        };
+        var csvLines = Csv.CsvReader.ReadFromStreamAsync(reader.BaseStream, options);
+
+        await foreach (var line in csvLines)
+        {
+            if (hasHeader)
             {
                 Dictionary<string, string> values = [];
                 if (getOtherValues)
                 {
-                    // get all other columns ; see visualstudiomagazine.com/articles/2019/04/01/working-with-dynamic-objects.aspx
-                    values = ((IDictionary<string, object>)e)
-                        .Where(elem => !elem.Key.Equals(NameColumn, StringComparison.InvariantCultureIgnoreCase))
-                        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+                    // get all other columns
+                    values = line.Headers
+                        // get the headers
+                        .Where(h => h != NameColumn)
+                        // get a dictionary <header, value>
+                        .ToDictionary(h => h, h => line[h]);
                 }
 
-                result.Add(e.name, values);
+                result.Add(line["name"], values);
             }
-        }
-        else
-        {
-            // Without headers, CsvReader names the fields Field1, Field2, etc
-            result.AddRange((await entries.ToListAsync()).Select(e => new string(e.Field1)));
+            else
+            {
+                result.Add(line[0], []);
+            }
         }
 
         return result;
@@ -143,11 +140,6 @@ public class CsvFile(IFileSystem fs) : ICsvFile
         }
 
         // no header column found, and no delimiter either
-        if (!hasDelimiter)
-        {
-            return (false, delimiters[0]);
-        }
-
-        throw new FormatException("Your CSV file must have a 'name' column");
+        return (false, delimiters[0]);
     }
 }

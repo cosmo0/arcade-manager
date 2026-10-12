@@ -134,7 +134,7 @@ public class Startup(IConfiguration configuration)
 
             // core services
             container.Register<IDownloader, Downloader>(Lifestyle.Singleton);
-            container.Register<ICsv, Csv>(Lifestyle.Singleton);
+            container.Register<ICsv, Core.Services.Csv>(Lifestyle.Singleton);
             container.Register<IOverlays, Overlays>(Lifestyle.Singleton);
             container.Register<IRoms, Roms>(Lifestyle.Singleton);
             container.Register<ILocalizer, Localizer>(Lifestyle.Singleton);
