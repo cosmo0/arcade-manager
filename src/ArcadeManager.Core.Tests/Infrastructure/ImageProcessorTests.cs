@@ -2,7 +2,7 @@
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Bezels;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 using ImageMagick;
 using System.Reflection;
 

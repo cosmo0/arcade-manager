@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using System.Xml.Linq;
 using ArcadeManager.Core.Models.Roms;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace ArcadeManager.Core.Tests.Models;
 

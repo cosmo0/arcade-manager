@@ -1,5 +1,5 @@
 ﻿using ArcadeManager.Core.Models;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace ArcadeManager.Core.Tests.Models;
 

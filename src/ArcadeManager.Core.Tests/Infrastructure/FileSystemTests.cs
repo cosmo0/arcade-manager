@@ -3,7 +3,7 @@ using System.Reflection;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Models.Roms;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 

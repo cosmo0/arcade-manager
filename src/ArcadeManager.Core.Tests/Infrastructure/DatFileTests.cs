@@ -2,7 +2,7 @@ using System;
 using System.Reflection;
 using ArcadeManager.Core.Infrastructure;
 using FakeItEasy;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 
