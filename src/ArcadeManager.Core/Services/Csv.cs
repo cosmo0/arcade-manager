@@ -275,26 +275,29 @@ public class Csv(IFileSystem fs) : ICsv {
             };
 
             // read the file
-            using (var csv = new CsvReader(reader, conf)) {
-                var entries = csv.GetRecordsAsync<dynamic>();
+            using var csv = new CsvReader(reader, conf);
+            var entries = csv.GetRecordsAsync<dynamic>();
 
-                if (hasHeader) {
-                    await foreach (var e in entries) {
-                        Dictionary<string, string> values = new();
-                        if (getOtherValues) {
-                            // get all other columns ; see visualstudiomagazine.com/articles/2019/04/01/working-with-dynamic-objects.aspx
-                            values = ((IDictionary<string, object>)e)
-                                .Where(elem => !elem.Key.Equals(nameColumn, StringComparison.InvariantCultureIgnoreCase))
-                                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
-                        }
-
-                        result.Add(e.name, values);
+            if (hasHeader)
+            {
+                await foreach (var e in entries)
+                {
+                    Dictionary<string, string> values = new();
+                    if (getOtherValues)
+                    {
+                        // get all other columns ; see visualstudiomagazine.com/articles/2019/04/01/working-with-dynamic-objects.aspx
+                        values = ((IDictionary<string, object>)e)
+                            .Where(elem => !elem.Key.Equals(nameColumn, StringComparison.InvariantCultureIgnoreCase))
+                            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
                     }
+
+                    result.Add(e.name, values);
                 }
-                else {
-                    // Without headers, CsvReader names the fields Field1, Field2, etc
-                    result.AddRange((await entries.ToListAsync()).Select(e => new string(e.Field1)));
-                }
+            }
+            else
+            {
+                // Without headers, CsvReader names the fields Field1, Field2, etc
+                result.AddRange((await entries.ToListAsync()).Select(e => new string(e.Field1)));
             }
         });
 

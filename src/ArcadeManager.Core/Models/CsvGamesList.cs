@@ -9,7 +9,7 @@ namespace ArcadeManager.Core.Models;
 /// A CSV games list
 /// </summary>
 public class CsvGamesList {
-    private readonly List<GameEntry> entries = new();
+    private readonly List<GameEntry> entries = [];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CsvGamesList"/> class.
@@ -33,7 +33,7 @@ public class CsvGamesList {
     /// <summary>
     /// Gets the headers list.
     /// </summary>
-    public SortedSet<string> Headers { get; private set; } = new();
+    public SortedSet<string> Headers { get; private set; } = [];
 
     /// <summary>
     /// Adds a new entry with the specified name and additional values.
@@ -173,10 +173,8 @@ public class CsvGamesList {
         /// </summary>
         /// <param name="copyFrom">The entity to copy from.</param>
         public void CopyFrom(GameEntry copyFrom) {
-            foreach (var v in copyFrom.Values) {
-                if (!Values.ContainsKey(v.Key)) {
-                    Values.Add(v.Key, v.Value);
-                }
+            foreach (var v in copyFrom.Values.Where(v => !Values.ContainsKey(v.Key))) {
+                Values.Add(v.Key, v.Value);
             }
         }
 
