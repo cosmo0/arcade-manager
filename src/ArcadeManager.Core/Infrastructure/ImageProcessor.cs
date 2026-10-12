@@ -92,8 +92,8 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
         // apply margins
         if (margin > 0)
         {
-            top -= margin;
-            left -= margin;
+            top -= Math.Min(top, margin);
+            left -= Math.Min(left, margin);
             width += margin * 2;
             height += margin * 2;
         }
