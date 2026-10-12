@@ -54,7 +54,7 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
     /// <param name="bezel">The bezel file.</param>
     /// <param name="margin">The margins to apply.</param>
     /// <returns>The screen position</returns>
-    public Bounds FindScreen(byte[] bezel, uint margin)
+    public Bounds FindScreen(byte[] bezel, int margin)
     {
         using MagickImage image = new(bezel);
 
@@ -67,9 +67,9 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
         var (topCenterPlus, bottomCenterPlus) = GetTransparentPixelsInColumn(pixels, image.Height, centerX + 50);
         var (topCenterMinus, bottomCenterMinus) = GetTransparentPixelsInColumn(pixels, image.Height, centerX - 50);
 
-        uint top = (uint)Math.Min(topCenter, Math.Min(topCenterPlus, topCenterMinus));
-        uint bottom = (uint)Math.Max(bottomCenter, Math.Max(bottomCenterMinus, bottomCenterPlus));
-        uint height = bottom - top;
+        int top = Math.Min(topCenter, Math.Min(topCenterPlus, topCenterMinus));
+        int bottom = Math.Max(bottomCenter, Math.Max(bottomCenterMinus, bottomCenterPlus));
+        int height = bottom - top;
 
         if (top == 0 && bottom == 0)
         {
@@ -80,20 +80,20 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
 
         // screen is found, now scan horizontally based on these positions (it's often not
         // centered vertically)
-        int centerY = (int)(top + (height / 2));
+        int centerY = top + (height / 2);
         var (leftCenter, rightCenter) = GetTransparentPixelsInRow(pixels, image.Width, centerY);
         var (leftCenterPlus, rightCenterPlus) = GetTransparentPixelsInRow(pixels, image.Width, centerY + 50);
         var (leftCenterMinus, rightCenterMinus) = GetTransparentPixelsInRow(pixels, image.Width, centerY - 50);
 
-        uint left = (uint)Math.Min(leftCenter, Math.Min(leftCenterMinus, leftCenterPlus));
-        uint right = (uint)Math.Max(rightCenter, Math.Max(rightCenterMinus, rightCenterPlus));
-        uint width = right - left;
+        int left = Math.Min(leftCenter, Math.Min(leftCenterMinus, leftCenterPlus));
+        int right = Math.Max(rightCenter, Math.Max(rightCenterMinus, rightCenterPlus));
+        int width = right - left;
 
         // apply margins
         if (margin > 0)
         {
-            top -= Math.Min(top, margin);
-            left -= Math.Min(left, margin);
+            top -= top - margin > 0 ? margin : top;
+            left -= left - margin > 0 ? margin : left;
             width += margin * 2;
             height += margin * 2;
         }

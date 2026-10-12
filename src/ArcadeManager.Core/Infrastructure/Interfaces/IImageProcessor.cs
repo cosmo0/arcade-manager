@@ -20,7 +20,7 @@ public interface IImageProcessor
     /// <param name="bezel">The bezel file.</param>
     /// <param name="margin">The margins to apply.</param>
     /// <returns>The screen position</returns>
-    Bounds FindScreen(byte[] bezel, uint margin);
+    Bounds FindScreen(byte[] bezel, int margin);
 
     /// <summary>
     /// Gets the image size.

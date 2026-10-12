@@ -738,7 +738,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         if (options.ScanBezelForScreenCoordinates)
         {
             // scan image for transparent pixels
-            newPosition = imageProcessor.FindScreen(bezel, (uint)options.Margin);
+            newPosition = imageProcessor.FindScreen(bezel, options.Margin);
         }
         else
         {
@@ -775,7 +775,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         Bounds newPosition;
         if (options.ScanBezelForScreenCoordinates)
         {
-            newPosition = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(processor.OverlayImagePath), (uint)options.Margin);
+            newPosition = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(processor.OverlayImagePath), options.Margin);
         }
         else
         {
@@ -843,7 +843,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             messageHandler.ProgressMessage($"{game} - creating rom config for orphan image at {romDest}");
 
             // create the config
-            var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), (uint)options.Margin);
+            var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), options.Margin);
             await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raRomTemplate), game, romDest, bounds, options.TargetResolutionBounds);
 
             configs.Add(new Config { Rom = cfgFilesName, Overlay = cfgFilesName, Image = fs.FileName(f) });
@@ -879,7 +879,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
             {
                 // get bounds
                 var img = await fs.FileReadBinaryAsync(imgFileName);
-                var bounds = imageProcessor.FindScreen(img, (uint)options.Margin);
+                var bounds = imageProcessor.FindScreen(img, options.Margin);
 
                 await raProcessor.CreateConfig(fs.GetDataPath(templatesFolder, raRomTemplate), game, dest, bounds, options.TargetResolutionBounds);
 
@@ -1014,7 +1014,7 @@ public class Overlays(IDownloader downloaderService, IFileSystem fs, IEnvironmen
         await imageProcessor.Resize(f, (int)options.TargetResolutionBounds.Width, (int)options.TargetResolutionBounds.Height);
 
         // get data from image
-        var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), (uint)options.Margin);
+        var bounds = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(f), options.Margin);
 
         // generate config
         var config = fs.PathJoin(options.ImagesFolder, $"{game}.cfg");
