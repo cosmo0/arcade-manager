@@ -86,6 +86,8 @@ public class IniFile(IFileSystem fs) : IIniFile
 
     private static string ReadSection(string line, Dictionary<string, List<IniEntry>> data)
     {
+        line = line.Trim('[', ']');
+
         // add to data
         if (!data.ContainsKey(line))
         {
