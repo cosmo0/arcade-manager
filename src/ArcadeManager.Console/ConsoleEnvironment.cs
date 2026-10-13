@@ -1,6 +1,7 @@
 using ArcadeManager.Core;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Models;
+using System.IO;
 
 namespace ArcadeManager.Console;
 

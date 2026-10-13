@@ -5,6 +5,7 @@ using ArcadeManager.Core.Models.Zip;
 using ArcadeManager.Core.Services;
 using AwesomeAssertions;
 using FakeItEasy;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Services;
 

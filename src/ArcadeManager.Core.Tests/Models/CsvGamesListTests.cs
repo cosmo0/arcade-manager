@@ -1,5 +1,6 @@
 ﻿using ArcadeManager.Core.Models;
 using AwesomeAssertions;
+using System.Collections.Generic;
 
 namespace ArcadeManager.Core.Tests.Models;
 

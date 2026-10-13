@@ -3,6 +3,8 @@ using ArcadeManager.Core.Models.Bezels;
 using AwesomeAssertions;
 using FakeItEasy;
 using ImageMagick;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 

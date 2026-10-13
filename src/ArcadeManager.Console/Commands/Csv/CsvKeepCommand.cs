@@ -2,6 +2,8 @@ using ArcadeManager.Console.Settings;
 using ArcadeManager.Core;
 using ArcadeManager.Core.Services.Interfaces;
 using Spectre.Console.Cli;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Console.Commands;
 

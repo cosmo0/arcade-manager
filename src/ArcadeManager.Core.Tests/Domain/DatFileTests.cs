@@ -4,6 +4,8 @@ using ArcadeManager.Core.Infrastructure;
 using FakeItEasy;
 using AwesomeAssertions;
 using ArcadeManager.Core.Domain;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace ArcadeManager.Core.Tests.Domain;
 

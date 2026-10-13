@@ -1,15 +1,14 @@
-using System;
-using System.Reflection;
-using System.Xml.Linq;
 using ArcadeManager.Core.Models.Roms;
 using AwesomeAssertions;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace ArcadeManager.Core.Tests.Models.Roms;
 
 public class GameRomsTests : TestBase
 {
     private readonly XElement xml;
-    
+
     public GameRomsTests() : base()
     {
         string xmlPath = GetTestFile("Models", "GameRom.xml");
@@ -22,7 +21,7 @@ public class GameRomsTests : TestBase
     {
         // arrange/act
         var game = GameRom.FromXml(xml);
-    
+
         // assert: rom
         game.Name.Should().Be("test1");
         game.ParentName.Should().Be("test");
@@ -38,17 +37,18 @@ public class GameRomsTests : TestBase
     }
 
     [Fact]
-    public void GameRom_is_marked_as_error_missing_rom()
+    public void GameRom_is_marked_as_error_bad_hash()
     {
         // arrange
         var game = GameRom.FromXml(xml);
 
         // act
-        game.Error(ErrorReason.MissingFile, "Missing whole rom", null);
-    
+        game.Error(ErrorReason.BadHash, "Bad hash", "s92u-23a");
+
         // assert
         game.HasError.Should().BeTrue();
-        game.RomFiles.HasError.Should().BeFalse();
+        game.RomFiles.HasError.Should().BeTrue();
+        game.RomFiles["s92u-23a"].HasError.Should().BeTrue();
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class GameRomsTests : TestBase
 
         // act
         game.Error(ErrorReason.MissingFile, "Missing bios", "bios.zip");
-    
+
         // assert
         game.HasError.Should().BeTrue();
         game.Bios.HasError.Should().BeTrue();
@@ -77,7 +77,7 @@ public class GameRomsTests : TestBase
 
         // act
         game.Error(ErrorReason.MissingFile, "Missing file", "s92u-23a");
-    
+
         // assert
         game.HasError.Should().BeTrue();
         game.RomFiles.HasError.Should().BeTrue();
@@ -85,18 +85,17 @@ public class GameRomsTests : TestBase
     }
 
     [Fact]
-    public void GameRom_is_marked_as_error_bad_hash()
+    public void GameRom_is_marked_as_error_missing_rom()
     {
         // arrange
         var game = GameRom.FromXml(xml);
 
         // act
-        game.Error(ErrorReason.BadHash, "Bad hash", "s92u-23a");
-    
+        game.Error(ErrorReason.MissingFile, "Missing whole rom", null);
+
         // assert
         game.HasError.Should().BeTrue();
-        game.RomFiles.HasError.Should().BeTrue();
-        game.RomFiles["s92u-23a"].HasError.Should().BeTrue();
+        game.RomFiles.HasError.Should().BeFalse();
     }
 
     [Fact]
@@ -109,11 +108,11 @@ public class GameRomsTests : TestBase
             new() { Name = "a", Path = "sub" },
             new() { Name = "b", Path = "sub" }
         };
-    
+
         // act
         data.RemoveFile("b");
         data.RemoveFile("a", "sub");
-    
+
         // assert
         data.Should().HaveCount(2);
     }

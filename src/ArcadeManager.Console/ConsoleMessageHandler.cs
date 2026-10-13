@@ -1,5 +1,6 @@
 using ArcadeManager.Core;
 using ArcadeManager.Core.Models.Roms;
+using System;
 
 namespace ArcadeManager.Console;
 

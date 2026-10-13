@@ -1,5 +1,7 @@
 ﻿using ArcadeManager.Core.Domain;
 using AwesomeAssertions;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 

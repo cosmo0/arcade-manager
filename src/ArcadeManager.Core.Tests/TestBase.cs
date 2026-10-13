@@ -1,9 +1,7 @@
 ﻿using ArcadeManager.Core.Infrastructure.Interfaces;
 using FakeItEasy;
-using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace ArcadeManager.Core.Tests;
 
