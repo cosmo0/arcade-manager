@@ -1,0 +1,101 @@
+<!-- 1943.lay -->
+
+<mamelayout version="2">
+
+  <element name="bezel">
+    <image file="1943_bezel.png" />
+  </element>
+
+  <element name="bezel_alt1">
+    <image file="1943_bezel_alt1.png" />
+  </element>
+
+  <element name="bezel_alt2">
+    <image file="1943_bezel_alt2.png" />
+  </element>
+
+  <element name="bezel_alt3">
+    <image file="1943_bezel_alt3.png" />
+  </element>
+
+  <element name="screen_bezel">
+    <image file="vert_screen_bezel.png" />
+  </element>
+
+  <element name="screen_mask">
+    <image file="vert_screen_mask.png" />
+  </element>
+
+  <view name="Cab Artwork ">
+    <screen index="0">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </screen>
+
+    <overlay element="screen_mask">
+      <bounds x="554" y="0" width="812" height="1080" />
+    </overlay>
+
+    <backdrop element="screen_bezel">
+      <bounds x="518" y="0" width="884" height="1080" />
+    </backdrop>
+
+    <bezel element="bezel">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+  <view name="No Monitor Screen ">
+    <screen index="0">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </screen>
+
+    <overlay element="screen_mask">
+      <bounds x="554" y="0" width="812" height="1080" />
+    </overlay>
+
+    <backdrop element="screen_bezel">
+      <bounds x="518" y="0" width="884" height="1080" />
+    </backdrop>
+
+    <bezel element="bezel_alt1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+  <view name="Cab Artwork (alt)">
+    <screen index="0">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </screen>
+
+    <overlay element="screen_mask">
+      <bounds x="554" y="0" width="812" height="1080" />
+    </overlay>
+
+    <backdrop element="screen_bezel">
+      <bounds x="518" y="0" width="884" height="1080" />
+    </backdrop>
+
+    <bezel element="bezel_alt2">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+  <view name="No Monitor Screen (alt)">
+    <screen index="0">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </screen>
+
+    <overlay element="screen_mask">
+      <bounds x="554" y="0" width="812" height="1080" />
+    </overlay>
+
+    <backdrop element="screen_bezel">
+      <bounds x="518" y="0" width="884" height="1080" />
+    </backdrop>
+
+    <bezel element="bezel_alt3">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+</mamelayout>

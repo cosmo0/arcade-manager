@@ -13,74 +13,21 @@ namespace ArcadeManager.Core.Domain;
 
 public class MameOverlay(IFileSystem fs) : IMameOverlay
 {
-    /// <summary>
-    /// Extracts and deserializes the LAY and CFG files
-    /// </summary>
-    /// <param name="game">The game name.</param>
-    /// <param name="zipFile">The zip file path.</param>
-    /// <param name="cfgFile">The CFG file path.</param>
-    /// <param name="tmpFolder">The temporary folder path.</param>
-    /// <returns>The deserialized LAY and CFG files</returns>
-    /// <exception cref="LayFileException">
-    /// Unable to find a view in the LAY file
-    /// </exception>
-    public async Task<(MameLayFile lay, MameCfgFile cfg, byte[] bezel)> ExtractFiles(string game, string zipFile, string cfgFile, MameToRaAction options)
-    {
-        MameLayFile lay = null;
-        MameCfgFile cfg = null;
-        byte[] bezel = null;
-
-        XmlReaderSettings settings = new()
-        {
-            DtdProcessing = DtdProcessing.Ignore
-        };
-
-        // extract files
-        using (var archive = fs.OpenZipRead(zipFile))
-        {
-            // get layout file
-            var layEntry = archive.Entries.FirstOrDefault(e => e.Name.EndsWith("default.lay", StringComparison.InvariantCultureIgnoreCase))
-                ?? throw new Exceptions.LayFileException($"Unable to find default.lay file in {zipFile}");
-
-            using (var layStream = await layEntry.OpenAsync())
-            {
-                using var reader = XmlReader.Create(layStream, settings);
-                lay = Serializer.DeserializeXml<MameLayFile>(reader);
-            }
-
-            // check that LAY is useful
-            if (lay.Views.Length == 0) { throw new Exceptions.LayFileException("Unable to find a view in the LAY file"); }
-
-            // get associated bezel
-            var view = GetView(lay, options.UseFirstView);
-            var bezelFileNameInLay = MameGetBezelFile(lay, view);
-            if (!string.IsNullOrEmpty(bezelFileNameInLay))
-            {
-                // sometimes the bezel file name in LAY doesn't have the same case as the actual file
-                var bezelFileNameInZip = fs.FindFileInZip(archive, bezelFileNameInLay);
-                var bezelEntry = archive.Entries.FirstOrDefault(e => e.Name.EndsWith(bezelFileNameInZip, StringComparison.InvariantCultureIgnoreCase))
-                    ?? throw new Exceptions.BezelNotFoundException($"Unable to find bezel file {bezelFileNameInZip} in {zipFile}");
-
-                bezel = await bezelEntry.GetContentAsync();
-            }
-        }
-
-        cfg = await MameGetConfigFile(cfgFile);
-
-        return (lay, cfg, bezel);
-    }
+    private readonly XmlReaderSettings xmlSettings = new() { DtdProcessing = DtdProcessing.Ignore };
 
     /// <summary>
     /// Factory for the MAME processor
     /// </summary>
-    /// <param name="options">The options</param>
     /// <param name="lay">The LAY file</param>
     /// <param name="cfg">The CFG file</param>
-    /// <returns>The processor</returns>
-    public MameBezel MameGetBezel(MameToRaAction options, MameLayFile lay, MameCfgFile cfg)
+    /// <param name="useFirstView">if set to <c>true</c> use the first found view in the file.</param>
+    /// <returns>
+    /// The processor
+    /// </returns>
+    public MameBezel GetBezel(MameLayFile lay, MameCfgFile cfg, bool useFirstView)
     {
         // extract source data
-        var view = GetView(lay, options.UseFirstView);
+        var view = GetView(lay, useFirstView);
         var sourceRes = GetSourceResolution(view);
         var bezelFile = MameGetBezelFile(lay, view);
         var sourceScreenCoordinates = GetSourceScreenCoordinates(view);
@@ -95,22 +42,31 @@ public class MameOverlay(IFileSystem fs) : IMameOverlay
     /// <param name="game">The game name</param>
     /// <param name="folder">The folder to read</param>
     /// <param name="cfgFile">The config file</param>
-    /// <param name="options">The options</param>
-    /// <returns>The parsed files</returns>
-    public async Task<(MameLayFile lay, MameCfgFile cfg, byte[] bezel)> MameReadFiles(string game, string folder, string cfgFile, MameToRaAction options)
+    /// <param name="useFirstView">if set to <c>true</c> use the first found view in the file.</param>
+    /// <returns>
+    /// The parsed files
+    /// </returns>
+    /// <exception cref="ArcadeManager.Core.Exceptions.PathNotFoundException">
+    /// Unable to find a default.lay file in {folder}
+    /// or
+    /// Unable to find the bezel file {bezelFileNameInLay}
+    /// </exception>
+    /// <exception cref="ArcadeManager.Core.Exceptions.LayFileException">Unable to find a view in the LAY file</exception>
+    public async Task<(MameLayFile lay, MameCfgFile cfg, byte[] bezel)> ReadFolder(string game, string folder, string cfgFile, bool useFirstView)
     {
-        byte[] bezel = null;
-
         // get layout and bezel
         var layFiles = fs.FilesGetList(folder, "default.lay");
         if (layFiles == null || !layFiles.Any()) { throw new PathNotFoundException($"Unable to find a default.lay file in {folder}"); }
-        var firstFileContent = await fs.FileReadAsync(layFiles.First());
-        MameLayFile lay = Serializer.Deserialize<MameLayFile>(firstFileContent);
+        
+        using var layFileReader = fs.GetReadFileStream(layFiles.First());
+        using var reader = XmlReader.Create(layFileReader, xmlSettings);
+        MameLayFile lay = Serializer.DeserializeXml<MameLayFile>(reader);
 
         // check that LAY is useful
         if (lay.Views.Length == 0) { throw new LayFileException("Unable to find a view in the LAY file"); }
-        var view = GetView(lay, options.UseFirstView);
+        var view = GetView(lay, useFirstView);
         var bezelFileNameInLay = MameGetBezelFile(lay, view);
+        byte[] bezel = null;
         if (!string.IsNullOrEmpty(bezelFileNameInLay))
         {
             var bezelFilePath = fs.FilesGetList(folder, bezelFileNameInLay);
@@ -119,6 +75,62 @@ public class MameOverlay(IFileSystem fs) : IMameOverlay
         }
 
         // get config file
+        MameCfgFile cfg = await MameGetConfigFile(cfgFile);
+
+        return (lay, cfg, bezel);
+    }
+
+    /// <summary>
+    /// Extracts and deserializes the LAY and CFG files
+    /// </summary>
+    /// <param name="game">The game name.</param>
+    /// <param name="zipFile">The zip file path.</param>
+    /// <param name="cfgFile">The CFG file path.</param>
+    /// <param name="useFirstView">if set to <c>true</c> use the first found view in the file.</param>
+    /// <returns>
+    /// The deserialized LAY and CFG files
+    /// </returns>
+    /// <exception cref="ArcadeManager.Core.Exceptions.LayFileException">
+    /// Unable to find default.lay file in {zipFile}
+    /// or
+    /// Unable to find a view in the LAY file
+    /// </exception>
+    /// <exception cref="ArcadeManager.Core.Exceptions.BezelNotFoundException">Unable to find bezel file {bezelFileNameInZip} in {zipFile}</exception>
+    /// <exception cref="LayFileException">Unable to find default.lay file in {zipFile}
+    /// or
+    /// Unable to find a view in the LAY file</exception>
+    /// <exception cref="BezelNotFoundException">Unable to find bezel file {bezelFileNameInZip} in {zipFile}</exception>
+    public async Task<(MameLayFile lay, MameCfgFile cfg, byte[] bezel)> ReadZip(string game, string zipFile, string cfgFile, bool useFirstView)
+    {
+        // extract files
+        using var archive = fs.OpenZipRead(zipFile);
+
+        // get layout file
+        var layEntry = archive.Entries.FirstOrDefault(e => e.Name.EndsWith("default.lay", StringComparison.InvariantCultureIgnoreCase))
+            ?? throw new LayFileException($"Unable to find default.lay file in {zipFile}");
+
+        using var layStream = await layEntry.OpenAsync();
+
+        using var reader = XmlReader.Create(layStream, xmlSettings);
+        MameLayFile lay = Serializer.DeserializeXml<MameLayFile>(reader);
+
+        // check that LAY is useful
+        if (lay.Views.Length == 0) { throw new LayFileException("Unable to find a view in the LAY file"); }
+
+        // get associated bezel
+        var view = GetView(lay, useFirstView);
+        var bezelFileNameInLay = MameGetBezelFile(lay, view);
+        byte[] bezel = null;
+        if (!string.IsNullOrEmpty(bezelFileNameInLay))
+        {
+            // sometimes the bezel file name in LAY doesn't have the same case as the actual file
+            var bezelFileNameInZip = fs.FindFileInZip(archive, bezelFileNameInLay);
+            var bezelEntry = archive.Entries.FirstOrDefault(e => e.Name.EndsWith(bezelFileNameInZip, StringComparison.InvariantCultureIgnoreCase))
+                ?? throw new BezelNotFoundException($"Unable to find bezel file {bezelFileNameInZip} in {zipFile}");
+
+            bezel = await bezelEntry.GetContentAsync();
+        }
+
         MameCfgFile cfg = await MameGetConfigFile(cfgFile);
 
         return (lay, cfg, bezel);
@@ -177,10 +189,10 @@ public class MameOverlay(IFileSystem fs) : IMameOverlay
 
         // check that at least an offset has a value
         if (screen != null &&
-                (Math.Abs(screen.HOffset - Offset.DEFAULT_OFFSET) < epsilon
-                    || Math.Abs(screen.HStretch - Offset.DEFAULT_STRETCH) < epsilon
-                    || Math.Abs(screen.VOffset - Offset.DEFAULT_OFFSET) < epsilon
-                    || Math.Abs(screen.VStretch - Offset.DEFAULT_STRETCH) < epsilon))
+                (Math.Abs(screen.HOffset - Offset.DEFAULT_OFFSET) > epsilon
+                    || Math.Abs(screen.HStretch - Offset.DEFAULT_STRETCH) > epsilon
+                    || Math.Abs(screen.VOffset - Offset.DEFAULT_OFFSET) > epsilon
+                    || Math.Abs(screen.VStretch - Offset.DEFAULT_STRETCH) > epsilon))
         {
             return new Offset
             {
@@ -201,10 +213,10 @@ public class MameOverlay(IFileSystem fs) : IMameOverlay
     /// <returns>The source resolution</returns>
     private static Bounds GetSourceResolution(MameLayFile.View view)
     {
-        if (view.Bezels.Length == 0) { throw new Exceptions.BezelNotFoundException($"Unable to find a <bezel> for the <view> {view.Name}"); }
+        if (view.Bezels.Length == 0) { throw new BezelNotFoundException($"Unable to find a <bezel> for the <view> {view.Name}"); }
 
         var bezelOfView = view.Bezels.FirstOrDefault(b => b.Bounds.X == 0 && b.Bounds.Y == 0)
-            ?? throw new Exceptions.CoordinatesException($"No <bezel> inside <view> {view.Name} has coordinates starting at (0,0): I don't know how to convert");
+            ?? throw new CoordinatesException($"No <bezel> inside <view> {view.Name} has coordinates starting at (0,0): I don't know how to convert");
         return bezelOfView.Bounds;
     }
 
@@ -214,8 +226,8 @@ public class MameOverlay(IFileSystem fs) : IMameOverlay
     /// <returns></returns>
     private static Bounds GetSourceScreenCoordinates(MameLayFile.View view)
     {
-        if (view.Screens == null || view.Screens.Length == 0) { throw new Exceptions.LayFileException($"No screen found in view {view.Name}"); }
-        if (view.Screens.Length > 1) { throw new Exceptions.LayFileException($"Unable to automatically process a multi-screen machine (RetroArch doesn't support it)"); }
+        if (view.Screens == null || view.Screens.Length == 0) { throw new LayFileException($"No screen found in view {view.Name}"); }
+        if (view.Screens.Length > 1) { throw new LayFileException($"Unable to automatically process a multi-screen machine (RetroArch doesn't support it)"); }
 
         var screen = view.Screens[0].Bounds;
 
@@ -281,9 +293,9 @@ public class MameOverlay(IFileSystem fs) : IMameOverlay
         var bezelElementName = view.Bezels[0].ElementName;
 
         var element = lay.Elements.FirstOrDefault(e => e.Name == bezelElementName)
-            ?? throw new Exceptions.LayFileException($"Unable to find an <element> with name {bezelElementName} in LAY file");
+            ?? throw new LayFileException($"Unable to find an <element> with name {bezelElementName} in LAY file");
 
-        if (element.Images == null || element.Images.Length == 0) { throw new Exceptions.LayFileException($"No images inside <element> {bezelElementName} in LAY file"); }
+        if (element.Images == null || element.Images.Length == 0) { throw new LayFileException($"No images inside <element> {bezelElementName} in LAY file"); }
 
         return element.Images[0].File;
     }

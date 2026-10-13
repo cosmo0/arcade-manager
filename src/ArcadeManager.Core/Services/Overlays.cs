@@ -679,11 +679,11 @@ public class Overlays(
         if (messageHandler.MustCancel) { throw cancel; }
 
         var (lay, cfg, bezel) = isFolder
-            ? await mameProcessor.MameReadFiles(game, fsEntry, cfgFile, options)
-            : await mameProcessor.ExtractFiles(game, fsEntry, cfgFile, options);
+            ? await mameProcessor.ReadFolder(game, fsEntry, cfgFile, options.UseFirstView)
+            : await mameProcessor.ReadZip(game, fsEntry, cfgFile, options.UseFirstView);
 
         // extracts the data from the MAME files
-        var mameBezel = mameProcessor.MameGetBezel(options, lay, cfg);
+        var mameBezel = mameProcessor.GetBezel(lay, cfg, options.UseFirstView);
 
         // resize the bezel image
         bezel = await imageProcessor.Resize(

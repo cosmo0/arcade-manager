@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using ArcadeManager.Core.Models.Roms;
 using AwesomeAssertions;
 
-namespace ArcadeManager.Core.Tests.Models;
+namespace ArcadeManager.Core.Tests.Models.Roms;
 
 public class GameRomsTests : TestBase
 {
