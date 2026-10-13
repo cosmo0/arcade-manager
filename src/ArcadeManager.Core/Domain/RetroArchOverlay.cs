@@ -1,5 +1,4 @@
 ﻿using ArcadeManager.Core.Infrastructure.Interfaces;
-using ArcadeManager.Core.Models.Actions.Overlays;
 using ArcadeManager.Core.Models.Bezels;
 using System;
 using System.Text.RegularExpressions;
@@ -89,11 +88,12 @@ public class RetroArchOverlay(IFileSystem fs) : IRetroArchOverlay
     /// Generates a RetroArch config based on some options
     /// </summary>
     /// <param name="romFile">The rom file.</param>
-    /// <param name="options">The options.</param>
+    /// <param name="sourceConfigs">The source configs folder.</param>
+    /// <param name="targetResolution">The target resolution.</param>
     /// <returns>
     /// The RetroArch config
     /// </returns>
-    public async Task<RetroArchBezel> GetRetroArchConfig(string romFile, RaToMameAction options)
+    public async Task<RetroArchBezel> GetRetroArchConfig(string romFile, string sourceConfigs, Bounds targetResolution)
     {
         // get rom file content
         var romFileContent = await fs.FileReadAsync(romFile);
@@ -101,7 +101,7 @@ public class RetroArchOverlay(IFileSystem fs) : IRetroArchOverlay
         // get overlay content
         var overlayCfgFileSourcePath = GetCfgData(romFileContent, "input_overlay");
         var overlayCfgFileName = fs.FileName(overlayCfgFileSourcePath);
-        var overlayCfgFilePath = fs.PathJoin(options.SourceConfigs, overlayCfgFileName);
+        var overlayCfgFilePath = fs.PathJoin(sourceConfigs, overlayCfgFileName);
         var overlayCfgFileContent = await fs.FileReadAsync(overlayCfgFilePath);
 
         // extract data from configs
@@ -115,14 +115,14 @@ public class RetroArchOverlay(IFileSystem fs) : IRetroArchOverlay
         {
             X = 0,
             Y = 0,
-            Width = int.Parse(xres ?? options.TargetResolutionBounds.Width.ToString()),
-            Height = int.Parse(yres ?? options.TargetResolutionBounds.Height.ToString())
+            Width = int.Parse(xres ?? targetResolution.Width.ToString()),
+            Height = int.Parse(yres ?? targetResolution.Height.ToString())
         };
 
         return new RetroArchBezel
         {
             OverlayImageFileName = overlayImageFileName,
-            OverlayImagePath = fs.PathJoin(options.SourceConfigs, overlayImageFileName),
+            OverlayImagePath = fs.PathJoin(sourceConfigs, overlayImageFileName),
             SourceScreenPosition = screenBounds,
             SourceResolution = resolution
         };

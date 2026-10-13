@@ -1,5 +1,4 @@
 ﻿using ArcadeManager.Core.Models.Bezels;
-using AwesomeAssertions;
 
 namespace ArcadeManager.Core.Tests.Models.Bezels;
 

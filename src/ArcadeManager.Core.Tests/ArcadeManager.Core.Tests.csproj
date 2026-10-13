@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -24,7 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+	<Using Include="Xunit" />
+	<Using Include="FakeItEasy" />
+	<Using Include="AwesomeAssertions" />
   </ItemGroup>
 
   <ItemGroup>

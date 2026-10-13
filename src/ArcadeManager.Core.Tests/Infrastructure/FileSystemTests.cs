@@ -1,7 +1,5 @@
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Models.Roms;
-using AwesomeAssertions;
-using FakeItEasy;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;

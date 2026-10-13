@@ -1,8 +1,6 @@
 ﻿using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Models.Bezels;
-using AwesomeAssertions;
-using FakeItEasy;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;

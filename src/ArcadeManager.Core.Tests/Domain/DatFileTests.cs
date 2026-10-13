@@ -1,11 +1,6 @@
-using System;
-using System.Reflection;
-using ArcadeManager.Core.Infrastructure;
-using FakeItEasy;
-using AwesomeAssertions;
 using ArcadeManager.Core.Domain;
-using System.Threading.Tasks;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 

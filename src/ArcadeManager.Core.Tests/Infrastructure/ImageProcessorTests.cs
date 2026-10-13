@@ -1,7 +1,5 @@
 ﻿using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Models.Bezels;
-using AwesomeAssertions;
-using FakeItEasy;
 using ImageMagick;
 using System.IO;
 using System.Threading.Tasks;
@@ -48,7 +46,7 @@ public class ImageProcessorTests : TestBase
 
         // arrange: cleanup
         var outputFile = Path.Combine(outputFolder, "1943.png");
-        Cleanup(outputFile);
+        CleanupFile(outputFile);
 
         // act
         await sut.DebugDraw("1943", outputFolder, sourceImage, screenPosition, resolution);
@@ -77,7 +75,7 @@ public class ImageProcessorTests : TestBase
     {
         // arrange
         var temp = Path.Combine(outputFolder, "resize.png");
-        Cleanup(temp);
+        CleanupFile(temp);
         var expected = await File.ReadAllBytesAsync(GetTestFile(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
         File.Copy(sourceImage, temp);
 
@@ -133,10 +131,5 @@ public class ImageProcessorTests : TestBase
         var compareResult = resultImage.Compare(expectedImage, ErrorMetric.MeanAbsolute, Channels.RGBA);
 
         compareResult.Should().Be(0);
-    }
-
-    private static void Cleanup(string path)
-    {
-        if (File.Exists(path)) { File.Delete(path); }
     }
 }

@@ -768,18 +768,18 @@ public class Overlays(
 
         if (messageHandler.MustCancel) { throw cancel; }
 
-        // get RA processor
-        var processor = await raProcessor.GetRetroArchConfig(romFile, options);
+        // get RA config
+        var raConfig = await raProcessor.GetRetroArchConfig(romFile, options.SourceConfigs, options.TargetResolutionBounds);
 
         Bounds newPosition;
         if (options.ScanBezelForScreenCoordinates)
         {
-            newPosition = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(processor.OverlayImagePath), options.Margin);
+            newPosition = imageProcessor.FindScreen(await fs.FileReadBinaryAsync(raConfig.OverlayImagePath), options.Margin);
         }
         else
         {
             // convert from LAY and CFG
-            newPosition = processor.SourceScreenPosition;
+            newPosition = raConfig.SourceScreenPosition;
         }
 
         if (messageHandler.MustCancel) { throw cancel; }
@@ -789,25 +789,25 @@ public class Overlays(
         if (!fs.DirectoryExists(target)) { fs.DirectoryCreate(target); }
 
         // copy overlay image
-        fs.FileCopy(processor.OverlayImagePath, fs.PathJoin(target, processor.OverlayImageFileName), options.Overwrite);
+        fs.FileCopy(raConfig.OverlayImagePath, fs.PathJoin(target, raConfig.OverlayImageFileName), options.Overwrite);
 
         // resize the bezel image
         await imageProcessor.Resize(
-            processor.OverlayImagePath,
-            (int)processor.SourceResolution.Width,
-            (int)processor.SourceResolution.Height);
+            raConfig.OverlayImagePath,
+            (int)raConfig.SourceResolution.Width,
+            (int)raConfig.SourceResolution.Height);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
         // debug: draw target position
-        await imageProcessor.DebugDraw(game, options.OutputDebug, processor.OverlayImagePath, newPosition, options.TargetResolutionBounds);
+        await imageProcessor.DebugDraw(game, options.OutputDebug, raConfig.OverlayImagePath, newPosition, options.TargetResolutionBounds);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
         // create lay file
         var outputLay = fs.PathJoin(target, mameLayTemplate);
         fs.FileCopy(fs.GetDataPath(templatesFolder, mameLayTemplate), outputLay, options.Overwrite);
-        await raProcessor.FillTemplate(outputLay, game, newPosition, processor.SourceResolution);
+        await raProcessor.FillTemplate(outputLay, game, newPosition, raConfig.SourceResolution);
 
         if (messageHandler.MustCancel) { throw cancel; }
 

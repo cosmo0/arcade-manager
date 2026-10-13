@@ -1,5 +1,4 @@
-﻿using ArcadeManager.Core.Models.Actions.Overlays;
-using ArcadeManager.Core.Models.Bezels;
+﻿using ArcadeManager.Core.Models.Bezels;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Domain;
@@ -47,9 +46,12 @@ public interface IRetroArchOverlay
     /// Generates a RetroArch config based on some options
     /// </summary>
     /// <param name="romFile">The rom file.</param>
-    /// <param name="options">The options.</param>
-    /// <returns>The RetroArch config</returns>
-    Task<RetroArchBezel> GetRetroArchConfig(string romFile, RaToMameAction options);
+    /// <param name="sourceConfigs">The source configs folder.</param>
+    /// <param name="targetResolution">The target resolution.</param>
+    /// <returns>
+    /// The RetroArch config
+    /// </returns>
+    Task<RetroArchBezel> GetRetroArchConfig(string romFile, string sourceConfigs, Bounds targetResolution);
 
     /// <summary>
     /// Normalizes a path so it's understandable by System.IO.Path
