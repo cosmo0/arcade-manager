@@ -6,12 +6,16 @@ namespace ArcadeManager.Core.Tests.Domain;
 
 public class DatFileTests : TestBase
 {
-    [Fact]
-    public async Task Datfile_is_read()
-    {
-        // arrange: sut
-        var sut = new DatFile();
+    private readonly DatFile sut;
 
+    public DatFileTests()
+    {
+        sut = new();
+    }
+
+    [Fact]
+    public async Task GetRoms_lists_roms()
+    {
         // arrange: file path
         var datPath = GetTestPath("Domain", "datfile.xml");
         using var stream = File.OpenText(datPath);
@@ -44,5 +48,23 @@ public class DatFileTests : TestBase
         result["neogeo"].Parent.Should().BeNull();
         result["neogeo"].Bios.Should().BeNull();
         result["neogeo"].Clones.Should().BeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task ReadDatFile_reads_file()
+    {
+        // arrange: files
+        var source = GetTestPath("Domain", "datfile.xml");
+        using var streamReader = File.OpenText(source);
+
+        // act
+        var result = await sut.ReadDatFile(streamReader);
+
+        // assert
+        result.Entries.Should().NotBeNull().And.HaveCount(4);
+        result.Entries[0].Name.Should().Be("1944");
+        result.Entries[1].Name.Should().Be("1944j");
+        result.Entries[2].Name.Should().Be("aof");
+        result.Entries[3].Name.Should().Be("neogeo");
     }
 }

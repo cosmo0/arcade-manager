@@ -1,8 +1,11 @@
+using ArcadeManager.Core.Infrastructure;
+using ArcadeManager.Core.Models.DataFile;
 using ArcadeManager.Core.Models.Roms;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace ArcadeManager.Core.Domain;
@@ -68,5 +71,29 @@ public class DatFile : IDatFile
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Reads the specified dat file content.
+    /// </summary>
+    /// <param name="reader">The input stream reader.</param>
+    /// <returns>
+    /// The file content, deserialized
+    /// </returns>
+    public async Task<Datafile> ReadDatFile(StreamReader reader)
+    {
+        XmlReaderSettings settings = new()
+        {
+            DtdProcessing = DtdProcessing.Ignore
+        };
+
+        // input file
+
+        using var xmlReader = XmlReader.Create(reader, settings);
+
+        // deserialize DAT file
+        var datFile = Serializer.DeserializeXml<Datafile>(xmlReader);
+
+        return datFile;
     }
 }

@@ -1,3 +1,4 @@
+using ArcadeManager.Core.Models.DataFile;
 using ArcadeManager.Core.Models.Roms;
 using System.IO;
 using System.Threading.Tasks;
@@ -18,4 +19,13 @@ public interface IDatFile
     /// The roms list
     /// </returns>
     Task<GameRomList> GetRoms(StreamReader datStream, string folder);
+
+    /// <summary>
+    /// Reads the specified dat file content.
+    /// </summary>
+    /// <param name="reader">The input stream reader.</param>
+    /// <returns>
+    /// The file content, deserialized
+    /// </returns>
+    Task<Datafile> ReadDatFile(StreamReader reader);
 }

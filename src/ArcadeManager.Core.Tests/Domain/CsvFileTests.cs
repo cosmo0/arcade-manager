@@ -1,4 +1,5 @@
-﻿using ArcadeManager.Core.Models;
+﻿using ArcadeManager.Core.Domain;
+using ArcadeManager.Core.Models;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,6 +53,45 @@ public class CsvFileTests : TestBase
         result.Games.ElementAt(1).Values.Should().HaveCount(0);
         result.Games.ElementAt(2).Name.Should().Be("game3");
         result.Games.ElementAt(2).Values.Should().HaveCount(0);
+    }
+
+    [Theory]
+    [InlineData("", "", "name;description;year;manufacturer;NO;;YES;;sample;")]
+    [InlineData("clone", "", "name;description;year;manufacturer;YES;;NO;clone;sample;")]
+    [InlineData("", "rom", "name;description;year;manufacturer;NO;rom;YES;;sample;")]
+    [InlineData("clone", "rom", "name;description;year;manufacturer;YES;rom;NO;clone;sample;")]
+    public void SerializeDatEntry_serializes_dat_entry(string cloneof, string romof, string expected)
+    {
+        // arrange
+        var entry = new Core.Models.DataFile.Entry()
+        {
+            Name = "name",
+            Description = "description",
+            Year = "year",
+            Manufacturer = "manufacturer",
+            Cloneof = cloneof,
+            Romof = romof,
+            Sampleof = "sample"
+        };
+
+        // act
+        var result = sut.SerializeDatEntry(entry);
+
+        // assert
+        result.Should().Be(expected);
+    }
+
+    [Fact]
+    public void SerializeIniEntry_serializes_entry()
+    {
+        // arrange
+        var entry = new IniFile.IniEntry("game", "value");
+
+        // act
+        var result = sut.SerializeIniEntry(entry);
+
+        // assert
+        result.Should().Be("game;value;");
     }
 
     [Fact]

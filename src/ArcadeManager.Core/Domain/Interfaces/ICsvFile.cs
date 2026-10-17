@@ -1,4 +1,5 @@
 ﻿using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.DataFile;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -15,6 +16,20 @@ public interface ICsvFile
     /// The list of games in the CSV file
     /// </returns>
     Task<CsvGamesList> ReadFile(StreamReader reader, bool getOtherValues);
+
+    /// <summary>
+    /// Serializes the specified DAT file entry as a CSV line.
+    /// </summary>
+    /// <param name="entry">The DAT file entry to serialize.</param>
+    /// <returns>The serialized entry</returns>
+    string SerializeDatEntry(Entry entry);
+
+    /// <summary>
+    /// Serializes the specified ini entry as CSV line.
+    /// </summary>
+    /// <param name="entry">The ini entry.</param>
+    /// <returns>The CSV line</returns>
+    string SerializeIniEntry(IniFile.IniEntry entry);
 
     /// <summary>
     /// Writes the file to the specified target.

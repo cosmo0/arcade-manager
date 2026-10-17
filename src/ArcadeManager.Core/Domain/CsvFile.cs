@@ -1,13 +1,12 @@
-﻿using ArcadeManager.Core.Infrastructure.Interfaces;
-using ArcadeManager.Core.Models;
+﻿using ArcadeManager.Core.Models;
+using ArcadeManager.Core.Models.DataFile;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ArcadeManager.Core.Domain;
 
@@ -21,6 +20,21 @@ public class CsvFile : ICsvFile
     /// The default delimiter
     /// </summary>
     public static readonly string DefaultDelimiter = ";";
+
+    /// <summary>
+    /// The header row of a DAT conversion
+    /// </summary>
+    public static readonly string HeaderDatRow = "name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sampleof";
+
+    /// <summary>
+    /// The header row of a INI conversion
+    /// </summary>
+    public static readonly string HeaderIniRow = "name;value;";
+
+    /// <summary>
+    /// The minimal header
+    /// </summary>
+    public static readonly string HeaderMinimal = $"name;";
 
     /// <summary>
     /// The "name" column name
@@ -85,6 +99,40 @@ public class CsvFile : ICsvFile
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Serializes the specified DAT file entry as a CSV line.
+    /// </summary>
+    /// <param name="entry">The DAT file entry to serialize.</param>
+    /// <returns>
+    /// The CSV line
+    /// </returns>
+    public string SerializeDatEntry(Entry entry)
+    {
+        var sb = new StringBuilder();
+        sb.Append($"{entry.Name}{DefaultDelimiter}");
+        sb.Append($"{entry.Description ?? "-"}{DefaultDelimiter}");
+        sb.Append($"{entry.Year ?? "-"}{DefaultDelimiter}");
+        sb.Append($"{entry.Manufacturer ?? "-"}{DefaultDelimiter}");
+
+        sb.Append(string.IsNullOrEmpty(entry.Cloneof) ? "NO" : "YES").Append(DefaultDelimiter); // is_parent
+        sb.Append(entry.Romof ?? "-").Append(DefaultDelimiter); // romof
+        sb.Append(string.IsNullOrEmpty(entry.Cloneof) ? "YES" : "NO").Append(DefaultDelimiter); // is_clone
+        sb.Append(entry.Cloneof ?? "-").Append(DefaultDelimiter); // cloneof
+        sb.Append(entry.Sampleof ?? "-").Append(DefaultDelimiter); // sampleof
+
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Serializes the specified ini entry as CSV line.
+    /// </summary>
+    /// <param name="entry">The ini entry.</param>
+    /// <returns>The CSV line</returns>
+    public string SerializeIniEntry(IniFile.IniEntry entry)
+    {
+        return $"{entry.Game}{DefaultDelimiter}{entry.Value}{DefaultDelimiter}";
     }
 
     /// <summary>

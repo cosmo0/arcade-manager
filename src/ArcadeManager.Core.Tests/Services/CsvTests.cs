@@ -11,7 +11,7 @@ public class CsvTests : TestBase
     public CsvTests() : base()
     {
         // rather than mocking a lot of complex methods, let's simply use the actual files (that are already tested elsewhere)
-        sut = new(realfs, new CsvFile(), new IniFile());
+        sut = new(realfs, new CsvFile(), new IniFile(), new DatFile());
     }
 
     [Fact]
