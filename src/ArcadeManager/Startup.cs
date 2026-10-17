@@ -127,10 +127,11 @@ public class Startup(IConfiguration configuration)
             container.Register<IImageProcessor, ImageProcessor>(Lifestyle.Singleton);
 
             // domain
-            container.Register<IRetroArchOverlay, RetroArchOverlay>(Lifestyle.Singleton);
-            container.Register<IMameOverlay, MameOverlay>(Lifestyle.Singleton);
+            container.Register<IDatFile, DatFile>(Lifestyle.Singleton);
             container.Register<ICsvFile, CsvFile>(Lifestyle.Singleton);
             container.Register<IIniFile, IniFile>(Lifestyle.Singleton);
+            container.Register<IMameOverlay, MameOverlay>(Lifestyle.Singleton);
+            container.Register<IRetroArchOverlay, RetroArchOverlay>(Lifestyle.Singleton);
 
             // core services
             container.Register<IDownloader, Downloader>(Lifestyle.Singleton);
@@ -139,9 +140,8 @@ public class Startup(IConfiguration configuration)
             container.Register<IRoms, Roms>(Lifestyle.Singleton);
             container.Register<ILocalizer, Localizer>(Lifestyle.Singleton);
             container.Register<IDatChecker, DatChecker>(Lifestyle.Singleton);
-            container.Register<Core.Services.Interfaces.IServiceProvider, Core.Services.ServiceProvider>(Lifestyle.Singleton);
 
-            // app services
+            // Electron app services
             container.Register<IWizard, Wizard>(Lifestyle.Singleton);
             container.Register<IUpdater, Updater>(Lifestyle.Singleton);
 

@@ -4,6 +4,7 @@ using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Actions;
 using ArcadeManager.Core.Models.Actions.Overlays;
 using ArcadeManager.Core.Models.Roms;
+using ArcadeManager.Core.Services.Interfaces;
 using ArcadeManager.Services.Interfaces;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
@@ -17,18 +18,24 @@ namespace ArcadeManager.Services;
 /// <summary>
 /// Class for messages handling
 /// </summary>
+/// <seealso cref="ArcadeManager.Services.Interfaces.IElectronMessageHandler" />
 /// <remarks>
-/// Initializes a new instance of the <see cref="MessageHandler"/> class.
+/// Initializes a new instance of the <see cref="MessageHandler" /> class.
 /// </remarks>
-/// <param name="services">The services provider.</param>
 /// <param name="updater">The updater service.</param>
 /// <param name="environment">The environment accessor</param>
 /// <param name="fs">The file system service</param>
+#pragma warning disable S107 // number of parameters too great: this is the centralized handler of all services
 public partial class ElectronMessageHandler(
-    Core.Services.Interfaces.IServiceProvider services,
+    ICsv csv,
+    IDatChecker datChecker,
+    IDownloader downloader,
+    IOverlays overlays,
+    IRoms roms,
     IUpdater updater,
     IEnvironment environment,
     IFileSystem fs) : IElectronMessageHandler
+#pragma warning restore S107
 {
     private const string ProgressChannel = "progress";
     private BrowserWindow window;
@@ -306,7 +313,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await services.Csv.ConvertDat(data.Main, data.Target, this);
+        await csv.ConvertDat(data.Main, data.Target, this);
 
         var settings = environment.SettingsGet();
         settings.LastCsvTargetPath = data.Target;
@@ -322,7 +329,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await services.Csv.ConvertIni(data.Main, data.Target, this);
+        await csv.ConvertIni(data.Main, data.Target, this);
 
         var settings = environment.SettingsGet();
         settings.LastCsvTargetPath = data.Target;
@@ -338,7 +345,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await services.Csv.Keep(data.Main, data.Secondary, data.Target, this);
+        await csv.Keep(data.Main, data.Secondary, data.Target, this);
 
         var settings = environment.SettingsGet();
         settings.LastCsvMainPath = data.Main;
@@ -356,7 +363,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await services.Csv.ListFiles(data.Main, data.Target, this);
+        await csv.ListFiles(data.Main, data.Target, this);
 
         var settings = environment.SettingsGet();
         settings.LastCsvMainPath = data.Main;
@@ -373,7 +380,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await services.Csv.Merge(data.Main, data.Secondary, data.Target, this);
+        await csv.Merge(data.Main, data.Secondary, data.Target, this);
 
         var settings = environment.SettingsGet();
         settings.LastCsvMainPath = data.Main;
@@ -391,7 +398,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CsvAction>(args);
         MustCancel = false;
 
-        await services.Csv.Remove(data.Main, data.Secondary, data.Target, this);
+        await csv.Remove(data.Main, data.Secondary, data.Target, this);
 
         var settings = environment.SettingsGet();
         settings.LastCsvMainPath = data.Main;
@@ -409,7 +416,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        await services.Downloader.DownloadFile(data.Repository, data.Path, data.LocalFile);
+        await downloader.DownloadFile(data.Repository, data.Path, data.LocalFile);
 
         Electron.IpcMain.Send(window, "download-file-reply", true);
     }
@@ -451,7 +458,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        Electron.IpcMain.Send(window, "download-getlist-reply", await services.Downloader.GetList(data));
+        Electron.IpcMain.Send(window, "download-getlist-reply", await downloader.GetList(data));
     }
 
     /// <summary>
@@ -463,7 +470,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        Electron.IpcMain.Send(window, "local-getlist-reply", services.Downloader.GetLocalList(data));
+        Electron.IpcMain.Send(window, "local-getlist-reply", downloader.GetLocalList(data));
     }
 
     /// <summary>
@@ -512,7 +519,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<CheckAction>(args);
         MustCancel = false;
 
-        await services.Overlays.Check(data, this);
+        await overlays.Check(data, this);
     }
 
     /// <summary>
@@ -524,7 +531,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<InstallOverlaysAction>(args);
         MustCancel = false;
 
-        await services.Overlays.Download(data, this);
+        await overlays.Download(data, this);
     }
 
     /// <summary>
@@ -536,7 +543,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<GenerateAction>(args);
         MustCancel = false;
 
-        await services.Overlays.Generate(data, this);
+        await overlays.Generate(data, this);
     }
 
     /// <summary>
@@ -548,7 +555,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<MameToRaAction>(args);
         MustCancel = false;
 
-        await services.Overlays.ConvertMameToRa(data, this);
+        await overlays.ConvertMameToRa(data, this);
     }
 
     /// <summary>
@@ -560,7 +567,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RaToMameAction>(args);
         MustCancel = false;
 
-        await services.Overlays.ConvertRaToMame(data, this);
+        await overlays.ConvertRaToMame(data, this);
     }
 
     /// <summary>
@@ -572,7 +579,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await services.Roms.Add(data, this);
+        await roms.Add(data, this);
 
         var settings = environment.SettingsGet();
         settings.LastRomCsvPath = data.Main;
@@ -590,7 +597,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await services.Roms.AddFromWizard(data, this);
+        await roms.AddFromWizard(data, this);
     }
 
     /// <summary>
@@ -602,7 +609,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        string[] missing = await services.Roms.Check(data, this);
+        string[] missing = await roms.Check(data, this);
         // wrapping into an object because ElectronNet has a bug that sends only the first item of an array
         Electron.IpcMain.Send(window, "roms-check-reply", new { missing });
     }
@@ -616,7 +623,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsActionCheckDat>(args);
         MustCancel = false;
 
-        await services.DatChecker.CheckDat(data, this);
+        await datChecker.CheckDat(data, this);
 
         var settings = environment.SettingsGet();
         settings.LastRomCsvPath = string.IsNullOrWhiteSpace(data.CsvFilter) ? settings.LastRomCsvPath : data.CsvFilter;
@@ -634,7 +641,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await services.Roms.Delete(data, this);
+        await roms.Delete(data, this);
 
         var settings = environment.SettingsGet();
         settings.LastRomCsvPath = data.Main;
@@ -651,7 +658,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        var list = await services.Roms.DeleteCheck(data, this);
+        var list = await roms.DeleteCheck(data, this);
 
         Electron.IpcMain.Send(window, "roms-delete-check-reply", new { list });
     }
@@ -665,7 +672,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        await services.Roms.Keep(data, this);
+        await roms.Keep(data, this);
 
         var settings = environment.SettingsGet();
         settings.LastRomCsvPath = data.Main;
@@ -682,7 +689,7 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<RomsAction>(args);
         MustCancel = false;
 
-        var list = await services.Roms.KeepCheck(data, this);
+        var list = await roms.KeepCheck(data, this);
 
         Electron.IpcMain.Send(window, "roms-keep-check-reply", new { list });
     }

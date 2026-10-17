@@ -2,6 +2,7 @@ using ArcadeManager.Core;
 using ArcadeManager.Core.Exceptions;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Services;
+using ArcadeManager.Core.Services.Interfaces;
 using ArcadeManager.Services;
 using ArcadeManager.Services.Interfaces;
 using ElectronNET.API;
@@ -32,7 +33,11 @@ public static class Program
             lock (messageHandlerLock)
             {
                 messageHandler ??= new ElectronMessageHandler(
-                        container.GetInstance<Core.Services.Interfaces.IServiceProvider>(),
+                        container.GetInstance<ICsv>(),
+                        container.GetInstance<IDatChecker>(),
+                        container.GetInstance<IDownloader>(),
+                        container.GetInstance<IOverlays>(),
+                        container.GetInstance<IRoms>(),
                         container.GetInstance<IUpdater>(),
                         container.GetInstance<IEnvironment>(),
                         container.GetInstance<IFileSystem>());

@@ -1,4 +1,3 @@
-using System;
 using ArcadeManager.Core;
 using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Infrastructure;
@@ -7,6 +6,9 @@ using ArcadeManager.Core.Services;
 using ArcadeManager.Core.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
+using System;
+using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace ArcadeManager.Console;
 
@@ -27,6 +29,13 @@ public sealed class TypeRegistrar : ITypeRegistrar
         builder.AddSingleton<IFileSystem, FileSystem>();
         builder.AddSingleton<IDatFile, DatFile>();
 
+        // domain
+        builder.AddSingleton<IDatFile, DatFile>();
+        builder.AddSingleton<ICsvFile, CsvFile>();
+        builder.AddSingleton<IIniFile, IniFile>();
+        builder.AddSingleton<IMameOverlay, MameOverlay>();
+        builder.AddSingleton<IRetroArchOverlay, RetroArchOverlay>();
+
         // services
         builder.AddSingleton<IDownloader, Downloader>();
         builder.AddSingleton<ICsv, Core.Services.Csv>();
@@ -34,7 +43,6 @@ public sealed class TypeRegistrar : ITypeRegistrar
         builder.AddSingleton<IRoms, Roms>();
         builder.AddSingleton<ILocalizer, Localizer>();
         builder.AddSingleton<IDatChecker, DatChecker>();
-        builder.AddSingleton<Core.Services.Interfaces.IServiceProvider, Core.Services.ServiceProvider>();
 
         builder.AddSingleton<IMessageHandler, ConsoleMessageHandler>();
     }

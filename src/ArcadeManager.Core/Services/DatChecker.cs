@@ -94,20 +94,47 @@ public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : ID
         }
     }
 
-    private List<ReadOnlyGameRomFile> CheckGames(IReadOnlyList<GameRom> allGames, GameRomList processed, RomsActionCheckDat args, IMessageHandler messageHandler)
+    public IEnumerable<GameRomFile> CheckFilesOfGame(ZipFile zip, GameRom game, bool checkSha1, IMessageHandler messageHandler)
     {
-        var result = new List<ReadOnlyGameRomFile>();
+        var fileName = fs.FileName(zip?.FilePath);
+        var fileFolder = fs.DirectoryName(zip?.FilePath);
 
-        foreach (var game in allGames.OrderBy(g => g.Name))
+        var zipFiles = fs.GetZipFiles(zip, fileName, fileFolder, checkSha1);
+
+        // check the files that are supposed to be in the game
+        foreach (var gameFile in game.RomFiles)
         {
-            if (messageHandler.MustCancel) { break; }
+            if (messageHandler.MustCancel) { return []; }
 
-            messageHandler.CurrentItem++;
+            var zipFile = zipFiles.FirstOrDefault(zf => zf.Name.Equals(gameFile.Name, StringComparison.InvariantCultureIgnoreCase));
 
-            result.AddRange(CheckGame(game, args, processed, messageHandler));
+            CheckFileOfGame(game, gameFile, zipFile, checkSha1);
         }
 
-        return result;
+        // if the set is merged, check the parent's files in the zip
+        if (game.Parent != null)
+        {
+            CheckFilesOfParent(game, zipFiles, checkSha1, messageHandler);
+        }
+
+        if (messageHandler.MustCancel) { return []; }
+
+        // check clones that are located inside the zip in case of merged set
+        if (zipFiles.Any(zf => !string.IsNullOrEmpty(zf.Path)))
+        {
+            foreach (var clone in game.Clones)
+            {
+                CheckFilesOfClonesInZip(clone, zipFiles, checkSha1);
+            }
+        }
+
+        // check that the bios exists (don't check files inside, as it *should* be also in the dat)
+        if (game.Bios != null && !fs.FileExists(fs.PathJoin(fileFolder, $"{game.BiosName}.zip")))
+        {
+            game.Error(ErrorReason.MissingFile, $"Missing BIOS file {game.BiosName}", $"{game.BiosName}.zip");
+        }
+
+        return zipFiles;
     }
 
     public List<ReadOnlyGameRomFile> CheckGame(GameRom game, RomsActionCheckDat args, GameRomList processed, IMessageHandler messageHandler)
@@ -155,75 +182,48 @@ public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : ID
         return [.. files.Select(f => f.ToReadOnly(gameFile))];
     }
 
-    private IEnumerable<GameRomFile> CheckFilesOfGame(string zipPath, GameRom game, bool checkSha1, IMessageHandler messageHandler)
+    public void CleanupFilesOfGame(ZipFile zip, GameRom game, GameRomFilesList zipFiles)
     {
-        using var zip = fs.OpenZipRead(zipPath);
-        return CheckFilesOfGame(zip, game, checkSha1, messageHandler);
+        if (!zipFiles.Any()) { return; }
+
+        // get folders to remove
+        var folders = zipFiles.Where(f => !string.IsNullOrEmpty(f.Path)).Select(f => f.Path).Distinct().ToList();
+
+        // get the files that are in the zip but shouldn't
+        var excessFiles = zipFiles.Where(zf => !game.RomFiles.Any(rf => rf.Name == zf.Name)).ToList(); // The ToList() clones the list so the zipFiles collection can be modified
+
+        foreach (var f in excessFiles)
+        {
+            // remove them
+            fs.DeleteZipFile(zip, f);
+
+            zipFiles.RemoveFile(f.Name, f.Path);
+        }
+
+        // remove remaining folders
+        foreach (var folder in folders)
+        {
+            fs.DeleteZipFile(zip, new GameRomFile { Name = folder.EndsWith('/') ? folder : $"{folder}/" });
+        }
     }
 
-    public IEnumerable<GameRomFile> CheckFilesOfGame(ZipFile zip, GameRom game, bool checkSha1, IMessageHandler messageHandler)
+    public async Task RebuildGame(string gameFileFixed, ReadOnlyGameRomFileList foundFiles, GameRomFilesList gameFiles, RomsActionCheckDat args)
     {
-        var fileName = fs.FileName(zip?.FilePath);
-        var fileFolder = fs.DirectoryName(zip?.FilePath);
+        using var targetZip = fs.OpenZipWrite(gameFileFixed);
 
-        var zipFiles = fs.GetZipFiles(zip, fileName, fileFolder, checkSha1);
-
-        // check the files that are supposed to be in the game
-        foreach (var gameFile in game.RomFiles)
+        foreach (var groupFile in foundFiles.GroupBy(f => f.ZipFilePath))
         {
-            if (messageHandler.MustCancel) { return []; }
-
-            var zipFile = zipFiles.FirstOrDefault(zf => zf.Name.Equals(gameFile.Name, StringComparison.InvariantCultureIgnoreCase));
-
-            CheckFileOfGame(game, gameFile, zipFile, checkSha1);
-        }
-
-        // if the set is merged, check the parent's files in the zip
-        if (game.Parent != null)
-        {
-            CheckFilesOfParent(game, zipFiles, checkSha1, messageHandler);
-        }
-
-        if (messageHandler.MustCancel) { return []; }
-
-        // check clones that are located inside the zip in case of merged set
-        if (zipFiles.Any(zf => !string.IsNullOrEmpty(zf.Path)))
-        {
-            foreach (var clone in game.Clones)
+            using var sourceZip = fs.OpenZipRead(groupFile.Key);
+            foreach (var sourceFile in groupFile)
             {
-                CheckFilesOfClonesInZip(clone, zipFiles, checkSha1);
+                // get the matching rom from the game, in case the name has changed
+                var romFile = gameFiles.First(gf => gf.Crc == sourceFile.Crc && (!args.CheckSha1 || gf.Sha1 == sourceFile.Sha1));
+
+                if (!await fs.ReplaceZipFile(sourceZip, targetZip, sourceFile, romFile))
+                {
+                    Console.WriteLine($"warning: did not replace {sourceFile.Name} from {sourceZip?.FilePath} to {targetZip?.FilePath}");
+                }
             }
-        }
-
-        // check that the bios exists (don't check files inside, as it *should* be also in the dat)
-        if (game.Bios != null && !fs.FileExists(fs.PathJoin(fileFolder, $"{game.BiosName}.zip")))
-        {
-            game.Error(ErrorReason.MissingFile, $"Missing BIOS file {game.BiosName}", $"{game.BiosName}.zip");
-        }
-
-        return zipFiles;
-    }
-
-    private static void CheckFilesOfParent(GameRom game, IEnumerable<GameRomFile> zipFiles, bool checkSha1, IMessageHandler messageHandler)
-    {
-        foreach (var fip in game.RomFiles)
-        {
-            if (messageHandler.MustCancel) { return; }
-
-            var zipFile = zipFiles.FirstOrDefault(zf => zf.Name.Equals(fip.Name, StringComparison.InvariantCultureIgnoreCase));
-            if (zipFile != null)
-            {
-                CheckFileOfGame(game, fip, zipFile, checkSha1);
-            }
-        }
-    }
-
-    private static void CheckFilesOfClonesInZip(GameRom clone, IEnumerable<GameRomFile> zipFiles, bool checkSha1)
-    {
-        foreach (var cloneFile in clone.RomFiles)
-        {
-            var cloneZipFile = zipFiles.FirstOrDefault(zf => zf.Path.Equals(clone.Name, StringComparison.InvariantCultureIgnoreCase) && zf.Name.Equals(cloneFile.Name, StringComparison.InvariantCultureIgnoreCase));
-            CheckFileOfGame(clone, cloneFile, cloneZipFile, checkSha1);
         }
     }
 
@@ -253,6 +253,165 @@ public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : ID
         // reset error, if any
         datFile.ErrorDetails = null;
         datFile.ErrorReason = ErrorReason.None;
+    }
+
+    private static void CheckFilesOfClonesInZip(GameRom clone, IEnumerable<GameRomFile> zipFiles, bool checkSha1)
+    {
+        foreach (var cloneFile in clone.RomFiles)
+        {
+            var cloneZipFile = zipFiles.FirstOrDefault(zf => zf.Path.Equals(clone.Name, StringComparison.InvariantCultureIgnoreCase) && zf.Name.Equals(cloneFile.Name, StringComparison.InvariantCultureIgnoreCase));
+            CheckFileOfGame(clone, cloneFile, cloneZipFile, checkSha1);
+        }
+    }
+
+    private static void CheckFilesOfParent(GameRom game, IEnumerable<GameRomFile> zipFiles, bool checkSha1, IMessageHandler messageHandler)
+    {
+        foreach (var fip in game.RomFiles)
+        {
+            if (messageHandler.MustCancel) { return; }
+
+            var zipFile = zipFiles.FirstOrDefault(zf => zf.Name.Equals(fip.Name, StringComparison.InvariantCultureIgnoreCase));
+            if (zipFile != null)
+            {
+                CheckFileOfGame(game, fip, zipFile, checkSha1);
+            }
+        }
+    }
+
+    private static int ComputeTotal(int filesCount, bool change, int fixFilesCount)
+    {
+        int total = filesCount;
+
+        if (change)
+        {
+            total *= 2; // check, rebuild
+        }
+
+        // listing the files in the fix folder takes a lot of time
+        total += fixFilesCount;
+
+        return total;
+    }
+
+    private static ReadOnlyGameRomFileList FindFilesOfGame(List<GameRomFile> requiredFiles, ReadOnlyGameRomFileList allFiles, RomsActionCheckDat args)
+    {
+        var result = new List<ReadOnlyGameRomFile>();
+
+        foreach (var rf in requiredFiles)
+        {
+            // check in the processed games
+            var foundFile = allFiles.FirstOrDefault(f => f.Crc == rf.Crc && (!args.CheckSha1 || f.Sha1 == rf.Sha1));
+            if (foundFile != null)
+            {
+                result.Add(foundFile);
+            }
+        }
+
+        return new(result);
+    }
+
+    private static GameRomList KeepCsvGames(GameRomList allGames, CsvGamesList csv)
+    {
+        if (csv == null) { return allGames; }
+
+        allGames.RemoveAll(gdat => csv.Games.Any(gcsv => gcsv.Name.Equals(gdat.Name, StringComparison.InvariantCultureIgnoreCase)));
+
+        return allGames;
+    }
+
+    private IEnumerable<GameRomFile> CheckFilesOfGame(string zipPath, GameRom game, bool checkSha1, IMessageHandler messageHandler)
+    {
+        using var zip = fs.OpenZipRead(zipPath);
+        return CheckFilesOfGame(zip, game, checkSha1, messageHandler);
+    }
+
+    private List<ReadOnlyGameRomFile> CheckGames(IReadOnlyList<GameRom> allGames, GameRomList processed, RomsActionCheckDat args, IMessageHandler messageHandler)
+    {
+        var result = new List<ReadOnlyGameRomFile>();
+
+        foreach (var game in allGames.OrderBy(g => g.Name))
+        {
+            if (messageHandler.MustCancel) { break; }
+
+            messageHandler.CurrentItem++;
+
+            result.AddRange(CheckGame(game, args, processed, messageHandler));
+        }
+
+        return result;
+    }
+
+    private void CleanupFilesOfGame(string zipPath, GameRom game, GameRomFilesList zipFiles)
+    {
+        using var zip = fs.OpenZipWrite(zipPath);
+        CleanupFilesOfGame(zip, game, zipFiles);
+    }
+
+    private async Task<CsvGamesList> GetCsvData(string csvfilter)
+    {
+        if (!string.IsNullOrEmpty(csvfilter) && fs.FileExists(csvfilter))
+        {
+            using var stream = fs.GetReadFileStream(csvfilter);
+            return await csvFile.ReadFile(stream, false);
+        }
+
+        return null;
+    }
+
+    private string GetDatPath(string datfilePre, string datfileCustom)
+    {
+        var dat = datfilePre;
+        if (dat == "custom")
+        {
+            dat = datfileCustom;
+        }
+        else
+        {
+            dat = fs.GetDataPath("mame-xml", dat, "games.xml");
+        }
+
+        return dat;
+    }
+
+    private List<string> GetOtherFolderFiles(RomsActionCheckDat args, IMessageHandler messageHandler)
+    {
+        if (args.OtherFolder == args.Romset || !args.ChangeType)
+        {
+            return [];
+        }
+
+        messageHandler.Progress("Reading files in fix folder", 0, 0);
+        return [.. fs.FilesGetList(args.OtherFolder, "*.zip").OrderBy(f => f)];
+    }
+
+    private List<ReadOnlyGameRomFile> GetOtherFolderFilesDetails(IEnumerable<string> fixFiles, RomsActionCheckDat args, IMessageHandler messageHandler)
+    {
+        if (messageHandler.MustCancel || !args.ChangeType) { return new([]); }
+
+        List<ReadOnlyGameRomFile> result = [];
+
+        foreach (var ff in fixFiles)
+        {
+            if (messageHandler.MustCancel) { break; }
+
+            messageHandler.CurrentItem++;
+            messageHandler.Progress($"Reading {fs.FileName(ff)} in additional folder");
+
+            // read infos of files in zip
+            result.AddRange(fs.GetZipFiles(ff, args.CheckSha1).Select(f => f.ToReadOnly(ff)));
+        }
+
+        return result;
+    }
+
+    private void RebuildGameHandleResult(GameRom game, IEnumerable<GameRomFile> zipFiles, string gameFileFixed, IMessageHandler messageHandler)
+    {
+        if (!zipFiles.Any() || game.HasError)
+        {
+            fs.FileDelete(gameFileFixed);
+        }
+
+        messageHandler.ProgressProcessed(game);
     }
 
     private async Task RebuildGames(RomsActionCheckDat args, IReadOnlyList<GameRom> allGames, ReadOnlyGameRomFileList allFiles, IMessageHandler messageHandler)
@@ -311,7 +470,7 @@ public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : ID
 
             // rebuild the zip
             await RebuildGame(gameFileFixed, foundFiles, game.RomFiles, args);
-                
+
             if (messageHandler.MustCancel) { break; }
 
             // reset game own errors
@@ -322,164 +481,5 @@ public class DatChecker(IFileSystem fs, ICsvFile csvFile, IDatFile datFile) : ID
 
             RebuildGameHandleResult(game, zipFiles, gameFileFixed, messageHandler);
         }
-    }
-
-    public async Task RebuildGame(string gameFileFixed, ReadOnlyGameRomFileList foundFiles, GameRomFilesList gameFiles, RomsActionCheckDat args)
-    {
-        using var targetZip = fs.OpenZipWrite(gameFileFixed);
-
-        foreach (var groupFile in foundFiles.GroupBy(f => f.ZipFilePath))
-        {
-            using var sourceZip = fs.OpenZipRead(groupFile.Key);
-            foreach (var sourceFile in groupFile)
-            {
-                // get the matching rom from the game, in case the name has changed
-                var romFile = gameFiles.First(gf => gf.Crc == sourceFile.Crc && (!args.CheckSha1 || gf.Sha1 == sourceFile.Sha1));
-
-                if (!await fs.ReplaceZipFile(sourceZip, targetZip, sourceFile, romFile))
-                {
-                    Console.WriteLine($"warning: did not replace {sourceFile.Name} from {sourceZip?.FilePath} to {targetZip?.FilePath}");
-                }
-            }
-        }
-    }
-
-    private static ReadOnlyGameRomFileList FindFilesOfGame(List<GameRomFile> requiredFiles, ReadOnlyGameRomFileList allFiles, RomsActionCheckDat args)
-    {
-        var result = new List<ReadOnlyGameRomFile>();
-
-        foreach (var rf in requiredFiles)
-        {
-            // check in the processed games
-            var foundFile = allFiles.FirstOrDefault(f => f.Crc == rf.Crc && (!args.CheckSha1 || f.Sha1 == rf.Sha1));
-            if (foundFile != null)
-            {
-                result.Add(foundFile);
-            }
-        }
-
-        return new(result);
-    }
-
-    private void RebuildGameHandleResult(GameRom game, IEnumerable<GameRomFile> zipFiles, string gameFileFixed, IMessageHandler messageHandler)
-    {
-        if (!zipFiles.Any() || game.HasError)
-        {
-            fs.FileDelete(gameFileFixed);
-        }
-
-        messageHandler.ProgressProcessed(game);
-    }
-
-    private void CleanupFilesOfGame(string zipPath, GameRom game, GameRomFilesList zipFiles)
-    {
-        using var zip = fs.OpenZipWrite(zipPath);
-        CleanupFilesOfGame(zip, game, zipFiles);
-    }
-
-    public void CleanupFilesOfGame(ZipFile zip, GameRom game, GameRomFilesList zipFiles)
-    {
-        if (!zipFiles.Any()) { return; }
-
-        // get folders to remove
-        var folders = zipFiles.Where(f => !string.IsNullOrEmpty(f.Path)).Select(f => f.Path).Distinct().ToList();
-
-        // get the files that are in the zip but shouldn't
-        var excessFiles = zipFiles.Where(zf => !game.RomFiles.Any(rf => rf.Name == zf.Name)).ToList(); // The ToList() clones the list so the zipFiles collection can be modified
-
-        foreach (var f in excessFiles)
-        {
-            // remove them
-            fs.DeleteZipFile(zip, f);
-
-            zipFiles.RemoveFile(f.Name, f.Path);
-        }
-
-        // remove remaining folders
-        foreach (var folder in folders)
-        {
-            fs.DeleteZipFile(zip, new GameRomFile { Name = folder.EndsWith('/') ? folder : $"{folder}/" });
-        }
-    }
-
-    private async Task<CsvGamesList> GetCsvData(string csvfilter)
-    {
-        if (!string.IsNullOrEmpty(csvfilter) && fs.FileExists(csvfilter))
-        {
-            using var stream = fs.GetReadFileStream(csvfilter);
-            return await csvFile.ReadFile(stream, false);
-        }
-
-        return null;
-    }
-
-    private List<string> GetOtherFolderFiles(RomsActionCheckDat args, IMessageHandler messageHandler)
-    {
-        if (args.OtherFolder == args.Romset || !args.ChangeType)
-        {
-            return [];
-        }
-
-        messageHandler.Progress("Reading files in fix folder", 0, 0);
-        return [.. fs.FilesGetList(args.OtherFolder, "*.zip").OrderBy(f => f)];
-    }
-
-    private List<ReadOnlyGameRomFile> GetOtherFolderFilesDetails(IEnumerable<string> fixFiles, RomsActionCheckDat args, IMessageHandler messageHandler)
-    {
-        if (messageHandler.MustCancel || !args.ChangeType) { return new([]); }
-
-        List<ReadOnlyGameRomFile> result = [];
-
-        foreach (var ff in fixFiles)
-        {
-            if (messageHandler.MustCancel) { break; }
-
-            messageHandler.CurrentItem++;
-            messageHandler.Progress($"Reading {fs.FileName(ff)} in additional folder");
-
-            // read infos of files in zip
-            result.AddRange(fs.GetZipFiles(ff, args.CheckSha1).Select(f => f.ToReadOnly(ff)));
-        }
-
-        return result;
-    }
-
-    private static int ComputeTotal(int filesCount, bool change, int fixFilesCount)
-    {
-        int total = filesCount;
-
-        if (change)
-        {
-            total *= 2; // check, rebuild
-        }
-
-        // listing the files in the fix folder takes a lot of time
-        total += fixFilesCount;
-
-        return total;
-    }
-
-    private string GetDatPath(string datfilePre, string datfileCustom)
-    {
-        var dat = datfilePre;
-        if (dat == "custom")
-        {
-            dat = datfileCustom;
-        }
-        else
-        {
-            dat = fs.GetDataPath("mame-xml", dat, "games.xml");
-        }
-
-        return dat;
-    }
-
-    private static GameRomList KeepCsvGames(GameRomList allGames, CsvGamesList csv)
-    {
-        if (csv == null) { return allGames; }
-
-        allGames.RemoveAll(gdat => csv.Games.Any(gcsv => gcsv.Name.Equals(gdat.Name, StringComparison.InvariantCultureIgnoreCase)));
-
-        return allGames;
     }
 }
