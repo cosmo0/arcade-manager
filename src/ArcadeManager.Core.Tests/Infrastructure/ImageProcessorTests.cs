@@ -25,8 +25,8 @@ public class ImageProcessorTests : TestBase
         sut = new(fs);
 
         // globals
-        sourceImage = GetTestFile(testFolder, "1943.png");
-        outputFolder = GetTestFile(testFolder, "output");
+        sourceImage = GetTestPath(testFolder, "1943.png");
+        outputFolder = GetTestPath(testFolder, "output");
 
         // reset output folder
         if (!Directory.Exists(outputFolder))
@@ -42,7 +42,7 @@ public class ImageProcessorTests : TestBase
         Bounds screenPosition = new() { X = 674, Y = 184, Width = 575, Height = 734 };
 
         // arrange: expected result
-        var expected = await File.ReadAllBytesAsync(GetTestFile(testFolder, "1943_expected_debug.png"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestPath(testFolder, "1943_expected_debug.png"), TestContext.Current.CancellationToken);
 
         // arrange: cleanup
         var outputFile = Path.Combine(outputFolder, "1943.png");
@@ -61,7 +61,7 @@ public class ImageProcessorTests : TestBase
     {
         // arrange
         var content = await File.ReadAllBytesAsync(sourceImage, TestContext.Current.CancellationToken);
-        var expected = await File.ReadAllBytesAsync(GetTestFile(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestPath(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
 
         // act
         var result = await sut.Resize(content, 1280, 720);
@@ -76,7 +76,7 @@ public class ImageProcessorTests : TestBase
         // arrange
         var temp = Path.Combine(outputFolder, "resize.png");
         CleanupFile(temp);
-        var expected = await File.ReadAllBytesAsync(GetTestFile(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestPath(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
         File.Copy(sourceImage, temp);
 
         // act
@@ -104,7 +104,7 @@ public class ImageProcessorTests : TestBase
     public async Task Screen_is_not_found_when_no_transparent_area()
     {
         // arrange
-        var content = await File.ReadAllBytesAsync(GetTestFile(testFolder, "nontransparent.png"), TestContext.Current.CancellationToken);
+        var content = await File.ReadAllBytesAsync(GetTestPath(testFolder, "nontransparent.png"), TestContext.Current.CancellationToken);
 
         // act
         var result = sut.FindScreen(content, 0);

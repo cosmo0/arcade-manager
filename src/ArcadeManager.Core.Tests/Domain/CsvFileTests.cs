@@ -18,7 +18,7 @@ public class CsvFileTests : TestBase
     public async Task ReadFile_with_headers_returns_data()
     {
         // arrange
-        using var stream = File.OpenText(GetTestFile("Domain", "csvfile-readfile.csv"));
+        using var stream = File.OpenText(GetTestPath("Domain", "csvfile-readfile.csv"));
 
         // act
         var result = await sut.ReadFile(stream, true);
@@ -38,7 +38,7 @@ public class CsvFileTests : TestBase
     public async Task ReadFile_without_headers_returns_data_without_headers()
     {
         // arrange
-        using var stream = File.OpenText(GetTestFile("Domain", "csvfile-readfile-noheaders.csv"));
+        using var stream = File.OpenText(GetTestPath("Domain", "csvfile-readfile-noheaders.csv"));
 
         // act
         var result = await sut.ReadFile(stream, true);
@@ -58,7 +58,7 @@ public class CsvFileTests : TestBase
     public async Task WriteFile_outputs_file()
     {
         // arrange: outfile
-        var outFile = GetTestFile("Domain", "out.csv");
+        var outFile = GetTestPath("Domain", "out.csv");
 
         // arrange: data
         var data = new CsvGamesList();

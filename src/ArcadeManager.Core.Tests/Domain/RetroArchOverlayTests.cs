@@ -17,20 +17,18 @@ public class RetroArchOverlayTests : TestBase
 
     public RetroArchOverlayTests() : base()
     {
-        var fs = new FileSystem(A.Fake<IEnvironment>());
-
-        sut = new(fs);
+        sut = new(realfs);
     }
 
     [Fact]
     public async Task CreateConfig_creates_config()
     {
         // arrange: dest file
-        var dest = GetTestFile("Domain", "result_createconfig.cfg");
+        var dest = GetTestPath("Domain", "result_createconfig.cfg");
         CleanupFile(dest);
 
         // arrange: template
-        var template = GetTestFile("Domain", "template.cfg");
+        var template = GetTestPath("Domain", "template.cfg");
 
         // act
         await sut.CreateConfig(template, "test", dest, testBounds, testResolution);
@@ -38,7 +36,7 @@ public class RetroArchOverlayTests : TestBase
         // assert
         File.Exists(dest).Should().BeTrue();
         var result = await File.ReadAllTextAsync(dest, TestContext.Current.CancellationToken);
-        var expected = await File.ReadAllTextAsync(GetTestFile("Domain", "expected_createconfig.cfg"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllTextAsync(GetTestPath("Domain", "expected_createconfig.cfg"), TestContext.Current.CancellationToken);
         result.Should().Be(expected);
     }
 
@@ -46,14 +44,14 @@ public class RetroArchOverlayTests : TestBase
     public async Task FillTemplate_fills_template()
     {
         // arrange
-        var cfg = GetTestFile("Domain", "filltemplate.cfg");
+        var cfg = GetTestPath("Domain", "filltemplate.cfg");
 
         // act
         await sut.FillTemplate(cfg, "test", testBounds, testResolution);
 
         // assert
         var result = await File.ReadAllTextAsync(cfg, TestContext.Current.CancellationToken);
-        var expected = await File.ReadAllTextAsync(GetTestFile("Domain", "expected_filltemplate.cfg"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllTextAsync(GetTestPath("Domain", "expected_filltemplate.cfg"), TestContext.Current.CancellationToken);
         result.Should().Be(expected);
     }
 
@@ -61,7 +59,7 @@ public class RetroArchOverlayTests : TestBase
     public void GetBoundsFromConfig_gets_bounds()
     {
         // arrange
-        var content = File.ReadAllText(GetTestFile("Domain", "sf2.zip.cfg"));
+        var content = File.ReadAllText(GetTestPath("Domain", "sf2.zip.cfg"));
 
         // act
         var result = sut.GetBoundsFromConfig(content);
@@ -77,7 +75,7 @@ public class RetroArchOverlayTests : TestBase
     public void GetCfgData_gets_config_data()
     {
         // arrange
-        var content = File.ReadAllText(GetTestFile("Domain", "sf2.zip.cfg"));
+        var content = File.ReadAllText(GetTestPath("Domain", "sf2.zip.cfg"));
 
         // act
         var result = sut.GetCfgData(content, "video_shader");
@@ -90,7 +88,7 @@ public class RetroArchOverlayTests : TestBase
     public async Task GetRetroArchConfig_gets_config()
     {
         // arrange
-        var rom = GetTestFile("Domain", "sf2.zip.cfg");
+        var rom = GetTestPath("Domain", "sf2.zip.cfg");
         var cfgFolder = Path.Join(here, "Data", "Domain");
 
         // act
@@ -117,14 +115,14 @@ public class RetroArchOverlayTests : TestBase
     public async Task SetBounds_sets_bounds()
     {
         // arrange
-        var f = GetTestFile("Domain", "setbounds.cfg");
+        var f = GetTestPath("Domain", "setbounds.cfg");
 
         // act
         await sut.SetBounds(f, "sf2", testBounds, testResolution);
 
         // assert
         var result = await File.ReadAllTextAsync(f, TestContext.Current.CancellationToken);
-        var expected = await File.ReadAllTextAsync(GetTestFile("Domain", "expected_setbounds.cfg"), TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllTextAsync(GetTestPath("Domain", "expected_setbounds.cfg"), TestContext.Current.CancellationToken);
         result.Should().Be(expected);
     }
 

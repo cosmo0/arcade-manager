@@ -13,7 +13,7 @@ public class IniFileTests : TestBase
         var sut = new IniFile();
 
         // arrange: data
-        var testFile = GetTestFile("Domain", "category.ini");
+        var testFile = GetTestPath("Domain", "category.ini");
         using var stream = File.OpenText(testFile);
 
         // act

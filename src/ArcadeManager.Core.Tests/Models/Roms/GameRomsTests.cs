@@ -10,7 +10,7 @@ public class GameRomsTests : TestBase
 
     public GameRomsTests() : base()
     {
-        string xmlPath = GetTestFile("Models", "GameRom.xml");
+        string xmlPath = GetTestPath("Models", "GameRom.xml");
         XDocument xmlData = XDocument.Load(xmlPath);
         xml = xmlData.Root!.Elements().First();
     }

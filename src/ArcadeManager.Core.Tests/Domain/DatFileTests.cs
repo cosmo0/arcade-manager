@@ -13,7 +13,7 @@ public class DatFileTests : TestBase
         var sut = new DatFile();
 
         // arrange: file path
-        var datPath = GetTestFile("Domain", "datfile.xml");
+        var datPath = GetTestPath("Domain", "datfile.xml");
         using var stream = File.OpenText(datPath);
 
         // act

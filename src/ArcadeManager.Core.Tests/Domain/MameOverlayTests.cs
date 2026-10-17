@@ -11,17 +11,14 @@ public class MameOverlayTests : TestBase
 
     public MameOverlayTests() : base()
     {
-        // use real filesystem as we'll actually use real files
-        FileSystem fs = new(A.Fake<IEnvironment>());
-
-        sut = new(fs);
+        sut = new(realfs);
     }
 
     [Fact]
     public async Task ExtractFiles_reads_zip()
     {
         // arrange
-        var testFile = GetTestFile("Domain", "1943.zip");
+        var testFile = GetTestPath("Domain", "1943.zip");
 
         // act
         var (lay, cfg, bezel) = await sut.ReadZip("1943", testFile, null, true);
@@ -86,7 +83,7 @@ public class MameOverlayTests : TestBase
     public async Task MameReadFiles_reads_folder()
     {
         // arrange
-        var testFolder = GetTestFile("Domain", "1943");
+        var testFolder = GetTestPath("Domain", "1943");
 
         // act
         var (lay, cfg, bezel) = await sut.ReadFolder("1943", testFolder, null, true);

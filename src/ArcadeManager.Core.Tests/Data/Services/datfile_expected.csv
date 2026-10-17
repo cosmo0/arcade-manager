@@ -1,0 +1,7 @@
+name;description;year;manufacturer;is_parent;romof;is_clone;cloneof;sampleof
+2spicy;2 Spicy;2007;Sega;NO;lindbios;YES;-;-;
+1944;1944: The Loop Master (Europe 000620);2000;Eighting / Raizing (Capcom license);NO;-;YES;-;-;
+1944j;1944: The Loop Master (Japan 000620);2000;Eighting / Raizing (Capcom license);YES;1944;NO;1944;-;
+aof;Art of Fighting / Ryuuko no Ken (NGM-044 ~ NGH-044);1992;SNK;NO;neogeo;YES;-;-;
+neogeo;Neo-Geo MV-6F;1990;SNK;NO;-;YES;-;-;
+puckman;PuckMan (Japan set 1, Probably Bootleg);1980;Namco;NO;-;YES;-;-;
