@@ -136,7 +136,7 @@ $(() => {
     });
 
     // checks if an update is available
-    checkUpdate((version) => {
+    ipc('update-check', null, (version) => {
         if (!version || version.length === 0) { return; }
 
         version = version[0];

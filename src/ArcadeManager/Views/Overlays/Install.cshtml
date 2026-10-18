@@ -167,13 +167,6 @@
                     div.addClass('active').find(':radio').prop('checked', true);
                 });
                 
-                // handle click on resolution presets
-                $('a.setsize').on('click', (e) => {
-                    let link = $(e.currentTarget);
-                    $('#width').val(link.data('width'));
-                    $('#height').val(link.data('height'));
-                });
-
                 // Handle click on validation button
                 $('#buttonInstall').on('click', (e) => {
                     let pack = $('#packs .active'),

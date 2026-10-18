@@ -21,7 +21,7 @@ $(() => {
 
         if (btn.hasClass('folder')) {
             // select a folder
-            getFolder(existingPath, (folder) => {
+            ipc('select-directory', existingPath, (folder) => {
                 if (folder && folder.length !== 0) { input.val(folder); }
 
                 btn.prop('disabled', false).removeClass('disabled');
@@ -29,7 +29,7 @@ $(() => {
         }
         else if (btn.hasClass('new')) {
             // create a new file
-            newFile(existingPath, (filename) => {
+            ipc('new-file', existingPath, (filename) => {
                 if (filename !== undefined && filename !== '') {
                     if (!filename.endsWith('.csv')) { filename += '.csv'; }
                     input.val(filename);
@@ -40,7 +40,7 @@ $(() => {
         }
         else {
             // select a file
-            selectFile(existingPath, (file) => {
+            ipc('select-file', existingPath, (file) => {
                 if (file && file.length !== 0) { input.val(file); }
 
                 btn.prop('disabled', false).removeClass('disabled');
@@ -122,89 +122,6 @@ function getAppData(cb) {
             cb(data);
         });
     }
-}
-
-/**
- * Gets a folder path
- * 
- * @param {String} current the current path
- * @param {Function} cb the callback
- */
-function getFolder(current, cb) {
-    ipc('select-directory', current, cb);
-}
-
-/**
- * Create a file
- * 
- * @param {String} current the current path
- * @param {Function} cb the callback
- */
-function newFile(current, cb) {
-    ipc('new-file', current, cb);
-}
-
-/**
- * Copies a file
- * 
- * @param {String} source the source file to copy
- * @param {String} target the target file to copy to
- * @param {Boolean} overwrite whether to overwrite the target file
- * @param {Function} cb the callback
- */
-function copyFile(source, target, overwrite, cb) {
-    ipc('copy-file', { source, target, overwrite }, cb);
-}
-
-/**
- * Selects a file
- * 
- * @param {String} current the current path
- * @param {Function} cb the callback
- */
-function selectFile(current, cb) {
-    ipc('select-file', current, cb);
-}
-
-/**
- * Download a file from a Github repository
- * 
- * @param {String} repository the repository
- * @param {String} path the path to the file
- * @param {String} localfile the path to the local file to save
- * @param {Function} cb the callback
- */
-function downloadFile(repository, path, localfile, cb) {
-    ipc('download-file', { repository, path, localfile }, cb);
-}
-
-/**
- * Gets a remote list of files
- * 
- * @param {String} repository the repository
- * @param {String} details the file details
- * @param {String} folder the folder
- */
-function getRemoteList(repository, details, folder, cb) {
-    ipc('download-getlist', { repository, details, folder }, cb);
-}
-
-/**
- * Gets a local list of files
- * 
- * @param {String} folder the folder
- */
-function getLocalList(folder, cb) {
-    ipc('local-getlist', { folder }, cb);
-}
-
-/**
- * Checks that an update is available
- * 
- * @param {Function} cb the callback
- */
-function checkUpdate(cb) {
-    ipc('update-check', null, cb);
 }
 
 /**

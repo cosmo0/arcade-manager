@@ -11,6 +11,7 @@ using ElectronNET.API.Entities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ArcadeManager.Services;
@@ -110,7 +111,6 @@ public partial class ElectronMessageHandler(
             await Electron.IpcMain.On("roms-checkdat", async (args) => await RomsCheckDat(args));
 
             // download actions
-            await Electron.IpcMain.On("download-getlist", async (args) => await GithubFilesGetList(args));
             await Electron.IpcMain.On("download-file", async (args) => await DownloadFile(args));
 
             // CSV actions
@@ -450,18 +450,6 @@ public partial class ElectronMessageHandler(
     }
 
     /// <summary>
-    /// Gets a files list from Github.
-    /// </summary>
-    /// <param name="args">The arguments.</param>
-    private async Task GithubFilesGetList(object args)
-    {
-        var data = ConvertArgs<DownloadAction>(args);
-        MustCancel = false;
-
-        Electron.IpcMain.Send(window, "download-getlist-reply", await downloader.GetList(data));
-    }
-
-    /// <summary>
     /// Gets a files list from a local folder.
     /// </summary>
     /// <param name="args">The arguments.</param>
@@ -470,7 +458,8 @@ public partial class ElectronMessageHandler(
         var data = ConvertArgs<DownloadAction>(args);
         MustCancel = false;
 
-        Electron.IpcMain.Send(window, "local-getlist-reply", downloader.GetLocalList(data));
+        // wrapping into an object because ElectronNet has a "params" array for data
+        Electron.IpcMain.Send(window, "local-getlist-reply", new { list = downloader.GetLocalList(data) });
     }
 
     /// <summary>
@@ -610,7 +599,7 @@ public partial class ElectronMessageHandler(
         MustCancel = false;
 
         string[] missing = await roms.Check(data, this);
-        // wrapping into an object because ElectronNet has a bug that sends only the first item of an array
+        // wrapping into an object because ElectronNet has a "params" array for data
         Electron.IpcMain.Send(window, "roms-check-reply", new { missing });
     }
 
@@ -660,6 +649,7 @@ public partial class ElectronMessageHandler(
 
         var list = await roms.DeleteCheck(data, this);
 
+        // wrapping into an object because ElectronNet has a "params" array for data
         Electron.IpcMain.Send(window, "roms-delete-check-reply", new { list });
     }
 
@@ -691,6 +681,7 @@ public partial class ElectronMessageHandler(
 
         var list = await roms.KeepCheck(data, this);
 
+        // wrapping into an object because ElectronNet has a "params" array for data
         Electron.IpcMain.Send(window, "roms-keep-check-reply", new { list });
     }
 
@@ -708,6 +699,8 @@ public partial class ElectronMessageHandler(
         };
 
         string[] files = await Electron.Dialog.ShowOpenDialogAsync(window, options);
+
+        // no need to wrap the result as an object contrary to the rest of "send array" methods because we always expect 1 file
         Electron.IpcMain.Send(window, "select-file-reply", files);
     }
 

@@ -76,10 +76,10 @@
         $('#files').empty().html(`@Localizer["CSV_DOWNLOAD_LOADING"]`);
         const template = $('#fileItemTemplate').html();
 
-        getLocalList(folder, (data) => {
+        ipc('local-getlist', { folder }, (data) => {
             $('#files').empty();
 
-            for (let filedetail of data) {
+            for (let filedetail of data.list) {
                 const fileItem = $(template);
                 fileItem.find('.file').text(filedetail.filename);
                 fileItem.find('.desc').html(filedetail.description);
@@ -89,10 +89,10 @@
 
                 // handle click
                 fileItem.on('click', (e) => {
-                    newFile(filedetail.filename, (filename) => {
+                    ipc('new-file', filedetail.filename, (filename) => {
                         if (!filename) { return; }
 
-                        copyFile(filedetail.filepath, filename, true, (success) => {
+                        ipc('copy-file', { source: filedetail.filepath, target: filename, overwrite: true }, (success) => {
                             // TODO: ask the user? not sure
                             //ipc('open-folder', filename);
                         });

@@ -123,12 +123,11 @@ public class Startup(IConfiguration configuration)
             // infrastructure
             container.Register<IWebClientFactory, WebClientFactory>(Lifestyle.Singleton);
             container.Register<IFileSystem, FileSystem>(Lifestyle.Singleton);
-            container.Register<IDatFile, DatFile>(Lifestyle.Singleton);
             container.Register<IImageProcessor, ImageProcessor>(Lifestyle.Singleton);
 
             // domain
-            container.Register<IDatFile, DatFile>(Lifestyle.Singleton);
             container.Register<ICsvFile, CsvFile>(Lifestyle.Singleton);
+            container.Register<IDatFile, DatFile>(Lifestyle.Singleton);
             container.Register<IIniFile, IniFile>(Lifestyle.Singleton);
             container.Register<IMameOverlay, MameOverlay>(Lifestyle.Singleton);
             container.Register<IRetroArchOverlay, RetroArchOverlay>(Lifestyle.Singleton);
