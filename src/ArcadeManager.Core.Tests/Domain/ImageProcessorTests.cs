@@ -1,10 +1,10 @@
-﻿using ArcadeManager.Core.Infrastructure;
+﻿using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Models.Bezels;
 using ImageMagick;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Core.Tests.Infrastructure;
+namespace ArcadeManager.Core.Tests.Domain;
 
 public class ImageProcessorTests : TestBase
 {
@@ -13,7 +13,7 @@ public class ImageProcessorTests : TestBase
     private readonly string sourceImage;
     private readonly ImageProcessor sut;
 
-    private readonly string testFolder = "Infrastructure";
+    private readonly string testFolder = "Domain";
 
     public ImageProcessorTests() : base()
     {
@@ -22,7 +22,7 @@ public class ImageProcessorTests : TestBase
         A.CallTo(() => fs.FileCopy(A<string>._, A<string>._, A<bool>._)).Invokes((string source, string dest, bool ow) => File.Copy(source, dest, ow));
 
         // system under test
-        sut = new(fs);
+        sut = new();
 
         // globals
         sourceImage = GetTestPath(testFolder, "1943.png");
@@ -41,16 +41,16 @@ public class ImageProcessorTests : TestBase
         // arrange: screen position
         Bounds screenPosition = new() { X = 674, Y = 184, Width = 575, Height = 734 };
 
+        // arrange: debug file
+        var debugFile = GetTestPath(testFolder, "1943_debug.png");
+        CleanupFile(debugFile);
+
         // arrange: expected result
         var expected = await File.ReadAllBytesAsync(GetTestPath(testFolder, "1943_expected_debug.png"), TestContext.Current.CancellationToken);
 
-        // arrange: cleanup
-        var outputFile = Path.Combine(outputFolder, "1943.png");
-        CleanupFile(outputFile);
-
         // act
-        await sut.DebugDraw("1943", outputFolder, sourceImage, screenPosition, resolution);
-        var result = await File.ReadAllBytesAsync(outputFile, TestContext.Current.CancellationToken);
+        await sut.DebugDraw(debugFile, sourceImage, screenPosition, resolution);
+        var result = await File.ReadAllBytesAsync(debugFile, TestContext.Current.CancellationToken);
 
         // assert
         AssertImagesAreIdentical(result, expected);

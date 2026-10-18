@@ -210,7 +210,7 @@ public class Overlays(
             messageHandler.Progress("common files", 1, 100);
             if (pack.Common != null && !string.IsNullOrWhiteSpace(pack.Common.Src))
             {
-                await DownloadCommon(pack, fs.PathJoin(data.ConfigFolder, pack.Common.Dest[os]), data.Overwrite, data.Ratio, messageHandler, 100, 1);
+                await DownloadCommon(pack, data, os, messageHandler, 100, 1);
             }
 
             if (messageHandler.MustCancel) { throw cancel; }
@@ -343,31 +343,37 @@ public class Overlays(
     /// Changes the resolution in a file content.
     /// </summary>
     /// <param name="content">The file content.</param>
-    /// <param name="ratio">The ratio.</param>
-    /// <returns>The modified content</returns>
-    private static string ChangeResolution(string content, float ratio)
+    /// <param name="width">The target width.</param>
+    /// <param name="height">The target height.</param>
+    /// <returns>
+    /// The modified content
+    /// </returns>
+    private static string ChangeResolution(string content, int width, int height)
     {
-        if (Math.Abs(ratio - 1) < 0.001)
+        if (width == 0 || height == 0)
         {
             return content;
         }
 
-        var parameters = new List<string> {
-            "custom_viewport_width",
-            "custom_viewport_height",
-            "custom_viewport_x",
-            "custom_viewport_y",
-            "video_fullscreen_x",
-            "video_fullscreen_y"
+        var hratio = height / 1920f;
+        var vratio = width / 1080f;
+
+        var parameters = new Dictionary<string, float> {
+            { "custom_viewport_width", vratio },
+            { "custom_viewport_height", hratio },
+            { "custom_viewport_x", hratio },
+            { "custom_viewport_y", vratio },
+            { "video_fullscreen_x", hratio },
+            { "video_fullscreen_y", vratio },
         };
 
         foreach (var p in parameters)
         {
-            var regex = new Regex(BuildCfgRegex(p), RegexOptions.Multiline | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
+            var regex = new Regex(BuildCfgRegex(p.Key), RegexOptions.Multiline | RegexOptions.IgnoreCase, TimeSpan.FromSeconds(1));
             var foundValue = regex.Match(content).Groups[1].Value;
             if (double.TryParse(foundValue, out var value))
             {
-                value = Math.Round(value * ratio, 0);
+                value = Math.Round(value * p.Value, 0);
                 content = regex.Replace(content, $"{p} = {(int)value}");
             }
         }
@@ -421,10 +427,10 @@ public class Overlays(
                 // output debug whether fixing or not
                 if (boundsInConf.Width > 0 && boundsInConf.Height > 0)
                 {
-                    await imageProcessor.DebugDraw($"{game}_conf", options.OutputDebug, imagePath, boundsInConf, options.TargetResolutionBounds);
+                    await imageProcessor.DebugDraw(fs.PathJoin(options.OutputDebug, $"{game}_conf.png"), imagePath, boundsInConf, options.TargetResolutionBounds);
                 }
 
-                await imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, imagePath, boundsInImage, null);
+                await imageProcessor.DebugDraw(fs.PathJoin(options.OutputDebug, $"{game}_image.png"), imagePath, boundsInImage, null);
             }
 
             if (messageHandler.MustCancel) { throw cancel; }
@@ -714,7 +720,7 @@ public class Overlays(
         }
 
         // debug: draw target position
-        await imageProcessor.DebugDraw(game, options.OutputDebug, outputImage, newPosition, options.TargetResolutionBounds);
+        await imageProcessor.DebugDraw(fs.PathJoin(options.OutputDebug, $"{game}.png"), outputImage, newPosition, options.TargetResolutionBounds);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
@@ -800,7 +806,7 @@ public class Overlays(
         if (messageHandler.MustCancel) { throw cancel; }
 
         // debug: draw target position
-        await imageProcessor.DebugDraw(game, options.OutputDebug, raConfig.OverlayImagePath, newPosition, options.TargetResolutionBounds);
+        await imageProcessor.DebugDraw(fs.PathJoin(options.OutputDebug, $"{game}.png"), raConfig.OverlayImagePath, newPosition, options.TargetResolutionBounds);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
@@ -896,23 +902,43 @@ public class Overlays(
         return (cfgEntry, err, fix);
     }
 
+    private async Task DownloadAndResizeImage(OverlayBundle pack, InstallOverlaysAction data, string imageFi, string imageDest, IEnumerable<string> configFiles)
+    {
+        var imageContent = await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi}");
+        var imageSize = imageProcessor.GetSize(imageContent);
+        if (data.Width > 0 && data.Height > 0 && fs.FileExists(imageDest) && ((int)imageSize.Width != data.Width || (int)imageSize.Height != data.Height))
+        {
+            imageContent = await imageProcessor.Resize(imageContent, data.Width, data.Height);
+
+            foreach (var f in configFiles)
+            {
+                var fileContent = await fs.FileReadAsync(f);
+                fileContent = ChangeResolution(fileContent, data.Width, data.Height);
+                await fs.FileWriteAsync(f, fileContent);
+            }
+        }
+
+        await fs.FileWriteBinaryAsync(imageDest, imageContent);
+    }
+
     /// <summary>
     /// Downloads the common files.
     /// </summary>
     /// <param name="pack">The overlay pack to download.</param>
-    /// <param name="destination">The destination path.</param>
-    /// <param name="overwrite">if set to <c>true</c> overwrite existing files.</param>
-    /// <param name="ratio">The ratio to change resolution.</param>
+    /// <param name="options">The action options.</param>
+    /// <param name="os">The selected os.</param>
     /// <param name="messageHandler">The message handler.</param>
     /// <param name="total">The total number of items.</param>
     /// <param name="current">The current item number.</param>
-    private async Task DownloadCommon(OverlayBundle pack, string destination, bool overwrite, float ratio, IMessageHandler messageHandler, int total, int current)
+    private async Task DownloadCommon(OverlayBundle pack, InstallOverlaysAction options, string os, IMessageHandler messageHandler, int total, int current)
     {
+        var destination = fs.PathJoin(options.ConfigFolder, pack.Common.Dest[os]);
+
         if (messageHandler.MustCancel) { throw cancel; }
 
         if (pack.Common != null && !string.IsNullOrEmpty(pack.Common.Src))
         {
-            IEnumerable<string> files = await downloaderService.DownloadFolder(pack.Repository, pack.Common.Src, destination, overwrite, (entry) =>
+            IEnumerable<string> files = await downloaderService.DownloadFolder(pack.Repository, pack.Common.Src, destination, options.Overwrite, (entry) =>
             {
                 messageHandler.Progress($"downloading {entry.Path}", total, current);
             });
@@ -922,11 +948,11 @@ public class Overlays(
                 var fi = fs.FileName(f);
                 messageHandler.Progress($"fixing {fi}", total, current);
 
-                if (overwrite || fs.FileExists(f))
+                if (options.Overwrite || fs.FileExists(f))
                 {
                     var content = await fs.FileReadAsync(f);
 
-                    content = ChangeResolution(content, ratio);
+                    content = ChangeResolution(content, options.Width, options.Height);
                     content = FixPaths(content, pack);
 
                     await fs.FileWriteAsync(f, content);
@@ -946,7 +972,7 @@ public class Overlays(
         messageHandler.Progress($"{game}: download overlay (rom config)", total, current);
 
         // download the rom config and extract the overlay file name
-        var (romConfigContent, installed) = await GetRomConfigContent(pack, rom, data, romCfgFolder, messageHandler);
+        var (romConfigContent, configFiles, installed) = await GetRomConfigContent(pack, rom, data, romCfgFolder, messageHandler);
 
         if (messageHandler.MustCancel) { throw cancel; }
 
@@ -976,7 +1002,7 @@ public class Overlays(
         {
             if (messageHandler.MustCancel) { throw cancel; }
 
-            await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi}", imageDest);
+            await DownloadAndResizeImage(pack, data, imageFi, imageDest, configFiles);
         }
 
         return installed;
@@ -1052,7 +1078,7 @@ public class Overlays(
         // debug
         if (!string.IsNullOrWhiteSpace(options.OutputDebug))
         {
-            await imageProcessor.DebugDraw($"{game}_image", options.OutputDebug, f, bounds, options.TargetResolutionBounds);
+            await imageProcessor.DebugDraw(fs.PathJoin(options.OutputDebug, $"{game}_image.png"), f, bounds, options.TargetResolutionBounds);
         }
 
         return (createdNb, errorsNb);
@@ -1080,15 +1106,17 @@ public class Overlays(
         return overlayConfigContent;
     }
 
-    private async Task<(string Content, int Installed)> GetRomConfigContent(OverlayBundle pack, RomToProcess rom, InstallOverlaysAction data, string romCfgFolder, IMessageHandler messageHandler)
+    private async Task<(string Content, IEnumerable<string> Files, int Installed)> GetRomConfigContent(OverlayBundle pack, RomToProcess rom, InstallOverlaysAction data, string romCfgFolder, IMessageHandler messageHandler)
     {
         var romConfigContent = string.Empty;
         var installed = 0;
+        List<string> files = [];
         foreach (var romFolder in rom.TargetFolder)
         {
             if (messageHandler.MustCancel) { throw cancel; }
 
             var romConfigFile = fs.PathJoin(romCfgFolder ?? romFolder, $"{rom.Game}{rom.Extension}.cfg");
+            files.Add(romConfigFile);
 
             // get rom config content
             if (data.Overwrite || !fs.FileExists(romConfigFile))
@@ -1097,12 +1125,12 @@ public class Overlays(
                 romConfigContent = await downloaderService.DownloadFileText(pack.Repository, $"{pack.Roms.Src}/{rom.Game}{rom.Extension}.cfg");
 
                 // fix resolution and paths
-                romConfigContent = ChangeResolution(romConfigContent, data.Ratio);
+                romConfigContent = ChangeResolution(romConfigContent, data.Width, data.Height);
                 romConfigContent = FixPaths(romConfigContent, pack);
             }
             else
             {
-                // file exist, we don"t overwrite: read it
+                // file exist, we don't overwrite: read it
                 romConfigContent = await fs.FileReadAsync(romConfigFile);
             }
 
@@ -1116,7 +1144,7 @@ public class Overlays(
             }
         }
 
-        return (romConfigContent, installed);
+        return (romConfigContent, files, installed);
     }
 
     /// <summary>

@@ -8,11 +8,10 @@ public interface IImageProcessor
     /// <summary>
     /// Draws a debug rectangle on the overlay image
     /// </summary>
-    /// <param name="game">The game name</param>
-    /// <param name="debugFolder">The path to the debug folder</param>
+    /// <param name="debugImage">The path to the debug image</param>
     /// <param name="sourceImagePath">The path to the image</param>
     /// <param name="position">The position of the screen</param>
-    Task DebugDraw(string game, string debugFolder, string sourceImagePath, Bounds position, Bounds resolution);
+    Task DebugDraw(string debugImage, string sourceImagePath, Bounds position, Bounds resolution);
 
     /// <summary>
     /// Finds the screen position in the specified bezel, based on transparency.
@@ -28,6 +27,15 @@ public interface IImageProcessor
     /// <param name="imagePath">The image path.</param>
     /// <returns>The image size</returns>
     Bounds GetSize(string imagePath);
+
+    /// <summary>
+    /// Gets the image size.
+    /// </summary>
+    /// <param name="imageContent">The image content.</param>
+    /// <returns>
+    /// The image size
+    /// </returns>
+    Bounds GetSize(byte[] imageContent);
 
     /// <summary>
     /// Resizes an image to the specified dimension, cropping it if necessary

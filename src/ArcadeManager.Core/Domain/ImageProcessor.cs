@@ -6,30 +6,21 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Core.Infrastructure;
+namespace ArcadeManager.Core.Domain;
 
-public class ImageProcessor(IFileSystem fs) : IImageProcessor
+public class ImageProcessor : IImageProcessor
 {
     private static readonly ushort maxTransparentAlpha = ushort.MaxValue;
 
     /// <summary>
     /// Draws a debug rectangle on the overlay image
     /// </summary>
-    /// <param name="game">The game name</param>
-    /// <param name="debugFolder">The path to the debug folder</param>
+    /// <param name="debugImage">The path to the debug image</param>
     /// <param name="sourceImagePath">The path to the image</param>
     /// <param name="position">The position of the screen</param>
-    public async Task DebugDraw(string game, string debugFolder, string sourceImagePath, Bounds position, Bounds resolution)
+    public async Task DebugDraw(string debugImage, string sourceImagePath, Bounds position, Bounds resolution)
     {
-        if (string.IsNullOrEmpty(debugFolder))
-        {
-            return;
-        }
-
-        var debugImage = fs.PathJoin(debugFolder, $"{game}.png");
-        fs.FileCopy(sourceImagePath, debugImage, true);
-
-        using MagickImage image = new(debugImage);
+        using MagickImage image = new(sourceImagePath);
 
         // resize if necessary (RA would do it automatically)
         if (resolution != null && (image.Width != (int)resolution.Width || image.Height != (int)resolution.Height))
@@ -115,6 +106,26 @@ public class ImageProcessor(IFileSystem fs) : IImageProcessor
     public Bounds GetSize(string imagePath)
     {
         using MagickImage image = new(imagePath);
+
+        return new Bounds
+        {
+            X = 0,
+            Y = 0,
+            Width = image.Width,
+            Height = image.Height
+        };
+    }
+
+    /// <summary>
+    /// Gets the image size.
+    /// </summary>
+    /// <param name="imageContent">The image content.</param>
+    /// <returns>
+    /// The image size
+    /// </returns>
+    public Bounds GetSize(byte[] imageContent)
+    {
+        using MagickImage image = new(imageContent);
 
         return new Bounds
         {
