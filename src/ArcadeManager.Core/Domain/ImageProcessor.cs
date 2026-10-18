@@ -267,16 +267,41 @@ public class ImageProcessor : IImageProcessor
         return (first, last, shouldBreak);
     }
 
+    /// <remarks>
+    /// Mostly copied from //stackoverflow.com/a/10385979/
+    /// </remarks>
     private static void ResizeImageInternal(MagickImage image, int width, int height)
     {
-        if (image.Width > width || image.Height > height)
+        if (image.Width == width || image.Height == height)
         {
-            var size = new MagickGeometry((uint)width, (uint)height)
-            {
-                IgnoreAspectRatio = true
-            };
-
-            image.Resize(size);
+            return;
         }
+
+        decimal result_ratio = (decimal)height / (decimal)width;
+        decimal current_ratio = (decimal)image.Height / (decimal)image.Width;
+
+        var preserve_width = false;
+        if (current_ratio > result_ratio)
+        {
+            preserve_width = true;
+        }
+
+        int new_width, new_height;
+        if (preserve_width)
+        {
+            new_width = width;
+            new_height = (int)Math.Round(current_ratio * new_width);
+        }
+        else
+        {
+            new_height = height;
+            new_width = (int)Math.Round(new_height / current_ratio);
+        }
+
+        var intermediate_geo = new MagickGeometry((uint)new_width, (uint)new_height) { IgnoreAspectRatio = true };
+        image.Resize(intermediate_geo);
+
+        var final_geo = new MagickGeometry((uint)width, (uint)height) { IgnoreAspectRatio = true };
+        image.Crop(final_geo, Gravity.Center);
     }
 }

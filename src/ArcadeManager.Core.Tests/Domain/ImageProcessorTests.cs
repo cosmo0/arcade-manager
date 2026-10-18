@@ -71,6 +71,20 @@ public class ImageProcessorTests : TestBase
     }
 
     [Fact]
+    public async Task Image_bytes_is_cropped()
+    {
+        // arrange
+        var content = await File.ReadAllBytesAsync(sourceImage, TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestPath(testFolder, "1943_expected_resizecrop.png"), TestContext.Current.CancellationToken);
+
+        // act
+        var result = await sut.Resize(content, 800, 720);
+
+        // assert
+        AssertImagesAreIdentical(result, expected);
+    }
+
+    [Fact]
     public async Task Image_file_is_resized()
     {
         // arrange
