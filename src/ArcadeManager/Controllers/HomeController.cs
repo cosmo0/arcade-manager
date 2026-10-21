@@ -1,4 +1,4 @@
-﻿using ArcadeManager.Core.Services.Interfaces;
+﻿using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Models;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Http;

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
-public class IniFileTests : TestBase
+public class IniFileTests : BaseUnitTests
 {
     [Fact]
     public async Task ReadIniFile_returns_data()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Services;
 
-public class DatCheckerTests : TestBase
+public class DatCheckerTests : BaseUnitTests
 {
     private readonly ICsvFile csv;
     private readonly IDatFile dat;

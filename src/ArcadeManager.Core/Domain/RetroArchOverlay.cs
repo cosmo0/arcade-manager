@@ -102,6 +102,7 @@ public class RetroArchOverlay(IFileSystem fs) : IRetroArchOverlay
         var overlayCfgFileSourcePath = GetCfgData(romFileContent, "input_overlay");
         var overlayCfgFileName = fs.FileName(overlayCfgFileSourcePath);
         var overlayCfgFilePath = fs.PathJoin(sourceConfigs, overlayCfgFileName);
+        if (!fs.FileExists(overlayCfgFilePath)) { return null; }
         var overlayCfgFileContent = await fs.FileReadAsync(overlayCfgFilePath);
 
         // extract data from configs

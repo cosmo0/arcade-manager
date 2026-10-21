@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
-public class RetroArchOverlayTests : TestBase
+public class RetroArchOverlayTests : BaseUnitTests
 {
     private static readonly Bounds testBounds = new() { X = 10, Y = 20, Width = 30, Height = 40 };
     private static readonly Bounds testResolution = new() { Width = 640, Height = 480 };

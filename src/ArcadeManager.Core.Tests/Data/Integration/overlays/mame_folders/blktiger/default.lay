@@ -1,0 +1,193 @@
+<!-- blktiger.lay -->
+
+<mamelayout version="2">
+
+  <element name="Artwork_1">
+    <image file="art1.png" />
+  </element>
+
+  <element name="Artwork_2">
+    <image file="art2.png" />
+  </element>
+
+  <element name="Artwork_3">
+    <image file="art3.png" />
+  </element>
+
+  <element name="Artwork_4">
+    <image file="art4.png" />
+  </element>
+
+  <element name="real_clear">
+    <image file="real_clear.png" />
+  </element>
+
+  <element name="real_glass">
+    <image file="real_glass.png" />
+  </element>
+
+  <element name="screen_bezel">
+    <image file="horz_screen_bezel.png" />
+  </element>
+
+  <element name="screen_bezel_glass">
+    <image file="horz_screen_bezel_glass.png" />
+  </element>
+
+  <element name="screen_glass">
+    <image file="glass.png" />
+  </element>
+
+  <element name="screen_mask">
+    <image file="horz_screen_mask.png" />
+  </element>
+
+   <view name="Full">
+    <screen index="0">
+      <bounds x="240" y="0" width="1440" height="1080" />
+    </screen>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Glass">
+    <screen index="0">
+      <bounds x="240" y="0" width="1440" height="1080" />
+    </screen>
+
+   <backdrop element="screen_glass">
+      <bounds x="240" y="0" width="1440" height="1080" />
+    </backdrop>
+
+    <overlay element="screen_mask">
+      <bounds x="240" y="0" width="1440" height="1080" />
+    </overlay>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Framed_Clear">
+    <screen index="0">
+      <bounds x="290" y="50" width="1340" height="980" />
+    </screen>
+
+   <backdrop element="screen_bezel">
+      <bounds x="240" y="0" width="1440" height="1080" />
+    </backdrop>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Framed_Glass">
+    <screen index="0">
+      <bounds x="290" y="50" width="1340" height="980" />
+    </screen>
+
+   <backdrop element="screen_bezel_glass">
+      <bounds x="240" y="0" width="1440" height="1080" />
+    </backdrop>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Real_Frame_Clear">
+    <screen index="0">
+      <bounds x="379" y="105" width="1160" height="870" />
+    </screen>
+
+    <bezel element="real_clear">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Real_Frame_Glass">
+    <screen index="0">
+      <bounds x="379" y="105" width="1160" height="870" />
+    </screen>
+
+    <bezel element="real_glass">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Cabinet_1_Clear">
+    <screen index="0">
+      <bounds x="515" y="90" width="910" height="687" />
+    </screen>
+
+    <bezel element="Artwork_2">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Cabinet_1_Glass">
+    <screen index="0">
+      <bounds x="515" y="90" width="910" height="687" />
+    </screen>
+
+   <backdrop element="screen_glass">
+      <bounds x="515" y="90" width="910" height="687" />
+    </backdrop>
+
+    <bezel element="Artwork_2">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Cabinet_2_Clear">
+    <screen index="0">
+      <bounds x="563" y="260" width="793" height="593" />
+    </screen>
+
+    <bezel element="Artwork_3">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Cabinet_2_Glass">
+    <screen index="0">
+      <bounds x="563" y="260" width="793" height="593" />
+    </screen>
+
+   <backdrop element="screen_glass">
+      <bounds x="563" y="260" width="793" height="593" />
+    </backdrop>
+
+    <bezel element="Artwork_3">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Cabinet_3_Clear">
+    <screen index="0">
+      <bounds x="881" y="438" width="797" height="593" />
+    </screen>
+
+    <bezel element="Artwork_4">
+      <bounds x="0" y="0" width="2560" height="1440" />
+    </bezel>
+  </view>
+
+   <view name="Cabinet_3_Glass">
+    <screen index="0">
+      <bounds x="881" y="438" width="797" height="593" />
+    </screen>
+
+   <backdrop element="screen_glass">
+      <bounds x="881" y="438" width="797" height="593" />
+    </backdrop>
+
+    <bezel element="Artwork_4">
+      <bounds x="0" y="0" width="2560" height="1440" />
+    </bezel>
+  </view>
+
+</mamelayout>

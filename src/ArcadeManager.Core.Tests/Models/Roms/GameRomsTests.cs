@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace ArcadeManager.Core.Tests.Models.Roms;
 
-public class GameRomsTests : TestBase
+public class GameRomsTests : BaseUnitTests
 {
     private readonly XElement xml;
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
-public class MameOverlayTests : TestBase
+public class MameOverlayTests : BaseUnitTests
 {
     private readonly MameOverlay sut;
 

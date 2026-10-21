@@ -1,0 +1,280 @@
+<!-- contra.lay -->
+<mamelayout version="2">
+
+
+  <element name="Artwork_1">
+
+    <image file="art1.png" />
+
+  </element>
+
+
+  <element name="Artwork_2">
+
+    <image file="art2.png" />
+
+  </element>
+
+
+ <element name="screen_bezel">
+    <image file="vert_screen_bezel.png" />
+  </element>
+
+ <element name="vert_screen_bezel_glass">
+    <image file="vert_screen_bezel_glass.png" />
+  </element>
+
+ <element name="vert_screen_mask">
+    <image file="vert_screen_mask.png" />
+  </element>
+
+ <element name="vert_screen_glass">
+    <image file="vert_glass.png" />
+  </element>
+
+  <element name="Up" defstate="0">
+
+    <image file="Blank.png" state="0"/>
+
+    <image file="Up.png" state="1"/>
+
+  </element>
+
+
+  <element name="Down" defstate="0">
+
+    <image file="Blank.png" state="0"/>
+    <image file="Down.png" state="1"/>
+
+  </element>
+
+
+  <element name="Left" defstate="0">
+
+     <image file="Blank.png" state="0"/>
+
+     <image file="Left.png" state="1"/>
+
+  </element>
+
+
+  <element name="Right" defstate="0">
+
+     <image file="Blank.png" state="0"/>
+
+     <image file="Right.png" state="1"/>
+
+  </element>
+
+
+  <element name="Upleft" defstate="0">
+
+    <image file="Blank.png" state="0"/>
+
+    <image file="Upleft.png" state="1"/>
+
+  </element>
+
+
+  <element name="Downright" defstate="0">
+
+    <image file="Blank.png" state="0"/>
+    <image file="Downright.png" state="1"/>
+
+  </element>
+
+
+  <element name="Downleft" defstate="0">
+
+     <image file="Blank.png" state="0"/>
+
+     <image file="Downleft.png" state="1"/>
+
+  </element>
+
+
+  <element name="Upright" defstate="0">
+
+     <image file="Blank.png" state="0"/>
+
+     <image file="Upright.png" state="1"/>
+
+  </element>
+
+
+  <element name="Shoot" defstate="0">
+
+     <image file="Blank.png" state="0"/>
+
+     <image file="Shoot.png" state="1"/>
+
+  </element>
+
+
+  <element name="Jump" defstate="0">
+
+     <image file="Blank.png" state="0"/>
+
+     <image file="Jump.png" state="1"/>
+
+  </element>
+
+
+
+   <view name="Full">
+    <screen index="0">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </screen>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Framed">
+    <screen index="0">
+      <bounds x="593" y="50" width="735" height="980" />
+    </screen>
+
+   <backdrop element="screen_bezel">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </backdrop>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Full_Glass">
+    <screen index="0">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </screen>
+
+   <backdrop element="vert_screen_glass">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </backdrop>
+
+    <overlay element="vert_screen_mask">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </overlay>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+   <view name="Framed_Glass">
+    <screen index="0">
+      <bounds x="593" y="50" width="735" height="980" />
+    </screen>
+
+    <overlay element="vert_screen_mask">
+      <bounds x="593" y="50" width="735" height="980" />
+    </overlay>
+
+   <backdrop element="vert_screen_bezel_glass">
+      <bounds x="555" y="0" width="810" height="1080" />
+    </backdrop>
+
+    <bezel element="Artwork_1">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+
+  <view name="Cabinet">
+
+    <screen index="0">
+
+      <bounds x="630" y="0" width="658" height="878" />
+    </screen>
+
+    <bezel element="Artwork_2">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+
+  </bezel>
+
+
+    <cpanel element="Left" inputtag=":P1" inputmask="1">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Right" inputtag=":P1" inputmask="2">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Up" inputtag=":P1" inputmask="4">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Down" inputtag=":P1" inputmask="8">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Downright" inputtag=":P2" inputmask="1">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Downleft" inputtag=":P2" inputmask="2">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Upleft" inputtag=":P2" inputmask="4">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Upright" inputtag=":P2" inputmask="8">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Shoot" inputtag=":P1" inputmask="16">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+
+    <cpanel element="Jump" inputtag=":P1" inputmask="32">
+
+      <bounds x="0" y="0" width="1920" height="1080" />
+     <orientation rotate="0" />
+
+    </cpanel>
+
+  </view>
+
+</mamelayout>

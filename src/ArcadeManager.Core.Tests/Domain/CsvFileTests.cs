@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
-public class CsvFileTests : TestBase
+public class CsvFileTests : BaseUnitTests
 {
     private readonly Core.Domain.CsvFile sut;
 

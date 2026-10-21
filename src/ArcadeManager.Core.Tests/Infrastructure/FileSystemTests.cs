@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Infrastructure;
 
-public class FileSystemTests : TestBase
+public class FileSystemTests : BaseUnitTests
 {
     private readonly IEnvironment environment;
     private readonly string filesPath;
@@ -19,6 +19,35 @@ public class FileSystemTests : TestBase
         this.environment = A.Fake<IEnvironment>();
 
         this.sut = new FileSystem(this.environment);
+    }
+
+    [Theory]
+    [InlineData("c:\\test\\data\\path\\file.txt", "c:\\test\\data\\path")]
+    [InlineData("c:\\test\\data\\path\\", "c:\\test\\data\\path")]
+    [InlineData("c:\\test\\data\\path", "c:\\test\\data")]
+    public void DirectoryName_is_computed(string path, string expected)
+    {
+        // act
+        var result = sut.DirectoryName(path);
+
+        // assert
+        result.Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData("c:\\test\\data\\path\\file.txt", "file.txt")]
+    [InlineData("c:\\test\\data\\path\\", "")]
+    [InlineData("c:\\test\\data\\path", "path")]
+    [InlineData("/linux/path/data/file.txt", "file.txt")]
+    [InlineData("/linux/path/data/", "")]
+    [InlineData("/linux/path/data", "data")]
+    public void FileName_is_computed(string path, string expected)
+    {
+        // act
+        var result = sut.FileName(path);
+
+        // assert
+        result.Should().Be(expected);
     }
 
     [Fact]

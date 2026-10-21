@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
-public class DatFileTests : TestBase
+public class DatFileTests : BaseUnitTests
 {
     private readonly DatFile sut;
 

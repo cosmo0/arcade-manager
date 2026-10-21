@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ArcadeManager.Core.Tests.Models;
 
-public class CsvGamesListTests : TestBase
+public class CsvGamesListTests : BaseUnitTests
 {
     [Fact]
     public void CopyFrom_copies_values_when_not_already_exist()

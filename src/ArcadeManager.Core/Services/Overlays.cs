@@ -7,7 +7,6 @@ using ArcadeManager.Core.Models.Bezels;
 using ArcadeManager.Core.Models.Github;
 using ArcadeManager.Core.Services.Interfaces;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -46,7 +45,7 @@ public class Overlays(
     /// <param name="options">The options.</param>
     public async Task Check(CheckAction options, IMessageHandler messageHandler)
     {
-        ConcurrentBag<Config> configs = [];
+        List<Config> configs = [];
 
         messageHandler.ProgressInit("Check RetroArch config files");
 
@@ -129,10 +128,11 @@ public class Overlays(
     /// <param name="messageHandler">The message handler.</param>
     public async Task ConvertMameToRa(MameToRaAction options, IMessageHandler messageHandler)
     {
-        var fsEntries = fs.FilesGetList(options.Source, "*.*");
+        // convert both zip files and uncompressed folders
+        string[] fsEntries = [.. fs.FilesGetList(options.Source, "*.*"), .. fs.DirectoryGetList(options.Source)];
 
         messageHandler.ProgressInit("Convert MAME files to RetroArch");
-        var total = fsEntries.Count();
+        var total = fsEntries.Length;
         var current = 0;
 
         try
@@ -452,7 +452,7 @@ public class Overlays(
         return (err, fix);
     }
 
-    private async Task<(int err, int fix)> CheckOrFixImages(CheckAction options, ConcurrentBag<Config> configs, string f, IMessageHandler messageHandler)
+    private async Task<(int err, int fix)> CheckOrFixImages(CheckAction options, List<Config> configs, string f, IMessageHandler messageHandler)
     {
         int err = 0;
         int fix = 0;
@@ -501,7 +501,7 @@ public class Overlays(
         return (err, fix);
     }
 
-    private async Task<(int err, int fix)> CheckOrFixOverlayConfig(CheckAction options, ConcurrentBag<Config> configs, string f, IMessageHandler messageHandler)
+    private async Task<(int err, int fix)> CheckOrFixOverlayConfig(CheckAction options, List<Config> configs, string f, IMessageHandler messageHandler)
     {
         int err = 0;
         int fix = 0;
@@ -540,6 +540,10 @@ public class Overlays(
             if (cfgEntry == null)
             {
                 configs.Add(new Config { Overlay = fileName, Image = overlayFileName });
+            }
+            else
+            {
+                cfgEntry.Image = overlayFileName;
             }
         }
 
@@ -633,7 +637,7 @@ public class Overlays(
 
         if (!fs.FileExists(overlayPath))
         {
-            messageHandler.ProgressMessage($"{game} - fixing screen: overlay file does not exist: {overlayPath}");
+            messageHandler.ProgressMessage($"{game} - fixing screen: overlay file does not exist: {overlayFile}");
             err++;
 
             return (err, fix);
@@ -668,7 +672,7 @@ public class Overlays(
     private async Task ConvertMameFile(string fsEntry, MameToRaAction options, IMessageHandler messageHandler, int total, int current)
     {
         var isFolder = fs.IsDirectory(fsEntry);
-        var entryName = isFolder ? fs.DirectoryName(fsEntry) : fs.FileName(fsEntry);
+        var entryName = fs.FileName(fsEntry.Trim('/').Trim('\\')); // filename behaves the same on files and folders unless the folder ends with a slash
 
         // don't process files that are not zip
         if (!isFolder && !entryName.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
@@ -776,6 +780,7 @@ public class Overlays(
 
         // get RA config
         var raConfig = await raProcessor.GetRetroArchConfig(romFile, options.SourceConfigs, options.TargetResolutionBounds);
+        if (raConfig == null) { return; }
 
         Bounds newPosition;
         if (options.ScanBezelForScreenCoordinates)
@@ -827,7 +832,7 @@ public class Overlays(
         }
     }
 
-    private async Task<(int err, int fix)> CreateConfigForOverlay(CheckAction options, string f, string game, ConcurrentBag<Config> configs, IMessageHandler messageHandler)
+    private async Task<(int err, int fix)> CreateConfigForOverlay(CheckAction options, string f, string game, List<Config> configs, IMessageHandler messageHandler)
     {
         int err = 0;
         int fix = 0;

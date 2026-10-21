@@ -71,6 +71,13 @@ public interface IFileSystem
     bool DirectoryExists(string path);
 
     /// <summary>
+    /// Gets the sub-folders in the specified directory
+    /// </summary>
+    /// <param name="folder">The folder.</param>
+    /// <returns>The sub-folders</returns>
+    IEnumerable<string> DirectoryGetList(string folder);
+
+    /// <summary>
     /// Gets the directory name
     /// </summary>
     /// <param name="path">The path.</param>

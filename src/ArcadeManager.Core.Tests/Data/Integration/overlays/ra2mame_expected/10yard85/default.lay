@@ -1,0 +1,17 @@
+<mamelayout version="2">
+
+  <element name="bezel">
+    <image file="10yard85.png" />
+  </element>
+
+  <view name="Cab Artwork ">
+    <screen index="0">
+      <bounds x="474" y="138" width="966" height="722" />
+    </screen>
+
+    <bezel element="bezel">
+      <bounds x="0" y="0" width="1920" height="1080" />
+    </bezel>
+  </view>
+
+</mamelayout>

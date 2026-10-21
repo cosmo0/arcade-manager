@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArcadeManager.Core.Tests.Domain;
 
-public class ImageProcessorTests : TestBase
+public class ImageProcessorTests : BaseUnitTests
 {
     private readonly string outputFolder;
     private readonly Bounds resolution = new() { Width = 1920, Height = 1080 };
@@ -57,20 +57,6 @@ public class ImageProcessorTests : TestBase
     }
 
     [Fact]
-    public async Task Image_bytes_is_resized()
-    {
-        // arrange
-        var content = await File.ReadAllBytesAsync(sourceImage, TestContext.Current.CancellationToken);
-        var expected = await File.ReadAllBytesAsync(GetTestPath(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
-
-        // act
-        var result = await sut.Resize(content, 1280, 720);
-
-        // assert
-        AssertImagesAreIdentical(result, expected);
-    }
-
-    [Fact]
     public async Task Image_bytes_is_cropped()
     {
         // arrange
@@ -79,6 +65,20 @@ public class ImageProcessorTests : TestBase
 
         // act
         var result = await sut.Resize(content, 800, 720);
+
+        // assert
+        AssertImagesAreIdentical(result, expected);
+    }
+
+    [Fact]
+    public async Task Image_bytes_is_resized()
+    {
+        // arrange
+        var content = await File.ReadAllBytesAsync(sourceImage, TestContext.Current.CancellationToken);
+        var expected = await File.ReadAllBytesAsync(GetTestPath(testFolder, "1943_expected_resize.png"), TestContext.Current.CancellationToken);
+
+        // act
+        var result = await sut.Resize(content, 1280, 720);
 
         // assert
         AssertImagesAreIdentical(result, expected);
@@ -135,15 +135,5 @@ public class ImageProcessorTests : TestBase
 
         // assert
         result.Should().BeEquivalentTo(resolution);
-    }
-
-    private static void AssertImagesAreIdentical(byte[] result, byte[] expected)
-    {
-        using MagickImage resultImage = new(result);
-        using MagickImage expectedImage = new(expected);
-
-        var compareResult = resultImage.Compare(expectedImage, ErrorMetric.MeanAbsolute, Channels.RGBA);
-
-        compareResult.Should().Be(0);
     }
 }

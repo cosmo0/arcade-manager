@@ -1,8 +1,8 @@
 ﻿using ArcadeManager.Core;
+using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
 using ArcadeManager.Core.Models.Github;
-using ArcadeManager.Core.Services.Interfaces;
 using ArcadeManager.Services.Interfaces;
 using System;
 using System.Collections.Generic;
