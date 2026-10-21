@@ -40,15 +40,8 @@ public abstract class BaseIntegrationTest : BaseCommonTests
         A.CallTo(() => localizer.Locales).Returns(["test"]);
         A.CallTo(() => localizer[A<string>._]).ReturnsLazily((string code) => code);
 
-        // message handler that outputs to the console and that we can inspect to check if it's been called
+        // message handler that we can inspect and mock
         messageHandler = A.Fake<IMessageHandler>();
-        A.CallTo(() => messageHandler.ProgressInit(A<string>._)).Invokes((string label) => { Console.WriteLine($"progress init: {label}"); });
-        A.CallTo(() => messageHandler.Progress(A<string>._)).Invokes((string label) => { Console.WriteLine($"progress: {label}"); });
-        A.CallTo(() => messageHandler.Progress(A<string>._, A<int>._, A<int>._)).Invokes((string label, int total, int current) => { Console.WriteLine($"progress: {label} // {current}/{total}"); });
-        A.CallTo(() => messageHandler.ProgressMessage(A<string>._)).Invokes((string label) => { Console.WriteLine($"progress message: {label}"); });
-        A.CallTo(() => messageHandler.ProgressProcessed(A<GameRom>._)).Invokes((GameRom rom) => { Console.WriteLine($"progress processed rom: {rom.Name}"); });
-        A.CallTo(() => messageHandler.ProgressDone(A<string>._, A<string>._)).Invokes((string label, string folder) => { Console.WriteLine($"progress done: {label} // {folder}"); });
-        A.CallTo(() => messageHandler.ProgressError(A<Exception>._)).Invokes((Exception ex) => { Console.WriteLine($"progress error: {ex.Message}"); });
 
         // init infra
         fs = new FileSystem(env);

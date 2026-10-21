@@ -17,15 +17,18 @@ public abstract class BaseCommonTests
         File.Exists(result).Should().BeTrue();
         File.Exists(expected).Should().BeTrue();
 
-        var resultContent = await File.ReadAllBytesAsync(result, TestContext.Current.CancellationToken);
-        var expectedContent = await File.ReadAllBytesAsync(expected, TestContext.Current.CancellationToken);
-
         if (result.EndsWith(".png") || result.EndsWith(".jpg"))
         {
+            var resultContent = await File.ReadAllBytesAsync(result, TestContext.Current.CancellationToken);
+            var expectedContent = await File.ReadAllBytesAsync(expected, TestContext.Current.CancellationToken);
+
             AssertImagesAreIdentical(resultContent, expectedContent);
         }
         else
         {
+            var resultContent = await File.ReadAllTextAsync(result, TestContext.Current.CancellationToken);
+            var expectedContent = await File.ReadAllTextAsync(expected, TestContext.Current.CancellationToken);
+
             resultContent.Should().BeEquivalentTo(expectedContent);
         }
     }
