@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="powershell.exe -NonInteractive -ExecutionPolicy Unrestricted -File &quot;$(ProjectDir)/Data/Integration/generate-romset.ps1&quot;" />
+    <Exec Command="powershell -NonInteractive -ExecutionPolicy Unrestricted -File &quot;$(ProjectDir)/Data/Integration/generate-romset.ps1&quot;" />
   </Target>
 
 </Project>
