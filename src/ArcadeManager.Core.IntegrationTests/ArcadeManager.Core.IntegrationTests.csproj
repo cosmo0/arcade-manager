@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -23,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ArcadeManager.Core.Tests\ArcadeManager.Core.Tests.csproj" />
     <ProjectReference Include="..\ArcadeManager.Core\ArcadeManager.Core.csproj" />
   </ItemGroup>
 

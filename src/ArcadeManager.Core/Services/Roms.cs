@@ -20,6 +20,7 @@ public class Roms : IRoms
     private readonly BiosMatchList biosmatch = new();
     private readonly ICsvFile csvFile;
     private readonly DeviceMatchList devicematch = new();
+    private readonly List<string> deviceslist;
     private readonly IFileSystem fs;
 
     /// <summary>
@@ -31,6 +32,8 @@ public class Roms : IRoms
         this.csvFile = csvFile;
 
         bioslist = [.. fs.ReadAllLines(fs.GetDataPath("bioslist.txt"))];
+        deviceslist = [.. fs.ReadAllLines(fs.GetDataPath("deviceslist.txt"))];
+
         biosmatch.AddRange(
             fs.ReadAllLines(fs.GetDataPath("biosmatch.csv"))
                 .Select(l => l.Split(";".ToCharArray()))
@@ -301,10 +304,7 @@ public class Roms : IRoms
                 messageHandler.Progress(nameNoExt, total, i);
 
                 // don't auto-delete bios files
-                if (bioslist.Contains(nameNoExt, StringComparer.InvariantCultureIgnoreCase))
-                {
-                    continue;
-                }
+                if (IsBiosOrDevice(nameNoExt)) { continue; }
 
                 // don't delete if unchecked
                 if (args.Filter.Contains(fs.FileName(f))) { continue; }
@@ -360,10 +360,7 @@ public class Roms : IRoms
             var nameNoExt = fs.FileNameWithoutExtension(f);
 
             // don't list bios files
-            if (bioslist.Contains(nameNoExt, StringComparer.InvariantCultureIgnoreCase))
-            {
-                continue;
-            }
+            if (IsBiosOrDevice(nameNoExt)) { continue; }
 
             // delete if it's not found in the provided list
             if (!content.Games.Any(c => c.Name.Equals(nameNoExt, StringComparison.InvariantCultureIgnoreCase)))
@@ -460,6 +457,12 @@ public class Roms : IRoms
         }
 
         return copied;
+    }
+
+    private bool IsBiosOrDevice(string nameNoExt)
+    {
+        return bioslist.Contains(nameNoExt, StringComparer.InvariantCultureIgnoreCase)
+            || deviceslist.Contains(nameNoExt, StringComparer.InvariantCultureIgnoreCase);
     }
 
     /// <summary>
