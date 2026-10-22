@@ -1,12 +1,10 @@
 ﻿using ArcadeManager.Core.Domain;
 using ArcadeManager.Core.Infrastructure;
 using ArcadeManager.Core.Infrastructure.Interfaces;
-using ArcadeManager.Core.Models.Roms;
-using System;
-using System.IO;
+using ArcadeManager.Core.Tests;
 using System.Reflection;
 
-namespace ArcadeManager.Core.Tests.Integration;
+namespace ArcadeManager.Core.IntegrationTests;
 
 public abstract class BaseIntegrationTest : BaseCommonTests
 {
@@ -68,6 +66,6 @@ public abstract class BaseIntegrationTest : BaseCommonTests
     /// </returns>
     protected string GetTestPath(params string[] pathItems)
     {
-        return Path.Combine([basePath, "Data", "Integration", .. pathItems]);
+        return Path.Combine([basePath, "Data", .. pathItems]);
     }
 }

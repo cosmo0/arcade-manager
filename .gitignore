@@ -4,9 +4,9 @@ dist/
 publish/
 
 # Generated romsets
-src/ArcadeManager.Core.Tests/Data/Integration/romset_fbneo/*.zip
-src/ArcadeManager.Core.Tests/Data/Integration/romset_mame/*.zip
-src/ArcadeManager.Core.Tests/Data/Integration/romset_mame2003/*.zip
+src/ArcadeManager.Core.IntegrationTests/Data/romset_fbneo/*.zip
+src/ArcadeManager.Core.IntegrationTests/Data/romset_mame/*.zip
+src/ArcadeManager.Core.IntegrationTests/Data/romset_mame2003/*.zip
 
 # .Net
 bin/

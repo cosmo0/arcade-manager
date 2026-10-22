@@ -374,7 +374,7 @@ public class Overlays(
             if (double.TryParse(foundValue, out var value))
             {
                 value = Math.Round(value * p.Value, 0);
-                content = regex.Replace(content, $"{p} = {(int)value}");
+                content = regex.Replace(content, $"{p.Key} = {(int)value}");
             }
         }
 
@@ -911,7 +911,7 @@ public class Overlays(
     {
         var imageContent = await downloaderService.DownloadFile(pack.Repository, $"{pack.Overlays.Src}/{imageFi}");
         var imageSize = imageProcessor.GetSize(imageContent);
-        if (data.Width > 0 && data.Height > 0 && fs.FileExists(imageDest) && ((int)imageSize.Width != data.Width || (int)imageSize.Height != data.Height))
+        if (data.Width > 0 && data.Height > 0 && ((int)imageSize.Width != data.Width || (int)imageSize.Height != data.Height))
         {
             imageContent = await imageProcessor.Resize(imageContent, data.Width, data.Height);
 

@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Core.Tests.Integration;
+namespace ArcadeManager.Core.IntegrationTests;
 
 public class OverlaysIntegrationTests : BaseIntegrationTest
 {
@@ -18,7 +18,7 @@ public class OverlaysIntegrationTests : BaseIntegrationTest
         sut = new(downloader, fs, env, imageProcessor, retroarchOverlay, mameOverlay);
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task Check_checks_overlays_configs()
     {
         // arrange
@@ -50,7 +50,7 @@ public class OverlaysIntegrationTests : BaseIntegrationTest
 88games - image has wrong coordinates in config");
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task ConvertMameToRa_converts_mame_files_to_ra()
     {
         // arrange
@@ -73,7 +73,7 @@ public class OverlaysIntegrationTests : BaseIntegrationTest
         await AssertFoldersAreIdentical(GetTestPath("overlays", "mame2ra_files_output"), GetTestPath("overlays", "mame2ra_expected"));
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task ConvertMameToRa_converts_mame_folders_to_ra()
     {
         // arrange
@@ -96,7 +96,7 @@ public class OverlaysIntegrationTests : BaseIntegrationTest
         await AssertFoldersAreIdentical(GetTestPath("overlays", "mame2ra_folders_output"), GetTestPath("overlays", "mame2ra_expected"));
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task ConvertMameToRa_converts_mame_to_ra_with_changed_resolution()
     {
         // arrange
@@ -120,7 +120,7 @@ public class OverlaysIntegrationTests : BaseIntegrationTest
         await AssertFoldersAreIdentical(GetTestPath("overlays", "mame2ra_resolution_output"), GetTestPath("overlays", "mame2ra_resolution_expected"));
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task ConvertRaToMame_converts_ra_to_mame()
     {
         // arrange
@@ -142,7 +142,7 @@ public class OverlaysIntegrationTests : BaseIntegrationTest
         await AssertFoldersAreIdentical(options.Output, GetTestPath("overlays", "ra2mame_expected"));
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task Download_downloads_overlays()
     {
         // arrange
@@ -175,7 +175,7 @@ public class OverlaysIntegrationTests : BaseIntegrationTest
         await AssertFoldersAreIdentical(GetTestPath("overlays", "download_output"), GetTestPath("overlays", "download_expected"));
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task Generate_generates_configs()
     {
         // arrange

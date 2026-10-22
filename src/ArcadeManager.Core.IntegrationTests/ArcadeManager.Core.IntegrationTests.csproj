@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="AwesomeAssertions" Version="9.6.0" />
+	  <PackageReference Include="coverlet.collector" Version="10.1.0">
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+	  </PackageReference>
+	  <PackageReference Include="FakeItEasy" Version="9.0.1" />
+	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+	  <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1">
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+	  </PackageReference>
+	  <PackageReference Include="xunit.v3" Version="4.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ArcadeManager.Core.Tests\ArcadeManager.Core.Tests.csproj" />
+    <ProjectReference Include="..\ArcadeManager.Core\ArcadeManager.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+	  <Using Include="FakeItEasy" />
+	  <Using Include="AwesomeAssertions" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<None Include="Data\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="..\Data\**\*.*">
+			<Link>Data\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="pwsh -NonInteractive -ExecutionPolicy Unrestricted -File &quot;$(ProjectDir)/Data/generate-romset.ps1&quot;" />
+	</Target>
+
+</Project>

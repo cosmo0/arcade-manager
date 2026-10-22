@@ -2,18 +2,18 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Core.Tests.Integration;
+namespace ArcadeManager.Core.IntegrationTests;
 
 public class CsvIntegrationTests : BaseIntegrationTest
 {
-    private readonly Core.Services.Csv sut;
+    private readonly Services.Csv sut;
 
     public CsvIntegrationTests() : base()
     {
         sut = new(fs, csvFile, iniFile, datFile);
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task ConvertDat_converts_dat()
     {
         // arrange
@@ -31,7 +31,7 @@ public class CsvIntegrationTests : BaseIntegrationTest
         await AssertFilesAreIdentical(target, expected);
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task ConvertIni_converts_ini()
     {
         // arrange
@@ -53,7 +53,7 @@ public class CsvIntegrationTests : BaseIntegrationTest
         }
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task Keep_keeps_only_listed_entries()
     {
         // arrange
@@ -71,7 +71,7 @@ public class CsvIntegrationTests : BaseIntegrationTest
         await AssertFilesAreIdentical(target, expected);
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task ListFiles_lists_files_in_folder()
     {
         // arrange
@@ -88,7 +88,7 @@ public class CsvIntegrationTests : BaseIntegrationTest
         await AssertFilesAreIdentical(target, expected);
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task Merge_merges_two_lists()
     {
         // arrange
@@ -106,7 +106,7 @@ public class CsvIntegrationTests : BaseIntegrationTest
         await AssertFilesAreIdentical(target, expected);
     }
 
-    [IgnoreLocallyFact]
+    [Fact]
     public async Task Remove_removes_entries()
     {
         // arrange

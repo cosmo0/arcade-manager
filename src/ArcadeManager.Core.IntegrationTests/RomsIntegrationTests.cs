@@ -1,9 +1,10 @@
 ﻿using ArcadeManager.Core.Models.Actions;
 using ArcadeManager.Core.Services;
+using ArcadeManager.Core.Tests;
 using System;
 using System.Threading.Tasks;
 
-namespace ArcadeManager.Core.Tests.Integration;
+namespace ArcadeManager.Core.IntegrationTests;
 
 public class RomsIntegrationTests : BaseIntegrationTest
 {
@@ -58,10 +59,17 @@ public class RomsIntegrationTests : BaseIntegrationTest
     public async Task Check_lists_missing_files()
     {
         // arrange
+        var options = new RomsAction
+        {
+            Main = GetTestPath("roms", "check.csv"),
+            Romset = GetTestPath("roms", "romset")
+        };
 
         // act
+        var result = await sut.Check(options, messageHandler);
 
         // assert
+        result.Should().BeEquivalentTo("a", "b", "c");
     }
 
     [Fact]
@@ -90,10 +98,18 @@ public class RomsIntegrationTests : BaseIntegrationTest
     public async Task DeleteCheck_lists_files()
     {
         // arrange
+        var options = new RomsAction
+        {
+            Main = GetTestPath("roms", "check-delete.csv"),
+            Romset = GetTestPath("roms", "romset"),
+            Selection = GetTestPath("roms", "romset")
+        };
 
         // act
+        var result = await sut.DeleteCheck(options, messageHandler);
 
         // assert
+        result.Should().BeEquivalentTo("1942.zip", "astdelux.zip", "atetris.zip", "baddudes.zip");
     }
 
     [Fact]
@@ -122,9 +138,17 @@ public class RomsIntegrationTests : BaseIntegrationTest
     public async Task KeepCheck_lists_files_to_be_deleted()
     {
         // arrange
+        var options = new RomsAction
+        {
+            Main = GetTestPath("roms", "check-keep.csv"),
+            Romset = GetTestPath("roms", "romset"),
+            Selection = GetTestPath("roms", "romset")
+        };
 
         // act
+        var result = await sut.KeepCheck(options, messageHandler);
 
         // assert
+        result.Should().BeEquivalentTo("1942.zip", "astdelux.zip", "atetris.zip", "baddudes.zip");
     }
 }

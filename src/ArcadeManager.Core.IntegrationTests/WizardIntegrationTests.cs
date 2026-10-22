@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ArcadeManager.Core.Tests.Integration;
+namespace ArcadeManager.Core.IntegrationTests;
 
 public class WizardIntegrationTests : BaseIntegrationTest
 {
