@@ -75,7 +75,7 @@ public class CsvIntegrationTests : BaseIntegrationTest
     public async Task ListFiles_lists_files_in_folder()
     {
         // arrange
-        var main = GetTestPath("romset_fbneo");
+        var main = GetTestPath("romset");
         var target = GetTestPath("csv", "list_result.csv");
         CleanupFile(target);
         var expected = GetTestPath("csv", "list_expected.csv");

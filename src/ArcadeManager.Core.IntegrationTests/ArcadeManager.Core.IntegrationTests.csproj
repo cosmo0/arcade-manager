@@ -44,8 +44,4 @@
 		</Content>
 	</ItemGroup>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="pwsh -NonInteractive -ExecutionPolicy Unrestricted -File &quot;$(ProjectDir)/Data/generate-romset.ps1&quot;" />
-	</Target>
-
 </Project>

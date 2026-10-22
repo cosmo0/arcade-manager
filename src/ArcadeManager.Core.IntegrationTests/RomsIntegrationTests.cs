@@ -21,7 +21,7 @@ public class RomsIntegrationTests : BaseIntegrationTest
         var options = new RomsAction
         {
             Main = GetTestPath("roms", "add.csv"),
-            Romset = GetTestPath("romset_fbneo"),
+            Romset = GetTestPath("romset"),
             Selection = GetTestPath("roms", "add_output")
         };
 
@@ -41,8 +41,8 @@ public class RomsIntegrationTests : BaseIntegrationTest
         // arrange
         var options = new RomsAction
         {
-            Main = "fbneo/top50,top80s",
-            Romset = GetTestPath("romset_fbneo"),
+            Main = "fbneo/top50,top80s,top90s",
+            Romset = GetTestPath("romset"),
             Selection = GetTestPath("roms", "addwizard_output")
         };
 
@@ -61,7 +61,7 @@ public class RomsIntegrationTests : BaseIntegrationTest
         var options = new RomsAction
         {
             Main = GetTestPath("roms", "check.csv"),
-            Romset = GetTestPath("roms", "romset")
+            Romset = GetTestPath("romset")
         };
 
         // act
@@ -78,12 +78,12 @@ public class RomsIntegrationTests : BaseIntegrationTest
         var options = new RomsAction
         {
             Main = GetTestPath("roms", "delete.csv"),
-            Romset = GetTestPath("romset_mame"),
+            Romset = GetTestPath("romset"),
             Selection = GetTestPath("roms", "delete_output")
         };
 
         CleanupFolder(options.Selection, true);
-        CopyFolder(GetTestPath("roms", "romset"), options.Selection);
+        CopyFolder(GetTestPath("romset"), options.Selection);
 
         // act
         await sut.Delete(options, messageHandler);
@@ -100,8 +100,8 @@ public class RomsIntegrationTests : BaseIntegrationTest
         var options = new RomsAction
         {
             Main = GetTestPath("roms", "check-delete.csv"),
-            Romset = GetTestPath("roms", "romset"),
-            Selection = GetTestPath("roms", "romset")
+            Romset = GetTestPath("romset"),
+            Selection = GetTestPath("romset")
         };
 
         // act
@@ -118,12 +118,12 @@ public class RomsIntegrationTests : BaseIntegrationTest
         var options = new RomsAction
         {
             Main = GetTestPath("roms", "keep.csv"),
-            Romset = GetTestPath("romset_mame"),
+            Romset = GetTestPath("romset"),
             Selection = GetTestPath("roms", "keep_output")
         };
 
         CleanupFolder(options.Selection, true);
-        CopyFolder(GetTestPath("roms", "romset"), options.Selection);
+        CopyFolder(GetTestPath("romset"), options.Selection);
 
         // act
         await sut.Keep(options, messageHandler);
@@ -140,8 +140,8 @@ public class RomsIntegrationTests : BaseIntegrationTest
         var options = new RomsAction
         {
             Main = GetTestPath("roms", "check-keep.csv"),
-            Romset = GetTestPath("roms", "romset"),
-            Selection = GetTestPath("roms", "romset")
+            Romset = GetTestPath("romset"),
+            Selection = GetTestPath("romset")
         };
 
         // act

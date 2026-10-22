@@ -4,6 +4,6 @@ using System.Text;
 
 namespace ArcadeManager.Core.IntegrationTests;
 
-public class WizardIntegrationTests : BaseIntegrationTest
+public class DatCheckerTests
 {
 }
