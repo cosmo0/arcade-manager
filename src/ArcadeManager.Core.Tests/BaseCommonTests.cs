@@ -26,8 +26,8 @@ public abstract class BaseCommonTests
         }
         else
         {
-            var resultContent = await File.ReadAllTextAsync(result, TestContext.Current.CancellationToken);
-            var expectedContent = await File.ReadAllTextAsync(expected, TestContext.Current.CancellationToken);
+            var resultContent = await File.ReadAllLinesAsync(result, TestContext.Current.CancellationToken);
+            var expectedContent = await File.ReadAllLinesAsync(expected, TestContext.Current.CancellationToken);
 
             resultContent.Should().BeEquivalentTo(expectedContent);
         }
